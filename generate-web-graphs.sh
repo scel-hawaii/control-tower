@@ -110,7 +110,7 @@ for f in *.png.new; do mv "$f" "${f%.new}"; done
 
     echo "<ul>"
     for f in *.csv; do 
-	echo "  <li><a href=\"${f}\">${f}</a></li>"
+	echo "  <li><a href=\"${f}\">${f}</a> ($(stat -c %s "${f}") bytes)</li>"
     done
     echo "</ul>"
 
