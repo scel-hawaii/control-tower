@@ -38,6 +38,11 @@ set title "Sensor panel voltages, all time."
 set ylabel "panel voltage (mV)"
 set output "all_panels.png.new"
 plot "< grep '^544,' results_all.csv" using 2:13, "< grep '^544,' results_all.csv" using 2:14, "< grep '^544,' results_all.csv" using 2:15, "< grep '^545,' results_all.csv" using 2:13, "< grep '^545,' results_all.csv" using 2:14, "< grep '^545,' results_all.csv" using 2:15 # panels
+
+set title "Solar irradiance (w/m^2), all time."
+set ylabel "panel voltage (mV)"
+set output "all_irrad.png.new"
+plot "< grep '^544,' results_all.csv" using 2:19, "< grep '^544,' results_all.csv" using 2:20, "< grep '^544,' results_all.csv" using 2:21, "< grep '^545,' results_all.csv" using 2:19, "< grep '^545,' results_all.csv" using 2:20, "< grep '^545,' results_all.csv" using 2:21 # irradiance
 __EOF__
 
 gnuplot << __EOF__ &
@@ -68,6 +73,11 @@ set title "Sensor panel voltages, past 24 hours."
 set ylabel "panel voltage (mV)"
 set output "today_panels.png.new"
 plot "< grep '^544,' results_today.csv" using 2:13, "< grep '^544,' results_today.csv" using 2:14, "< grep '^544,' results_today.csv" using 2:15, "< grep '^545,' results_today.csv" using 2:13, "< grep '^545,' results_today.csv" using 2:14, "< grep '^545,' results_today.csv" using 2:15 # panels
+
+set title "Solar irradiance (w/m^2), past 24 hours."
+set ylabel "panel voltage (mV)"
+set output "today_irrad.png.new"
+plot "< grep '^544,' results_today.csv" using 2:19, "< grep '^544,' results_today.csv" using 2:20, "< grep '^544,' results_today.csv" using 2:21, "< grep '^545,' results_today.csv" using 2:19, "< grep '^545,' results_today.csv" using 2:20, "< grep '^545,' results_today.csv" using 2:21 # irradiance
 __EOF__
 
 gnuplot << __EOF__ &
@@ -98,6 +108,11 @@ set title "Sensor panel voltages, past 3 hours."
 set ylabel "panel voltage (mV)"
 set output "hour_panels.png.new"
 plot "< grep '^544,' results_hour.csv" using 2:13, "< grep '^544,' results_hour.csv" using 2:14, "< grep '^544,' results_hour.csv" using 2:15, "< grep '^545,' results_hour.csv" using 2:13, "< grep '^545,' results_hour.csv" using 2:14, "< grep '^545,' results_hour.csv" using 2:15 # panels
+
+set title "Solar irradiance (w/m^2), past 3 hours."
+set ylabel "panel voltage (mV)"
+set output "hour_irrad.png.new"
+plot "< grep '^544,' results_hour.csv" using 2:19, "< grep '^544,' results_hour.csv" using 2:20, "< grep '^544,' results_hour.csv" using 2:21, "< grep '^545,' results_hour.csv" using 2:19, "< grep '^545,' results_hour.csv" using 2:20, "< grep '^545,' results_hour.csv" using 2:21 # irradiance
 __EOF__
 
 wait
