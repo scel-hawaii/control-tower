@@ -3,7 +3,7 @@
 from xbee import ZigBee
 from serial import Serial
 import psycopg2
-import ast
+import json
 
 ser = Serial('/dev/ttyUSB0', 9600)
 xbee = ZigBee(ser, escaped=True)
@@ -18,7 +18,7 @@ print "starting..."
 while True:
     try:
         values_str = xbee.wait_read_frame()['rf_data']
-        values = ast.literal_eval(values_str)
+        values = json.loads(values_str)
         values.setdefault('apogee_mv', None)
         values.setdefault('apogee_w_m2', None)
         print values
