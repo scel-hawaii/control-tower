@@ -4,7 +4,7 @@ psql -h localhost -U reis reis -c "\copy (select * from min_max_avg_5min where d
 
 psql -h localhost -U reis reis -c "\copy (select * from min_max_avg_5min) to results_all.csv.new csv header" &
 
-psql -h localhost -U reis reis -c "\copy (select * from min_max_avg_5min where db_time_5min > now() - '3 hours'::interval) to results_hour.csv.new csv header" &
+psql -h localhost -U reis reis -c "\copy (select * from min_max_avg_5min where db_time_5min > now() - '7 days'::interval) to results_week.csv.new csv header" &
 
 wait
 
@@ -89,30 +89,30 @@ set style data lines
 set key bottom right
 set terminal png size 1400,800
 
-set title "Sensor temperatures, past 3 hours."
+set title "Sensor temperatures, past week."
 set ylabel "temperature (dC)"
-set output "hour_temps.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:5 title "node 544", "< grep '^545,' results_hour.csv" using 2:5 title "node 545", "< grep '^546,' results_hour.csv" using 2:5 title "node 546" # temps
+set output "week_temps.png.new"
+plot "< grep '^544,' results_week.csv" using 2:5 title "node 544", "< grep '^545,' results_week.csv" using 2:5 title "node 545", "< grep '^546,' results_week.csv" using 2:5 title "node 546" # temps
 
-set title "Sensor pressures, past 3 hours."
+set title "Sensor pressures, past week."
 set ylabel "pressure (Pa)"
-set output "hour_press.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:8 title "node 544", "< grep '^545,' results_hour.csv" using 2:8 title "node 545", "< grep '^546,' results_hour.csv" using 2:8 title "node 546" # press
+set output "week_press.png.new"
+plot "< grep '^544,' results_week.csv" using 2:8 title "node 544", "< grep '^545,' results_week.csv" using 2:8 title "node 545", "< grep '^546,' results_week.csv" using 2:8 title "node 546" # press
 
-set title "Sensor battery voltages, past 3 hours."
+set title "Sensor battery voltages, past week."
 set ylabel "battery voltage (mV)"
-set output "hour_batt.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:11 title "node 544", "< grep '^545,' results_hour.csv" using 2:11 title "node 545", "< grep '^546,' results_hour.csv" using 2:11 title "node 546" # batteries
+set output "week_batt.png.new"
+plot "< grep '^544,' results_week.csv" using 2:11 title "node 544", "< grep '^545,' results_week.csv" using 2:11 title "node 545", "< grep '^546,' results_week.csv" using 2:11 title "node 546" # batteries
 
-set title "Sensor panel voltages, past 3 hours."
+set title "Sensor panel voltages, past week."
 set ylabel "panel voltage (mV)"
-set output "hour_panels.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:14 title "node 544", "< grep '^545,' results_hour.csv" using 2:14 title "node 545", "< grep '^546,' results_hour.csv" using 2:14 title "node 546" # panels
+set output "week_panels.png.new"
+plot "< grep '^544,' results_week.csv" using 2:14 title "node 544", "< grep '^545,' results_week.csv" using 2:14 title "node 545", "< grep '^546,' results_week.csv" using 2:14 title "node 546" # panels
 
-set title "Solar irradiance, past 3 hours."
+set title "Solar irradiance, past week."
 set ylabel "irradiance (w/m^2)"
-set output "hour_irrad.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:20 title "node 544", "< grep '^545,' results_hour.csv" using 2:20 title "node 545", "< grep '^546,' results_hour.csv" using 2:20 title "node 546" # irradiance
+set output "week_irrad.png.new"
+plot "< grep '^544,' results_week.csv" using 2:20 title "node 544", "< grep '^545,' results_week.csv" using 2:20 title "node 545", "< grep '^546,' results_week.csv" using 2:20 title "node 546" # irradiance
 __EOF__
 
 wait
@@ -129,7 +129,7 @@ for f in *.png.new; do mv "$f" "${f%.new}"; done
     done
     echo "</ul>"
 
-    for f in today_*.png hour_*.png all_*.png; do 
+    for f in today_*.png week_*.png all_*.png; do 
 	echo "  <a href=\"${f}\"><img src=\"${f}\"></a><br>"
     done
 
