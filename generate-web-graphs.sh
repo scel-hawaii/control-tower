@@ -121,7 +121,7 @@ for f in *.png.new; do mv "$f" "${f%.new}"; done
 
 (
     echo "<html>"
-    echo "<p>$(date). Each graph includes min/avg/max per 5-minute interval. Sample period about 15 seconds.<br>"
+    echo "<p>$(date). Each graph shows average readings over each 5-minute interval. Sample period about 15 seconds.<br>"
 
     echo "<ul>"
     for f in *.csv; do 
