@@ -16,33 +16,33 @@ set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S-10"
 set format x "%Y-%m-%d\n%H:%M"
 set style data lines
-set key off
+set key bottom right
 set terminal png size 1400,800
 
 set title "Sensor temperatures, all time."
 set ylabel "temperature (dC)"
 set output "all_temps.png.new"
-plot "< grep '^544,' results_all.csv" using 2:4, "< grep '^544,' results_all.csv" using 2:5, "< grep '^544,' results_all.csv" using 2:6, "< grep '^545,' results_all.csv" using 2:4, "< grep '^545,' results_all.csv" using 2:5, "< grep '^545,' results_all.csv" using 2:6 # temps
+plot "< grep '^544,' results_all.csv" using 2:5 title "node 544", "< grep '^545,' results_all.csv" using 2:5 title "node 545" # temps
 
 set title "Sensor pressures, all time."
 set ylabel "pressure (Pa)"
 set output "all_press.png.new"
-plot "< grep '^544,' results_all.csv" using 2:7, "< grep '^544,' results_all.csv" using 2:8, "< grep '^544,' results_all.csv" using 2:9, "< grep '^545,' results_all.csv" using 2:7, "< grep '^545,' results_all.csv" using 2:8, "< grep '^545,' results_all.csv" using 2:9 # press
+plot "< grep '^544,' results_all.csv" using 2:8 title "node 544", "< grep '^545,' results_all.csv" using 2:8 title "node 545" # press
 
 set title "Sensor battery voltages, all time."
 set ylabel "battery voltage (mV)"
 set output "all_batt.png.new"
-plot "< grep '^544,' results_all.csv" using 2:10, "< grep '^544,' results_all.csv" using 2:11, "< grep '^544,' results_all.csv" using 2:12, "< grep '^545,' results_all.csv" using 2:10, "< grep '^545,' results_all.csv" using 2:11, "< grep '^545,' results_all.csv" using 2:12 # batteries
+plot "< grep '^544,' results_all.csv" using 2:11 title "node 544", "< grep '^545,' results_all.csv" using 2:11 title "node 545" # batteries
 
 set title "Sensor panel voltages, all time."
 set ylabel "panel voltage (mV)"
 set output "all_panels.png.new"
-plot "< grep '^544,' results_all.csv" using 2:13, "< grep '^544,' results_all.csv" using 2:14, "< grep '^544,' results_all.csv" using 2:15, "< grep '^545,' results_all.csv" using 2:13, "< grep '^545,' results_all.csv" using 2:14, "< grep '^545,' results_all.csv" using 2:15 # panels
+plot "< grep '^544,' results_all.csv" using 2:14 title "node 544", "< grep '^545,' results_all.csv" using 2:14 title "node 545" # panels
 
 set title "Solar irradiance, all time."
 set ylabel "irradiance (w/m^2)"
 set output "all_irrad.png.new"
-plot "< grep '^544,' results_all.csv" using 2:19, "< grep '^544,' results_all.csv" using 2:20, "< grep '^544,' results_all.csv" using 2:21, "< grep '^545,' results_all.csv" using 2:19, "< grep '^545,' results_all.csv" using 2:20, "< grep '^545,' results_all.csv" using 2:21 # irradiance
+plot "< grep '^544,' results_all.csv" using 2:20 title "node 544", "< grep '^545,' results_all.csv" using 2:20 title "node 545" # irradiance
 __EOF__
 
 gnuplot << __EOF__ &
@@ -51,33 +51,33 @@ set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S-10"
 set format x "%Y-%m-%d\n%H:%M"
 set style data lines
-set key off
+set key bottom right
 set terminal png size 1400,800
 
 set title "Sensor temperatures, past 24 hours."
 set ylabel "temperature (dC)"
 set output "today_temps.png.new"
-plot "< grep '^544,' results_today.csv" using 2:4, "< grep '^544,' results_today.csv" using 2:5, "< grep '^544,' results_today.csv" using 2:6, "< grep '^545,' results_today.csv" using 2:4, "< grep '^545,' results_today.csv" using 2:5, "< grep '^545,' results_today.csv" using 2:6 # temps
+plot "< grep '^544,' results_today.csv" using 2:5 title "node 544", "< grep '^545,' results_today.csv" using 2:5 title "node 545" # temps
 
 set title "Sensor pressures, past 24 hours."
 set ylabel "pressure (Pa)"
 set output "today_press.png.new"
-plot "< grep '^544,' results_today.csv" using 2:7, "< grep '^544,' results_today.csv" using 2:8, "< grep '^544,' results_today.csv" using 2:9, "< grep '^545,' results_today.csv" using 2:7, "< grep '^545,' results_today.csv" using 2:8, "< grep '^545,' results_today.csv" using 2:9 # press
+plot "< grep '^544,' results_today.csv" using 2:8 title "node 544", "< grep '^545,' results_today.csv" using 2:8 title "node 545" # press
 
 set title "Sensor battery voltages, past 24 hours."
 set ylabel "battery voltage (mV)"
 set output "today_batt.png.new"
-plot "< grep '^544,' results_today.csv" using 2:10, "< grep '^544,' results_today.csv" using 2:11, "< grep '^544,' results_today.csv" using 2:12, "< grep '^545,' results_today.csv" using 2:10, "< grep '^545,' results_today.csv" using 2:11, "< grep '^545,' results_today.csv" using 2:12 # batteries
+plot "< grep '^544,' results_today.csv" using 2:11 title "node 544", "< grep '^545,' results_today.csv" using 2:11 title "node 545" # batteries
 
 set title "Sensor panel voltages, past 24 hours."
 set ylabel "panel voltage (mV)"
 set output "today_panels.png.new"
-plot "< grep '^544,' results_today.csv" using 2:13, "< grep '^544,' results_today.csv" using 2:14, "< grep '^544,' results_today.csv" using 2:15, "< grep '^545,' results_today.csv" using 2:13, "< grep '^545,' results_today.csv" using 2:14, "< grep '^545,' results_today.csv" using 2:15 # panels
+plot "< grep '^544,' results_today.csv" using 2:14 title "node 544", "< grep '^545,' results_today.csv" using 2:14 title "node 545" # panels
 
 set title "Solar irradiance, past 24 hours."
 set ylabel "irradiance (w/m^2)"
 set output "today_irrad.png.new"
-plot "< grep '^544,' results_today.csv" using 2:19, "< grep '^544,' results_today.csv" using 2:20, "< grep '^544,' results_today.csv" using 2:21, "< grep '^545,' results_today.csv" using 2:19, "< grep '^545,' results_today.csv" using 2:20, "< grep '^545,' results_today.csv" using 2:21 # irradiance
+plot "< grep '^544,' results_today.csv" using 2:20 title "node 544", "< grep '^545,' results_today.csv" using 2:20 title "node 545" # irradiance
 __EOF__
 
 gnuplot << __EOF__ &
@@ -86,33 +86,33 @@ set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S-10"
 set format x "%Y-%m-%d\n%H:%M"
 set style data lines
-set key off
+set key bottom right
 set terminal png size 1400,800
 
 set title "Sensor temperatures, past 3 hours."
 set ylabel "temperature (dC)"
 set output "hour_temps.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:4, "< grep '^544,' results_hour.csv" using 2:5, "< grep '^544,' results_hour.csv" using 2:6, "< grep '^545,' results_hour.csv" using 2:4, "< grep '^545,' results_hour.csv" using 2:5, "< grep '^545,' results_hour.csv" using 2:6 # temps
+plot "< grep '^544,' results_hour.csv" using 2:5 title "node 544", "< grep '^545,' results_hour.csv" using 2:5 title "node 545" # temps
 
 set title "Sensor pressures, past 3 hours."
 set ylabel "pressure (Pa)"
 set output "hour_press.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:7, "< grep '^544,' results_hour.csv" using 2:8, "< grep '^544,' results_hour.csv" using 2:9, "< grep '^545,' results_hour.csv" using 2:7, "< grep '^545,' results_hour.csv" using 2:8, "< grep '^545,' results_hour.csv" using 2:9 # press
+plot "< grep '^544,' results_hour.csv" using 2:8 title "node 544", "< grep '^545,' results_hour.csv" using 2:8 title "node 545" # press
 
 set title "Sensor battery voltages, past 3 hours."
 set ylabel "battery voltage (mV)"
 set output "hour_batt.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:10, "< grep '^544,' results_hour.csv" using 2:11, "< grep '^544,' results_hour.csv" using 2:12, "< grep '^545,' results_hour.csv" using 2:10, "< grep '^545,' results_hour.csv" using 2:11, "< grep '^545,' results_hour.csv" using 2:12 # batteries
+plot "< grep '^544,' results_hour.csv" using 2:11 title "node 544", "< grep '^545,' results_hour.csv" using 2:11 title "node 545" # batteries
 
 set title "Sensor panel voltages, past 3 hours."
 set ylabel "panel voltage (mV)"
 set output "hour_panels.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:13, "< grep '^544,' results_hour.csv" using 2:14, "< grep '^544,' results_hour.csv" using 2:15, "< grep '^545,' results_hour.csv" using 2:13, "< grep '^545,' results_hour.csv" using 2:14, "< grep '^545,' results_hour.csv" using 2:15 # panels
+plot "< grep '^544,' results_hour.csv" using 2:14 title "node 544", "< grep '^545,' results_hour.csv" using 2:14 title "node 545" # panels
 
 set title "Solar irradiance, past 3 hours."
 set ylabel "irradiance (w/m^2)"
 set output "hour_irrad.png.new"
-plot "< grep '^544,' results_hour.csv" using 2:19, "< grep '^544,' results_hour.csv" using 2:20, "< grep '^544,' results_hour.csv" using 2:21, "< grep '^545,' results_hour.csv" using 2:19, "< grep '^545,' results_hour.csv" using 2:20, "< grep '^545,' results_hour.csv" using 2:21 # irradiance
+plot "< grep '^544,' results_hour.csv" using 2:20 title "node 544", "< grep '^545,' results_hour.csv" using 2:20 title "node 545" # irradiance
 __EOF__
 
 wait
