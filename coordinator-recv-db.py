@@ -18,10 +18,10 @@ print "starting..."
 while True:
     try:
         values_str = xbee.wait_read_frame()['rf_data']
+        print values_str
         values = json.loads(values_str)
         values.setdefault('apogee_mv', None)
         values.setdefault('apogee_w_m2', None)
-        print values
         cur.execute(insert_query, values)
     except:
         print "ser.close()"
