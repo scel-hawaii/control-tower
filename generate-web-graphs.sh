@@ -8,6 +8,8 @@ psql -h localhost -U reis reis -c "\copy (SELECT address, round_time_5min(db_tim
 
 psql -h localhost -U reis reis --html -c "select address, date_trunc('hour', db_time) as db_hr, count(*) as n, round(max(uptime_ms)::numeric/1000/3600, 2) as max_uptime_hr, avg(bmp085_temp_decic)::integer as avg_temp, avg(bmp085_press_pa)::integer as avg_press, avg(batt_mv)::integer as avg_batt, avg(panel_mv)::integer as avg_panel, avg(apogee_w_m2)::integer as avg_apogee_w_m2 from raaargh where db_time > now() - '12 hours'::interval group by address, db_hr order by address, db_hr desc;" > summary_table.html &
 
+psql -h localhost -U reis reis -c '\copy raaargh to outdoor_env.csv.new csv header' &
+
 wait
 
 for f in *.csv.new; do mv "$f" "${f%.new}"; done
