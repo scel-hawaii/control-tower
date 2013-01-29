@@ -20,8 +20,10 @@ while True:
         values_str = xbee.wait_read_frame()['rf_data']
         print values_str
         values = json.loads(values_str)
-        values.setdefault('apogee_mv', None)
-        values.setdefault('apogee_w_m2', None)
+        for field in ['apogee_mv', 'apogee_w_m2', 'address', 
+                      'uptime_ms', 'bmp085_temp_decic', 
+                      'bmp085_press_pa', 'batt_mv', 'panel_mv']:
+            values.setdefault(field, None)
         cur.execute(insert_query, values)
     except:
         print "ser.close()"
