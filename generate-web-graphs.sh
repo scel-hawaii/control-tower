@@ -10,6 +10,8 @@ psql -h localhost -U reis reis --html -c "select address, date_trunc('hour', db_
 
 psql -h localhost -U reis reis -c '\copy raaargh to outdoor_env.csv.new csv header' &
 
+psql -h localhost -U reis reis -c '\copy greenbox to greenbox.csv.new csv header' &
+
 wait
 
 for f in *.csv.new; do mv "$f" "${f%.new}"; done
