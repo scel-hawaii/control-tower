@@ -60,10 +60,10 @@ CREATE TABLE greenbox (
 
 
 --
--- Name: raaargh; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+-- Name: outdoor_env; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE TABLE raaargh (
+CREATE TABLE outdoor_env (
     address integer NOT NULL,
     db_time timestamp with time zone NOT NULL,
     uptime_ms integer,
@@ -77,48 +77,34 @@ CREATE TABLE raaargh (
 
 
 --
--- Name: min_max_avg; Type: VIEW; Schema: public; Owner: -
+-- Name: outdoor_env_5min; Type: VIEW; Schema: public; Owner: -
 --
 
-CREATE VIEW min_max_avg AS
-    SELECT raaargh.address, date_trunc('minute'::text, raaargh.db_time) AS db_time_min, count(*) AS n, min(raaargh.bmp085_temp_decic) AS min_bmp085_temp_decic, (avg(raaargh.bmp085_temp_decic))::integer AS avg_bmp085_temp_decic, max(raaargh.bmp085_temp_decic) AS max_bmp085_temp_decic, min(raaargh.bmp085_press_pa) AS min_bmp085_press_pa, (avg(raaargh.bmp085_press_pa))::integer AS avg_bmp085_press_pa, max(raaargh.bmp085_press_pa) AS max_bmp085_press_pa, min(raaargh.batt_mv) AS min_batt_mv, (avg(raaargh.batt_mv))::integer AS avg_batt_mv, max(raaargh.batt_mv) AS max_batt_mv, min(raaargh.panel_mv) AS min_panel_mv, (avg(raaargh.panel_mv))::integer AS avg_panel_mv, max(raaargh.panel_mv) AS max_panel_mv, min(raaargh.uptime_ms) AS min_uptime_ms, (avg(raaargh.uptime_ms))::integer AS avg_uptime_ms, max(raaargh.uptime_ms) AS max_uptime_ms, min(raaargh.apogee_w_m2) AS min_apogee_w_m2, (avg(raaargh.apogee_w_m2))::integer AS avg_apogee_w_m2, max(raaargh.apogee_w_m2) AS max_apogee_w_m2 FROM raaargh GROUP BY raaargh.address, date_trunc('minute'::text, raaargh.db_time);
-
-
---
--- Name: min_max_avg_5min; Type: VIEW; Schema: public; Owner: -
---
-
-CREATE VIEW min_max_avg_5min AS
-    SELECT raaargh.address, round_time_5min(raaargh.db_time) AS db_time_5min, count(*) AS n, min(raaargh.bmp085_temp_decic) AS min_bmp085_temp_decic, (avg(raaargh.bmp085_temp_decic))::integer AS avg_bmp085_temp_decic, max(raaargh.bmp085_temp_decic) AS max_bmp085_temp_decic, min(raaargh.bmp085_press_pa) AS min_bmp085_press_pa, (avg(raaargh.bmp085_press_pa))::integer AS avg_bmp085_press_pa, max(raaargh.bmp085_press_pa) AS max_bmp085_press_pa, min(raaargh.batt_mv) AS min_batt_mv, (avg(raaargh.batt_mv))::integer AS avg_batt_mv, max(raaargh.batt_mv) AS max_batt_mv, min(raaargh.panel_mv) AS min_panel_mv, (avg(raaargh.panel_mv))::integer AS avg_panel_mv, max(raaargh.panel_mv) AS max_panel_mv, min(raaargh.uptime_ms) AS min_uptime_ms, (avg(raaargh.uptime_ms))::integer AS avg_uptime_ms, max(raaargh.uptime_ms) AS max_uptime_ms, min(raaargh.apogee_w_m2) AS min_apogee_w_m2, (avg(raaargh.apogee_w_m2))::integer AS avg_apogee_w_m2, max(raaargh.apogee_w_m2) AS max_apogee_w_m2 FROM raaargh GROUP BY raaargh.address, round_time_5min(raaargh.db_time);
+CREATE VIEW outdoor_env_5min AS
+    SELECT outdoor_env.address, round_time_5min(outdoor_env.db_time) AS db_time_5min, count(*) AS n, min(outdoor_env.bmp085_temp_decic) AS min_bmp085_temp_decic, (avg(outdoor_env.bmp085_temp_decic))::integer AS avg_bmp085_temp_decic, max(outdoor_env.bmp085_temp_decic) AS max_bmp085_temp_decic, min(outdoor_env.bmp085_press_pa) AS min_bmp085_press_pa, (avg(outdoor_env.bmp085_press_pa))::integer AS avg_bmp085_press_pa, max(outdoor_env.bmp085_press_pa) AS max_bmp085_press_pa, min(outdoor_env.batt_mv) AS min_batt_mv, (avg(outdoor_env.batt_mv))::integer AS avg_batt_mv, max(outdoor_env.batt_mv) AS max_batt_mv, min(outdoor_env.panel_mv) AS min_panel_mv, (avg(outdoor_env.panel_mv))::integer AS avg_panel_mv, max(outdoor_env.panel_mv) AS max_panel_mv, min(outdoor_env.uptime_ms) AS min_uptime_ms, (avg(outdoor_env.uptime_ms))::integer AS avg_uptime_ms, max(outdoor_env.uptime_ms) AS max_uptime_ms, min(outdoor_env.apogee_w_m2) AS min_apogee_w_m2, (avg(outdoor_env.apogee_w_m2))::integer AS avg_apogee_w_m2, max(outdoor_env.apogee_w_m2) AS max_apogee_w_m2 FROM outdoor_env GROUP BY outdoor_env.address, round_time_5min(outdoor_env.db_time) ORDER BY round_time_5min(outdoor_env.db_time);
 
 
 --
--- Name: raaargh_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+-- Name: outdoor_env_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-ALTER TABLE ONLY raaargh
-    ADD CONSTRAINT raaargh_pkey PRIMARY KEY (address, db_time);
-
-
---
--- Name: raaargh_address_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
---
-
-CREATE INDEX raaargh_address_idx ON raaargh USING btree (address);
+ALTER TABLE ONLY outdoor_env
+    ADD CONSTRAINT outdoor_env_pkey PRIMARY KEY (address, db_time);
 
 
 --
--- Name: raaargh_date_trunc_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: sunny_webbox_flat_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX raaargh_date_trunc_idx ON raaargh USING btree (date_trunc('hour'::text, timezone('HST'::text, db_time)));
+ALTER TABLE ONLY sunny_webbox_flat
+    ADD CONSTRAINT sunny_webbox_flat_pkey PRIMARY KEY ("time");
 
 
 --
--- Name: raaargh_db_time_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+-- Name: outdoor_env_db_time_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
 --
 
-CREATE INDEX raaargh_db_time_idx ON raaargh USING btree (db_time);
+CREATE INDEX outdoor_env_db_time_idx ON outdoor_env USING btree (db_time);
 
 
 --
