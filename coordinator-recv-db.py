@@ -26,6 +26,7 @@ while True:
         print time.strftime(time_fmt),
         print values_str
         sys.stdout.flush()
+        cur.execute("""begin; insert into outdoor_env_binary_log (db_time, rf_data) values (now(), %s); commit;""", [buffer(values_str)])
         values = json.loads(values_str)
         for field in ['apogee_mv', 'apogee_w_m2', 'address', 
                       'uptime_ms', 'bmp085_temp_decic', 

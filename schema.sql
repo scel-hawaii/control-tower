@@ -85,6 +85,16 @@ CREATE VIEW outdoor_env_5min AS
 
 
 --
+-- Name: outdoor_env_binary_log; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE outdoor_env_binary_log (
+    db_time timestamp with time zone NOT NULL,
+    rf_data bytea
+);
+
+
+--
 -- Name: sunny_webbox_flat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
@@ -136,6 +146,14 @@ CREATE TABLE sunny_webbox_flat_import (
     dev3temperature double precision,
     dev3vac double precision
 );
+
+
+--
+-- Name: outdoor_env_binary_log_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY outdoor_env_binary_log
+    ADD CONSTRAINT outdoor_env_binary_log_pkey PRIMARY KEY (db_time);
 
 
 --
