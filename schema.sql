@@ -112,11 +112,46 @@ CREATE TABLE sunny_webbox_flat (
 
 
 --
+-- Name: sunny_webbox_flat_import; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE sunny_webbox_flat_import (
+    "time" timestamp with time zone NOT NULL,
+    dev1exlsolirr double precision,
+    dev1intsolirr double precision,
+    dev1optm double precision,
+    dev1tmpamb double precision,
+    dev1tmpmdul double precision,
+    dev1windvel double precision,
+    dev2etotal double precision,
+    dev2iac double precision,
+    dev2ipv double precision,
+    dev2pac double precision,
+    dev2temperature double precision,
+    dev2vac double precision,
+    dev3etotal double precision,
+    dev3iac double precision,
+    dev3ipv double precision,
+    dev3pac double precision,
+    dev3temperature double precision,
+    dev3vac double precision
+);
+
+
+--
 -- Name: outdoor_env_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
 --
 
 ALTER TABLE ONLY outdoor_env
     ADD CONSTRAINT outdoor_env_pkey PRIMARY KEY (address, db_time);
+
+
+--
+-- Name: sunny_webbox_flat_import_pkey; Type: CONSTRAINT; Schema: public; Owner: -; Tablespace: 
+--
+
+ALTER TABLE ONLY sunny_webbox_flat_import
+    ADD CONSTRAINT sunny_webbox_flat_import_pkey PRIMARY KEY ("time");
 
 
 --
