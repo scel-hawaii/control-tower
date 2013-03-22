@@ -12,7 +12,7 @@ time_fmt = '%FT%T %z'
 ser = Serial('/dev/ttyUSB1', 9600)
 xbee = ZigBee(ser, escaped=True)
 
-conn = psycopg2.connect(host="localhost", port="5432", user="sensornet", password="easyp4ss!", database="sensing-monitoring")
+conn = psycopg2.connect(host="localhost", port="5432", user="sensornet", password="easyp4ss!", database="sensing_monitoring")
 cur = conn.cursor()
 
 insert_query = """begin; insert into outdoor_env (address, db_time, uptime_ms, bmp085_temp_decic, bmp085_press_pa, batt_mv, panel_mv, apogee_mv, apogee_w_m2) values (%(address)s, now(), %(uptime_ms)s, %(bmp085_temp_decic)s, %(bmp085_press_pa)s, %(batt_mv)s, %(panel_mv)s, %(apogee_mv)s, %(apogee_w_m2)s); commit;"""
