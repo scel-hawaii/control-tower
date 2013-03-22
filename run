@@ -1,0 +1,2 @@
+#!/bin/bash
+python /codez/reis_repo_bak/coordinator_server/coordinator-recv-db.py
