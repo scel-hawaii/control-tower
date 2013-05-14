@@ -1,5 +1,12 @@
 #!/usr/bin/env python
 
+# Simple example of XML-RPC server to expose DB queries. Access the
+# functions by, e.g.:
+# >>> import xmlrpclib
+# >>> p = xmlrpclib.ServerProxy("http://localhost:14158")
+# >>> p.last_reading_by_node()
+# >>> p.a_hash()
+
 import datetime
 from SimpleXMLRPCServer import SimpleXMLRPCServer
 import psycopg2
