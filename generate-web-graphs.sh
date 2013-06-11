@@ -31,7 +31,7 @@ wait
 
 for f in *.csv.new; do mv "$f" "${f%.new}"; done
 
-gnuplot << __EOF__ &
+gnuplot_options='
 set datafile separator ","
 set xdata time
 set timefmt "%Y-%m-%d %H:%M:%S-10"
@@ -39,6 +39,10 @@ set format x "%Y-%m-%d\n%H:%M"
 set style data lines
 set key bottom right
 set terminal png size 1400,800
+'
+
+gnuplot << __EOF__ &
+$gnuplot_options
 
 set title "Sensor temperatures, all time."
 set ylabel "temperature (dC)"
@@ -67,13 +71,7 @@ plot for [f in "${addresses_all}"] "< grep '^".f.",' results_all.csv" using 2:20
 __EOF__
 
 gnuplot << __EOF__ &
-set datafile separator ","
-set xdata time
-set timefmt "%Y-%m-%d %H:%M:%S-10"
-set format x "%Y-%m-%d\n%H:%M"
-set style data lines
-set key bottom right
-set terminal png size 1400,800
+$gnuplot_options
 
 set title "Sensor temperatures, past 24 hours."
 set ylabel "temperature (dC)"
@@ -102,13 +100,7 @@ plot for [f in "${addresses_today}"] "< grep '^".f.",' results_today.csv" using 
 __EOF__
 
 gnuplot << __EOF__ &
-set datafile separator ","
-set xdata time
-set timefmt "%Y-%m-%d %H:%M:%S-10"
-set format x "%Y-%m-%d\n%H:%M"
-set style data lines
-set key bottom right
-set terminal png size 1400,800
+$gnuplot_options
 
 set title "Sensor temperatures, past week."
 set ylabel "temperature (dC)"
@@ -156,7 +148,7 @@ for f in *.png.new; do mv "$f" "${f%.new}"; done
 
     cat summary_table.html
 
-    echo "<a href=\"generate-web-graphs.sh\">code</a>"
+    echo "<a href=\"graphify.sh\">code</a>"
 
     echo "</html>"
 ) > index.html.new
