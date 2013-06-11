@@ -2,7 +2,7 @@
 
 # Shell script to start coordinator database logger as an unprivileged
 # user. Works around our Upstart's lack of the setuid and setgid
-# directives.
+# directives. FIXME -- there must be a much better way to do this!
 
 # trap '/bin/kill -9 -- 0; exit' 15
 
