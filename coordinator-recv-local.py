@@ -7,7 +7,10 @@ import time
 
 time_fmt = '%FT%T %z'
 
-ser = Serial('/dev/ttyUSB1', 9600)
+try:
+    ser = Serial(sys.argv[1], 9600)
+except IndexError:
+    ser = Serial('/dev/ttyUSB0', 9600)
 xbee = ZigBee(ser, escaped=True)
 
 print time.strftime(time_fmt),
