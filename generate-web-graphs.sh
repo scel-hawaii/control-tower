@@ -15,7 +15,17 @@ psql --html -c "select address, date_trunc('hour', db_time) as db_hr, count(*) a
 
 psql -c '\copy outdoor_env to outdoor_env.csv.new csv header' &
 
-psql -c '\copy greenbox to greenbox.csv.new csv header' &
+uniq_addresses() { 
+    # Pick out the unique device addresses in a CSV read on stdin.
+    # (Keeps each first field seen starting at the second record [to
+    # skip the header] in an associative array d, then prints out each
+    # key k.) Likely will fail if the first field contains whitespace.
+    awk -F, '{if (NR > 1) d[$1]++} END {for (k in d) printf "%s ", k}'
+}
+
+addresses_all=$(uniq_addresses < results_all.csv)
+addresses_today=$(uniq_addresses < results_today.csv)
+addresses_week=$(uniq_addresses < results_week.csv)
 
 wait
 
@@ -33,27 +43,27 @@ set terminal png size 1400,800
 set title "Sensor temperatures, all time."
 set ylabel "temperature (dC)"
 set output "all_temps.png.new"
-plot "< grep '^6,' results_all.csv" using 2:5 title "node 6", "< grep '^13,' results_all.csv" using 2:5 title "node 13", "< grep '^544,' results_all.csv" using 2:5 title "node 544", "< grep '^545,' results_all.csv" using 2:5 title "node 545", "< grep '^546,' results_all.csv" using 2:5 title "node 546" # temps
+plot for [f in "${addresses_all}"] "< grep '^".f.",' results_all.csv" using 2:5 title "node ".f
 
 set title "Sensor pressures, all time."
 set ylabel "pressure (Pa)"
 set output "all_press.png.new"
-plot "< grep '^6,' results_all.csv" using 2:8 title "node 6", "< grep '^13,' results_all.csv" using 2:8 title "node 13", "< grep '^544,' results_all.csv" using 2:8 title "node 544", "< grep '^545,' results_all.csv" using 2:8 title "node 545", "< grep '^546,' results_all.csv" using 2:8 title "node 546" # press
+plot for [f in "${addresses_all}"] "< grep '^".f.",' results_all.csv" using 2:8 title "node ".f
 
 set title "Sensor battery voltages, all time."
 set ylabel "battery voltage (mV)"
 set output "all_batt.png.new"
-plot "< grep '^6,' results_all.csv" using 2:11 title "node 6", "< grep '^13,' results_all.csv" using 2:11 title "node 13", "< grep '^544,' results_all.csv" using 2:11 title "node 544", "< grep '^545,' results_all.csv" using 2:11 title "node 545", "< grep '^546,' results_all.csv" using 2:11 title "node 546" # batteries
+plot for [f in "${addresses_all}"] "< grep '^".f.",' results_all.csv" using 2:11 title "node ".f
 
 set title "Sensor panel voltages, all time."
 set ylabel "panel voltage (mV)"
 set output "all_panels.png.new"
-plot "< grep '^6,' results_all.csv" using 2:14 title "node 6", "< grep '^13,' results_all.csv" using 2:14 title "node 13", "< grep '^544,' results_all.csv" using 2:14 title "node 544", "< grep '^545,' results_all.csv" using 2:14 title "node 545", "< grep '^546,' results_all.csv" using 2:14 title "node 546" # panels
+plot for [f in "${addresses_all}"] "< grep '^".f.",' results_all.csv" using 2:14 title "node ".f
 
 set title "Solar irradiance, all time."
 set ylabel "irradiance (w/m^2)"
 set output "all_irrad.png.new"
-plot "< grep '^6,' results_all.csv" using 2:20 title "node 6", "< grep '^13,' results_all.csv" using 2:20 title "node 13", "< grep '^544,' results_all.csv" using 2:20 title "node 544", "< grep '^545,' results_all.csv" using 2:20 title "node 545", "< grep '^546,' results_all.csv" using 2:20 title "node 546" # irradiance
+plot for [f in "${addresses_all}"] "< grep '^".f.",' results_all.csv" using 2:20 title "node ".f
 __EOF__
 
 gnuplot << __EOF__ &
@@ -68,27 +78,27 @@ set terminal png size 1400,800
 set title "Sensor temperatures, past 24 hours."
 set ylabel "temperature (dC)"
 set output "today_temps.png.new"
-plot "< grep '^6,' results_today.csv" using 2:5 title "node 6", "< grep '^13,' results_today.csv" using 2:5 title "node 13", "< grep '^544,' results_today.csv" using 2:5 title "node 544", "< grep '^545,' results_today.csv" using 2:5 title "node 545", "< grep '^546,' results_today.csv" using 2:5 title "node 546" # temps
+plot for [f in "${addresses_today}"] "< grep '^".f.",' results_today.csv" using 2:5 title "node ".f
 
 set title "Sensor pressures, past 24 hours."
 set ylabel "pressure (Pa)"
 set output "today_press.png.new"
-plot "< grep '^6,' results_today.csv" using 2:8 title "node 6", "< grep '^13,' results_today.csv" using 2:8 title "node 13", "< grep '^544,' results_today.csv" using 2:8 title "node 544", "< grep '^545,' results_today.csv" using 2:8 title "node 545", "< grep '^546,' results_today.csv" using 2:8 title "node 546" # press
+plot for [f in "${addresses_today}"] "< grep '^".f.",' results_today.csv" using 2:8 title "node ".f
 
 set title "Sensor battery voltages, past 24 hours."
 set ylabel "battery voltage (mV)"
 set output "today_batt.png.new"
-plot "< grep '^6,' results_today.csv" using 2:11 title "node 6", "< grep '^13,' results_today.csv" using 2:11 title "node 13", "< grep '^544,' results_today.csv" using 2:11 title "node 544", "< grep '^545,' results_today.csv" using 2:11 title "node 545", "< grep '^546,' results_today.csv" using 2:11 title "node 546" # batteries
+plot for [f in "${addresses_today}"] "< grep '^".f.",' results_today.csv" using 2:11 title "node ".f
 
 set title "Sensor panel voltages, past 24 hours."
 set ylabel "panel voltage (mV)"
 set output "today_panels.png.new"
-plot "< grep '^6,' results_today.csv" using 2:14 title "node 6", "< grep '^13,' results_today.csv" using 2:14 title "node 13", "< grep '^544,' results_today.csv" using 2:14 title "node 544", "< grep '^545,' results_today.csv" using 2:14 title "node 545", "< grep '^546,' results_today.csv" using 2:14 title "node 546" # panels
+plot for [f in "${addresses_today}"] "< grep '^".f.",' results_today.csv" using 2:14 title "node ".f
 
 set title "Solar irradiance, past 24 hours."
 set ylabel "irradiance (w/m^2)"
 set output "today_irrad.png.new"
-plot "< grep '^6,' results_today.csv" using 2:20 title "node 6", "< grep '^13,' results_today.csv" using 2:20 title "node 13", "< grep '^544,' results_today.csv" using 2:20 title "node 544", "< grep '^545,' results_today.csv" using 2:20 title "node 545", "< grep '^546,' results_today.csv" using 2:20 title "node 546" # irradiance
+plot for [f in "${addresses_today}"] "< grep '^".f.",' results_today.csv" using 2:20 title "node ".f
 __EOF__
 
 gnuplot << __EOF__ &
@@ -103,27 +113,27 @@ set terminal png size 1400,800
 set title "Sensor temperatures, past week."
 set ylabel "temperature (dC)"
 set output "week_temps.png.new"
-plot "< grep '^6,' results_week.csv" using 2:5 title "node 6", "< grep '^13,' results_week.csv" using 2:5 title "node 13", "< grep '^544,' results_week.csv" using 2:5 title "node 544", "< grep '^545,' results_week.csv" using 2:5 title "node 545", "< grep '^546,' results_week.csv" using 2:5 title "node 546" # temps
+plot for [f in "${addresses_week}"] "< grep '^".f.",' results_week.csv" using 2:5 title "node ".f
 
 set title "Sensor pressures, past week."
 set ylabel "pressure (Pa)"
 set output "week_press.png.new"
-plot "< grep '^6,' results_week.csv" using 2:8 title "node 6", "< grep '^13,' results_week.csv" using 2:8 title "node 13", "< grep '^544,' results_week.csv" using 2:8 title "node 544", "< grep '^545,' results_week.csv" using 2:8 title "node 545", "< grep '^546,' results_week.csv" using 2:8 title "node 546" # press
+plot for [f in "${addresses_week}"] "< grep '^".f.",' results_week.csv" using 2:8 title "node ".f
 
 set title "Sensor battery voltages, past week."
 set ylabel "battery voltage (mV)"
 set output "week_batt.png.new"
-plot "< grep '^6,' results_week.csv" using 2:11 title "node 6", "< grep '^13,' results_week.csv" using 2:11 title "node 13", "< grep '^544,' results_week.csv" using 2:11 title "node 544", "< grep '^545,' results_week.csv" using 2:11 title "node 545", "< grep '^546,' results_week.csv" using 2:11 title "node 546" # batteries
+plot for [f in "${addresses_week}"] "< grep '^".f.",' results_week.csv" using 2:11 title "node ".f
 
 set title "Sensor panel voltages, past week."
 set ylabel "panel voltage (mV)"
 set output "week_panels.png.new"
-plot "< grep '^6,' results_week.csv" using 2:14 title "node 6", "< grep '^13,' results_week.csv" using 2:14 title "node 13", "< grep '^544,' results_week.csv" using 2:14 title "node 544", "< grep '^545,' results_week.csv" using 2:14 title "node 545", "< grep '^546,' results_week.csv" using 2:14 title "node 546" # panels
+plot for [f in "${addresses_week}"] "< grep '^".f.",' results_week.csv" using 2:14 title "node ".f
 
 set title "Solar irradiance, past week."
 set ylabel "irradiance (w/m^2)"
 set output "week_irrad.png.new"
-plot "< grep '^6,' results_week.csv" using 2:20 title "node 6", "< grep '^13,' results_week.csv" using 2:20 title "node 13", "< grep '^544,' results_week.csv" using 2:20 title "node 544", "< grep '^545,' results_week.csv" using 2:20 title "node 545", "< grep '^546,' results_week.csv" using 2:20 title "node 546" # irradiance
+plot for [f in "${addresses_week}"] "< grep '^".f.",' results_week.csv" using 2:20 title "node ".f
 __EOF__
 
 wait
@@ -146,7 +156,7 @@ for f in *.png.new; do mv "$f" "${f%.new}"; done
 
     cat summary_table.html
 
-    echo "<a href=\"graphify.sh\">code</a>"
+    echo "<a href=\"generate-web-graphs.sh\">code</a>"
 
     echo "</html>"
 ) > index.html.new
