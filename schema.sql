@@ -95,6 +95,17 @@ CREATE TABLE outdoor_env_binary_log (
 
 
 --
+-- Name: outdoor_env_unrecognized; Type: TABLE; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE TABLE outdoor_env_unrecognized (
+    db_time timestamp with time zone,
+    rf_data bytea,
+    exception character varying
+);
+
+
+--
 -- Name: sunny_webbox_flat; Type: TABLE; Schema: public; Owner: -; Tablespace: 
 --
 
