@@ -15,13 +15,13 @@ psql --html -c "select address, date_trunc('hour', db_time) as db_hr, count(*) a
 
 psql -c '\copy outdoor_env to outdoor_env.csv.new csv header' &
 
+wait
+
 # Pick out the unique device addresses in a CSV read on stdin. (Keeps
 # each first field seen starting at the second record [to skip the
 # header] in an associative array d, then prints out each key k.)
 # Likely will fail if the first field contains whitespace.
 addresses=$(awk -F, '{if (NR > 1) d[$1]++} END {for (k in d) printf "%s ", k}' < results_all.csv)
-
-wait
 
 for f in *.csv.new; do mv "$f" "${f%.new}"; done
 
