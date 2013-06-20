@@ -111,6 +111,13 @@ CREATE INDEX outdoor_env_db_time_idx ON outdoor_env USING btree (db_time);
 
 
 --
+-- Name: outdoor_env_unrecognized_db_time_idx; Type: INDEX; Schema: public; Owner: -; Tablespace: 
+--
+
+CREATE INDEX outdoor_env_unrecognized_db_time_idx ON outdoor_env_unrecognized USING btree (db_time);
+
+
+--
 -- Name: public; Type: ACL; Schema: -; Owner: -
 --
 
