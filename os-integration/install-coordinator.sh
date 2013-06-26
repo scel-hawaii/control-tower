@@ -4,8 +4,9 @@
 # `sensornet' user exists. Logs everything to /var/log/messages by
 # default.
 
-cp coordinator-recv-db ../coordinator-recv-db.py /usr/local/libexec/
-cp coordinator-recv-db.conf /etc/init/
+install -m 0755 coordinator-recv-db /usr/local/libexec/
+install -m 0644 ../coordinator-recv-db.py ../decode.py /usr/local/libexec/
+install -m 0644 coordinator-recv-db.conf /etc/init
 
 # Run, e.g., initctl start/stop/restart coordinator-recv-db to control
 # the service.
