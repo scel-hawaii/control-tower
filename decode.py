@@ -1,7 +1,10 @@
 #!/usr/bin/env python
 
 import json
+import re
 import struct
+
+invalid_id_pattern = re.compile('[^0-9A-Za-z_]')
 
 def decode_json(s):
     return [{'time_offset_s': 0,
@@ -73,6 +76,9 @@ def decode_1(s):
 
 def create_query(v):
     columns = sorted(v['values'].keys())
+    for c in columns:
+        if re.search(invalid_id_pattern, c):
+            raise ValueError, 'column name contains invalid character(s): ' + c
     column_names = ', '.join(columns)
     placeholders = ', '.join(['%(' + x + ')s' for x in columns])
     return '''INSERT INTO outdoor_env (db_time, %s) VALUES (now() + '%s seconds'::interval, %s)''' % (column_names, v['time_offset_s'], placeholders)
