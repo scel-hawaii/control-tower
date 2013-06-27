@@ -74,6 +74,24 @@ def decode_1(s):
 
     return time_series
 
+def decode_0(s):
+    struct_fmt = '<HHLhLHHHH'
+    values_list = struct.unpack(struct_fmt, s)
+    values = {}
+    for key, offset in [('address', 1),
+                        ('uptime_ms', 2),
+                        ('bmp085_temp_decic', 3),
+                        ('bmp085_press_pa', 4),
+                        ('batt_mv', 5),
+                        ('panel_mv', 6),
+                        ('apogee_mv', 7),
+                        ('apogee_w_m2', 8)
+                        ]:
+        values[key] = values_list[offset]
+
+    return [{'time_offset_s': 0,
+             'values': values}]
+
 def create_query(v):
     columns = sorted(v['values'].keys())
     for c in columns:
@@ -85,6 +103,7 @@ def create_query(v):
 
 decoders = {
     8827: decode_json,          # '{"' -> 8827
+    0: decode_0,
     1: decode_1
     }
 
