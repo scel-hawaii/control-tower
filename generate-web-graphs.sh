@@ -142,7 +142,7 @@ for f in *.png.new; do mv "$f" "${f%.new}"; done
 
     cat summary_table.html
 
-    echo "<a href=\"graphify.sh\">code</a>"
+    echo "<a href=\"generate-web-graphs.sh\">code</a>"
 
     echo "</html>"
 ) > index.html.new
