@@ -37,7 +37,7 @@ while True:
             cur.execute('BEGIN;')
             cur.execute(
                 '''INSERT INTO outdoor_env_unrecognized (db_time, rf_data, exception) VALUES (now(), %s, %s);''',
-                [buffer(rf_data), str(e)])
+                [buffer(rf_data), str(sys.exc_info()[0]) + ': ' + str(e)])
             cur.execute('COMMIT;')
             continue
 
