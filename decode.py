@@ -90,4 +90,8 @@ decoders = {
 
 def decode(rf_data):
     schema = struct.unpack('<H', rf_data[0:2])[0]
-    return decoders[schema](rf_data)
+    try:
+        f = decoders[schema]
+    except KeyError:
+        raise ValueError, 'unrecognized schema: ' + str(schema)
+    return f(rf_data)
