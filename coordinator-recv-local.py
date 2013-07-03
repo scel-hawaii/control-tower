@@ -5,6 +5,8 @@ from serial import Serial
 import sys
 import time
 
+import decode
+
 time_fmt = '%FT%T %z'
 
 try:
@@ -18,9 +20,19 @@ print "starting..."
 
 while True:
     try:
-        values_str = xbee.wait_read_frame()['rf_data']
-        print time.strftime(time_fmt),
-        print values_str
+        rf_data = xbee.wait_read_frame()['rf_data']
+        print
+        print
+        print time.strftime(time_fmt)
+        print rf_data
+        try:
+            time_points = decode.decode(rf_data)
+            for t in time_points:
+                print
+                print 'time offset:', t['time_offset_s']
+                print 'values:', t['values']
+        except Exception as e:
+            print 'exception:', str(e)
         sys.stdout.flush()
     except:
         print time.strftime(time_fmt),
