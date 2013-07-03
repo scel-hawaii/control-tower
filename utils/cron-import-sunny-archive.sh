@@ -27,7 +27,7 @@ cd /home/garmire/archives || exit 1
 prefixes=$(ls | sed 's,^\([0-9]*\)\..*$,\1,g' | uniq | grep '^[0-9]*$')
 # For each unique numeric prefix, in order...
 for p in $prefixes; do
-    python $SQL_EXPORT_TOOL "$p" | psql > /dev/null
+    python $SQL_EXPORT_TOOL "$p" | psql --single-transaction > /dev/null
     psql -c 'insert into sunny_webbox_flat (select * from sunny_webbox_flat_import where time > (select max(time) from sunny_webbox_flat));'
 done
 psql -c 'drop table sunny_webbox_flat_import;'

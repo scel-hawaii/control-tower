@@ -52,7 +52,6 @@ def sql_of_data(d, f=None):
     columns = ', '.join(line)
     n_devices = len(device_data)
 
-    print 'BEGIN;'
     i = 0
     for i in xrange(len(d['Time'])):
         line = []
@@ -71,7 +70,6 @@ def sql_of_data(d, f=None):
 
         i += 1
 
-    print 'COMMIT;'
     # return lines
 
 if __name__ == '__main__':
