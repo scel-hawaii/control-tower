@@ -14,44 +14,45 @@ from decode import PacketDecoder
 DATABASE = 1 
 
 class CoordinatorReceiver:
-	time_fmt = '%FT%T %z'
-	reis_decoder = PacketDecoder()
 
 	def __init__(self):
+		self.time_fmt = '%FT%T %z'
+		self.reis_decoder = PacketDecoder()
 		self.init_db_connection()
 		self.init_uart_connection()
 
 	def init_db_connection(self):
 		try:
-			conn = psycopg2.connect(host="127.0.0.1")
-			cur = conn.cursor()
+			self.conn = psycopg2.connect(host="127.0.0.1")
+			self.cur = self.conn.cursor()
 		except:
 			print "Something went wrong with the database."
 
 	def init_uart_connection(self):
-		try:
-			ser = Serial(sys.argv[1], 9600)
-		except IndexError:
-				ser = Serial('/dev/ttyUSB0', 9600)
+		#try:
+			#ser = Serial(sys.argv[1], 9600)
+		#except IndexError:
+				#ser = Serial('/dev/ttyUSB0', 9600)
 
-		xbee = ZigBee(ser, escaped=True)
+		self.ser = Serial('/dev/ttyUSB0', 9600)
+		self.xbee = ZigBee(self.ser, escaped=True)
 
-	def start_polling(option = DATABASE):
+	def start_polling(self, option = DATABASE):
 		if option == DATABASE:
-			poll_to_db()
+			self.poll_to_db()
 		else:
-			poll_to_screen()
+			self.poll_to_screen()
 
 	def poll_to_screen(self):
-		print time.strftime(time_fmt),
+		print time.strftime(self.time_fmt),
 		print "starting..."
 
 		while True:
 			try:
-				rf_data = xbee.wait_read_frame()['rf_data']
+				rf_data = self.xbee.wait_read_frame()['rf_data']
 				print
 				print
-				print time.strftime(time_fmt)
+				print time.strftime(self.time_fmt)
 				print rf_data
 				try:
 					time_points = reis_decoder.decode(rf_data)
@@ -63,40 +64,41 @@ class CoordinatorReceiver:
 					print 'exception:', str(e)
 				sys.stdout.flush()
 			except:
-				print time.strftime(time_fmt),
-				print "ser.close()"
-				ser.close()
+				print time.strftime(self.time_fmt),
+				print "self.ser.close()"
+				self.ser.close()
 				raise
 
 	def poll_to_db(self):
-		print time.strftime(time_fmt),
+		print time.strftime(self.time_fmt),
 		print "starting..."
 
 		while True:
 			try:
-				rf_data = xbee.wait_read_frame()['rf_data']
+				rf_data = self.xbee.wait_read_frame()['rf_data']
 
 				try:
-					cur.execute('BEGIN;')
+					self.cur.execute('BEGIN;')
 					for t in reis_decoder.decode(rf_data):
-						cur.execute(reis_decoder.create_query(t), t['values'])
-					cur.execute('COMMIT;')
+						self.cur.execute(reis_decoder.create_query(t), t['values'])
+					self.cur.execute('COMMIT;')
 				except Exception, e:
-					cur.execute('ROLLBACK;')
-					cur.execute('BEGIN;')
-					cur.execute(
+					self.cur.execute('ROLLBACK;')
+					self.cur.execute('BEGIN;')
+					self.cur.execute(
 						'''INSERT INTO outdoor_env_unrecognized (db_time, rf_data, exception) VALUES (now(), %s, %s);''',
 						[buffer(rf_data), str(sys.exc_info()[0]) + ': ' + str(e)])
-					cur.execute('COMMIT;')
+					self.cur.execute('COMMIT;')
 					continue
 
 			except:
-				print time.strftime(time_fmt),
+				print time.strftime(self.time_fmt),
 				print "stopping!"
-				ser.close()
-				cur.close()
-				conn.close()
+				self.ser.close()
+				self.cur.close()
+				self.conn.close()
 				raise
 
 if __name__ == "__main__":
 	test = CoordinatorReceiver()
+	test.start_polling()
