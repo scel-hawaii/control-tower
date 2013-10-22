@@ -1,37 +1,8 @@
 #!/usr/bin/python
+import os
 from sys import exit
 import subprocess
-
-class ScreenSupervisor:
-
-	def __init(self, screen_name):
-		on = True
-
-	def start_session(self, session_name):
-		command = ['screen', '-d', '-m', '-S', session_name]
-		subprocess.check_output(command)
-	
-	
-	def exists_session(self, session_name):
-		command = ['screen', '-ls', '|', 'grep', session_name]
-		print "Looking for " + session_name
-		output = subprocess.check_call(command)
-		try: 
-			print "Here is the output: " + output
-			if output > 0:
-				return True
-			else:
-				return False
-		except:
-			print "Error"
-			return False
-
-
-	def kill_session(self, session_name):
-		if exists_session(session_name):
-			command = ['screen', '-S', session_name, '-X', 'kill']
-		else:
-			print "The screen doesn't exist. We can't kill it"
+from screen_supervisor import ScreenSupervisor
 
 
 class ControlTower:
@@ -62,6 +33,16 @@ class ControlTower:
 			print "Lets go ahead and start the process"
 			command = ['screen', '-S', ControlTower.SCREEN_NAME, '-X', 'stuff', 'python while.py\n']
 			subprocess.call(command)
+
+	def kill_server(self):
+		self.kill_process()
+		if self.exists_screen():
+			self.kill_screen()
+		else:
+			print "Error: the screen session does not exist."
+
+	def kill_screen(self):
+		self.screen_super.kill_session(ControlTower.SCREEN_NAME)
 		
 	def kill_process(self):
 		PID = int(self.check_status_process())
@@ -92,6 +73,9 @@ class ControlTower:
 			return True
 		else:
 			return False
+
+	def exists_screen(self):
+		return self.screen_super.exists_session(ControlTower.SCREEN_NAME)
 
 	def print_status_process(self):
 		PID = self.check_status_process()
@@ -155,7 +139,7 @@ class ControlTower:
 		elif input == "check-process":
 			self.print_status_process()
 		elif input == "kill-server":
-			self.kill_process()
+			self.kill_server()
 		elif input == "quit":
 			exit()
 		else:
