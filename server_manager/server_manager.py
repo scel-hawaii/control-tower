@@ -6,7 +6,7 @@ from screen_supervisor import ScreenSupervisor
 
 
 class ControlTower:
-	SERVER_FILE = "while.py"
+	SERVER_FILE = "../coordinator_recv/coordinator_recv.py"
 	SCREEN_NAME = 'TesterScreen'
 
 	def __init__(self):
