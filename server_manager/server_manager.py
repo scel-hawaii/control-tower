@@ -4,6 +4,7 @@
 import os
 from sys import exit
 import subprocess
+import time
 
 # Local Imports
 from screen_supervisor import ScreenSupervisor
@@ -22,6 +23,7 @@ class ControlTower:
 	def start_server(self):
 		self.start_screen()
 		self.start_process()
+		time.sleep(1)
 		self.print_status_server()
 
 
@@ -38,6 +40,7 @@ class ControlTower:
 		self.kill_process()
 		if self.exists_screen():
 			self.kill_screen()
+			self.print_status_server()
 		else:
 			print "Error: the screen session does not exist."
 
@@ -82,6 +85,9 @@ class ControlTower:
 	def print_status_server(self):
 		if self.print_status_process() and self.print_status_screen():
 			print "The server appears to be good!"
+			print ""
+		else:
+			print "The server is NOT online."
 			print ""
 
 
@@ -138,8 +144,10 @@ class ControlTower:
 		print "Available command(s): "
 		print "start-server"
 		print "check-status"
-		print "kill-server"
+		print "stop-server"
+		print "help"
 		print "quit"
+		print "exit"
 		print " "
 
 	def print_menu(self):
@@ -184,7 +192,7 @@ class ControlTower:
 		elif input == "view-server":
 			subprocess.call(['tail', '-10', 'output.log'])
 			print " "
-		elif input == "quit" or input =="q":
+		elif input == "quit" or input =="q" or input =="exit":
 			exit()
 		else:
 			print "Invalid menu command. Please try again."
