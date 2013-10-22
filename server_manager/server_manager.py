@@ -6,7 +6,7 @@ from screen_supervisor import ScreenSupervisor
 
 
 class ControlTower:
-	SERVER_FILE = "../coordinator_recv/coordinator_recv.py"
+	SERVER_FILE = "python ../coordinator_recv/coordinator_recv.py\n"
 	SCREEN_NAME = 'TesterScreen'
 
 	def __init__(self):
@@ -31,7 +31,7 @@ class ControlTower:
 			print "Process Already exists"
 		else:
 			print "Lets go ahead and start the process"
-			command = ['screen', '-S', ControlTower.SCREEN_NAME, '-X', 'stuff', 'python while.py\n']
+			command = ['screen', '-S', ControlTower.SCREEN_NAME, '-X', 'stuff', ControlTower.SERVER_FILE] 
 			subprocess.call(command)
 
 	def kill_server(self):
