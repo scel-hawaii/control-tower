@@ -30,8 +30,6 @@ class ControlTower:
 
 	def start_process(self):
 		if not (self.exists_process()):
-			command = ['screen', '-S', self.SCREEN_NAME, '-X', 'logfile', 'test.log'] 
-			command = ['screen', '-S', self.SCREEN_NAME, '-X', 'log', 'on'] 
 			command = ['screen', '-S', self.SCREEN_NAME, '-X', 'stuff', self.SERVER_COMMAND] 
 			subprocess.call(command)
 
@@ -112,6 +110,8 @@ class ControlTower:
 		print "To see the available commands, type help."
 		print "----------------------------------------------"
 		self.print_start_status()
+		print ""
+		self.print_commands()
 
 
 	def print_start_status(self):
