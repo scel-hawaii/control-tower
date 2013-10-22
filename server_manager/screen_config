@@ -1,0 +1,3 @@
+logfile output.log
+logfile flush 5
+log on

@@ -5,7 +5,7 @@ class ScreenSupervisor:
 		on = True
 
 	def start_session(self, session_name):
-		command = ['screen', '-d', '-m', '-S', session_name]
+		command = ['screen', '-c', 'screen_config', '-L', '-d', '-m', '-S', session_name]
 		subprocess.check_output(command)
 	
 	
