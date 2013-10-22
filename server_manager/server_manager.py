@@ -22,6 +22,7 @@ class ControlTower:
 	def start_server(self):
 		self.start_screen()
 		self.start_process()
+		self.print_status_server()
 
 
 	def start_screen(self):
@@ -177,7 +178,7 @@ class ControlTower:
 		#elif input == "check-screen":
 			#self.print_status_screen()
 		#elif input == "check-process":
-			self.print_status_process()
+			#self.print_status_process()
 		elif input == "stop-server":
 			self.kill_server()
 		elif input == "view-server":
