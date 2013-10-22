@@ -149,7 +149,7 @@ class ControlTower:
 		x = x + "(status) - Check server status\n"
 		x = x + "(check-screen) - Check screen status\n"
 		x = x + "(check-process) - Check server status\n"
-		x = x + "(kill-server) - Kill server\n"
+		x = x + "(stop-server) - Stop server\n"
 		x = x + "(quit) - Quit Program\n"
 		x = x + "===============\n"
 		x = x + "\n"
@@ -172,13 +172,13 @@ class ControlTower:
 			#print self.print_menu()
 		#elif input == "status":
 			self.print_status_process()
-		#elif input == "check-status":
-			#self.print_status_server()
-		elif input == "check-screen":
-			self.print_status_screen()
-		elif input == "check-process":
+		elif input == "check-status":
+			self.print_status_server()
+		#elif input == "check-screen":
+			#self.print_status_screen()
+		#elif input == "check-process":
 			self.print_status_process()
-		elif input == "kill-server":
+		elif input == "stop-server":
 			self.kill_server()
 		elif input == "view-server":
 			subprocess.call(['tail', '-10', 'output.log'])
