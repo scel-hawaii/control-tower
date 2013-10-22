@@ -118,7 +118,7 @@ class ControlTower:
 		if self.exists_process():
 			print "The server process is currently running."
 		else:
-			print "The server is NOT running, please start it by typing start"
+			print "The server is NOT running, please start it by typing start-server"
 
 
 
