@@ -5,6 +5,7 @@ import time
 import argparse
 import os
 import yaml
+from subprocess import call
 from pprint import pprint
 
 class ServerLauncher:
@@ -62,12 +63,18 @@ class ServerLauncher:
 			number = raw_input()
 		else:
 			# Select the file
+			filename = self.hardware_profiles[int(number)]
 			with open(os.path.join(self.PROFILE_DIR, filename), 'r') as config:
 				doc = yaml.load(config)
 				self.profile = doc
 				print 
 				print "Profile Loaded: " 
 				pprint(self.profile)
+	def start_server(self):
+		command = ["python", "coordinator_recv/coordinator_recv.py", "--tty", str(self.profile['coordinator-recv'])]
+		print command
+		call(command);
+
 
 	def init_path(self):
 		if os.path.isfile(os.path.join(self.PROFILE_DIR, sys.argv)):
@@ -77,3 +84,4 @@ class ServerLauncher:
 		
 if __name__ == "__main__":
 	test = ServerLauncher()
+	test.start_server()
