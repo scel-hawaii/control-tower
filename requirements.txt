@@ -1,7 +1,5 @@
 Xbee
-yaml
-serial
+pyyaml
+pyserial
 psycopg2
-json
-pprint
-csv
+simplejson
