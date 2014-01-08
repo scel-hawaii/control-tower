@@ -1,3 +1,3 @@
 description: "Current Production Profile" 
-coordinator-recv: '/dev/ttyUSB0'
+coordinator-recv: 'ttyUSB0'
 
