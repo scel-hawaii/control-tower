@@ -30,7 +30,15 @@ class ScreenSupervisor:
 		else:
 			print "The screen doesn't exist. We can't kill it"
 
+	def send_command(self, screen_name, command):
+		call_cmd = ['screen', '-S', screen_name, '-X', 'stuff', command]
+		subprocess.call(call_cmd)
+
+
 if __name__ == "__main__":
 	SCREEN_NAME = "WHEE"
 	screen_super = ScreenSupervisor()
 	print screen_super.exists_session(SCREEN_NAME)
+	screen_super.start_session("TEST");
+	print screen_super.exists_session("TEST");
+
