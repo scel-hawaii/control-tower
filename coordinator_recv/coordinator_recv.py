@@ -24,6 +24,7 @@ import psycopg2
 import json
 import sys
 import time
+import argparse
 
 # Local imports
 from decode import PacketDecoder
@@ -42,7 +43,18 @@ class CoordinatorReceiver:
 		self.reis_decoder = PacketDecoder()
 		self.init_db_connection()
 		self.init_uart_connection()
+		self.init_arg_parse()
 		# TODO: Implement setup for arguments and a help menu (use argparse)
+
+	def init_arg_parse(self):
+		parser = argparse.ArgumentParser()
+		parser.add_argument('--mode')
+		self.args = parser.parse_args()
+		# Warn the user that we're using a different mode.
+		if self.args.mode:
+			print "Warning: Default mode disabled!!!"
+			print "\t\t -- " + self.args.mode + " -- mode enabled."
+	
 
 	# ---------------------------------------------------------------------
 	#
@@ -82,10 +94,17 @@ class CoordinatorReceiver:
 	#	depending on what arugments are passed.
 	# ---------------------------------------------------------------------
 	def start_polling(self, option = "DATABASE"):
-		if option == "DATABASE":
-			self.poll_to_db()
+		if self.args.mode:
+			if self.args.mode == "database":
+				self.poll_to_db()
+			elif self.args.mode == "blank":
+				self.poll_to_screen_blank()
+			elif self.args.mode == "screen":
+				self.poll_to_screen()
+			else:
+				raise nameError("Incorrect Mode!")
 		else:
-			self.poll_to_screen_blank()
+			self.poll_to_db()
 
 	# ---------------------------------------------------------------------
 	#
@@ -175,4 +194,4 @@ class CoordinatorReceiver:
 
 if __name__ == "__main__":
 	test = CoordinatorReceiver()
-	test.start_polling("DATABASE")
+	test.start_polling()
