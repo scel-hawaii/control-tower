@@ -5,14 +5,19 @@ import re
 import struct
 
 class PacketDecoder:
-	invalid_id_pattern = re.compile('[^0-9A-Za-z_]')
 	def __init__(self):
+		self.invalid_id_pattern = re.compile('[^0-9A-Za-z_]')
 		self.status = True
+		self.decoders = { 
+			8827: self.decode_json,          # '{"' -> 8827
+			0: self.decode_0,
+			1: self.decode_1
+		}
 
 	def decode(self, rf_data):
 		schema = struct.unpack('<H', rf_data[0:2])[0]
 		try:
-			f = decoders[schema]
+			f = self.decoders[schema]
 		except KeyError:
 			raise ValueError, 'unrecognized schema: ' + str(schema)
 		return f(rf_data)
@@ -54,7 +59,7 @@ class PacketDecoder:
 		return values
 
 	def decode_4(self, s):
-		p = unpack_1(s)
+		p = self.unpack_1(s)
 
 		time_series = []
 
@@ -118,7 +123,7 @@ class PacketDecoder:
 		return values
 
 	def decode_1(self, s):
-		p = unpack_1(s)
+		p = self.unpack_1(s)
 
 		time_series = []
 
@@ -172,15 +177,10 @@ class PacketDecoder:
 	def create_query(self, v):
 		columns = sorted(v['values'].keys())
 		for c in columns:
-			if re.search(invalid_id_pattern, c):
+			if re.search(self.invalid_id_pattern, c):
 				raise ValueError, 'column name contains invalid character(s): ' + c
 		column_names = ', '.join(columns)
 		placeholders = ', '.join(['%(' + x + ')s' for x in columns])
 		return '''INSERT INTO outdoor_env (db_time, %s) VALUES (now() + '%s seconds'::interval, %s)''' % (column_names, v['time_offset_s'], placeholders)
 
-	decoders = {
-		8827: decode_json,          # '{"' -> 8827
-		0: decode_0,
-		1: decode_1
-		}
 

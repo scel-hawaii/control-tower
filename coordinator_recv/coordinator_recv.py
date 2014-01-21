@@ -37,11 +37,11 @@ class CoordinatorReceiver:
 		self.ser = Serial('/dev/ttyUSB0', 9600)
 		self.xbee = ZigBee(self.ser, escaped=True)
 
-	def start_polling(self, option = DATABASE):
-		if option == DATABASE:
+	def start_polling(self, option = "DATABASE"):
+		if option == "DATABASE":
 			self.poll_to_db()
 		else:
-			self.poll_to_screen()
+			self.poll_to_screen_blank()
 
 	def poll_to_screen(self):
 		print time.strftime(self.time_fmt),
@@ -55,7 +55,7 @@ class CoordinatorReceiver:
 				print time.strftime(self.time_fmt)
 				print rf_data
 				try:
-					time_points = reis_decoder.decode(rf_data)
+					time_points = self.reis_decoder.decode(rf_data)
 					for t in time_points:
 						print
 						print 'time offset:', t['time_offset_s']
@@ -68,6 +68,14 @@ class CoordinatorReceiver:
 				print "self.ser.close()"
 				self.ser.close()
 				raise
+	def poll_to_screen_blank(self):
+		while True:
+			rf_data = self.xbee.wait_read_frame()['rf_data']
+			print
+			print
+			print time.strftime(self.time_fmt)
+			print rf_data
+
 
 	def poll_to_db(self):
 		print time.strftime(self.time_fmt),
@@ -79,8 +87,8 @@ class CoordinatorReceiver:
 
 				try:
 					self.cur.execute('BEGIN;')
-					for t in reis_decoder.decode(rf_data):
-						self.cur.execute(reis_decoder.create_query(t), t['values'])
+					for t in self.reis_decoder.decode(rf_data):
+						self.cur.execute(self.reis_decoder.create_query(t), t['values'])
 					self.cur.execute('COMMIT;')
 				except Exception, e:
 					self.cur.execute('ROLLBACK;')
@@ -101,4 +109,4 @@ class CoordinatorReceiver:
 
 if __name__ == "__main__":
 	test = CoordinatorReceiver()
-	test.start_polling()
+	test.start_polling("DATABASE")
