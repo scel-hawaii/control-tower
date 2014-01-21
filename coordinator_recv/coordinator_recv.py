@@ -1,5 +1,22 @@
 #!/usr/bin/env python
 
+#	======================================================================
+#
+#
+#	File Name:	coordinator_recv
+#	Author: 	Adam Oberbeck
+#	Editors:	Kenny Luong, Others
+#	
+#	Description:
+#	
+#	This file is the primary server program which takes in data from the 
+#   REIS sensing and monitoring (weatherbox) project. For the moment, all 
+#	data is sent to this coordinator. 
+#
+#	TODO: Integrate screen and process management into this file.
+#
+#	======================================================================
+
 # Library Imports
 from xbee import ZigBee
 from serial import Serial
@@ -14,13 +31,26 @@ from decode import PacketDecoder
 DATABASE = 1 
 
 class CoordinatorReceiver:
-
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: __INIT__
+	#
+	#	The constructor
+	# ---------------------------------------------------------------------
 	def __init__(self):
 		self.time_fmt = '%FT%T %z'
 		self.reis_decoder = PacketDecoder()
 		self.init_db_connection()
 		self.init_uart_connection()
+		# TODO: Implement setup for arguments and a help menu (use argparse)
 
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: init_db_connection
+	#
+	#	This function initalizes the database connection, and assigns 
+	#	the cursor to our self.cur object variable.
+	# ---------------------------------------------------------------------
 	def init_db_connection(self):
 		try:
 			self.conn = psycopg2.connect(host="127.0.0.1")
@@ -28,6 +58,13 @@ class CoordinatorReceiver:
 		except:
 			print "Something went wrong with the database."
 
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: init_uart_connection
+	#
+	#	This function initalizes the serial connection with the FTDI adapter.
+	#	
+	# ---------------------------------------------------------------------
 	def init_uart_connection(self):
 		#try:
 			#ser = Serial(sys.argv[1], 9600)
@@ -37,12 +74,26 @@ class CoordinatorReceiver:
 		self.ser = Serial('/dev/ttyUSB0', 9600)
 		self.xbee = ZigBee(self.ser, escaped=True)
 
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: start_polling
+	#
+	#	Starts polling for data, either to the screen or to the database,
+	#	depending on what arugments are passed.
+	# ---------------------------------------------------------------------
 	def start_polling(self, option = "DATABASE"):
 		if option == "DATABASE":
 			self.poll_to_db()
 		else:
 			self.poll_to_screen_blank()
 
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: poll_to_screen
+	#
+	#	This function polls to the screen, printing out the date that the 
+	#	data was recieved, as well as the data itself (after parsing).
+	# ---------------------------------------------------------------------
 	def poll_to_screen(self):
 		print time.strftime(self.time_fmt),
 		print "starting..."
@@ -68,6 +119,14 @@ class CoordinatorReceiver:
 				print "self.ser.close()"
 				self.ser.close()
 				raise
+
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: poll_to_blank
+	#
+	#	Purely a test function, this function prints out if some data was 
+	#	recieved and prints it out.	
+	# ---------------------------------------------------------------------
 	def poll_to_screen_blank(self):
 		while True:
 			rf_data = self.xbee.wait_read_frame()['rf_data']
@@ -77,6 +136,13 @@ class CoordinatorReceiver:
 			print rf_data
 
 
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: poll_to_db
+	#
+	#	poll_to_db polls for data, decodes it, and then stuffs it into the
+	#	local database.
+	# ---------------------------------------------------------------------
 	def poll_to_db(self):
 		print time.strftime(self.time_fmt),
 		print "starting..."
