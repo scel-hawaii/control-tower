@@ -11,7 +11,8 @@ class PacketDecoder:
 		self.decoders = { 
 			8827: self.decode_json,          # '{"' -> 8827
 			0: self.decode_0,
-			1: self.decode_1
+			1: self.decode_1,
+			3: self.decode_3
 		}
 
 	def decode(self, rf_data):
@@ -155,6 +156,47 @@ class PacketDecoder:
 							'values': query_values})
 
 		return time_series
+
+
+	# ===================================
+	#		SCHEMA 3
+	# ===================================
+	def unpack_3(self, s):
+		struct_fmt = '<HHIB' + 'H'*15 + 'H'*15 + 'IhH' + 'h'*60 + 'BBBBBBBiii'
+		values_list = struct.unpack(struct_fmt, s)
+		values = {}
+		for key, start, end in [('schema', 0, 1),
+								('address', 1, 2),
+								('uptime_ms', 2, 3),
+								('n', 3, 4),
+								('batt_mv', 4, 10),
+								('panel_mv', 10, 16),
+								('bmp085_press_pa', 16, 17),
+								('bmp085_temp_decic', 17, 18),
+								('apogee_w_m2', 18, 97),
+								]:
+			values[key] = values_list[start:end]
+			if len(values[key]) == 1:
+				values[key] = values[key][0]
+		return values
+
+	def decode_3(self, s):
+		struct_fmt = '<HHLhLHHHH'
+		values_list = struct.unpack(struct_fmt, s)
+		values = {}
+		for key, offset in [('address', 1),
+							('uptime_ms', 2),
+							('bmp085_temp_decic', 3),
+							('bmp085_press_pa', 4),
+							('batt_mv', 5),
+							('panel_mv', 6),
+							('apogee_mv', 7),
+							('apogee_w_m2', 8)
+							]:
+			values[key] = values_list[offset]
+
+		return [{'time_offset_s': 0,
+				 'values': values}]
 
 	def decode_0(self, s):
 		struct_fmt = '<HHLhLHHHH'

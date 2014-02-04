@@ -123,7 +123,7 @@ class CoordinatorReceiver:
 				print
 				print
 				print time.strftime(self.time_fmt)
-				print rf_data
+				print " ".join("{0:x}".format(ord(c)) for c in rf_data)
 				try:
 					time_points = self.reis_decoder.decode(rf_data)
 					for t in time_points:
