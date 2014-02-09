@@ -101,6 +101,10 @@ class CoordinatorReceiver:
 				self.poll_to_screen_blank()
 			elif self.args.mode == "screen":
 				self.poll_to_screen()
+			elif self.args.mode == "address":
+				#TODO: This is hardcoded now.. lets fix and add something later
+				# to allow the user to put in an address
+				self.poll_for_address(114)
 			else:
 				raise nameError("Incorrect Mode!")
 		else:
@@ -123,13 +127,13 @@ class CoordinatorReceiver:
 				print
 				print
 				print time.strftime(self.time_fmt)
-				print " ".join("{0:x}".format(ord(c)) for c in rf_data)
+				# print " ".join("{0:x}".format(ord(c)) for c in rf_data)
 				try:
 					time_points = self.reis_decoder.decode(rf_data)
-					for t in time_points:
-						print
-						print 'time offset:', t['time_offset_s']
-						print 'values:', t['values']
+					#for t in time_points:
+						#print
+						#print 'time offset:', t['time_offset_s']
+						#print 'values:', t['values']
 				except Exception as e:
 					print 'exception:', str(e)
 				sys.stdout.flush()
@@ -138,6 +142,43 @@ class CoordinatorReceiver:
 				print "self.ser.close()"
 				self.ser.close()
 				raise
+
+	# ---------------------------------------------------------------------
+	#
+	#	Function Name: poll_for_address
+	#
+	# 	This function polls for a specific address, and prints out the data 
+	# 	if that address arrived or not. Useful for initial connection
+	# 	debugging.
+	# ---------------------------------------------------------------------
+	def poll_for_address(self, address):
+		print time.strftime(self.time_fmt),
+		print "starting..."
+
+		while True:
+			try:
+				rf_data = self.xbee.wait_read_frame()['rf_data']
+				try:
+					time_points = self.reis_decoder.decode(rf_data)
+					if( self.find_address(time_points) == address ):
+						print "We found it!"
+						print time.strftime(self.time_fmt)
+					#for t in time_points:
+						#print
+						#print 'time offset:', t['time_offset_s']
+						#print 'values:', t['values']
+				except Exception as e:
+					print 'exception:', str(e)
+				sys.stdout.flush()
+			except:
+				print time.strftime(self.time_fmt),
+				print "self.ser.close()"
+				self.ser.close()
+				raise
+
+	def find_address(self,time_points):
+		return time_points[1]['values']['address']
+
 
 	# ---------------------------------------------------------------------
 	#
