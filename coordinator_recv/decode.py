@@ -3,6 +3,9 @@
 import json
 import re
 import struct
+import pprint
+import traceback
+import sys
 
 class PacketDecoder:
 	def __init__(self):
@@ -12,7 +15,7 @@ class PacketDecoder:
 			8827: self.decode_json,          # '{"' -> 8827
 			0: self.decode_0,
 			1: self.decode_1,
-			3: self.decode_3
+			3: self.decode_3				 # Schema added by Kenny and Sean in Februrary 2014
 		}
 
 	def decode(self, rf_data):
@@ -44,8 +47,7 @@ class PacketDecoder:
 								('humidity_centi_pct', 36, 37),
 								('apogee_w_m2', 37, 97),
 								('gps_valid_sats', 97, 98),
-								('gps_year', 98, 99),
-								('gps_month', 99, 100),
+								('gps_year', 98, 99), ('gps_month', 99, 100),
 								('gps_day', 100, 101),
 								('gps_hour', 101, 102),
 								('gps_minute', 102, 103),
@@ -134,6 +136,9 @@ class PacketDecoder:
 			query_values = {'address': p['address']}
 
 			# values included in the *last* sample of a packet
+			# This is a special case statement to take care of this. 
+			# If you only need to sample one thing, include this here, since the
+			# code in the arduino will sample and overwrite until the last sample. 
 			if i == n-1:
 				query_values['uptime_ms'] = p['uptime_ms']
 				query_values['bmp085_press_pa'] = p['bmp085_press_pa']
@@ -154,7 +159,6 @@ class PacketDecoder:
 
 			time_series.append({'time_offset_s': time_offset_s,
 							'values': query_values})
-
 		return time_series
 
 
@@ -162,8 +166,10 @@ class PacketDecoder:
 	#		SCHEMA 3
 	# ===================================
 	def unpack_3(self, s):
-		struct_fmt = '<HHIB' + 'H'*15 + 'H'*15 + 'IhH' + 'h'*60 + 'BBBBBBBiii'
+		struct_fmt = '<HHIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
+		print len(s)
 		values_list = struct.unpack(struct_fmt, s)
+		print values_list
 		values = {}
 		for key, start, end in [('schema', 0, 1),
 								('address', 1, 2),
@@ -173,7 +179,8 @@ class PacketDecoder:
 								('panel_mv', 10, 16),
 								('bmp085_press_pa', 16, 17),
 								('bmp085_temp_decic', 17, 18),
-								('apogee_w_m2', 18, 97),
+								('humidity_centi_pct', 18, 19),
+								('apogee_w_m2', 19, 98),
 								]:
 			values[key] = values_list[start:end]
 			if len(values[key]) == 1:
@@ -181,23 +188,56 @@ class PacketDecoder:
 		return values
 
 	def decode_3(self, s):
-		struct_fmt = '<HHLhLHHHH'
-		values_list = struct.unpack(struct_fmt, s)
-		values = {}
-		for key, offset in [('address', 1),
-							('uptime_ms', 2),
-							('bmp085_temp_decic', 3),
-							('bmp085_press_pa', 4),
-							('batt_mv', 5),
-							('panel_mv', 6),
-							('apogee_mv', 7),
-							('apogee_w_m2', 8)
-							]:
-			values[key] = values_list[offset]
+		p = self.unpack_3(s)
 
-		return [{'time_offset_s': 0,
-				 'values': values}]
+		time_series = []
 
+		n = p['n']            # number of data points in this packet 1..60
+
+		try:
+			for i in xrange(n-1, -1, -1):
+				query_values = {'address': p['address']}
+
+				# values included in the *last* sample of a packet
+				# This is a special case statement to take care of this. 
+				# If you only need to sample one thing, include this here, since the
+				# code in the arduino will sample and overwrite until the last sample. 
+				if i == n-1:
+					query_values['uptime_ms'] = p['uptime_ms']
+					query_values['bmp085_press_pa'] = p['bmp085_press_pa']
+					query_values['bmp085_temp_decic'] = p['bmp085_temp_decic']
+					query_values['humidity_centi_pct'] = p['humidity_centi_pct']
+
+				# subtract n - i - 1 from now() to get this datum's db_time
+				# offset that will be used in the insertion query
+				time_offset_s = -(n - i - 1)
+
+				# values included in *every* sample of a packet
+				# The values here should not have any division done. 
+				# Example:
+				# 	query_values['apogee_w_m2'] = p['apogee_w_m2'][i]
+
+				# values included every couple samples of a packet	
+				# be sure to modify if cases to take care of this. 
+				if (i+1) % 3 == 0 or i == n-1:
+					query_values['apogee_w_m2'] = p['apogee_w_m2'][i/3]
+
+				if (i+1) % 10 == 0 or i == n-1:
+					query_values['batt_mv'] = p['batt_mv'][i/10]
+					query_values['panel_mv'] = p['panel_mv'][i/10]
+
+				# Append the offset so that we can package the db query later
+				time_series.append({'time_offset_s': time_offset_s,
+								'values': query_values})
+		except Exception, err:
+			print traceback.format_exc()
+
+		return time_series
+
+
+	# ===================================
+	#		Schema 0
+	# ===================================
 	def decode_0(self, s):
 		struct_fmt = '<HHLhLHHHH'
 		values_list = struct.unpack(struct_fmt, s)
