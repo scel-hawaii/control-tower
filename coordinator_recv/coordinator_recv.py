@@ -48,12 +48,16 @@ class CoordinatorReceiver:
 
 	def init_arg_parse(self):
 		parser = argparse.ArgumentParser()
+		parser.add_argument('--output')
 		parser.add_argument('--mode')
 		self.args = parser.parse_args()
 		# Warn the user that we're using a different mode.
 		if self.args.mode:
 			print "Warning: Default mode disabled!!!"
 			print "\t\t -- " + self.args.mode + " -- mode enabled."
+		if self.args.output:
+			print "Warning: Manual server select type enabled."
+			print "Running with " + self.args.output
 	
 
 	# ---------------------------------------------------------------------
@@ -94,14 +98,15 @@ class CoordinatorReceiver:
 	#	depending on what arugments are passed.
 	# ---------------------------------------------------------------------
 	def start_polling(self, option = "DATABASE"):
-		if self.args.mode:
-			if self.args.mode == "database":
+		if self.args.output:
+			output_mode = self.args.output
+			if output_mode == "database":
 				self.poll_to_db()
-			elif self.args.mode == "blank":
+			elif output_mode == "blank":
 				self.poll_to_screen_blank()
-			elif self.args.mode == "screen":
+			elif output_mode == "screen":
 				self.poll_to_screen()
-			elif self.args.mode == "address":
+			elif output_mode == "address":
 				#TODO: This is hardcoded now.. lets fix and add something later
 				# to allow the user to put in an address
 				self.poll_for_address(114)

@@ -264,5 +264,3 @@ class PacketDecoder:
 		column_names = ', '.join(columns)
 		placeholders = ', '.join(['%(' + x + ')s' for x in columns])
 		return '''INSERT INTO outdoor_env (db_time, %s) VALUES (now() + '%s seconds'::interval, %s)''' % (column_names, v['time_offset_s'], placeholders)
-
-
