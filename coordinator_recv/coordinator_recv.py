@@ -39,17 +39,18 @@ class CoordinatorReceiver:
 	#	The constructor
 	# ---------------------------------------------------------------------
 	def __init__(self):
+		self.init_arg_parse()
 		self.time_fmt = '%FT%T %z'
 		self.reis_decoder = PacketDecoder()
 		self.init_db_connection()
 		self.init_uart_connection()
-		self.init_arg_parse()
 		# TODO: Implement setup for arguments and a help menu (use argparse)
 
 	def init_arg_parse(self):
 		parser = argparse.ArgumentParser()
 		parser.add_argument('--output')
 		parser.add_argument('--mode')
+		parser.add_argument('--tty')
 		self.args = parser.parse_args()
 		# Warn the user that we're using a different mode.
 		if self.args.mode:
@@ -58,6 +59,9 @@ class CoordinatorReceiver:
 		if self.args.output:
 			print "Warning: Manual server select type enabled."
 			print "Running with " + self.args.output
+		if self.args.tty:
+			print "Warning: Manual ttyUSB selected."
+			print "Running with " + self.args.tty
 	
 
 	# ---------------------------------------------------------------------
@@ -87,9 +91,13 @@ class CoordinatorReceiver:
 		#except IndexError:
 				#ser = Serial('/dev/ttyUSB0', 9600)
 
-		self.ser = Serial('/dev/ttyUSB0', 9600)
-		self.xbee = ZigBee(self.ser, escaped=True)
+		#
+		if self.args.tty:
+			self.ser = Serial('/dev/' + self.args.tty,9600)
+		else:
+			self.ser = Serial('/dev/ttyUSB0', 9600)
 
+		self.xbee = ZigBee(self.ser, escaped=True)
 	# ---------------------------------------------------------------------
 	#
 	#	Function Name: start_polling
