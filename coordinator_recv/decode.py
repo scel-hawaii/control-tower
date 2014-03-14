@@ -47,7 +47,7 @@ class PacketDecoder:
 	# ===================================
 	def unpack_5(self,s):
 		print "Unpacking 5"
-		struct_fmt = '<hhih'
+		struct_fmt = '<HHIH'
 		values_list = struct.unpack(struct_fmt, s)
 		values = {}
 		for key, start, end in [('address', 1, 2),
