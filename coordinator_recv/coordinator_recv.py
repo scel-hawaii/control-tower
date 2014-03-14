@@ -220,23 +220,48 @@ class CoordinatorReceiver:
 		print time.strftime(self.time_fmt),
 		print "starting..."
 
-		while True:
+		while True: 
 			try:
 				rf_data = self.xbee.wait_read_frame()['rf_data']
+				packet_schema = int(self.reis_decoder.check_schema(rf_data))
+				print "We got a packet of schema: " + str(packet_schema)
 
-				try:
-					self.cur.execute('BEGIN;')
-					for t in self.reis_decoder.decode(rf_data):
-						self.cur.execute(self.reis_decoder.create_query(t), t['values'])
-					self.cur.execute('COMMIT;')
-				except Exception, e:
-					self.cur.execute('ROLLBACK;')
-					self.cur.execute('BEGIN;')
-					self.cur.execute(
-						'''INSERT INTO outdoor_env_unrecognized (db_time, rf_data, exception) VALUES (now(), %s, %s);''',
-						[buffer(rf_data), str(sys.exc_info()[0]) + ': ' + str(e)])
-					self.cur.execute('COMMIT;')
-					continue
+				if packet_schema == 6:
+					print "CoordinatorDecoder: Print a debug msg!"
+					self.reis_decoder.decode(rf_data)
+
+				elif packet_schema == 5:
+					print "CoordinatorDecoder: ParseHealth!!"
+					try:
+						self.cur.execute('BEGIN;')
+						print "Yay!"
+						for t in self.reis_decoder.decode(rf_data):
+							print t
+							self.cur.execute(self.reis_decoder.create_query_health(t), t['values'])
+						self.cur.execute('COMMIT;')
+					except Exception, e:
+						self.cur.execute('ROLLBACK;')
+						self.cur.execute('BEGIN;')
+						self.cur.execute(
+							'''INSERT INTO outdoor_env_unrecognized (db_time, rf_data, exception) VALUES (now(), %s, %s);''',
+							[buffer(rf_data), str(sys.exc_info()[0]) + ': ' + str(e)])
+						self.cur.execute('COMMIT;')
+						continue
+				else:
+					print "CoordinatorDecoder: Parse Data.."
+					try:
+						self.cur.execute('BEGIN;')
+						for t in self.reis_decoder.decode(rf_data):
+							self.cur.execute(self.reis_decoder.create_query(t), t['values'])
+						self.cur.execute('COMMIT;')
+					except Exception, e:
+						self.cur.execute('ROLLBACK;')
+						self.cur.execute('BEGIN;')
+						self.cur.execute(
+							'''INSERT INTO outdoor_env_unrecognized (db_time, rf_data, exception) VALUES (now(), %s, %s);''',
+							[buffer(rf_data), str(sys.exc_info()[0]) + ': ' + str(e)])
+						self.cur.execute('COMMIT;')
+						continue
 
 			except:
 				print time.strftime(self.time_fmt),

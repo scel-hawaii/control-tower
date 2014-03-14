@@ -6,6 +6,7 @@ import struct
 import pprint
 import traceback
 import sys
+import time
 
 class PacketDecoder:
 	def __init__(self):
@@ -15,19 +16,85 @@ class PacketDecoder:
 			8827: self.decode_json,          # '{"' -> 8827
 			0: self.decode_0,
 			1: self.decode_1,
-			3: self.decode_3				 # Schema added by Kenny and Sean in Februrary 2014
+			3: self.decode_3,				 # Schema added by Kenny and Sean in Februrary 2014
+			5: self.decode_5,				 # Health packet format
+			6: self.decode_6				 # Text packet
 		}
+		self.time_fmt = '%FT%T %z'
+
+	def check_schema(self, rf_data):
+		schema = struct.unpack('<H', rf_data[0:2])[0]
+		print "DEBUG Decoder number: " + str(schema)
+		return str(schema)
 
 	def decode(self, rf_data):
 		schema = struct.unpack('<H', rf_data[0:2])[0]
 		try:
 			f = self.decoders[schema]
+			print "Decoder number: " + str(schema)
 		except KeyError:
 			raise ValueError, 'unrecognized schema: ' + str(schema)
 		return f(rf_data)
 
 	def decode_json(self, s):
 		return [{'time_offset_s': 0, 'values': json.loads(s)}]
+
+	# ===================================
+	#		SCHEMA 5
+	#
+	#		This schema is for health data.
+	#
+	# ===================================
+	def unpack_5(self,s):
+		print "Unpacking 5"
+		struct_fmt = '<hhih'
+		values_list = struct.unpack(struct_fmt, s)
+		values = {}
+		for key, start, end in [('address', 1, 2),
+								('uptime_ms', 2, 3),
+								('batt_mv', 3, 4),
+								]:
+			values[key] = values_list[start:end]
+			if len(values[key]) == 1:
+				values[key] = values[key][0]
+		print values;
+		return values;
+	
+	def decode_5(self,s):
+		print "Decoding 5"
+		values_list = self.unpack_5(s)
+
+		print "DEBUG VALUE LIST: "
+		print values_list
+		values = {}
+
+		print "Test2"
+
+		return [{'time_offset_s': 0,
+				 'values': values_list}]
+
+	# ===================================
+	#		SCHEMA 6
+	#
+	#		This schema is for text data. We can transmit a max of 
+	#		80 or so bytes using the Xbee API mode, but we can go 
+	# 		ahead and use UP to that amount.
+	# ===================================
+
+	def unpack_6(self,s):
+		size = len(s)
+		struct_fmt = '<' + 'H' + 'c'*(size-2)
+		values_list = struct.unpack(struct_fmt, s)
+		values_list = list(values_list)
+		values_list.pop(0);
+		debug_text = ''.join(values_list)
+		return debug_text;
+	
+	def decode_6(self,s):
+		print time.strftime(self.time_fmt),
+		print "Recieved text data."
+		text = self.unpack_6(s)
+		print "TEXT:" + text
 
 	# ===================================
 	#		SCHEMA 4
@@ -37,8 +104,7 @@ class PacketDecoder:
 		values_list = struct.unpack(struct_fmt, s)
 		values = {}
 		for key, start, end in [('schema', 0, 1),
-								('address', 1, 2),
-								('uptime_ms', 2, 3),
+								('address', 1, 2), ('uptime_ms', 2, 3),
 								('n', 3, 4),
 								('batt_mv', 4, 19),
 								('panel_mv', 19, 34),
@@ -101,8 +167,7 @@ class PacketDecoder:
 		values = {}
 		for key, start, end in [('schema', 0, 1),
 								('address', 1, 2),
-								('uptime_ms', 2, 3),
-								('n', 3, 4),
+								('uptime_ms', 2, 3), ('n', 3, 4),
 								('batt_mv', 4, 19),
 								('panel_mv', 19, 34),
 								('bmp085_press_pa', 34, 35),
@@ -264,3 +329,21 @@ class PacketDecoder:
 		column_names = ', '.join(columns)
 		placeholders = ', '.join(['%(' + x + ')s' for x in columns])
 		return '''INSERT INTO outdoor_env (db_time, %s) VALUES (now() + '%s seconds'::interval, %s)''' % (column_names, v['time_offset_s'], placeholders)
+
+	def create_query_debug(self, v):
+		columns = sorted(v['values'].keys())
+		for c in columns:
+			if re.search(self.invalid_id_pattern, c):
+				raise ValueError, 'column name contains invalid character(s): ' + c
+		column_names = ', '.join(columns)
+		placeholders = ', '.join(['%(' + x + ')s' for x in columns])
+		return '''INSERT INTO outdoor_health (db_time, %s) VALUES (now() + '%s seconds'::interval, %s)''' % (column_names, v['time_offset_s'], placeholders)
+
+	def create_query_health(self, v):
+		columns = sorted(v['values'].keys())
+		for c in columns:
+			if re.search(self.invalid_id_pattern, c):
+				raise ValueError, 'column name contains invalid character(s): ' + c
+		column_names = ', '.join(columns)
+		placeholders = ', '.join(['%(' + x + ')s' for x in columns])
+		return '''INSERT INTO outdoor_env_health (db_time, %s) VALUES (now() + '%s seconds'::interval, %s)''' % (column_names, v['time_offset_s'], placeholders)
