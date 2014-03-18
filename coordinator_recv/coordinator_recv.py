@@ -93,7 +93,7 @@ class CoordinatorReceiver:
 
 		#
 		if self.args.tty:
-			self.ser = Serial('/dev/' + self.args.tty,57600)
+			self.ser = Serial('/dev/' + self.args.tty,9600)
 		else:
 			self.ser = Serial('/dev/ttyUSB0', 9600)
 
@@ -224,19 +224,19 @@ class CoordinatorReceiver:
 			try:
 				rf_data = self.xbee.wait_read_frame()['rf_data']
 				packet_schema = int(self.reis_decoder.check_schema(rf_data))
-				print "We got a packet of schema: " + str(packet_schema)
+				# print "We got a packet of schema: " + str(packet_schema)
 
 				if packet_schema == 6:
-					print "CoordinatorDecoder: Print a debug msg!"
+					# print "CoordinatorDecoder: Print a debug msg!"
 					self.reis_decoder.decode(rf_data)
 
 				elif packet_schema == 5:
-					print "CoordinatorDecoder: ParseHealth!!"
+					# print "CoordinatorDecoder: ParseHealth!!"
 					try:
 						self.cur.execute('BEGIN;')
-						print "Yay!"
+						# print "Yay!"
 						for t in self.reis_decoder.decode(rf_data):
-							print t
+							# print t
 							self.cur.execute(self.reis_decoder.create_query_health(t), t['values'])
 						self.cur.execute('COMMIT;')
 					except Exception, e:
@@ -248,7 +248,7 @@ class CoordinatorReceiver:
 						self.cur.execute('COMMIT;')
 						continue
 				else:
-					print "CoordinatorDecoder: Parse Data.."
+					# print "CoordinatorDecoder: Parse Data.."
 					try:
 						self.cur.execute('BEGIN;')
 						for t in self.reis_decoder.decode(rf_data):

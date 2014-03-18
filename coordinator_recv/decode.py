@@ -10,6 +10,8 @@ import time
 
 class PacketDecoder:
 	def __init__(self):
+		self.log_file = open("ControlTower.log", "a")
+			
 		self.invalid_id_pattern = re.compile('[^0-9A-Za-z_]')
 		self.status = True
 		self.decoders = { 
@@ -22,16 +24,16 @@ class PacketDecoder:
 		}
 		self.time_fmt = '%FT%T %z'
 
+	# Check what the schema number is and return it 
 	def check_schema(self, rf_data):
 		schema = struct.unpack('<H', rf_data[0:2])[0]
-		print "DEBUG Decoder number: " + str(schema)
+		# print "DEBUG Decoder number: " + str(schema)
 		return str(schema)
 
 	def decode(self, rf_data):
 		schema = struct.unpack('<H', rf_data[0:2])[0]
 		try:
 			f = self.decoders[schema]
-			print "Decoder number: " + str(schema)
 		except KeyError:
 			raise ValueError, 'unrecognized schema: ' + str(schema)
 		return f(rf_data)
@@ -46,7 +48,6 @@ class PacketDecoder:
 	#
 	# ===================================
 	def unpack_5(self,s):
-		print "Unpacking 5"
 		struct_fmt = '<HHIH'
 		values_list = struct.unpack(struct_fmt, s)
 		values = {}
@@ -57,19 +58,12 @@ class PacketDecoder:
 			values[key] = values_list[start:end]
 			if len(values[key]) == 1:
 				values[key] = values[key][0]
-		print values;
 		return values;
 	
 	def decode_5(self,s):
-		print "Decoding 5"
 		values_list = self.unpack_5(s)
-
-		print "DEBUG VALUE LIST: "
-		print values_list
 		values = {}
-
-		print "Test2"
-
+		print time.strftime(self.time_fmt) + " " + str(values_list)
 		return [{'time_offset_s': 0,
 				 'values': values_list}]
 
@@ -91,10 +85,14 @@ class PacketDecoder:
 		return debug_text;
 	
 	def decode_6(self,s):
-		print time.strftime(self.time_fmt),
-		print "Recieved text data."
-		text = self.unpack_6(s)
-		print "TEXT:" + text
+		debug_msg = str(self.unpack_6(s))
+		logstr = time.strftime(self.time_fmt)
+		logstr = logstr + "\t Received text data:" + debug_msg + "\n"
+		logstr = logstr.replace("\x00", "")
+		self.log_file.write(logstr)
+		print time.strftime(self.time_fmt) + " " + debug_msg
+
+		# print "TEXT:" + text
 
 	# ===================================
 	#		SCHEMA 4
@@ -232,9 +230,7 @@ class PacketDecoder:
 	# ===================================
 	def unpack_3(self, s):
 		struct_fmt = '<HHIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
-		print len(s)
 		values_list = struct.unpack(struct_fmt, s)
-		print values_list
 		values = {}
 		for key, start, end in [('schema', 0, 1),
 								('address', 1, 2),
@@ -250,6 +246,7 @@ class PacketDecoder:
 			values[key] = values_list[start:end]
 			if len(values[key]) == 1:
 				values[key] = values[key][0]
+			print str(values)
 		return values
 
 	def decode_3(self, s):
