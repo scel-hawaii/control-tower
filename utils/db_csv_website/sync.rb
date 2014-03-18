@@ -41,12 +41,14 @@ def create_all_graphs(dir)
   end
 end
 
-get_weatherbox_addresses()
-create_csv_from_addresses("data/full/")
-create_threeday_csv("data/threeday/")
-create_all_graphs("data/threeday/")
-rsync_files("data/")
 
-
+while true
+  get_weatherbox_addresses()
+  create_csv_from_addresses("data/full/")
+  create_threeday_csv("data/threeday/")
+  create_all_graphs("data/threeday/")
+  rsync_files("data/")
+  sleep 600
+end
 
 
