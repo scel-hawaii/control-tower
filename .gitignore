@@ -4,3 +4,5 @@
 
 # Ignore csv files
 *.csv 
+
+*.log
