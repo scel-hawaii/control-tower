@@ -5,12 +5,14 @@ require 'pg'
 @res  = @conn.exec('SELECT DISTINCT address FROM outdoor_env')
 @box_addr =[]
 
+# Fetch the list of weatherbox addresses from the DB
 def get_weatherbox_addresses
   @res.each do |item|
     @box_addr.push(item['address'])
   end
 end
 
+# Create the CSV files from the addresses 
 def create_csv_from_addresses(dir)
   @box_addr.each do |addr|
     ## Export the entire raw database for each node id
@@ -19,6 +21,7 @@ def create_csv_from_addresses(dir)
   end
 end
 
+# Create 3-day CSVs from the DB
 def create_threeday_csv(dir)
   @box_addr.each do |addr|
     ## Same as above, but with a limit of 3 days. 
@@ -27,10 +30,12 @@ def create_threeday_csv(dir)
   end
 end
 
+# Sync the files up..
 def rsync_files(dir)
   puts `rsync -raz --delete  --progress -h #{dir} webfaction:~/homepage/scel/#{dir}`
 end
 
+# Create create a graph
 def create_graph(dir, input_file, output_file)
   `./graph_box.sh #{dir}#{input_file}.csv #{"data/plots/"}#{output_file}.png`
 end
@@ -38,6 +43,7 @@ end
 def create_all_graphs(dir)
   @box_addr.each do |addr|
     create_graph(dir, "#{addr}-data-threeday", "#{addr}-plot-threeday")
+    create_graph(dir, "#{addr}-data", "#{addr}-plot")
   end
 end
 
@@ -47,6 +53,7 @@ while true
   create_csv_from_addresses("data/full/")
   create_threeday_csv("data/threeday/")
   create_all_graphs("data/threeday/")
+  create_all_graphs("data/full/")
   rsync_files("data/")
   sleep 600
 end
