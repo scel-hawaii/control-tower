@@ -1,6 +1,11 @@
-
-
+# ===========================================
+#
+# A simple script to generate the graphs and 
+# sync them with a website.
+#
+# ===========================================
 require 'pg'
+
 @conn = PGconn.open(:dbname => 'kenny')
 @res  = @conn.exec('SELECT DISTINCT address FROM outdoor_env')
 @box_addr =[]

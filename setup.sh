@@ -3,8 +3,11 @@
 #   
 #   Coordinator server setup script
 #   
-#   Run this file in the coordinator server to setup
-#   everything.
+#   This script deploys the scel control-tower
+#   environment to a server. The end-goal of 
+#   this script is that it should be runnable
+#   on a brand new environment and should setup everything 
+#   for a user.
 #
 #   ================================================
 CURRENT_DIR="$(pwd)/bin/"
