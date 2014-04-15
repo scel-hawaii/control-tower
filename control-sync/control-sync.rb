@@ -5,68 +5,128 @@
 #
 # ===========================================
 require 'pg'
+require 'fileutils'
 
-@conn = PGconn.open(:dbname => 'kenny')
-@res  = @conn.exec('SELECT DISTINCT address FROM outdoor_env')
-@box_addr =[]
 
-# Fetch the list of weatherbox addresses from the DB
-def get_weatherbox_addresses
-  puts "Getting weatherbox addresses..." 
-  @res.each do |item|
-    @box_addr.push(item['address'])
+class ControlSyncer
+
+  def initialize()
+    @conn = PGconn.open(:dbname => 'kenny')
+    @res  = @conn.exec('SELECT DISTINCT address FROM outdoor_env')
+    @data_dir = File.join("data")
+    @data_dir = File.join(Dir.pwd(), @data_dir)
+    @root_dir = Dir.pwd()
+
+    @box_addr =[]
+
+    get_weatherbox_addresses()
+    init_data_dir()
   end
-  puts "Finished getting weatherbox addresses." 
-end
 
-# Create the CSV files from the addresses 
-def create_csv_from_addresses(dir)
-  puts "Creating CSV files from address..."
-  @box_addr.each do |addr|
-    ## Export the entire raw database for each node id
-    command = " psql -c '\\copy (SELECT * FROM outdoor_env WHERE (apogee_w_m2 IS NOT NULL AND address=#{addr}) ORDER BY db_time DESC) To #{dir}#{addr}-data.csv With CSV header\'"
+  def init_data_dir()
+    if not File.directory?(@data_dir)
+      Dir.mkdir(@data_dir)
+    end
+  end
+
+  def init_dir(dir)
+    if not File.directory?(dir)
+      Dir.mkdir(dir)
+    end
+  end
+
+  # Grab a csv file 
+  def csv_dump(addr, root_dir)
+    filename = "#{addr}-data.csv"
+    dump_dir = File.join(root_dir, "full-data")
+    filepath = File.join(dump_dir, filename)
+
+
+    init_dir(dump_dir)
+    command = " psql -c '\\copy (SELECT * FROM outdoor_env WHERE (apogee_w_m2 IS NOT NULL AND address=#{addr}) ORDER BY db_time DESC) To #{filepath} With CSV header\'"
+    run_command(command)
+  end
+
+  def csv_dump_threeday(addr, root_dir)
+    filename = "#{addr}-threeday-data.csv"
+    dump_dir = File.join(root_dir, "threeday-data")
+    filepath = File.join(dump_dir, filename)
+
+    init_dir(dump_dir)
+
+    command = " psql -c '\\copy (SELECT * FROM outdoor_env WHERE (apogee_w_m2 IS NOT NULL AND address=#{addr}) ORDER BY db_time DESC LIMIT 129600) To 
+                  #{filepath} With CSV header\'"
+    run_command(command)
+  end
+
+  # Run a command
+  # TODO: Explore a better way to run commands (we can't pipe commands back now)
+  def run_command(command)
     `#{command}`
   end
-  puts "Finished getting CSV files from addresses."
-end
 
-# Create 3-day CSVs from the DB
-def create_threeday_csv(dir)
-  puts "Creating threeday_csv files..."
-  @box_addr.each do |addr|
-    ## Same as above, but with a limit of 3 days. 
-    command = " psql -c '\\copy (SELECT * FROM outdoor_env WHERE (apogee_w_m2 IS NOT NULL AND address=#{addr}) ORDER BY db_time DESC LIMIT 129600) To #{dir}#{addr}-data-threeday.csv With CSV header\'"
-    `#{command}`
+  # Fetch the list of weatherbox addresses from the DB
+  def get_weatherbox_addresses
+    @res.each do |item|
+      @box_addr.push(item['address'])
+    end
   end
-  puts "Finished creating threeday_csv files."
-end
 
-# Sync the files up..
-def rsync_files(dir)
-  puts `rsync -raz --delete  --progress -h #{dir} webfaction:~/homepage/scel/#{dir}`
-end
-
-# Create create a graph
-def create_graph(dir, input_file, output_file)
-  `./graph_box.sh #{dir}#{input_file}.csv #{"data/plots/"}#{output_file}.png`
-end
-
-def create_all_graphs(dir)
-  @box_addr.each do |addr|
-    create_graph(dir, "#{addr}-data-threeday", "#{addr}-plot-threeday")
-    create_graph(dir, "#{addr}-data", "#{addr}-plot")
+  # Do a dump of all our csv files
+  def csv_dump_all()
+    @box_addr.each do |addr|
+      csv_dump(addr, @data_dir)
+    end
   end
+
+  # Do a dump of all our csv files (limiting to three days of datapoints)
+  def csv_dump_all_threeday()
+    @box_addr.each do |addr|
+      csv_dump_threeday(addr, @data_dir)
+    end
+  end
+
+  # Sync the files up..
+  def rsync_files()
+    puts `rsync -raz --delete  --progress -h #{@data_dir} webfaction:~/homepage/scel`
+  end
+
+  # Create create a graph
+  def create_graph(data_path, plot_path)
+    command = "./graph_box.sh #{data_path} #{plot_path}"
+    run_command(command)
+  end
+
+  def create_all_graphs()
+    csv_dump_all()
+    csv_dump_all_threeday()
+    print @root_dir
+    data_folder_threeday = File.join(@data_dir, "threeday-data")
+    plot_folder_threeday = File.join(@data_dir, "threeday-plot")
+    init_dir(data_folder_threeday)
+    init_dir(plot_folder_threeday)
+
+    data_folder = File.join(@data_dir, "full-data")
+    plot_folder = File.join(@data_dir, "full-plot")
+    init_dir(data_folder)
+    init_dir(plot_folder)
+    @box_addr.each do |addr|
+      data_path_threeday = File.join(data_folder_threeday, addr + "-threeday-data.csv")
+      plot_path_threeday = File.join(plot_folder_threeday, addr + "-threeday-plot.png")
+      data_path = File.join(data_folder, addr + "-data.csv")
+      plot_path = File.join(plot_folder, addr + "-plot.png")
+      create_graph(data_path, plot_path)
+      create_graph(data_path_threeday, plot_path_threeday)
+      # create_graph(dir, "#{addr}-data", "#{addr}-plot")
+    end
+  end
+
 end
 
-
-while true
-  get_weatherbox_addresses()
-  create_csv_from_addresses("data/full/")
-  create_threeday_csv("data/threeday/")
-  create_all_graphs("data/threeday/")
-  create_all_graphs("data/full/")
-  rsync_files("data/")
-  sleep 600
-end
+syncer = ControlSyncer.new()
+syncer.csv_dump_all()
+syncer.csv_dump_all_threeday()
+syncer.create_all_graphs()
+syncer.rsync_files()
 
 
