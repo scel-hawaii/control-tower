@@ -1,0 +1,4 @@
+description: "The current testbench profile"
+coordinator-recv: '/dev/ttyUSB2'
+usb-ftdi-device: '/dev/ttyUSB1'
+test-bench-device: '/dev/ttyACM0'
