@@ -9,6 +9,7 @@ import wxversion
 wxversion.select("2.8")
 import wx, wx.html
 import sys
+from subprocess import call
 
 aboutText = """<p>Sorry, there is no information about this program. It is
 running on version %(wxpy)s of <b>wxPython</b> and %(python)s of <b>Python</b>.
@@ -61,10 +62,14 @@ class Frame(wx.Frame):
         panel = wx.Panel(self)
         box = wx.BoxSizer(wx.VERTICAL)
 
-        m_text = wx.StaticText(panel, -1, "Hello World!")
+        m_text = wx.StaticText(panel, -1, "SCEL Server Launcher")
         m_text.SetFont(wx.Font(14, wx.SWISS, wx.NORMAL, wx.BOLD))
         m_text.SetSize(m_text.GetBestSize())
         box.Add(m_text, 0, wx.ALL, 10)
+
+        m_close2 = wx.Button(panel, wx.ID_CLOSE, "Launch Server")
+        m_close2.Bind(wx.EVT_BUTTON, self.LaunchServerHandler)
+        box.Add(m_close2, 0, wx.ALL, 10)
 
         m_close = wx.Button(panel, wx.ID_CLOSE, "Close")
         m_close.Bind(wx.EVT_BUTTON, self.OnClose)
@@ -72,6 +77,9 @@ class Frame(wx.Frame):
 
         panel.SetSizer(box)
         panel.Layout()
+
+    def LaunchServerHandler(self, event):
+        print "Fun!"
 
     def OnClose(self, event):
         dlg = wx.MessageDialog(self,
@@ -88,7 +96,7 @@ class Frame(wx.Frame):
         dlg.Destroy()
 
 app = wx.App(redirect=True)   # Error messages go to popup window
-top = Frame("<<project>>")
+top = Frame("REIS Server Launcher")
 top.Show()
 app.MainLoop()
 
