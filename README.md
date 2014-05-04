@@ -13,3 +13,11 @@ and used. The overall goal of this project is to make an easy to use,
 easily scalable and easily deployable piece of software for the 
 scel lab. 
 
+Installation Instructions
+-----------------------
+
+1. Clone from the git repository
+1. Install server dependencies
+2. Install python dependencies
+3. Win.
+
