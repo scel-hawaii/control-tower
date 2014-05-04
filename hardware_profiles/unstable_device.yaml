@@ -1,0 +1,2 @@
+description: "Configuration for unstable testing on dragonfly test server"
+coordinator-recv: '/dev/ttyUSB0'

@@ -93,7 +93,7 @@ class CoordinatorReceiver:
 
 		#
 		if self.args.tty:
-			self.ser = Serial('/dev/' + self.args.tty,9600)
+			self.ser = Serial(self.args.tty,9600)
 		else:
 			self.ser = Serial('/dev/ttyUSB0', 9600)
 

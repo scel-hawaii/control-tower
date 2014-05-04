@@ -21,5 +21,6 @@ Installation Instructions
 2. Install python dependencies
 4. Setup a postgres database
 4. Import the SQL dump
+5. Setup the permissions for the avr-isp programmer
 3. Win.
 
