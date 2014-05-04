@@ -1,0 +1,5 @@
+git 
+tig
+python 
+python-pip
+vim
