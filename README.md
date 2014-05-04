@@ -19,5 +19,7 @@ Installation Instructions
 1. Clone from the git repository
 1. Install server dependencies
 2. Install python dependencies
+4. Setup a postgres database
+4. Import the SQL dump
 3. Win.
 
