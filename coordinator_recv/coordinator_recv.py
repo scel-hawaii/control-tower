@@ -25,6 +25,7 @@ import json
 import sys
 import time
 import argparse
+import traceback
 
 # Local imports
 from decode import PacketDecoder
@@ -75,8 +76,9 @@ class CoordinatorReceiver:
 		try:
 			self.conn = psycopg2.connect(host="127.0.0.1")
 			self.cur = self.conn.cursor()
-		except:
+		except Exception, err:
 			print "Something went wrong with the database."
+			print traceback.format_exc()
 
 	# ---------------------------------------------------------------------
 	#
