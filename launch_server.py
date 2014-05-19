@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 ## Launch the coordinator server..
 from coordinator_recv.coordinator_recv import CoordinatorReceiver
 import sys
