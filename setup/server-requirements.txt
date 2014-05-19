@@ -9,3 +9,5 @@ postgresql-server-dev-9.1
 arduino
 x11vnc
 tightvncserver
+screen
+make
