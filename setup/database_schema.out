@@ -25,7 +25,7 @@ COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
 SET search_path = public, pg_catalog;
 
 --
--- Name: round_time_5min(timestamp with time zone); Type: FUNCTION; Schema: public; Owner: kenny
+-- Name: round_time_5min(timestamp with time zone); Type: FUNCTION; Schema: public; Owner: reis
 --
 
 CREATE FUNCTION round_time_5min(timestamp with time zone) RETURNS timestamp with time zone
@@ -33,14 +33,14 @@ CREATE FUNCTION round_time_5min(timestamp with time zone) RETURNS timestamp with
     AS $_$ select date_trunc('hour', $1) + '1 minute'::interval * 5 * round(date_part('minute', $1) / 5.0); $_$;
 
 
-ALTER FUNCTION public.round_time_5min(timestamp with time zone) OWNER TO kenny;
+ALTER FUNCTION public.round_time_5min(timestamp with time zone) OWNER TO reis;
 
 SET default_tablespace = '';
 
 SET default_with_oids = false;
 
 --
--- Name: greenbox; Type: TABLE; Schema: public; Owner: kenny; Tablespace: 
+-- Name: greenbox; Type: TABLE; Schema: public; Owner: reis; Tablespace: 
 --
 
 CREATE TABLE greenbox (
@@ -61,10 +61,10 @@ CREATE TABLE greenbox (
 );
 
 
-ALTER TABLE public.greenbox OWNER TO kenny;
+ALTER TABLE public.greenbox OWNER TO reis;
 
 --
--- Name: outdoor_debug; Type: TABLE; Schema: public; Owner: kenny; Tablespace: 
+-- Name: outdoor_debug; Type: TABLE; Schema: public; Owner: reis; Tablespace: 
 --
 
 CREATE TABLE outdoor_debug (
@@ -85,10 +85,10 @@ CREATE TABLE outdoor_debug (
 );
 
 
-ALTER TABLE public.outdoor_debug OWNER TO kenny;
+ALTER TABLE public.outdoor_debug OWNER TO reis;
 
 --
--- Name: outdoor_env; Type: TABLE; Schema: public; Owner: kenny; Tablespace: 
+-- Name: outdoor_env; Type: TABLE; Schema: public; Owner: reis; Tablespace: 
 --
 
 CREATE TABLE outdoor_env (
@@ -109,10 +109,10 @@ CREATE TABLE outdoor_env (
 );
 
 
-ALTER TABLE public.outdoor_env OWNER TO kenny;
+ALTER TABLE public.outdoor_env OWNER TO reis;
 
 --
--- Name: outdoor_env_5min; Type: VIEW; Schema: public; Owner: kenny
+-- Name: outdoor_env_5min; Type: VIEW; Schema: public; Owner: reis
 --
 
 CREATE VIEW outdoor_env_5min AS
