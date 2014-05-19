@@ -235,13 +235,14 @@ class PacketDecoder:
 		for key, start, end in [('schema', 0, 1),
 								('address', 1, 2),
 								('uptime_ms', 2, 3),
-								('n', 3, 4),
-								('batt_mv', 4, 10),
-								('panel_mv', 10, 16),
-								('bmp085_press_pa', 16, 17),
-								('bmp085_temp_decic', 17, 18),
-								('humidity_centi_pct', 18, 19),
-								('apogee_w_m2', 19, 98),
+								('overflow_num', 3, 4),
+								('n', 4, 5),
+								('batt_mv', 5, 11),
+								('panel_mv', 11, 17),
+								('bmp085_press_pa', 17, 18),
+								('bmp085_temp_decic', 18, 19),
+								('humidity_centi_pct', 19, 20),
+								('apogee_w_m2', 20, 99),
 								]:
 			values[key] = values_list[start:end]
 			if len(values[key]) == 1:
@@ -266,6 +267,7 @@ class PacketDecoder:
 				# code in the arduino will sample and overwrite until the last sample. 
 				if i == n-1:
 					query_values['uptime_ms'] = p['uptime_ms']
+					query_values['overflow_num'] = p['overflow_num']
 					query_values['bmp085_press_pa'] = p['bmp085_press_pa']
 					query_values['bmp085_temp_decic'] = p['bmp085_temp_decic']
 					query_values['humidity_centi_pct'] = p['humidity_centi_pct']
