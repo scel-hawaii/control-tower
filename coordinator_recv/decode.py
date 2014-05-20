@@ -229,13 +229,13 @@ class PacketDecoder:
 	#		SCHEMA 3
 	# ===================================
 	def unpack_3(self, s):
-		struct_fmt = '<HHIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
+		struct_fmt = '<HHBIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
 		values_list = struct.unpack(struct_fmt, s)
 		values = {}
 		for key, start, end in [('schema', 0, 1),
 								('address', 1, 2),
-								('uptime_ms', 2, 3),
-								('overflow_num', 3, 4),
+								('overflow_num', 2, 3),
+								('uptime_ms', 3, 4),
 								('n', 4, 5),
 								('batt_mv', 5, 11),
 								('panel_mv', 11, 17),
