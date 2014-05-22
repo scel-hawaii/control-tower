@@ -123,10 +123,18 @@ class ControlSyncer
 
 end
 
-syncer = ControlSyncer.new()
-syncer.csv_dump_all()
-syncer.csv_dump_all_threeday()
-syncer.create_all_graphs()
-syncer.rsync_files()
+# Dump and sync every 15 minutes
+sync_period = 60*15
+sync_number = 0;
 
-
+while true do
+  puts "START sync #{sync_number} at: #{Time.new.inspect}"
+  syncer = ControlSyncer.new()
+  syncer.csv_dump_all()
+  syncer.csv_dump_all_threeday()
+  syncer.create_all_graphs()
+  syncer.rsync_files()
+  puts "END sync #{sync_number} at: #{Time.new.inspect}"
+  sync_number =  sync_number + 1
+  sleep(sync_period)
+end
