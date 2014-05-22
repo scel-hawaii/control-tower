@@ -18,9 +18,20 @@ Installation Instructions
 
 1. Clone from the git repository
 1. Install server dependencies
+    - Run the server setup script
+    - ^ This script still needs to be created 
 2. Install python dependencies
+    - Run the python setup script (needs root)
 4. Setup a postgres database
+    - Go into the postgres user and then add a new user called REIS
+    - Add a new database called REIS 
+    - Give the user permission to the database
+    - Set the database so that the REIS user has the permissions to access it.
+    - Remember to go ahead and change the timezone!
 4. Import the SQL dump
+    - Run the postgresql setup script
 5. Setup the permissions for the avr-isp programmer
-3. Win.
+6. Add user to the dialout group (for access to serial):
+    - Might be this link https://bradsprojects.wordpress.com/tag/avrisp-mkii/
+    - But I'm not sure since I lost documentation...
 
