@@ -31,6 +31,7 @@ class PostgresSyncer
   # main routine
   def main_routine()
     dir_name = "full-data"
+    sync_files()
     filenames = get_csv_filenames(dir_name)
     while true do
       puts "Start postgres sync at #{Time.new.inspect}"
