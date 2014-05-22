@@ -88,7 +88,7 @@ class ControlSyncer
 
   # Sync the files up..
   def rsync_files()
-    puts `rsync -raz --delete  --progress -h #{@data_dir} webfaction:~/homepage/scel`
+    puts `rsync -raz --progress -h #{@data_dir} webfaction:~/homepage/scel`
   end
 
   # Create create a graph
