@@ -1,6 +1,23 @@
 control-tower
 =======================
 
+Usage
+--------------
+
+The current version of Control Tower should be fairly easy to use. Open
+a terminal, change directories to the current Control Tower install
+directory.
+
+    ./launch_server.py
+
+The server should then scan the `hardware_profiles` directory and
+prompt you for an input. Select the correct profile and control tower
+should attempt to launch everything for you. 
+
+
+Description
+-----------------
+
 This repository is mainly a collection of scripts which serve 
 the purpose of becoming the de-facto server software for the reis
 weatherbox. Any test-benches and production code should be 
