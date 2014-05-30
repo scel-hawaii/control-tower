@@ -232,6 +232,7 @@ class PacketDecoder:
 		struct_fmt = '<HHBIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
 		values_list = struct.unpack(struct_fmt, s)
 		values = {}
+		print "Got a binary packet at: " + time.strftime(self.time_fmt)
 		for key, start, end in [('schema', 0, 1),
 								('address', 1, 2),
 								('overflow_num', 2, 3),
@@ -247,7 +248,7 @@ class PacketDecoder:
 			values[key] = values_list[start:end]
 			if len(values[key]) == 1:
 				values[key] = values[key][0]
-			print str(values)
+		print values
 		return values
 
 	def decode_3(self, s):
