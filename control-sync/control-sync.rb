@@ -54,7 +54,7 @@ class ControlSyncer
 
     init_dir(dump_dir)
 
-    command = " psql -c '\\copy (SELECT * FROM outdoor_env WHERE (apogee_w_m2 IS NOT NULL AND address=#{addr}) ORDER BY db_time DESC LIMIT 129600) To 
+    command = " psql -c '\\copy (SELECT * FROM outdoor_env WHERE (apogee_w_m2 IS NOT NULL AND address=#{addr}) ORDER BY db_time DESC LIMIT 14400) To 
                   #{filepath} With CSV header\'"
     run_command(command)
   end
@@ -88,7 +88,7 @@ class ControlSyncer
 
   # Sync the files up..
   def rsync_files()
-    puts `rsync -raz --progress -h #{@data_dir} webfaction:~/homepage/scel`
+    puts `rsync -raz --progress -h #{@data_dir} webfaction:~/webapps/scel_application/`
   end
 
   # Create create a graph
