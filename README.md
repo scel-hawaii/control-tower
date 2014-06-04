@@ -1,6 +1,3 @@
-control-tower
-=======================
-
 Usage
 --------------
 
@@ -13,6 +10,24 @@ directory.
 The server should then scan the `hardware_profiles` directory and
 prompt you for an input. Select the correct profile and control tower
 should attempt to launch everything for you. 
+
+Deployment procedures
+-------------------------
+
+Deployment procedures right now are a little complicated. 
+
+1. Plug in the box
+3. VNC into the production server
+    * 192.168.1.38:1
+2. Start the coordinator server (select the production profile)
+3. Watch to see if a packet comes in
+4. Verify that the database has data
+    SELECT * FROM outdoor_env ORDER BY db_time DESC
+
+Future improvements needed:
+    * A script to check that our data has arrived
+    * A script to check the database is updated accordingly.
+    * Inital debug messages lasting 10 minutes after system startup
 
 
 Description
