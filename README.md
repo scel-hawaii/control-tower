@@ -46,24 +46,24 @@ Raspberry Pi Deployment Instructions
 
 *Procedures*
 
-    1. Attach the keyboard, monitor and other peripherals
-    2. Plug in the raspberry pi 
-        * At this point, it should cycle on by itself. 
-    3. Log into the `reis` user with the password `password`
-    5. Start the reverse autossh tunnel which will allow us to SSH back into the pi
-        * run command: `autossh -f -R 19999:localhost:22 reis1remote`
-    6. Check that the tunnel is working by logging into the reis1remote host
-        * run command: `ssh -p 19999 localhost`
-    5. OPTIONAL: Log out and then log back into the device via SSH 
-    4. Verify the port the USB explorer is attached to, and edit the hardware profile accordingly
-        * unplug and replug the USB explorer board
-        * run `dmesg`
-        * check which port the device is on
-    4. Start the server in the home directory   
-        * Use the command: `./launch_server.py`
-        * Select hokulani deployment
-    5. Verify that we can get data
-        * Deploy the weatherbox and wait for data
+1. Attach the keyboard, monitor and other peripherals
+2. Plug in the raspberry pi 
+    * At this point, it should cycle on by itself. 
+3. Log into the `reis` user with the password `password`
+5. Start the reverse autossh tunnel which will allow us to SSH back into the pi
+    * run command: `autossh -f -R 19999:localhost:22 reis1remote`
+6. Check that the tunnel is working by logging into the reis1remote host
+    * run command: `ssh -p 19999 localhost`
+5. OPTIONAL: Log out and then log back into the device via SSH 
+4. Verify the port the USB explorer is attached to, and edit the hardware profile accordingly
+    * unplug and replug the USB explorer board
+    * run `dmesg`
+    * check which port the device is on
+4. Start the server in the home directory   
+    * Use the command: `./launch_server.py`
+    * Select hokulani deployment
+5. Verify that we can get data
+    * Deploy the weatherbox and wait for data
 
 
 Description
