@@ -25,6 +25,7 @@ Deployment procedures right now are a little complicated.
     SELECT * FROM outdoor_env ORDER BY db_time DESC
 
 Future improvements needed:
+
     * A script to check that our data has arrived
     * A script to check the database is updated accordingly.
     * Inital debug messages lasting 10 minutes after system startup
