@@ -32,17 +32,18 @@ Future improvements needed:
 Raspberry Pi Deployment Instructions
 ------------
 
-Materials Needed:
+*Materials Needed:*
 * A monitor with HDMI 
 * HDMI Cable
 * Raspberry Pi
 * Xbee Explorer Board (or equivilent) 
 * USB Micro Cable
 * USB Charger
-* Keyboard 
+* Keyboard
 * Ethernet cable
 
 
+*Procedures*
 1. Attach the keyboard, monitor and other peripherals
 2. Plug in the raspberry pi 
     * At this point, it should cycle on by itself. 
