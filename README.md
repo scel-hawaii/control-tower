@@ -37,12 +37,14 @@ Raspberry Pi Deployment Instructions
 
 * A monitor with HDMI 
 * HDMI Cable
+* Power cable (for monitor)
 * Raspberry Pi
 * Xbee Explorer Board (or equivilent) 
 * USB Micro Cable
 * USB Charger
 * Keyboard
 * Ethernet cable
+*
 
 
 *Procedures*
