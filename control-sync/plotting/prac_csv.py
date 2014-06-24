@@ -1,7 +1,9 @@
 import csv
 import numpy
 
-out = csv.reader(open("215_data.csv","rb"))
+x = []
 
-for row in out:
-	print(row[2])
+with open('215_data.csv', 'r') as csvfile:
+	reader = csv.DictReader(csvfile)
+	for row in reader:
+		x.append(row)
