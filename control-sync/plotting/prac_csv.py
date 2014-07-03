@@ -3,20 +3,37 @@ import csv
 import numpy
 import operator
 
-#Test function
-def convert_to_float(field):
+#Test functions
+def convert_to_float(row, field):
+
 	#Check if there is data
 	if(row[field] == ''):
+
 		#No data = nan
 		row[field] = float('nan')
-		return
-	row[field] = float(row[field])
+		return row[field]
+	else:
+		#Convert value and return
+		row[field] = float(row[field])
+		return row[field]
 
+def get_data(data, field):
+
+	#Establish a Variable
+	value = []
+
+	#Loop through the data
+	for row in data:
+	
+		#Store the seeked data
+		value.append(convert_to_float(row, field))
+	
+	#Return the desired data
+	return value
+		
 #Establish variables
-data = []
 x = []
 y = []
-
 
 #Open Data File
 datafile = open('215_data.csv', 'r')
@@ -24,32 +41,14 @@ datafile = open('215_data.csv', 'r')
 #Gather the Data
 dataorganized = csv.DictReader(datafile)
 
-#Examine data 
-for row in dataorganized:
-
-	#Create proper types
-	convert_to_float("address")
-	convert_to_float("uptime_ms")
-	convert_to_float("bmp085_temp_decic")
-	convert_to_float("bmp085_press_pa")
-	convert_to_float("batt_mv")
-	convert_to_float("panel_mv")
-	convert_to_float("apogee_mv")
-	convert_to_float("apogee_w_m2")
-	convert_to_float("dallas_amb_c")
-	convert_to_float("dallas_roof_c")
-	convert_to_float("panel_ua")
-	convert_to_float("humidity_centi_pct")
-	convert_to_float("indicator")
-	data.append(row) #ERROR: Currently storing data randomly
-
-#Pull pull specific field values
+#Get chosen data
+x = get_data(dataorganized, "overflow_num")
 
 #Print the data
-print(data[0])
+print(x)
 
-#Number of fields from data
-print(len(data))
+#Number of entries from data
+print(len(x))
 
 #Close file
 datafile.close()
