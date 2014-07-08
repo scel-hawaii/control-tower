@@ -2,6 +2,7 @@
 import csv
 import numpy
 import operator
+import datetime
 
 #Test functions
 def convert_to_float(row, field):
@@ -24,13 +25,26 @@ def get_data(data, field):
 
 	#Loop through the data
 	for row in data:
-	
 		#Store the seeked data
 		value.append(convert_to_float(row, field))
 	
 	#Return the desired data
 	return value
+
+def get_date(data, field):
+	
+	#Establish a Variable
+	t = []
+
+	#Loop through the data
+	for row in data:
 		
+		#Store the date
+		t.append(datetime.datetime.strptime(row[field], "%Y-%m-%d %H:%M:%S.%f-%z"))
+
+	#Return the dates
+	return t
+
 #Establish variables
 x = []
 y = []
@@ -43,9 +57,10 @@ dataorganized = csv.DictReader(datafile)
 
 #Get chosen data
 x = get_data(dataorganized, "overflow_num")
+y = get_date(dataorganized, "db_time")
 
 #Print the data
-print(x)
+print(y)
 
 #Number of entries from data
 print(len(x))
