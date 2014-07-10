@@ -35,11 +35,13 @@ def get_date(data, field):
 	
 	#Establish a Variable
 	t = []
+	firstline = True
 
 	#Loop through the data
 	for row in data:	
+
 		#Store the date
-		t.append(datetime.datetime.strptime(row[field], "%Y-%m-%d %H:%M:%S.%f-%z"))
+		t.append(datetime.datetime.strptime(row[field], "%Y-%m-%d %H:%M:%S.%f%z"))
 
 	#Return the dates
 	return t
@@ -55,11 +57,14 @@ datafile = open('215_data.csv', 'r')
 dataorganized = csv.DictReader(datafile)
 
 #Get chosen data
-
 datafile.seek(0) #Reset iterator
 x = get_data(dataorganized, "overflow_num")
 
+#Regather the Data
+dataorganized = csv.DictReader(datafile)
 datafile.seek(0) #Reset iterator
+
+#Get time
 y = get_date(dataorganized, "db_time")
 
 #Print the data
