@@ -41,7 +41,7 @@ def get_date(data, field):
 	for row in data:	
 
 		#Store the date
-		t.append(datetime.datetime.strptime(row[field], "%Y-%m-%d %H:%M:%S.%f%z"))
+		t.append(datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z"))
 
 	#Return the dates
 	return t
