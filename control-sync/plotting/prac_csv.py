@@ -41,12 +41,9 @@ def convert_date(data):
 	for row in data:	
 
 		#Store the date
-<<<<<<< HEAD
 		converted = datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z")
 		row[field] = converted
-=======
 		t.append(datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z"))
->>>>>>> 5a99f5fcbe0882634d48656888dd60d7c8bc862f
 
 	return row
 
