@@ -46,11 +46,38 @@ def convert_date(data):
 
 	return t
 
+def find_index(InputDate, ConvertedSet):
+
+	#Establish a variable
+	index = 0
+
+	#Begin looping
+	for row in ConvertedSet:
+		#Check for a match
+		if(InputDate.year == row.year):
+			if(InputDate.month == row.month):
+				if(InputDate.day == row.day):
+					if(InputDate.hour == row.hour):
+						if(InputDate.minute == row.minute):
+							if(InputDate.second == row.second):
+								return index
+							else:
+								index += 1
+						else:
+							index += 1
+					else:
+						index += 1
+				else:
+					index += 1
+			else:
+				index += 1
+		else:
+			index += 1
 
 ### Main ###
 #Establish variables
-x = []
-y = []
+ChosenData = []
+ConvertedTimed = []
 
 #Open Data File
 datafile = open('215_data.csv', 'r')
@@ -60,25 +87,33 @@ dataorganized = csv.DictReader(datafile)
 
 #Ask for input
 field = input('Enter data field: ')
-#begindate = input('Enter beginning time: ')
-#enddate = input('Enter end time: ')
+BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
+#EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
+
+#Convert input dates
+BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
+#EndDate = datetime.datetime.strptime(EndDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
 
 #Get chosen data
 datafile.seek(0) #Reset iterator
-x = get_data(dataorganized, field)
+ChosenData = get_data(dataorganized, field)
 
 #Regather the Data
 dataorganized = csv.DictReader(datafile)
 datafile.seek(0) #Reset iterator
 
 #Convert time
-y = convert_date(dataorganized)
+ConvertedTime = convert_date(dataorganized)
+
+#Find Index for begin time
+BeginIndex = find_index(BeginDate, ConvertedTime)
+#EndIndex = find_index(EndDate, ConvertedTime)
 
 #Print the data
-print(y)
+print(ConvertedTime[BeginIndex])
 
 #Number of entries from data
-print(len(y))
+print(len(ChosenData))
 
 #Close file
 datafile.close()
