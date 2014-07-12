@@ -3,6 +3,7 @@ import csv
 import numpy
 import operator
 import datetime
+import matplotlib.pyplot as plt
 
 #Test functions
 def convert_to_float(row, field):
@@ -31,20 +32,19 @@ def get_data(data, field):
 	#Return the desired data
 	return value
 
-def get_date(data, field):
+def convert_date(data):
 	
 	#Establish a Variable
-	t = []
-	firstline = True
+	field = "db_time"
 
 	#Loop through the data
 	for row in data:	
 
 		#Store the date
-		t.append(datetime.datetime.strptime(row[field], "%Y-%m-%d %H:%M:%S.%f%z"))
+		converted = datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z")
+		row[field] = converted
 
-	#Return the dates
-	return t
+	return row
 
 #Establish variables
 x = []
@@ -64,8 +64,8 @@ x = get_data(dataorganized, "overflow_num")
 dataorganized = csv.DictReader(datafile)
 datafile.seek(0) #Reset iterator
 
-#Get time
-y = get_date(dataorganized, "db_time")
+#Convert time
+y = convert_date(dataorganized)
 
 #Print the data
 print(y)
