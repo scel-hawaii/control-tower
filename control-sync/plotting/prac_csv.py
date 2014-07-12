@@ -35,18 +35,19 @@ def get_data(data, field):
 def convert_date(data):
 	
 	#Establish a Variable
+	t = []
 	field = "db_time"
 
 	#Loop through the data
 	for row in data:	
 
 		#Store the date
-		converted = datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z")
-		row[field] = converted
 		t.append(datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z"))
 
-	return row
+	return t
 
+
+### Main ###
 #Establish variables
 x = []
 y = []
@@ -57,9 +58,14 @@ datafile = open('215_data.csv', 'r')
 #Gather the Data
 dataorganized = csv.DictReader(datafile)
 
+#Ask for input
+field = input('Enter data field: ')
+#begindate = input('Enter beginning time: ')
+#enddate = input('Enter end time: ')
+
 #Get chosen data
 datafile.seek(0) #Reset iterator
-x = get_data(dataorganized, "overflow_num")
+x = get_data(dataorganized, field)
 
 #Regather the Data
 dataorganized = csv.DictReader(datafile)
@@ -72,7 +78,7 @@ y = convert_date(dataorganized)
 print(y)
 
 #Number of entries from data
-print(len(x))
+print(len(y))
 
 #Close file
 datafile.close()
