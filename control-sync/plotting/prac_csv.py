@@ -96,10 +96,28 @@ def gather_chosen(ChosenData, BeginIndex, EndIndex):
 	#Return the data
 	return chosen
 
+#Gather the Dates for plotting
+def gather_dates(ConvertedTime, BeginIndex, EndIndex):
+	
+	#Establish variables
+	range = []
+	
+	#Establish while loop
+	while(BeginIndex >= EndIndex):
+		
+		#Gather the dates
+		range.append(ConvertedTime[BeginIndex])
+
+		#Decrement
+		BeginIndex -= 1
+	
+	#Return the dates
+	return range
+
 ########## Main ##########
 #Establish variables
 ChosenData = []
-ConvertedTimed = []
+ConvertedTime = []
 x = []  #Plot storage for Dates
 y = []  #Plot storage for Data
 
@@ -113,6 +131,7 @@ dataorganized = csv.DictReader(datafile)
 field = input('Enter data field: ')
 BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
 EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
+print('Please wait...')
 
 #Convert input dates
 BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
@@ -136,11 +155,13 @@ EndIndex = find_index(EndDate, ConvertedTime)
 #Obtain the chosen data in the specified range
 y = gather_chosen(ChosenData, BeginIndex, EndIndex)
 
-#Print the data
-print(y)
+#Obtain the dates for plotting
+x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
 
-#Number of entries from data
-print(len(y))
+#Plot the data
+plt.plot(x,y)
+plt.title('Practice Plot for Data')
+plt.show()
 
 #Close file
 datafile.close()
