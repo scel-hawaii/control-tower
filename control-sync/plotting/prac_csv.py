@@ -60,6 +60,7 @@ def find_index(InputDate, ConvertedSet):
 					if(InputDate.hour == row.hour):
 						if(InputDate.minute == row.minute):
 							if(InputDate.second == row.second):
+								print("The index is ", index)
 								return index
 							else:
 								index += 1
@@ -88,11 +89,11 @@ dataorganized = csv.DictReader(datafile)
 #Ask for input
 field = input('Enter data field: ')
 BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
-#EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
+EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
 
 #Convert input dates
 BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
-#EndDate = datetime.datetime.strptime(EndDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
+EndDate = datetime.datetime.strptime(EndDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
 
 #Get chosen data
 datafile.seek(0) #Reset iterator
@@ -107,7 +108,7 @@ ConvertedTime = convert_date(dataorganized)
 
 #Find Index for begin time
 BeginIndex = find_index(BeginDate, ConvertedTime)
-#EndIndex = find_index(EndDate, ConvertedTime)
+EndIndex = find_index(EndDate, ConvertedTime)
 
 #Print the data
 print(ConvertedTime[BeginIndex])
