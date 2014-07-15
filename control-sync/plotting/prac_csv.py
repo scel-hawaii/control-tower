@@ -1,11 +1,12 @@
-#Import proper Libraries
+##########Import proper Libraries##########
 import csv
 import numpy
 import operator
 import datetime
 import matplotlib.pyplot as plt
 
-#Test functions
+##########Test functions##########
+#Convert Data String  -> Float
 def convert_to_float(row, field):
 
 	#Check if there is data
@@ -19,6 +20,7 @@ def convert_to_float(row, field):
 		row[field] = float(row[field])
 		return row[field]
 
+#Pull out the non-date data
 def get_data(data, field):
 
 	#Establish a Variable
@@ -32,6 +34,7 @@ def get_data(data, field):
 	#Return the desired data
 	return value
 
+#Convert the date String -> Datetime
 def convert_date(data):
 	
 	#Establish a Variable
@@ -46,6 +49,7 @@ def convert_date(data):
 
 	return t
 
+#Find the index of data
 def find_index(InputDate, ConvertedSet):
 
 	#Establish a variable
@@ -75,10 +79,48 @@ def find_index(InputDate, ConvertedSet):
 		else:
 			index += 1
 
-### Main ###
+#Gather the chosen data in the range
+def gather_chosen(ChosenData, BeginIndex, EndIndex):
+	
+	#Establish a storing variable
+	chosen = []
+
+	#Esablish a while Loop
+	while(BeginIndex >= EndIndex):
+	
+		#Begin gathering
+		chosen.append(ChosenData[BeginIndex])
+
+		#Decrement
+		BeginIndex -= 1
+
+	#Return the data
+	return chosen
+
+#Gather the Dates for plotting
+def gather_dates(ConvertedTime, BeginIndex, EndIndex):
+	
+	#Establish variables
+	range = []
+	
+	#Establish while loop
+	while(BeginIndex >= EndIndex):
+		
+		#Gather the dates
+		range.append(ConvertedTime[BeginIndex])
+
+		#Decrement
+		BeginIndex -= 1
+	
+	#Return the dates
+	return range
+
+########## Main ##########
 #Establish variables
 ChosenData = []
-ConvertedTimed = []
+ConvertedTime = []
+x = []  #Plot storage for Dates
+y = []  #Plot storage for Data
 
 #Open Data File
 datafile = open('215_data.csv', 'r')
@@ -90,6 +132,10 @@ dataorganized = csv.DictReader(datafile)
 field = input('Enter data field: ')
 BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
 EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
+<<<<<<< HEAD
+=======
+print('Please wait...')
+>>>>>>> c3728641bcd75bbf6353ce255033b4f85c3484ed
 
 #Convert input dates
 BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
@@ -109,12 +155,20 @@ ConvertedTime = convert_date(dataorganized)
 #Find Index for begin time
 BeginIndex = find_index(BeginDate, ConvertedTime)
 EndIndex = find_index(EndDate, ConvertedTime)
+<<<<<<< HEAD
+=======
 
-#Print the data
-print(ConvertedTime[BeginIndex])
+#Obtain the chosen data in the specified range
+y = gather_chosen(ChosenData, BeginIndex, EndIndex)
+>>>>>>> c3728641bcd75bbf6353ce255033b4f85c3484ed
 
-#Number of entries from data
-print(len(ChosenData))
+#Obtain the dates for plotting
+x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
+
+#Plot the data
+plt.plot(x,y)
+plt.title('Practice Plot for Data')
+plt.show()
 
 #Close file
 datafile.close()
