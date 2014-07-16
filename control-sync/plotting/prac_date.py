@@ -5,7 +5,6 @@ import operator
 import datetime
 import matplotlib.pyplot as plt
 
-
 ### Test putting date into datetime format ###
 # Establish variable list to hold date
 t = []
@@ -54,6 +53,9 @@ v = [1,2,1]
 # Plot graph
 plt.plot(t, v)
 plt.title('Practice Plot with Datetime Objects')
+
+# Save plot as jpeg
+plt.savefig('prac_plot_datetime.png')
 plt.show()
 
 

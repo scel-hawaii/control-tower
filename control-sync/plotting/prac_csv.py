@@ -132,10 +132,7 @@ dataorganized = csv.DictReader(datafile)
 field = input('Enter data field: ')
 BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
 EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
-<<<<<<< HEAD
-=======
 print('Please wait...')
->>>>>>> c3728641bcd75bbf6353ce255033b4f85c3484ed
 
 #Convert input dates
 BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
@@ -155,19 +152,21 @@ ConvertedTime = convert_date(dataorganized)
 #Find Index for begin time
 BeginIndex = find_index(BeginDate, ConvertedTime)
 EndIndex = find_index(EndDate, ConvertedTime)
-<<<<<<< HEAD
-=======
 
 #Obtain the chosen data in the specified range
 y = gather_chosen(ChosenData, BeginIndex, EndIndex)
->>>>>>> c3728641bcd75bbf6353ce255033b4f85c3484ed
 
 #Obtain the dates for plotting
 x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
 
 #Plot the data
-plt.plot(x,y)
+plt.scatter(x,y,marker='.', edgecolors='none')
 plt.title('Practice Plot for Data')
+
+#Save plot as .png
+plt.savefig('prac_plot_.png')
+
+#Display plot
 plt.show()
 
 #Close file
