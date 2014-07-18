@@ -65,6 +65,7 @@ def find_index(InputDate, ConvertedSet):
 					if(InputDate.hour == row.hour):
 						if(InputDate.minute == row.minute):
 							if(InputDate.second == row.second):
+								print("The index is ", index)
 								return index
 							else:
 								index += 1
@@ -160,8 +161,13 @@ y = gather_chosen(ChosenData, BeginIndex, EndIndex)
 x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
 
 #Plot the data
-plt.plot(x,y)
+plt.scatter(x,y,marker='.', edgecolors='none')
 plt.title('Practice Plot for Data')
+
+#Save plot as .png
+plt.savefig('prac_plot_.png')
+
+#Display plot
 plt.show()
 
 #Export the plot
