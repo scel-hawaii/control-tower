@@ -3,6 +3,7 @@ import csv
 import numpy
 import operator
 import datetime
+import Image
 import matplotlib.pyplot as plt
 
 ##########Test functions##########
@@ -162,6 +163,10 @@ x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
 plt.plot(x,y)
 plt.title('Practice Plot for Data')
 plt.show()
+
+#Export the plot
+plt.savefig('Testplot.png')
+Image.open('Testplot.png').save('Testplot.jpeg','JPEG')
 
 #Close file
 datafile.close()
