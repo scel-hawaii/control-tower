@@ -3,6 +3,7 @@ import csv
 import numpy
 import operator
 import datetime
+import itertools
 import matplotlib.pyplot as plt
 
 ##########Test functions##########
@@ -128,6 +129,10 @@ ConvertedTime = []
 x = []  #Plot storage for Dates
 y = []  #Plot storage for Data
 PlotMore = True
+color = 'b'
+
+#Establish color cycle
+colors = itertools.cycle(['r', 'g', 'y', 'c', 'm', 'k', 'b'])
 
 #Open Data File
 datafile = open('215_data.csv', 'r')
@@ -166,7 +171,7 @@ while(PlotMore):
 	y = gather_chosen(ChosenData, BeginIndex, EndIndex)
 
 	#Plot the data
-	plt.scatter(x,y,marker='.', edgecolors='none')
+	plt.scatter(x, y, c = color, marker='.', edgecolors='none')
 	plt.title('Weather Box Data')
 
 	#Plot More?
@@ -178,12 +183,17 @@ while(PlotMore):
 		#Ask for data field
 		field = input('Enter data field: ')
 		PlotMore = True
+		color = next(colors)
 
 	elif(response == "N" or response == "n" or response == "No"):
 
 		#End the loop
 		PlotMore = False
 
+	else:
+		
+		#Error
+		print('Invalid Response')
 
 #Save plot as .png
 plt.savefig('Data_Plot.png')
