@@ -6,7 +6,7 @@ import datetime
 import itertools
 import matplotlib.pyplot as plt
 
-##########Test functions##########
+##########Functions##########
 
 #Convert Data String  -> Float
 def convert_to_float(row, field):
