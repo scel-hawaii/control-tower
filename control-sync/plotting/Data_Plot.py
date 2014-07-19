@@ -160,6 +160,13 @@ EndIndex = find_index(EndDate, ConvertedTime)
 #Obtain the dates for plotting
 x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
 
+#Plot Format
+plt.xlabel('Time')
+plt.ylabel('Solar Irradiance')
+plt.title('Weather Box Data')
+plt.xlim(BeginDate, EndDate)
+plt.legend(("Solar Irradiance",), loc = 'best', scatterpoints = 1)
+
 while(PlotMore):
 
 	#Get chosen data
@@ -172,7 +179,6 @@ while(PlotMore):
 
 	#Plot the data
 	plt.scatter(x, y, c = color, marker='.', edgecolors='none')
-	plt.title('Weather Box Data')
 
 	#Plot More?
 	response = input('Would you like to plot more data (Y or N)?: ')
@@ -196,7 +202,7 @@ while(PlotMore):
 		print('Invalid Response')
 
 #Save plot as .png
-plt.savefig('Data_Plot.png')
+plt.savefig('Solar_Irradiance.png')
 
 #Display plot
 plt.show()
