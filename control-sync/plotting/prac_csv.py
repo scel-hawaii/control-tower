@@ -160,8 +160,20 @@ y = gather_chosen(ChosenData, BeginIndex, EndIndex)
 x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
 
 #Plot the data
+plt.xlabel('Time')
+plt.ylabel('Solar Irradiance')
 plt.scatter(x,y,marker='.', edgecolors='none')
 plt.title('Practice Plot for Data')
+
+#Format axes
+xmin, xmax = plt.xlim()
+ymin, ymax = plt.ylim()
+plt.xlim(BeginDate, EndDate)
+print(xmin, xmax)
+print(ymin, ymax)
+
+#Add legend
+plt.legend(("Solar Irradiance",),loc='best',scatterpoints=1)
 
 #Save plot as .png
 plt.savefig('prac_plot_.png')
