@@ -176,7 +176,7 @@ print(ymin, ymax)
 plt.legend(("Solar Irradiance",),loc='best',scatterpoints=1)
 
 #Save plot as .png
-plt.savefig('prac_plot.png')
+plt.savefig('prac_plot_.png')
 
 #Display plot
 plt.show()
