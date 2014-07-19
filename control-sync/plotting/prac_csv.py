@@ -3,7 +3,6 @@ import csv
 import numpy
 import operator
 import datetime
-import Image
 import matplotlib.pyplot as plt
 
 ##########Test functions##########
@@ -169,10 +168,6 @@ plt.savefig('prac_plot_.png')
 
 #Display plot
 plt.show()
-
-#Export the plot
-plt.savefig('Testplot.png')
-Image.open('Testplot.png').save('Testplot.jpeg','JPEG')
 
 #Close file
 datafile.close()
