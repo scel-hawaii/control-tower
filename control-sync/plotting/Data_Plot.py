@@ -130,6 +130,7 @@ x = []  #Plot storage for Dates
 y = []  #Plot storage for Data
 PlotMore = True
 color = 'b'
+legend_titles = []
 
 #Establish color cycle
 colors = itertools.cycle(['r', 'g', 'y', 'c', 'm', 'k', 'b'])
@@ -142,6 +143,7 @@ dataorganized = csv.DictReader(datafile)
 
 #Ask for input
 field = input('Enter data field: ')
+legend_titles.append(field)
 BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
 EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
 print('Please wait...')
@@ -159,13 +161,6 @@ EndIndex = find_index(EndDate, ConvertedTime)
 
 #Obtain the dates for plotting
 x = gather_dates(ConvertedTime, BeginIndex, EndIndex)
-
-#Plot Format
-plt.xlabel('Time')
-plt.ylabel('Solar Irradiance')
-plt.title('Weather Box Data')
-plt.xlim(BeginDate, EndDate)
-plt.legend(("Solar Irradiance",), loc = 'best', scatterpoints = 1)
 
 while(PlotMore):
 
@@ -191,6 +186,9 @@ while(PlotMore):
 		PlotMore = True
 		color = next(colors)
 
+		#Save data field in list for legend
+		legend_titles.append(field)
+
 	elif(response == "N" or response == "n" or response == "No"):
 
 		#End the loop
@@ -200,6 +198,13 @@ while(PlotMore):
 		
 		#Error
 		print('Invalid Response')
+
+#Plot Format
+plt.xlabel('Time')
+#plt.ylabel('Solar Irradiance')
+plt.title('Weather Box Data')
+plt.xlim(BeginDate, EndDate)
+plt.legend(legend_titles, loc='best', scatterpoints=1, fontsize=8)
 
 #Save plot as .png
 plt.savefig('Solar_Irradiance.png')
