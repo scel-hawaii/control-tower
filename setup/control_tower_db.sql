@@ -58,7 +58,8 @@ CREATE TABLE outdoor_env (
     dallas_roof_c integer,
     panel_ua integer,
     humidity_centi_pct integer,
-    indicator integer
+    indicator integer,
+    overflow_num integer
 );
 
 
