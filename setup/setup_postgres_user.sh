@@ -6,8 +6,12 @@ function postgres_command(){
     exit_status=$?
     if [ $exit_status != 0 ]; then
         echo "ERROR PSQL FAILED WITH COMMAND: $1"
-        exit $exit_status
+        # exit $exit_status
     fi
+}
+
+function import_db_dump(){
+    sudo -u control_tower psql -U control_tower < "control_tower_db.sql"
 }
 
 function check_user(){
@@ -24,6 +28,7 @@ check_user
 postgres_command "CREATE USER control_tower WITH PASSWORD 'salty8814pilot'"
 postgres_command "CREATE DATABASE control_tower"
 postgres_command "GRANT ALL PRIVILEGES ON DATABASE control_tower to control_tower"
+import_db_dump
 
 echo "Script Success. Finished setting up database."
 
