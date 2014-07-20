@@ -1,3 +1,1 @@
-psql -c "\\copy outdoor_env_unrecognized to 'outdoor_env_unrecognized.csv' csv header"
-
-
+psql -c "\\copy outdoor_env to 'outdoor_env.csv' csv header"
