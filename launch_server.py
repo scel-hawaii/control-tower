@@ -13,7 +13,7 @@ class ServerLauncher:
 
 	def __init__(self):
 		self.display_splash()
-		self.PROFILE_DIR = os.path.join(os.getcwd(), 'hardware_profiles')
+		self.PROFILE_DIR = os.path.join(os.getcwd(), 'config', 'hardware_profiles')
 		self.hardware_profiles = [] 
 		self.profile = {}
 
