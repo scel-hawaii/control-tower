@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 ## Launch the coordinator server..
-from coordinator_recv.coordinator_recv import CoordinatorReceiver
+from coordinator_recv import CoordinatorReceiver
 import sys
 import time
 import argparse
@@ -71,6 +71,7 @@ class ServerLauncher:
 				print 
 				print "Profile Loaded: " 
 				pprint(self.profile)
+
 	def start_server(self):
 		command = ["python", "coordinator_recv/coordinator_recv.py", "--tty", str(self.profile['coordinator-recv'])]
 		print command
@@ -82,7 +83,12 @@ class ServerLauncher:
 			return os.path.join(os.getcwd(), self.args.profile_path)
 		else:
 			raise Exception("File path does not exist")
+
+	def run_launcher(self):
+		test = ServerLauncher()
+		test.start_server()
 		
-if __name__ == "__main__":
-	test = ServerLauncher()
-	test.start_server()
+		
+# if __name__ == "__main__":
+	# test = ServerLauncher()
+	# test.start_server()
