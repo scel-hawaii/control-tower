@@ -73,10 +73,10 @@ class SensorReport
 
 
   def print_splash()
-    puts "==============================="
-    puts "SCEL Weatherbox Status Report" 
+    puts "===================================================="
+    puts "SCEL Weatherbox Status Report Script" 
     puts "Script run date: #{Time.now}"
-    puts "==============================="
+    puts "===================================================="
   end
 
 end
