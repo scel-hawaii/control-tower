@@ -1,0 +1,4 @@
+# Local Gitignore file
+*.csv
+*.log
+data
