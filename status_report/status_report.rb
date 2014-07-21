@@ -4,57 +4,76 @@ require 'pg'
 require 'active_support/all'
 require 'pp'
 
-def execute_database(command)
-  conn = PGconn.open(:host=> 'localhost', :dbname => 'kenny', :user=>'kenny',  :password=>'tran1992')
-  res =  conn.exec(command)
-  output = [];
-  res.each do |row|
-    output << row
+class SensorReport
+
+  def initialize()
   end
-  conn.close()
-  return output 
-end
 
 
-def get_weatherbox_addr()
-  q = 'SELECT DISTINCT address FROM outdoor_env'
-  res  = execute_database(q)
-  output = []
-  res.each do |row|
-    output << row["address"]
+  def execute_database(command)
+    conn = PGconn.open(:host=> 'localhost', :dbname => 'control_tower', :user=>'control_tower',  :password=>'password')
+    res =  conn.exec(command)
+    output = [];
+    res.each do |row|
+      output << row
+    end
+    conn.close()
+    return output 
   end
-  return output
-end
 
-def get_latest_sample(address)
-  q = "SELECT * FROM outdoor_env WHERE address=#{address} ORDER BY db_time DESC LIMIT 1"
-  res  = execute_database(q)
-  output = [];
-  res.each do |row|
-    output << row
+
+  def get_weatherbox_addr()
+    q = 'SELECT DISTINCT address FROM outdoor_env'
+    res  = execute_database(q)
+    output = []
+    res.each do |row|
+      output << row["address"]
+    end
+    return output
   end
-  return output
+
+  def get_latest_sample(address)
+    q = "SELECT * FROM outdoor_env WHERE address=#{address} ORDER BY db_time DESC LIMIT 1"
+    res  = execute_database(q)
+    output = [];
+    res.each do |row|
+      output << row
+    end
+    return output
+  end
+
+  def get_latest_sample_time(address)
+    sample = get_latest_sample(address)
+    return Time.parse(sample[0]["db_time"])
+  end
+
+  def check_boxes()
+    box_addrs =  get_weatherbox_addr
+    puts "Box \t | Last Time Recv \t\t | Min Since \t | Status \t |"
+    puts "---------------------------------------------------------------------------"
+    box_addrs.each do |box|
+      current_time = Time.now()
+      last_box_time = get_latest_sample_time(box)
+      time_difference = current_time - last_box_time
+      if(time_difference < 3*60)
+        status = "GOOD"
+      else
+        status = "BAD"
+      end
+      puts "#{box} \t | #{last_box_time} \t | #{(time_difference/60).round(2)} \t |  #{status} \t |"
+    end
+  end
+
+  def print_splash()
+    puts "==============================="
+    puts "SCEL Weatherbox Status Report" 
+    puts "Script run date: #{Time.now}"
+    puts "==============================="
+
+  end
+
 end
 
-def get_latest_sample_time(address)
-  sample = get_latest_sample(address)
-  return Time.parse(sample[0]["db_time"])
-end
-
-=begin
-latest_time =  res[0]["db_time"]
-time_box = Time.parse(latest_time)
-time_now = Time.now
-
-puts time_box
-puts time_now
-
-(time_now - time_box).to_i
-
-=end
-
-box_addr =  get_weatherbox_addr
-puts box_addr
-box_addr.each do |box|
-  puts get_latest_sample_time(box)
-end
+reporter = SensorReport.new
+reporter.print_splash
+reporter.check_boxes
