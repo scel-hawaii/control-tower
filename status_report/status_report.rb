@@ -49,8 +49,8 @@ class SensorReport
 
   def check_boxes()
     box_addrs =  get_weatherbox_addr
-    puts "Box \t | Last Time Recv \t\t | Min Since \t | Status \t |"
-    puts "---------------------------------------------------------------------------"
+    puts "Box \t | Last Time Recv \t\t | Min Since\t | Status \t |"
+    puts "---------------------------------------------------------------------------\n"
     box_addrs.each do |box|
       current_time = Time.now()
       last_box_time = get_latest_sample_time(box)
