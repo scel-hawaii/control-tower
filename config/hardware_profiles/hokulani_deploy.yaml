@@ -1,0 +1,3 @@
+description: "Hokulani Deployment Profile" 
+coordinator-recv: '/dev/ttyUSB0'
+

@@ -1,0 +1,3 @@
+description: "Configuration for unstable testing on dragonfly test server"
+coordinator-recv: '/dev/ttyUSB2'
+usb-ftdi-device: '/dev/ttyUSB0'
