@@ -239,23 +239,32 @@ file = input('Enter file name: ')
 BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
 EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
 
+# Ask user for field
+datafield = input('Enter data field: ')
+
+# Add field to field list
+field.append(datafield)
+
 # While more fields to enter
 while(MoreFields):
-
-	# Ask user for field
-	datafield = input('Enter data field: ')
-
-	# Add field to field list
-	field.append(datafield)
 
 	# Ask user if they would like to add more fields
 	response = input('Would you like to plot more data (Y or N)? ')
 
 	# Check response
-	if(response == "N" or response == "n" or response == "No" or response == "no"):
+	if(response == "Y" or response == "y" or response == "Yes" or response =="yes"):
+		# Ask user for field
+		datafield = input('Enter data field: ')
 
+		# Add field to field list
+		field.append(datafield)
+
+	elif(response == "N" or response == "n" or response == "No" or response == "no"):
 		# End loop
 		MoreFields = False
+	else:
+		# Print error
+		print('Invalid response entered')
 
 # Create class
 weatherbox = Plotting(file, BeginDateIn, EndDateIn, field)
