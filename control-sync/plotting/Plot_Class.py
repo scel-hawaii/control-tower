@@ -10,8 +10,8 @@ import matplotlib.pyplot as plt
 class Plotting(object):
 
 	### Initialize objects ###
-	def __init__(self):
-		self.datafile = ''	# Name of data file
+	def __init__(self, filename, BeginDateIn, EndDateIn, field):
+		# Name of datafile
 		self.dataorganized = ''	# Holds gathered data
 		self.ChosenData = []	# Holds data for specific field
 		self.ConvertedTime = []	# Holds converted datetime objects
@@ -19,26 +19,22 @@ class Plotting(object):
 		self.EndDate = 0	# End date for data plotted
 		self.BeginIndex = 0	# Begin index of data plotted
 		self.EndIndex = 0	# End index of data plotted
-		self.x = []		# Time data for x-axis
-		self.y = []		# Field data for y-axis
+		self.field = []		# Fields for data to plot
+		# Time data for x-axis
+		self.x = []
+		self.input_time(filename, BeginDateIn, EndDateIn)
+		# Field data for y-axis
+		self.y = []
+		self.input_field(filename, field)
 		self.color = 'b'	# Color of data for specific field
 		self.colors = itertools.cycle(['r','g','y','c','m','k','b'])
-		self.legend_titles = []	# Titles of plotted data for legend
-
-
-	### Choose and open Data File ###
-	def choose_file(self, filename):
-
-		# Open data file
-		self.datafile = open(filename, 'r')
-
 
 	### Input time interval ###
 	# Using begin and end date, finds time data for x-axis of graph
-	def input_time(self, BeginDateIn, EndDateIn):
+	def input_time(self, filename, BeginDateIn, EndDateIn):
 
 		# Gather the Data
-		self.dataorganized = csv.DictReader(self.datafile)
+		self.dataorganized = csv.DictReader(open(filename, 'r'))
 
 		# Convert input dates
 		self.BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
@@ -57,14 +53,14 @@ class Plotting(object):
 
 	### Input data field to plot ###
 	# Finds data over a time range for a certain field to plot on the y-axis
-	def input_field(self, field):
+	def input_field(self, filename, field):
 
 		# Add field to legend titles
-		self.legend_titles.append(field)
+		self.field.append(field)
 
 		# Get chosen data
-		self.dataorganized = csv.DictReader(self.datafile)
-		self.datafile.seek(0) #Reset iterator
+		self.dataorganized = csv.DictReader(open(filename,'r'))
+		open(filename, 'r').seek(0) #Reset iterator
 		self.ChosenData = self.get_data(self.dataorganized, field)
 
 		# Obtain the chosen data in the specified range
@@ -197,7 +193,6 @@ class Plotting(object):
 	### Plot Data ###
 	# Plots the data as a scatter plot using times and data and formats plot
 	def plot_data(self):
-
 		# Plot data as a scatter plot
 		plt.scatter(self.x, self.y, c = self.color, marker='.', edgecolors='none')
 
@@ -205,7 +200,7 @@ class Plotting(object):
 		plt.xlabel('Time')
 		plt.title('Weather Box Data')
 		plt.xlim(self.BeginDate, self.EndDate)
-		plt.legend(self.legend_titles, loc='best', scatterpoints=1, fontsize=8)
+		plt.legend(self.field, loc='best', scatterpoints=1, fontsize=8)
 
 		# Change color for next plot
 		self.color = next(self.colors)
@@ -227,54 +222,13 @@ class Plotting(object):
 PlotMore = True
 
 # Create class
-weatherbox = Plotting()
+weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', 'apogee_w_m2')
 
-# Ask for file name of data user would like to plot and choose file
-filename = input('Enter file name: ')
-weatherbox.choose_file(filename)
-
-# Ask user for beginning and end date and field
-BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
-EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
-field = input('Enter data field: ')
-print('Please wait...')
-
-# Get x-axis time data
-weatherbox.input_time(BeginDateIn, EndDateIn)
-
-while(PlotMore):
-
-	# Get field data for y-axis
-	weatherbox.input_field(field)
-
-	# Plot the data
-	weatherbox.plot_data()
-
-	# Ask user if they would like to plot more data
-	response = input('Would you like to plot more data (Y or N)?: ')
-
-	# Check response
-	if(response == "Y" or response == "y" or response == "Yes"):
-
-		# Ask for data field and get field data for y-axis
-		field = input('Enter data field: ')
-		weatherbox.input_field(field)
-
-		# Still plotting more data
-		PlotMore = True
-
-	elif(response == "N" or response == "n" or response == "No"):
-
-		# End the loop
-		PlotMore = False
-
-	else:
-		
-		# Error
-		print('Invalid Response')
+# Plot data
+weatherbox.plot_data()
 
 # Save plot as .png and display
 weatherbox.save_plot()
 
 # Close file
-weatherbox.datafile.close()
+weatherbox.open(filename, 'r').close()
