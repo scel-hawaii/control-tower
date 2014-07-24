@@ -12,6 +12,7 @@ class Plotting(object):
 	### Initialize objects ###
 	def __init__(self, filename, BeginDateIn, EndDateIn, field):
 		# Name of datafile
+		self.filename = filename
 		self.dataorganized = ''	# Holds gathered data
 		self.ChosenData = []	# Holds data for specific field
 		self.ConvertedTime = []	# Holds converted datetime objects
@@ -19,13 +20,11 @@ class Plotting(object):
 		self.EndDate = 0	# End date for data plotted
 		self.BeginIndex = 0	# Begin index of data plotted
 		self.EndIndex = 0	# End index of data plotted
-		self.field = []		# Fields for data to plot
-		# Time data for x-axis
-		self.x = []
+		self.field = field	# Fields for data to plot
+		self.x = []		# Time data for x-axis
 		self.input_time(filename, BeginDateIn, EndDateIn)
-		# Field data for y-axis
-		self.y = []
-		self.input_field(filename, field)
+		self.y = []		# Field data for y-axis
+		self.i = 0		# Index to go through fields
 		self.color = 'b'	# Color of data for specific field
 		self.colors = itertools.cycle(['r','g','y','c','m','k','b'])
 
@@ -53,19 +52,17 @@ class Plotting(object):
 
 	### Input data field to plot ###
 	# Finds data over a time range for a certain field to plot on the y-axis
-	def input_field(self, filename, field):
-
-		# Add field to legend titles
-		self.field.append(field)
+	def input_field(self, filename, field, i):
 
 		# Get chosen data
 		self.dataorganized = csv.DictReader(open(filename,'r'))
 		open(filename, 'r').seek(0) #Reset iterator
-		self.ChosenData = self.get_data(self.dataorganized, field)
+		self.ChosenData = self.get_data(self.dataorganized, field[i])
 
 		# Obtain the chosen data in the specified range
 		self.y = self.gather_chosen(self.ChosenData, self.BeginIndex, self.EndIndex)
-
+		# Increment index
+		self.i += 1
 
 	### Convert Data String  -> Float ###
 	# Converts data in a specified field to a float
@@ -191,24 +188,30 @@ class Plotting(object):
 
 
 	### Plot Data ###
-	# Plots the data as a scatter plot using times and data and formats plot
+	"""Plots the data as a scatter plot using times and data,
+	formats and saves plot"""
 	def plot_data(self):
-		# Plot data as a scatter plot
-		plt.scatter(self.x, self.y, c = self.color, marker='.', edgecolors='none')
+
+		# Find number of fields to plot
+		num_fields = len(self.field)
+
+		# While there are still fields to plot
+		while(self.i < num_fields):
+
+			# Getting y-axis data for field
+			self.input_field(self.filename, self.field, self.i)
+
+			# Plot data as a scatter plot
+			plt.scatter(self.x, self.y, c = self.color, marker='.', edgecolors='none')
+
+			# Change color for next plot
+			self.color = next(self.colors)
 
 		# Plot Format
 		plt.xlabel('Time')
 		plt.title('Weather Box Data')
 		plt.xlim(self.BeginDate, self.EndDate)
 		plt.legend(self.field, loc='best', scatterpoints=1, fontsize=8)
-
-		# Change color for next plot
-		self.color = next(self.colors)
-
-
-	### Save plot ###
-	# Saves the plot as a .png and displays plot
-	def save_plot(self):
 
 		# Save plot as .png
 		plt.savefig('WeatherboxData_Graph.png')
@@ -222,13 +225,10 @@ class Plotting(object):
 PlotMore = True
 
 # Create class
-weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', 'apogee_w_m2')
+weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'])
 
-# Plot data
+# Plot data and save as a .png
 weatherbox.plot_data()
-
-# Save plot as .png and display
-weatherbox.save_plot()
 
 # Close file
 weatherbox.open(filename, 'r').close()
