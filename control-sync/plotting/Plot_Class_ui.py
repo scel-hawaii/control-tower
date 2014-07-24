@@ -1,7 +1,7 @@
 ################################################################################
-""" File: Plot_Class.py
+""" File: Plot_Class_ui.py
 
-This file contains the plotting class and driver to test the class. """
+This file contains the plotting class with the user inteface. """
 ################################################################################
 
 ########## Import proper Libraries ##########
@@ -228,8 +228,37 @@ class Plotting(object):
 
 ########## Main ##########
 
+# Create variables for fields to plot and whether user would like to plot more
+field = []
+MoreFields = True
+
+# Ask user for file to get data from
+file = input('Enter file name: ')
+
+# Ask user for begin and end times
+BeginDateIn = input('Enter beginning date and time(Y-m-d H:M:S.mS-GMT): ')
+EndDateIn = input('Enter end date and time(Y-m-d H:M:S.mS-GMT): ')
+
+# While more fields to enter
+while(MoreFields):
+
+	# Ask user for field
+	datafield = input('Enter data field: ')
+
+	# Add field to field list
+	field.append(datafield)
+
+	# Ask user if they would like to add more fields
+	response = input('Would you like to plot more data (Y or N)? ')
+
+	# Check response
+	if(response == "N" or response == "n" or response == "No" or response == "no"):
+
+		# End loop
+		MoreFields = False
+
 # Create class
-weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'])
+weatherbox = Plotting(file, BeginDateIn, EndDateIn, field)
 
 # Plot data and save as a .png
 weatherbox.plot_data()

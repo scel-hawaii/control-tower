@@ -1,3 +1,9 @@
+################################################################################
+""" File: Data_Plot.py
+
+This file contains the functions and driver to plot data from .csv file and save graphs as a .png. """
+################################################################################
+
 ##########Import proper Libraries##########
 import csv
 import numpy
