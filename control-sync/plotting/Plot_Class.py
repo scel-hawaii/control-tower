@@ -18,6 +18,7 @@ class Plotting(object):
 	### Initialize objects ###
 	def __init__(self, filename, BeginDateIn, EndDateIn, field):
 		# Name of datafile
+		self.openfile = open(filename, 'r')
 		self.filename = filename
 		self.dataorganized = ''	# Holds gathered data
 		self.ChosenData = []	# Holds data for specific field
@@ -33,13 +34,13 @@ class Plotting(object):
 		self.i = 0		# Index to go through fields
 		self.color = 'b'	# Color of data for specific field
 		self.colors = itertools.cycle(['r','g','y','c','m','k','b'])
-
+	
 	### Input time interval ###
 	# Using begin and end date, finds time data for x-axis of graph
 	def input_time(self, filename, BeginDateIn, EndDateIn):
 
 		# Gather the Data
-		self.dataorganized = csv.DictReader(open(filename, 'r'))
+		self.dataorganized = csv.DictReader(self.openfile)
 
 		# Convert input dates
 		self.BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
@@ -61,8 +62,8 @@ class Plotting(object):
 	def input_field(self, filename, field, i):
 
 		# Get chosen data
-		self.dataorganized = csv.DictReader(open(filename,'r'))
-		open(filename, 'r').seek(0) #Reset iterator
+		self.dataorganized = csv.DictReader(self.openfile)
+		self.openfile.seek(0) #Reset iterator
 		self.ChosenData = self.get_data(self.dataorganized, field[i])
 
 		# Obtain the chosen data in the specified range
@@ -235,4 +236,4 @@ weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-
 weatherbox.plot_data()
 
 # Close file
-weatherbox.open(filename, 'r').close()
+weatherbox.openfile.close()
