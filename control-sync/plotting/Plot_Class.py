@@ -16,11 +16,12 @@ import matplotlib.pyplot as plt
 class Plotting(object):
 
 	### Initialize objects ###
-	def __init__(self, filename, BeginDateIn, EndDateIn, field):
+	def __init__(self, filename, BeginDateIn, EndDateIn, field, PlotAll):
 		# Name of datafile
+		self.PlotAll = PlotAll
 		self.openfile = open(filename, 'r')
 		self.filename = filename
-		self.dataorganized = ''	# Holds gathered data
+		self.dataorganized = csv.DictReader(self.openfile)
 		self.ChosenData = []	# Holds data for specific field
 		self.ConvertedTime = []	# Holds converted datetime objects
 		self.BeginDate = 0	# Begin date for data plotted
@@ -33,14 +34,11 @@ class Plotting(object):
 		self.y = []		# Field data for y-axis
 		self.i = 0		# Index to go through fields
 		self.color = 'b'	# Color of data for specific field
-		self.colors = itertools.cycle(['r','g','y','c','m','k','b'])
+		self.colors = itertools.cycle(['r','g','y','c','m','k','0.75','#663300','#660066','#ff6600','#996600','#800000','b'])
 	
 	### Input time interval ###
 	# Using begin and end date, finds time data for x-axis of graph
 	def input_time(self, filename, BeginDateIn, EndDateIn):
-
-		# Gather the Data
-		self.dataorganized = csv.DictReader(self.openfile)
 
 		# Convert input dates
 		self.BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
@@ -199,6 +197,45 @@ class Plotting(object):
 	formats and saves plot"""
 	def plot_data(self):
 
+		#Plot All?
+		if(self.PlotAll == True):
+			
+			#Array to hold fields
+			ChosenFields = []
+
+			#Obtain all Field titles
+			self.openfile.seek(0) #Reset iterator
+			for row in self.openfile:
+				allfields = row
+				break
+
+			#Split the fields
+			allfields = allfields.split(',')
+	
+			#Store all fields, EXCEPT address and db_time
+			for info in allfields:
+
+				if(info != 'address' and info != 'db_time'):
+					
+					ChosenFields.append(info)
+
+			#Check for any extra characters
+			i = 0
+			while(i < len(ChosenFields)):
+			
+				if(ChosenFields[i].endswith('\n')):
+
+					#Remove the error
+					error = ChosenFields[i]
+					error = error[:-1]
+					ChosenFields[i] = error
+
+				#Increment
+				i += 1
+
+			#Return all 
+			self.field = ChosenFields
+
 		# Find number of fields to plot
 		num_fields = len(self.field)
 
@@ -218,6 +255,7 @@ class Plotting(object):
 		plt.xlabel('Time')
 		plt.title('Weather Box Data')
 		plt.xlim(self.BeginDate, self.EndDate)
+		plt.ylim(-1000, 8000)
 		plt.legend(self.field, loc='best', scatterpoints=1, fontsize=8)
 
 		# Save plot as .png
@@ -230,7 +268,7 @@ class Plotting(object):
 ########## Main ##########
 
 # Create class
-weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'])
+weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'], True)
 
 # Plot data and save as a .png
 weatherbox.plot_data()
