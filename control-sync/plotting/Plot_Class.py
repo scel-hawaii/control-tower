@@ -257,9 +257,11 @@ class Plotting(object):
 		plt.title('Weather Box Data')
 		plt.xlim(self.BeginDate, self.EndDate)
 		plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y\n%H:%M:%S'))
-		plt.ylim(-1000, 8000)
-		plt.legend(self.field, loc='best', scatterpoints=1, fontsize=8)
+		plt.ylim(-1000, 9000)
 		plt.gcf().autofmt_xdate()
+
+		#Legend Format
+		plt.legend(self.field, loc='upper center', scatterpoints=1, fontsize=8, bbox_to_anchor = (0.5, 1.0), fancybox = True, ncol = 4)
 
 		# Save plot as .png
 		plt.savefig('WeatherboxData_Graph.png')
