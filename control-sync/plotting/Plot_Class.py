@@ -11,6 +11,7 @@ import operator
 import datetime
 import itertools
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
 
 ########## Plotting Class using Matplotlib ##########
 class Plotting(object):
@@ -255,8 +256,10 @@ class Plotting(object):
 		plt.xlabel('Time')
 		plt.title('Weather Box Data')
 		plt.xlim(self.BeginDate, self.EndDate)
+		plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y\n%H:%M:%S'))
 		plt.ylim(-1000, 8000)
 		plt.legend(self.field, loc='best', scatterpoints=1, fontsize=8)
+		plt.gcf().autofmt_xdate()
 
 		# Save plot as .png
 		plt.savefig('WeatherboxData_Graph.png')
