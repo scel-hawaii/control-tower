@@ -42,6 +42,10 @@ if len(arguments) > 1:
         print get_version()
     elif option == "update":
         update()
+    else:
+        print "Error: unknown command."
+        print "Usage: control_tower [option]"
+        print
 
 else:
     print "Usage: control_tower [option]"
