@@ -12,6 +12,7 @@ import datetime
 import itertools
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+from dateutil import parser
 
 ########## Plotting Class using Matplotlib ##########
 class Plotting(object):
@@ -31,7 +32,7 @@ class Plotting(object):
 		self.EndIndex = 0	# End index of data plotted
 		self.field = field	# Fields for data to plot
 		self.x = []		# Time data for x-axis
-		self.input_time(filename, BeginDateIn, EndDateIn)
+		self.input_time(BeginDateIn, EndDateIn)
 		self.y = []		# Field data for y-axis
 		self.i = 0		# Index to go through fields
 		self.color = 'b'	# Color of data for specific field
@@ -39,11 +40,16 @@ class Plotting(object):
 	
 	### Input time interval ###
 	# Using begin and end date, finds time data for x-axis of graph
-	def input_time(self, filename, BeginDateIn, EndDateIn):
+	def input_time(self, BeginDateIn, EndDateIn):
 
 		# Convert input dates
-		self.BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
-		self.EndDate = datetime.datetime.strptime(EndDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
+		### Python 3 version
+		###self.BeginDate = datetime.datetime.strptime(BeginDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
+		###self.EndDate = datetime.datetime.strptime(EndDateIn + "00", "%Y-%m-%d %H:%M:%S.%f%z")
+
+		## Python 2 version
+		self.BeginDate = parser.parse(BeginDateIn + "00")
+		self.EndDate = parser.parse(EndDateIn + "00")
 
 		# Convert time
 		self.ConvertedTime = self.convert_date(self.dataorganized)
@@ -58,7 +64,7 @@ class Plotting(object):
 
 	### Input data field to plot ###
 	# Finds data over a time range for a certain field to plot on the y-axis
-	def input_field(self, filename, field, i):
+	def input_field(self, field, i):
 
 		# Get chosen data
 		self.dataorganized = csv.DictReader(self.openfile)
@@ -115,7 +121,11 @@ class Plotting(object):
 		for row in data:	
 
 			# Store the date
-			t.append(datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z"))
+			### Python 3 version
+			###t.append(datetime.datetime.strptime(row[field]+"00", "%Y-%m-%d %H:%M:%S.%f%z"))
+
+			## Python 2 version
+			t.append(parser.parse(row[field]+"00"))
 
 		# Return
 		return t
@@ -244,7 +254,7 @@ class Plotting(object):
 		while(self.i < num_fields):
 
 			# Getting y-axis data for field
-			self.input_field(self.filename, self.field, self.i)
+			self.input_field(self.field, self.i)
 
 			# Plot data as a scatter plot
 			plt.scatter(self.x, self.y, c = self.color, marker='.', edgecolors='none')
@@ -261,7 +271,7 @@ class Plotting(object):
 		plt.gcf().autofmt_xdate()
 
 		#Legend Format
-		plt.legend(self.field, loc='upper center', scatterpoints=1, fontsize=8, bbox_to_anchor = (0.5, 1.0), fancybox = True, ncol = 4)
+		table = plt.legend(self.field, loc='upper center', prop={'size':8}, scatterpoints=1, ncol=4, fancybox=True, bbox_to_anchor=(0.5, 1.0))
 
 		# Save plot as .png
 		plt.savefig('WeatherboxData_Graph.png')
@@ -271,9 +281,8 @@ class Plotting(object):
 
 
 ########## Main ##########
-
 # Create class
-weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'], True)
+weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'], False)
 
 # Plot data and save as a .png
 weatherbox.plot_data()
