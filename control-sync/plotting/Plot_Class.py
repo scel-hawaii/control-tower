@@ -18,7 +18,7 @@ from dateutil import parser
 class Plotting(object):
 
 	### Initialize objects ###
-	def __init__(self, filename, BeginDateIn, EndDateIn, field, PlotAll):
+	def __init__(self, filename, BeginDateIn, EndDateIn, field, plot_prop, PlotAll):
 		# Name of datafile
 		self.PlotAll = PlotAll
 		self.openfile = open(filename, 'r')
@@ -35,9 +35,57 @@ class Plotting(object):
 		self.input_time(BeginDateIn, EndDateIn)
 		self.y = []		# Field data for y-axis
 		self.i = 0		# Index to go through fields
-		self.color = 'b'	# Color of data for specific field
-		self.colors = itertools.cycle(['r','g','y','c','m','k','0.75','#663300','#660066','#ff6600','#996600','#800000','b'])
-	
+		self.fieldnum = len(self.field)	# Number of fields to plot
+		for key, string in plot_prop.items(): # Set graph properties
+			setattr(self, key, string)
+
+	### Setting colors ###
+	# Sets colors for graph if user does not input colors
+	def set_colors(self):
+
+		# If user has not input colors
+		if self.colors == []:
+
+			# Create list to temporarly hold colors
+			pcolors = []
+			iterable = [0, 85, 170, 255]
+
+			pcolors = itertools.combinations(iterable, 3)
+			
+		#print(pcolors)
+		self.colors = itertools.cycle(pcolors) # Plot colors
+			# Initialize colors
+			#r = 0
+			#g = 0
+			#b = 85
+
+			# Counter for number of colors needed to be found
+			#colornum = 0
+
+			# While fields still need colors
+			#while colornum < self.fieldnum:
+
+				# Add color to plot	
+				#pcolors.append('#%02X%02X%02X' % (r,g,b))
+
+				# Set red, green, and blue for hex color
+				#if colornum % 8 < 3:
+					#b = (b + 85) % 256
+				#elif colornum % 8 > 5:
+					#g = 0;
+					#b = 0;
+					#if colornum / 8 == 1:
+						#r = (r + 85) % 256
+					#r = (r + 85) % 256
+				#else:
+					#b = 0
+					#if colornum / 8 == 1:
+						#b = (b + 85) % 256
+					#g = (g + 85) % 256
+
+				# Update number of colors still needed
+				#colornum = colornum + 1
+
 	### Input time interval ###
 	# Using begin and end date, finds time data for x-axis of graph
 	def input_time(self, BeginDateIn, EndDateIn):
@@ -73,6 +121,7 @@ class Plotting(object):
 
 		# Obtain the chosen data in the specified range
 		self.y = self.gather_chosen(self.ChosenData, self.BeginIndex, self.EndIndex)
+
 		# Increment index
 		self.i += 1
 
@@ -247,8 +296,14 @@ class Plotting(object):
 			#Return all 
 			self.field = ChosenFields
 
+			# Find number of fields to graph
+			self.fieldnum = len(self.field)
+
 		# Find number of fields to plot
 		num_fields = len(self.field)
+
+		# Determine colors for plots
+		self.set_colors()
 
 		# While there are still fields to plot
 		while(self.i < num_fields):
@@ -257,14 +312,12 @@ class Plotting(object):
 			self.input_field(self.field, self.i)
 
 			# Plot data as a scatter plot
-			plt.scatter(self.x, self.y, c = self.color, marker='.', edgecolors='none')
-
-			# Change color for next plot
-			self.color = next(self.colors)
+			plt.scatter(self.x, self.y, c = next(self.colors), marker='.', edgecolors='none')
 
 		# Plot Format
-		plt.xlabel('Time')
-		plt.title('Weather Box Data')
+		plt.xlabel(self.x_title)
+		plt.ylabel(self.y_title)
+		plt.title(self.title)
 		plt.xlim(self.BeginDate, self.EndDate)
 		plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m/%d/%Y\n%H:%M:%S'))
 		plt.ylim(-1000, 9000)
@@ -281,8 +334,12 @@ class Plotting(object):
 
 
 ########## Main ##########
+# Specify plotting properties
+plot_prop = {'title':'Weather Box Data', 'x_title':'Time', 'y_title': '', 'colors':[]}
+#['#0066FF', '#33CC33', '#FF3300', '#FF3399', '#FF6600', '#FFFF00', '#CC33FF']}
+
 # Create class
-weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'], False)
+weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'], plot_prop, True)
 
 # Plot data and save as a .png
 weatherbox.plot_data()
