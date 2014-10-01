@@ -10,6 +10,7 @@ import numpy
 import operator
 import datetime
 import itertools
+import matplotlib as mpl  #####
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from dateutil import parser
@@ -38,53 +39,6 @@ class Plotting(object):
 		self.fieldnum = len(self.field)	# Number of fields to plot
 		for key, string in plot_prop.items(): # Set graph properties
 			setattr(self, key, string)
-
-	### Setting colors ###
-	# Sets colors for graph if user does not input colors
-	def set_colors(self):
-
-		# If user has not input colors
-		if self.colors == []:
-
-			# Create list to temporarly hold colors
-			pcolors = []
-			iterable = [0, 85, 170, 255]
-
-			pcolors = itertools.combinations(iterable, 3)
-			
-		#print(pcolors)
-		self.colors = itertools.cycle(pcolors) # Plot colors
-			# Initialize colors
-			#r = 0
-			#g = 0
-			#b = 85
-
-			# Counter for number of colors needed to be found
-			#colornum = 0
-
-			# While fields still need colors
-			#while colornum < self.fieldnum:
-
-				# Add color to plot	
-				#pcolors.append('#%02X%02X%02X' % (r,g,b))
-
-				# Set red, green, and blue for hex color
-				#if colornum % 8 < 3:
-					#b = (b + 85) % 256
-				#elif colornum % 8 > 5:
-					#g = 0;
-					#b = 0;
-					#if colornum / 8 == 1:
-						#r = (r + 85) % 256
-					#r = (r + 85) % 256
-				#else:
-					#b = 0
-					#if colornum / 8 == 1:
-						#b = (b + 85) % 256
-					#g = (g + 85) % 256
-
-				# Update number of colors still needed
-				#colornum = colornum + 1
 
 	### Input time interval ###
 	# Using begin and end date, finds time data for x-axis of graph
@@ -296,23 +250,45 @@ class Plotting(object):
 			#Return all 
 			self.field = ChosenFields
 
-			# Find number of fields to graph
-			self.fieldnum = len(self.field)
+		# Find number of fields to graph
+		self.fieldnum = len(self.field)
 
-		# Find number of fields to plot
-		num_fields = len(self.field)
+		# If colors are not indicated set color map
+		if self.colors == []:
+			# Set different between colors
+			nsteps = 20
 
-		# Determine colors for plots
-		self.set_colors()
+			# Set color map
+			cmap = mpl.cm.Set1_r
+
+			# Need to determine colors for each field
+			needcolors = 1
+
+		# Otherwise, set specified colors for fields
+		else:
+			# Do not need to determine colors for each field
+			needcolors = 0
+
+			# Set to user input
+			self.colors = itertools.cycle(self.colors)
 
 		# While there are still fields to plot
-		while(self.i < num_fields):
+		while(self.i < self.fieldnum):
 
 			# Getting y-axis data for field
 			self.input_field(self.field, self.i)
 
-			# Plot data as a scatter plot
-			plt.scatter(self.x, self.y, c = next(self.colors), marker='.', edgecolors='none')
+			# If colors are not chosen, choose color from colormap
+			if needcolors == 1:
+				self.colors = cmap(self.i/float(nsteps))
+
+				# Plot data as a scatter plot
+				plt.scatter(self.x, self.y, c = self.colors, marker='.', edgecolors='none')
+
+			# Else if colors are chosen
+			else:
+				# Plot data as a scatter plot
+				plt.scatter(self.x, self.y, c = next(self.colors), marker='.', edgecolors='none')
 
 		# Plot Format
 		plt.xlabel(self.x_title)
@@ -336,7 +312,7 @@ class Plotting(object):
 ########## Main ##########
 # Specify plotting properties
 plot_prop = {'title':'Weather Box Data', 'x_title':'Time', 'y_title': '', 'colors':[]}
-#['#0066FF', '#33CC33', '#FF3300', '#FF3399', '#FF6600', '#FFFF00', '#CC33FF']}
+#'#0066FF', '#33CC33', '#FF3300', '#FF3399', '#FF6600', '#FFFF00', '#CC33FF']}
 
 # Create class
 weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'], plot_prop, True)
