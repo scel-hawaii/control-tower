@@ -32,7 +32,7 @@ def update():
     
 if len(arguments) > 1:
     option = sys.argv[1]
-    if option == "start":
+   if option == "start":
         from coordinator_recv.coordinator_server import ServerLauncher
         launcher = ServerLauncher()
         launcher.start_server()
@@ -42,6 +42,8 @@ if len(arguments) > 1:
         print get_version()
     elif option == "update":
         update()
+    elif(cmd == "status"):
+        call   (["ruby", "status_report/status_report.rb"])
     else:
         print "Error: unknown command."
         print "Usage: control_tower [option]"
