@@ -18,7 +18,13 @@ def fetch():
     command = command.split(" ")
     output = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0].rstrip()
     print output
-    
+
+
+# Runs a shell command
+def run_shell_command(command):
+    output = subprocess.Popen(command, stdout=subprocess.PIPE).communicate()[0].rstrip()
+    return output
+
 def update():
     print "Updating control_tower..."
     fetch()
@@ -32,12 +38,18 @@ def update():
     
 if len(arguments) > 1:
     option = sys.argv[1]
-   if option == "start":
+    if option == "start":
         from coordinator_recv.coordinator_server import ServerLauncher
         launcher = ServerLauncher()
         launcher.start_server()
     elif option == "status":
         print "Option not implemented yet"
+    elif option == "help":
+        print "Option not implemented yet"
+    elif option == "dump_database":
+        print("Attemping to dump database.")
+        command = ["psql", "-c", "\\copy outdoor_env to \'outdoor_env.csv\' csv header"]
+        print run_shell_command(command)
     elif option == "version":
         print get_version()
     elif option == "update":
