@@ -4,7 +4,6 @@ import os
 import subprocess
 
 arguments = sys.argv
-option = sys.argv[1]
 
 
 def get_version():
@@ -32,6 +31,7 @@ def update():
     print output
     
 if len(arguments) > 1:
+    option = sys.argv[1]
     if option == "start":
         from coordinator_recv.coordinator_server import ServerLauncher
         launcher = ServerLauncher()
@@ -46,7 +46,6 @@ if len(arguments) > 1:
         print "Error: unknown command."
         print "Usage: control_tower [option]"
         print
-
 else:
     print "Usage: control_tower [option]"
     print
