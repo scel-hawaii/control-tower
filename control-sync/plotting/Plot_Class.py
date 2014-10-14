@@ -259,7 +259,7 @@ class Plotting(object):
 			nsteps = 20
 
 			# Set color map
-			cmap = mpl.cm.Set1_r
+			cmap = mpl.cm.Set1
 
 			# Need to determine colors for each field
 			needcolors = 1
@@ -300,7 +300,7 @@ class Plotting(object):
 		plt.gcf().autofmt_xdate()
 
 		#Legend Format
-		table = plt.legend(self.field, loc='upper center', prop={'size':8}, scatterpoints=1, ncol=4, fancybox=True, bbox_to_anchor=(0.5, 1.0))
+		table = plt.legend(self.field_titles, loc='upper center', prop={'size':8}, scatterpoints=1, ncol=4, fancybox=True, bbox_to_anchor=(0.5, 1.0))
 
 		# Save plot as .png
 		plt.savefig('WeatherboxData_Graph.png')
@@ -310,8 +310,11 @@ class Plotting(object):
 
 
 ########## Main ##########
+# Set dictionaries for legend
+fieldtitles= ['Current Uptime [ms]','Temperature [daC]','Pressure [pa]','Battery Voltage [mV]','Panel Voltage[mV]','Solar Irradiance Sensor Voltage [mV]','Solar Irradiance [W/m^2]','dallas_amb_c','dallas_roof_c','Panel Current [ua]','Humidity [percent*100]','Indicator','Overflow of Uptime Counter']
+
 # Specify plotting properties
-plot_prop = {'title':'Weather Box Data', 'x_title':'Time', 'y_title': '', 'colors':[]}
+plot_prop = {'title':'Weather Box Data', 'x_title':'Time', 'y_title': '', 'field_titles':fieldtitles,'colors':[]}
 #'#0066FF', '#33CC33', '#FF3300', '#FF3399', '#FF6600', '#FFFF00', '#CC33FF']}
 
 # Create class
