@@ -206,6 +206,43 @@ class Plotting(object):
 		return range
 
 
+	### Set field names for legend ###
+	# Sets field names for legend if the user has not put in any
+	def set_field_names(self):
+
+		# Determine if user has already entered field names
+		if self.field_titles == []:
+			print ('changing names')
+			# Set field titles to better names
+			for f_name in self.field:
+				if f_name == 'uptime_ms':
+					self.field_titles.append('Current Uptime [ms]')
+				elif f_name == 'bmp085_temp_decic':
+					self.field_titles.append('Temperature [daC]')
+				elif f_name == 'bmp085_press_pa':
+					self.field_titles.append('Pressure [pa]')
+				elif f_name == 'batt_mv':
+					self.field_titles.append('Battery Voltage [mV]')
+				elif f_name == 'panel_mv':
+					self.field_titles.append('Panel Voltage[mV]')
+				elif f_name == 'apogee_mv':
+					self.field_titles.append('Solar Irradiance Sensor Voltage [mV]')
+				elif f_name == 'apogee_w_m2':
+					self.field_titles.append('Solar Irradiance [W/m^2]')
+				elif f_name == 'dallas_amb_c':
+					self.field_titles.append('dallas_amb_c')
+				elif f_name == 'dallas_roof_c':
+					self.field_titles.append('dallas_roof_c')
+				elif f_name == 'panel_ua':
+					self.field_titles.append('Panel Current [ua]')
+				elif f_name == 'humidity_centi_pct':
+					self.field_titles.append('Humidity [percent*100]')
+				elif f_name == 'indicator':
+					self.field_titles.append('Indicator')
+				elif f_name == 'overflow_num':
+					self.field_titles.append('Overflow of Uptime Counter')
+
+
 	### Plot Data ###
 	"""Plots the data as a scatter plot using times and data,
 	formats and saves plot"""
@@ -299,6 +336,10 @@ class Plotting(object):
 		plt.ylim(-1000, 9000)
 		plt.gcf().autofmt_xdate()
 
+		# Set field names for legend
+		self.set_field_names()
+
+
 		#Legend Format
 		table = plt.legend(self.field_titles, loc='upper center', prop={'size':8}, scatterpoints=1, ncol=4, fancybox=True, bbox_to_anchor=(0.5, 1.0))
 
@@ -311,11 +352,11 @@ class Plotting(object):
 
 ########## Main ##########
 # Set dictionaries for legend
-fieldtitles= ['Current Uptime [ms]','Temperature [daC]','Pressure [pa]','Battery Voltage [mV]','Panel Voltage[mV]','Solar Irradiance Sensor Voltage [mV]','Solar Irradiance [W/m^2]','dallas_amb_c','dallas_roof_c','Panel Current [ua]','Humidity [percent*100]','Indicator','Overflow of Uptime Counter']
+#fieldtitles= ['Current Uptime [ms]','Temperature [daC]','Pressure [pa]','Battery Voltage [mV]','Panel Voltage[mV]','Solar Irradiance Sensor Voltage [mV]','Solar Irradiance [W/m^2]','dallas_amb_c','dallas_roof_c','Panel Current [ua]','Humidity [percent*100]','Indicator','Overflow of Uptime Counter']
+#colorchoice = ['#0066FF', '#33CC33', '#FF3300', '#FF3399', '#FF6600', '#FFFF00', '#CC33FF']
 
 # Specify plotting properties
-plot_prop = {'title':'Weather Box Data', 'x_title':'Time', 'y_title': '', 'field_titles':fieldtitles,'colors':[]}
-#'#0066FF', '#33CC33', '#FF3300', '#FF3399', '#FF6600', '#FFFF00', '#CC33FF']}
+plot_prop = {'title':'Weather Box Data', 'x_title':'Time', 'y_title': '', 'field_titles':[],'colors':[]}
 
 # Create class
 weatherbox = Plotting('215_data.csv', '2014-05-26 00:00:00.000000-10', '2014-05-29 21:56:14.000000-10', ['apogee_w_m2','panel_mv','batt_mv','bmp085_temp_decic'], plot_prop, True)
