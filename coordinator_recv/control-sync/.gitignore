@@ -1,4 +1,5 @@
 # Local Gitignore file
 *.csv
 *.log
+*.png
 data
