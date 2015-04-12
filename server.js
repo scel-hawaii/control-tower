@@ -14,6 +14,7 @@ server.use(restify.CORS());
 // =======================
 // Routes
 // =======================
+server.get('/test-stuff', models.testStuff);
 server.get('/stuff', models.grabData);
 server.get('/fetchVoltage', models.grabVoltage);
 server.get('/fetchTemperature', models.grabTemperature);

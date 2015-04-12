@@ -10,7 +10,7 @@ function combine(keys, vals) {
 
 // Run a pg query from a pool of clients
 function pgQuery(qString, callback){
-	var connectionString = process.env.DATABASE_URL || 'pg://control_tower:salty8814pilot@192.168.1.38:5432/control_tower';
+	var connectionString = process.env.DATABASE_URL || 'pg://control_tower:renewable123@localhost:5432/control_tower';
 	pg.connect(connectionString, function(err, client, done) {
 	  if(err) {
 	    return console.error('error fetching client from pool', err);
@@ -96,6 +96,12 @@ function fetchSmoothData(options, callback){
         tmp = {};
       } 
       callback(JSON.stringify(dataSet));
+    });
+}
+function fetchFunStuff(options, callback){ 
+    var q = "SELECT * FROM outdoor_env LIMIT 100"
+    pgQuery(q, function(result){
+      callback(result.rows);
     });
 }
 
@@ -193,6 +199,12 @@ module.exports = {
     },
     grabVoltage: function(req, res, next){
         fetchVoltage({}, function(results){
+	    res.send(results);
+ 	    return next();
+        });
+    },
+    testStuff: function(req, res, next){
+        fetchFunStuff({}, function(results){
 	    res.send(results);
  	    return next();
         });
