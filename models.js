@@ -43,6 +43,16 @@ TODO - Implement downsampling:
 function constructSensorQuery(options){
     var selector = options.sensors.join(" ") + " ";
     var sourceTable = 'outdoor_env '; 
+    var sampleConditional = "";
+    if( ('sampleInter' in options) && ('sampleSelector' in options)){
+        sourceTable = '( SELECT db_time, ' + options.sampleSelector + ', ' + 
+                      'row_number() OVER(ORDER BY db_time DESC) ' + 
+                      'AS row FROM outdoor_env WHERE ' + 
+                      options.sampleSelector + ' ' + 
+                      'IS NOT NULL) t ';
+        sampleConditional = 'AND t.row % ' + options.sampleInter + ' = 0 ';
+    }
+
     var nullConditional = 'apogee_w_m2 IS NOT NULL ';
     var dateConditional = "";
     if( ("startDate" in options) && ("endDate" in options) ){
@@ -50,7 +60,7 @@ function constructSensorQuery(options){
         var end = options.endDate.toISOString();
         var dateConditional = 'AND (db_time >= ' + '\'' + start+ '\'' + ' AND ' + 'db_time <= ' + '\'' + end + '\'' + ') '; 
     }
-    var conditional = nullConditional + dateConditional;
+    var conditional = nullConditional + dateConditional + sampleConditional;
     var order = 'db_time DESC ';
     var limit = '2000';
 
@@ -144,7 +154,7 @@ function fetchVoltage(options, callback){
 }
 
 function fetchTemperature(options, callback){ 
-	  var queryString = 'SELECT db_time, bmp085_temp_decic FROM outdoor_env WHERE bmp085_temp_decic IS NOT NULL ORDER BY db_time DESC LIMIT 5000 ';
+	var queryString = 'SELECT db_time, bmp085_temp_decic FROM outdoor_env WHERE bmp085_temp_decic IS NOT NULL ORDER BY db_time DESC LIMIT 5000 ';
     var today = new Date();
     var limitQuery = "";
     today.setDate(today.getDate() - 60);
@@ -227,6 +237,8 @@ end = new Date();
 var options = {
     sensors: ["apogee_w_m2"],
     startDate: start,
+    sampleSelector: "apogee_w_m2",
+    sampleInter: "100",
     endDate: (new Date())
 }
 var q = constructSensorQuery(options);
