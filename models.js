@@ -8,7 +8,11 @@ function combine(keys, vals) {
         {}
     ); }
 
-// Run a pg query from a pool of clients
+/* 
+ * Given: An SQL query 
+ * Returns: The result of the SQL query
+ *
+ */
 function pgQuery(qString, callback){
 	var connectionString = process.env.DATABASE_URL || 'pg://control_tower:renewable123@localhost:5432/control_tower';
 	pg.connect(connectionString, function(err, client, done) {
@@ -29,16 +33,10 @@ function pgQuery(qString, callback){
 
 
 /*
-Options:
-    - sensors
-    - startDate
-    - endDate
-
-TODO - Implement downsampling:
-    SELECT db_time, batt_mv
-    FROM( SELECT db_time, batt_mv, row_number() OVER(ORDER BY db_time DESC) AS row FROM outdoor_env WHERE batt_mv IS NOT NULL) t
-    WHERE(t.row % 1000 = 0 ) AND batt_mv IS NOT NULL LIMIT 100;
-*/
+ * 
+ * TODO: Document this crap better please
+ *
+ */
 
 function constructSensorQuery(options){
     var selector = options.sensors.join(" ") + " ";
@@ -229,6 +227,7 @@ module.exports = {
     }
 }
 
+/*
 var start = new Date();
 start.setDate(start.getDate() - 60);
 start = start;
@@ -244,3 +243,11 @@ var options = {
 var q = constructSensorQuery(options);
 console.log(q);
 
+var options = {
+    sensors: ["apogee_w_m2"],
+    sampleSelector: "apogee_w_m2",
+    sampleInter: "100"
+}
+var q = constructSensorQuery(options);
+console.log(q);
+*/
