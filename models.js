@@ -28,11 +28,17 @@ function pgQuery(qString, callback){
 }
 
 
-//
-// Options:
-//      - sensors
-//      - startDate
-//      - endDate
+/*
+Options:
+    - sensors
+    - startDate
+    - endDate
+
+TODO - Implement downsampling:
+    SELECT db_time, batt_mv
+    FROM( SELECT db_time, batt_mv, row_number() OVER(ORDER BY db_time DESC) AS row FROM outdoor_env WHERE batt_mv IS NOT NULL) t
+    WHERE(t.row % 1000 = 0 ) AND batt_mv IS NOT NULL LIMIT 100;
+*/
 
 function constructSensorQuery(options){
     var selector = options.sensors.join(" ") + " ";
