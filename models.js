@@ -43,17 +43,11 @@ function constructSensorQuery(options){
     var sourceTable = 'outdoor_env '; 
     var sampleConditional = "";
     if( ('sampleInter' in options) && ('sampleSelector' in options)){
-        var limit = "";
-        if("rowLimit" in options){
-            limit = options.rowLimit;
-        }
-        if("rowLimit" in options)
         sourceTable = '( SELECT db_time, ' + options.sampleSelector + ', ' + 
                       'row_number() OVER(ORDER BY db_time DESC) ' + 
                       'AS row FROM outdoor_env WHERE ' + 
                       options.sampleSelector + ' ' + 
                       'IS NOT NULL ' + 
-                      'LIMIT ' + limit + ' ' + 
                       ') t ';
         sampleConditional = 'AND t.row % ' + options.sampleInter + ' = 0 ';
     }
