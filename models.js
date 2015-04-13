@@ -61,6 +61,10 @@ function constructSensorQuery(options){
     var conditional = nullConditional + dateConditional + sampleConditional;
     var order = 'db_time DESC ';
     var limit = '2000';
+    if("rowLimit" in options){
+        limit = options.rowLimit;
+    }
+
 
     return 'SELECT db_time, ' + selector + 
            'FROM ' + sourceTable + 
@@ -86,14 +90,12 @@ function fetchSensorData(options, callback){
     queryOptions = {
         sensors: ["apogee_w_m2"],
         sampleSelector: "apogee_w_m2",
-        sampleInter: "100",
-        startDate: start,
-        endDate: (new Date())
-    } query = constructSensorQuery(queryOptions);
-
-    console.log(query);
+        sampleInter: "1",
+        rowLimit: "1000"
+    };
+    query = constructSensorQuery(queryOptions);
     pgQuery(query, function(result){
-      callback(JSON.stringify(result));
+      callback(JSON.stringify(result.rows));
     });
 
 /* TODO: Re-implement this filter later 
@@ -231,6 +233,9 @@ module.exports = {
     }
 }
 
+fetchSensorData({}, function(results){
+    console.log(results);
+});
 /*
 var start = new Date();
 start.setDate(start.getDate() - 60);
