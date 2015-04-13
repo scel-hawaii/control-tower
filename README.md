@@ -11,5 +11,7 @@ Todo:
 * [ ] Clean up nasty code
 * [ ] Basic documentation (routes, etc.)
 * [ ] Scripted setup on a production machine
-* [ ] Dockerize for easy testing
-* [ ] Script to generate some trash data in a test machine
+* [x] Dockerize for easy testing
+* [ ] Finish optimizing SQL query generator
+* [ ] Add some more basic tests
+* [x] Script to generate some trash data in a test machine
