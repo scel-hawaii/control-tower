@@ -116,7 +116,10 @@ function fetchSensorData(options, callback){
         rowLimit: "1000"
     };
     query = constructSensorQuery(queryOptions);
+    console.log("Running query: ");
+    console.log(query);
     pgQuery(query, function(result){
+      console.log("Done with query");
       callback(xyTransform(result.rows));
     });
 }
