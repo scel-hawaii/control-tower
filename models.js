@@ -78,6 +78,21 @@ function insertRow(){
     // INSERT INTO outdoor_env (db_time, address, apogee_w_m2) VALUES (now(),5000,502038);
 }
 
+function xyTransform(dataRows, callback){
+    var tracker = 0;
+    var filtered = gauss.Vector(dataRows.map(function(row){return row.apogee_w_m2})).ema(1).reverse();
+    var timeStamps = dataRows.map(function(row){return (new Date(String(row.db_time))).getTime()}).reverse();
+    var dataSet = [];
+    var tmp = {};
+    for(var i = 0; i < filtered.length ; i ++ ){
+        tmp.x = timeStamps[i];
+        tmp.y = filtered[i];
+        dataSet.push(tmp);
+        tmp = {};
+    } 
+    return JSON.stringify(dataSet);
+}
+
 // TODO: Name this crap better
 function fetchSensorData(options, callback){ 
     var start = new Date();
@@ -95,24 +110,8 @@ function fetchSensorData(options, callback){
     };
     query = constructSensorQuery(queryOptions);
     pgQuery(query, function(result){
-      callback(JSON.stringify(result.rows));
+      callback(xyTransform(result.rows));
     });
-
-/* TODO: Re-implement this filter later 
-var tracker = 0;
-var filtered = gauss.Vector(result.rows.map(function(row){return row.apogee_w_m2})).ema(25).reverse();
-var timeStamps = result.rows.map(function(row){return (new Date(String(row.db_time))).getTime()}).reverse();
-var dataSet = [];
-var tmp = {};
-for(var i = 0; i < filtered.length ; i ++ ){
-tmp.x = timeStamps[i];
-tmp.y = filtered[i];
-dataSet.push(tmp);
-tmp = {};
-} 
-callback(JSON.stringify(dataSet));
-*/
-
 }
 function fetchFunStuff(options, callback){ 
     var q = "SELECT * FROM outdoor_env LIMIT 100"
