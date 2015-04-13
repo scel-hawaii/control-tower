@@ -9,6 +9,7 @@ for inputting data as well (with proper tokens).
 Todo:
 
 * [ ] Clean up nasty code
+* [ ] Move pw/db configuration out to a .json file 
 * [ ] Basic documentation (routes, etc.)
 * [ ] Scripted setup on a production machine
 * [x] Dockerize for easy testing
