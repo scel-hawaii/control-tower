@@ -74,39 +74,43 @@ function insertRow(){
     // INSERT INTO outdoor_env (db_time, address, apogee_w_m2) VALUES (now(),5000,502038);
 }
 
+// TODO: Name this crap better
 function fetchSensorData(options, callback){ 
-    var today = new Date();
+    var start = new Date();
     var limitQuery = "";
-    today.setDate(today.getDate() - 60);
-    options.startDate = today.toISOString();
-    options.endDate = (new Date()).toISOString();
-    if(!("sampleOffset" in options)) options.sampleOffset = 20;
-    if(!("limitValue" in options)) limitQuery = 'LIMIT 10000'; 
-    if(!("startDate" in options) && !("endDate" in options)){
-      var dateQuery = '';
-    }
-    else{
-      var dateQuery = '(db_time >= ' + '\'' + options.startDate + '\'' + ' AND ' + 'db_time <= ' + '\'' + options.endDate + '\'' + ')';
-    }
-	  var queryString2 = 'SELECT db_time, apogee_w_m2 ' + 
-                       'FROM( SELECT db_time, apogee_w_m2, row_number() OVER(ORDER BY db_time DESC) AS row FROM outdoor_env) t ' + 
-                       'WHERE(t.row % ' + options.sampleOffset + ' = 0 ' + 'AND ' + dateQuery + ') AND apogee_w_m2 IS NOT NULL ' + limitQuery;
+    var query;
+    var queryOptions;
 
-    console.log(queryString2);
-    pgQuery(queryString2, function(result){
-      var tracker = 0;
-      var filtered = gauss.Vector(result.rows.map(function(row){return row.apogee_w_m2})).ema(25).reverse();
-      var timeStamps = result.rows.map(function(row){return (new Date(String(row.db_time))).getTime()}).reverse();
-      var dataSet = [];
-      var tmp = {};
-      for(var i = 0; i < filtered.length ; i ++ ){
-        tmp.x = timeStamps[i];
-        tmp.y = filtered[i];
-        dataSet.push(tmp);
-        tmp = {};
-      } 
-      callback(JSON.stringify(dataSet));
+    start.setDate(start.getDate() - 60);
+
+    queryOptions = {
+        sensors: ["apogee_w_m2"],
+        sampleSelector: "apogee_w_m2",
+        sampleInter: "100",
+        startDate: start,
+        endDate: (new Date())
+    } query = constructSensorQuery(queryOptions);
+
+    console.log(query);
+    pgQuery(query, function(result){
+      callback(JSON.stringify(result));
     });
+
+/* TODO: Re-implement this filter later 
+var tracker = 0;
+var filtered = gauss.Vector(result.rows.map(function(row){return row.apogee_w_m2})).ema(25).reverse();
+var timeStamps = result.rows.map(function(row){return (new Date(String(row.db_time))).getTime()}).reverse();
+var dataSet = [];
+var tmp = {};
+for(var i = 0; i < filtered.length ; i ++ ){
+tmp.x = timeStamps[i];
+tmp.y = filtered[i];
+dataSet.push(tmp);
+tmp = {};
+} 
+callback(JSON.stringify(dataSet));
+*/
+
 }
 function fetchFunStuff(options, callback){ 
     var q = "SELECT * FROM outdoor_env LIMIT 100"
