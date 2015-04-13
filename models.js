@@ -200,6 +200,7 @@ module.exports = {
       res.send("Hello, World!");
       return next();
     },
+    fetchSensorData: fetchSensorData,
     grabData: function(req, res, next){
         fetchSensorData({}, function(results){
 	    res.send(results);
@@ -232,9 +233,6 @@ module.exports = {
     }
 }
 
-fetchSensorData({}, function(results){
-    console.log(results);
-});
 /*
 var start = new Date();
 start.setDate(start.getDate() - 60);
