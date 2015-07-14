@@ -5,7 +5,6 @@ python-dev
 python-pip
 vim
 postgresql
-postgresql-server-dev-9.1
 arduino
 x11vnc
 tightvncserver
