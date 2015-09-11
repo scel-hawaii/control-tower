@@ -1,2 +1,3 @@
-# weatherbox-new
-New weatherbox
+# Weatherbox
+
+Next generation weatherbox firmware. 
