@@ -17,7 +17,9 @@ void Packet_Transmit(uint8_t *packet){
     length = sizeof(packet); //!!TEST if this gives right length
 
     /* Debug */
-    printf("Length is %d\n", length);
+    //printf("Length is %d\n", length);
+    Serial.print("Length is: ");
+    Serial.print(length);
 
     /* Transfer the packet */
     //ZBTxRequest zbTx = ZBTxRequest(addr64, packet, length);
@@ -30,7 +32,18 @@ void Test_Packet_Gen(uint8_t *packet){
    Actions: Fills the packet with random data, used for debugging ONLY.
 */
 
-    /* Fill with random information */
-    packet = "This is a test of the transmission function. -RMKW";
+    /* Necessary Variables */
+    int i = 0;
 
+    /* Set up packet */
+    String s;
+    
+    /* Fill with random information */
+    s = "This is a test of the transmission function. -RMKW";
+
+    /* Set packet */
+    for(i = 0; i < sizeof(s); i++)
+    {
+      packet[i] = s[i];
+    }
 }
