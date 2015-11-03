@@ -7,6 +7,7 @@ void Packet_Transmit(uint8_t *packet){
             Arduino Xbee Library
 */
     /* Variable Declarations */
+    XBee xbee = XBee();//Create Xbee Object
     int length = 0;    //Length of the packet to be sent
     int i = 0;         //Variable to be used to iterate across the packet
 
@@ -18,12 +19,12 @@ void Packet_Transmit(uint8_t *packet){
 
     /* Debug */
     //printf("Length is %d\n", length);
-    Serial.print("Length is: ");
+    Serial.print("\nLength is: ");
     Serial.print(length);
 
     /* Transfer the packet */
-    //ZBTxRequest zbTx = ZBTxRequest(addr64, packet, length);
-    //xbee.send(zbTx);
+    ZBTxRequest zbTx = ZBTxRequest(addr64, packet, length);
+    xbee.send(zbTx);
 }
 
 void Test_Packet_Gen(uint8_t *packet){

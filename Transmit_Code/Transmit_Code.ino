@@ -15,12 +15,15 @@
 uint8_t packet[MAX_SIZE];
 
 void setup(){
+    XBee xbee = XBee();
     Serial.begin(9600);
+    xbee.begin(Serial);
     Packet_Transmit(packet);
 }
 
 void loop(){
     Packet_Transmit(packet);
-    Serial.print("Packet Transmitted.\n");
+    Serial.print("\nPacket Transmitted.\n");
     delay(5000);
+    Serial.flush();
 }
