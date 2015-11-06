@@ -15,7 +15,7 @@ void Packet_Transmit(uint8_t *packet){
     XBeeAddress64 addr64 = XBeeAddress64(0,0); //!!TEST if this gets right addr
 
     /* Get length of packet */
-    length = sizeof(packet); //!!TEST if this gives right length
+    length = strlen((char *) packet); //!!TEST if this gives right length
 
     /* Debug */
     //printf("Length is %d\n", length);
@@ -40,10 +40,11 @@ void Test_Packet_Gen(uint8_t *packet){
     String s;
     
     /* Fill with random information */
-    s = "This is a test of the transmission function. -RMKW";
+    s = "test yes";
+    s += '\0';
 
     /* Set packet */
-    for(i = 0; i < sizeof(s); i++)
+    for(i = 0; i < s.length(); i++)
     {
       packet[i] = s[i];
     }

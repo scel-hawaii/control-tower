@@ -15,10 +15,14 @@
 uint8_t packet[MAX_SIZE];
 
 void setup(){
+    int i = 0;
+    for(i = 0; i < MAX_SIZE; i++){
+      packet[i] = '\0';
+    }
     XBee xbee = XBee();
     Serial.begin(9600);
     xbee.begin(Serial);
-    Packet_Transmit(packet);
+    Test_Packet_Gen(packet);
 }
 
 void loop(){
