@@ -1,3 +1,12 @@
+/*******************************************
+ * 
+ *    File: transmit.h
+ *    REIS Weatherbox Firmware
+ *    
+ *    Header file for Transmission functions
+ *
+ ******************************************/
+
 /* Necessary Libraries */
 #include <Xbee.h>
 
