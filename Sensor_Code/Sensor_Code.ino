@@ -1,28 +1,57 @@
-/*
- * Apple Core
+/*********************************************
  *
- */
+ *    File: Sensor_Code.ino
+ *    REIS Weatherbox Firmware
+ *
+ *    Test .ino to check Sensor functions
+ *
+ ********************************************/
 
-/* Include program libs */
+/* Program Libraries */
 #include "apple.h"
 #include "sensors.h"
 
-/* Include arduino libs */
+/* Arduino Libraries */
 #include <Wire.h>
 
-/* Include external libs */
+/* External Libraries */
 #include <SHT1x.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
 
+/*******************************************
+ *
+ *    Name:        setup 
+ *    Returns:     Nothing
+ *    Parameter:   Nothing
+ *    Description: Runs once at the start of the sequence.
+ *                     Used for initialization. Place all
+ *                     Init scripts here.
+ *
+ ******************************************/
 void setup(){
+
+    /* Initialize sensors */
     Sensors_init();
     Serial.begin(9600);
 }
 
+/*******************************************
+ *
+ *    Name:        loop 
+ *    Returns:     Nothing
+ *    Parameter:   Nothing
+ *    Description: Main program function runs constantly.
+ *                     Executed after setup(). and will
+ *                     continue running indefinitely,
+ *                     unless conditions stop it.
+ *
+ ******************************************/
 void loop(){
+
+    /* Variable Declarations */
     int BatterymV;
     int SolarIrrmV;
     int Humiditypct;
@@ -30,6 +59,7 @@ void loop(){
     int Pressurepa;
     int Tempdecic;
     
+    /* Poll each sensor and delay for 1 second after each poll */
     BatterymV = Sensors_sampleBatterymV();
     delay(1000);
     SolarIrrmV = Sensors_sampleSolarIrrmV();
@@ -43,6 +73,7 @@ void loop(){
     Pressurepa = Sensors_samplePressurepa();
     delay(1000);
 
+    /* Debug: Print the values to the Arduino Serial Monitor */
     Serial.print("Sample Data:\n");
     Serial.println(BatterymV);
     Serial.println(SolarIrrmV);

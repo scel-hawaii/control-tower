@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#define PERIOD 15
+#include "ema.h"
+
+#define PERIOD 15 // Number of data points collected at a time
 
 float average[PERIOD];
 float add(float x);
