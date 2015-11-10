@@ -17,7 +17,7 @@
 #define MAX_SIZE 200
 
 /* Global Variable for Packet (BAD FIND ALTERNATIVE) */
-uint8_t packet[MAX_SIZE];
+uint8_t G_packet[MAX_SIZE];
 
 /******************************************
  *
@@ -26,7 +26,7 @@ uint8_t packet[MAX_SIZE];
  *   Parameter:   Nothing
  *   Description: Runs once at the start of the sequence.
  *                    Used for initialization. Place all
- *                    Init scripts here.
+ *                    init scripts here.
  *
  *****************************************/
 void setup(){
@@ -36,7 +36,7 @@ void setup(){
 
     /* Packet initialization */
     for(i = 0; i < MAX_SIZE; i++){
-      packet[i] = '\0';
+      G_packet[i] = '\0';
     }
 
     /* Create Xbee Object */
@@ -45,7 +45,7 @@ void setup(){
     xbee.begin(Serial);
 
     /* Generate a test packet */
-    Test_Packet_Gen(packet);
+    Test_Packet_Gen(G_packet);
 }
 
 /******************************************
@@ -62,7 +62,7 @@ void setup(){
 void loop(){
 
     /* Transmit the packet */
-    Packet_Transmit(packet);
+    Packet_Transmit(G_packet);
 
     /* Debug: Notify packet was transmitted */
     Serial.print("\nPacket Transmitted.\n");
