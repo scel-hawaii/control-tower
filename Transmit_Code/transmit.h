@@ -7,7 +7,7 @@
  *
  ******************************************/
 
-/* Necessary Libraries */
+/* External Libraries */
 #include <Xbee.h>
 
 /* Check for previous includes */

@@ -25,8 +25,14 @@
 void setup(){
 
     /* Generation Check */
+    Gen_config();
+
+    /* Create Xbee Object */
+    Xbee xbee = XBee();
 
     /* Initialization */
+    Sensors_init();
+    Serial.begin(9600);
 
     /* Health Check */
 
@@ -45,7 +51,21 @@ void setup(){
  ********************************************/
 void loop(){
 
-    /* Poll Sensors */
+    /* Variables to hold Sensor Readings */
+    int BatterymV = 0;
+    int SolarIrrmV = 0;
+    int Humiditypct = 0;
+    int PanelmV = 0;
+    int Pressurepa = 0;
+    int Tempdecic = 0;
+
+    /* Sample Sensors */
+    BatterymV = (*Sensors_sampleBatterymV)();
+    SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
+    Humiditypct = (*Sensors_sampleHumiditypct)();
+    PanelmV = (*Sensors_samplePanelmV)();
+    Pressurepa = (*Sensors_samplePressurepa)();
+    Tempdecic = (*Sensors_samplePressurepa)();
 
     /* Packet Construction */
 
