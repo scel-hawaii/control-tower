@@ -37,8 +37,8 @@ void Gen_config(void){
 	Sensors_samplePressurepa = &a_Sensors_samplePressurepa;
 	Sensors_sampleHumiditypct = &a_Sensors_Humiditypct;
 	Sensors_sampleTempdecic = &a_Sensors_sampleTempdecic;
-    #elseif CRANBERRY
-    #elseif DRAGONFRUIT
+    #elif CRANBERRY
+    #elif DRAGONFRUIT
     #endif
 
 }

@@ -58,14 +58,11 @@
     #define _PIN_SDA A4
     #define _PIN_SCL A5
 
-#endif
-
 /* Cranberry Pin Configuration */
-#ifdef CRANBERRY
-#endif
+#elif CRANBERRY
 
 /* Dragonfruit Pin Configuration */
-#ifdef DRAGONFRUIT
+#elif DRAGONFRUIT
 #endif
 
 
