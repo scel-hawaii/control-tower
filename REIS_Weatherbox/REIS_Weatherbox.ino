@@ -11,6 +11,18 @@
 #include "config.h"
 #include "sensors.h"
 #include "transmit.h"
+#include "low_pass.h"
+
+/* Arudino Libraries */
+#include <Wire.h>
+
+/* External Libraries */
+#include <SHT1x.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Adafruit_INA219.h>
+#include <Adafruit_BMP085.h>
+#include <Xbee.h>
 
 /*********************************************
  *

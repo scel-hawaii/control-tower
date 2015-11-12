@@ -21,7 +21,6 @@
  *                    Xbees must be in API mode.
  *
  *****************************************/
-
 void Packet_Transmit(uint8_t *packet){
 
     /* Variable Declarations */
