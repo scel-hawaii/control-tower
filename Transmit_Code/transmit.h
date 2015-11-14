@@ -14,6 +14,12 @@
 #ifndef TRANSMIT_H
 #define TRANSMIT_H
 
+/* Macros */
+#define MAX_SIZE 200
+
+/* Packet Initialization/Clear */
+void Packet_Clear(uint8_t *packet);
+
 /* Transmission Code */
 void Packet_Transmit(uint8_t *packet);
 

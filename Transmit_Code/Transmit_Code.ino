@@ -13,9 +13,6 @@
 /* Arduino Libraries */
 #include <XBee.h>
 
-/* Macros */
-#define MAX_SIZE 200
-
 /* Global Variable for Packet (BAD FIND ALTERNATIVE) */
 uint8_t G_packet[MAX_SIZE];
 
@@ -35,9 +32,7 @@ void setup(){
     int i = 0;
 
     /* Packet initialization */
-    for(i = 0; i < MAX_SIZE; i++){
-      G_packet[i] = '\0';
-    }
+    Packet_Clear(G_packet);
 
     /* Create Xbee Object */
     XBee xbee = XBee();

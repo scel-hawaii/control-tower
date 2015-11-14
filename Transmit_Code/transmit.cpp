@@ -14,6 +14,26 @@
 
 /******************************************
  *
+ *   Name:        Packet_Clear
+ *   Returns:     Nothing
+ *   Parameter:   uint8_t *packet
+ *   Description: Clears/Initializes the packet to
+ *                    NULL.
+ *
+ *****************************************/
+void Packet_Clear(uint8_t *packet){
+
+    /* Variables Declarations */
+    int i = 0;
+
+    /* Set packet to NULL */
+    for(i = 0; i < MAX_SIZE; i++){
+        packet[i] = '\0';
+    }
+}
+
+/******************************************
+ *
  *   Name:        Packet_Transmit
  *   Returns:     Nothing
  *   Parameter:   uint8_t *packet
@@ -67,8 +87,7 @@ void Test_Packet_Gen(uint8_t *packet){
     s += '\0';
 
     /* Put array information into Packet */
-    for(i = 0; i < s.length(); i++)
-    {
+    for(i = 0; i < s.length(); i++){
       packet[i] = s[i];
     }
 }
