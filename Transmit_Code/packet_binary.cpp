@@ -1,7 +1,5 @@
 #include "schema.h"
 #include "sensors.h"
-#include "packet.h"
-#include "overflow_checker.h"
 
 void clear_packet(void)
 {

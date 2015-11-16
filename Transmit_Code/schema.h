@@ -10,6 +10,8 @@
 	and sent.
 */
 
+/* For now, only schema_3 is included, as the main schema for packets  */
+
 #include <stdint.h>
 
 typedef struct {
@@ -30,6 +32,4 @@ typedef struct {
     uint16_t apogee_w_m2[20];
 
 } schema_3;
-
-
 
