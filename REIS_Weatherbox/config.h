@@ -45,7 +45,7 @@
     #define _PIN_ROOF_TEMP 3
 
     #define _PIN_GPS_RX 4
-    #define _PIN GPS_TX 5
+    #define _PIN_GPS_TX 5
 
     #define _PIN_PSWITCH 6
 
@@ -58,14 +58,24 @@
     #define _PIN_SDA A4
     #define _PIN_SCL A5
 
-#endif
-
 /* Cranberry Pin Configuration */
-#ifdef CRANBERRY
-#endif
+#elif CRANBERRY
 
 /* Dragonfruit Pin Configuration */
-#ifdef DRAGONFRUIT
+#elif DRAGONFRUIT
 #endif
+
+
+/* Function Pointers */
+void (*Sensors_init)(void);
+int (*Sensors_sampleBatterymV)(void);
+int (*Sensors_samplePanelmV)(void);
+int (*Sensors_sampleSolarIrrmV)(void);
+int (*Sensors_samplePressurepa)(void);
+int (*Sensors_sampleHumiditypct)(void);
+int (*Sensors_sampleTempdecic)(void);
+
+/* Configuration Function */
+void Gen_config(void);
 
 #endif
