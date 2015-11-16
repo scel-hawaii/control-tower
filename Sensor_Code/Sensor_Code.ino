@@ -28,7 +28,7 @@
  *    Parameter:   Nothing
  *    Description: Runs once at the start of the sequence.
  *                     Used for initialization. Place all
- *                     Init scripts here.
+ *                     init scripts here.
  *
  ******************************************/
 void setup(){
