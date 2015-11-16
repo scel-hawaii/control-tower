@@ -57,7 +57,11 @@ void setup(){
 void loop(){
 
     /* Transmit the packet */
-    Packet_Transmit(G_packet);
+#ifdef UART
+    Packet_TransmitUART(G_packet);
+#elif BINARY
+    Packet_TransmitBIN(G_packet);
+#endif
 
     /* Debug: Notify packet was transmitted */
     Serial.print("\nPacket Transmitted.\n");
