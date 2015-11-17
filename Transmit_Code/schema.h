@@ -14,7 +14,7 @@
  ******************************************/
 
 /* External Libraries */
-//#include <stdint.h>  //Check if truly needed 
+#include <stdint.h>  //Check if truly needed 
 
 /* Check for previous includes */
 #ifndef SCHEMA_H

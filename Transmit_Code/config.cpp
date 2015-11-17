@@ -11,23 +11,23 @@
  ******************************************/
 
 /* Program Libraries */
-#include "config.h"
 #include "sensors.h"
-
+#include "config.h"
 
 /*******************************************
  *
  *    Name:        Gen_config
  *    Returns:     Nothing
  *    Parameter:   Nothing
- *    Description: Checks the generation and assigns
+ *    Description:  the generation and assigns
  *                     the function pointers to the
  *                     appropriate functions.
  *
  *
  ******************************************/
-void Gen_config(void){
 
+void Gen_config(void){
+    
     /* Check Generation & Assign Sensor Functions */
     #ifdef APPLE
         Sensors_init = &a_Sensors_init;
@@ -40,5 +40,4 @@ void Gen_config(void){
     #elif CRANBERRY
     #elif DRAGONFRUIT
     #endif
-
 }

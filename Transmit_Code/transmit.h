@@ -8,11 +8,11 @@
  ******************************************/
 
 /* Program Libraries */
-#include "sensors.h"
-#include "overflow_checker.h"
+#include "schema.h"
 
 /* External Libraries */
-#include <Xbee.h>
+#include <EEPROM.h>
+#include <XBee.h>
 
 /* Check for previous includes */
 #ifndef TRANSMIT_H
@@ -22,7 +22,7 @@
 #define MAX_SIZE 250
 
 /* Method of Transfer ONLY DEINE ONE (Eventually move to config.h) */
-#define UART
+//#define UART
 #define BINARY
 
 /* Debug with Serial Monitor */

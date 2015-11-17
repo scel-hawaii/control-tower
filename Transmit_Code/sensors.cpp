@@ -9,6 +9,7 @@
 
 /* Program Libraries */
 #include "sensors.h"
+#include "config.h"
 
 /* Set Pins */
 OneWire oneWire1(_PIN_AMB_TEMP);
