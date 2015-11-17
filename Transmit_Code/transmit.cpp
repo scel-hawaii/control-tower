@@ -34,14 +34,14 @@ void Packet_Clear(uint8_t *packet){
 
 /******************************************
  *
- *   Name:        Packet_Transmit
+ *   Name:        Packet_TransmitUART
  *   Returns:     Nothing
  *   Parameter:   uint8_t *packet
  *   Description: Transmits using Arduino Xbee functions,
  *                    Xbees must be in API mode.
  *
  *****************************************/
-void Packet_Transmit(uint8_t *packet){
+void Packet_TransmitUART(uint8_t *packet){
 
     /* Variable Declarations */
     XBee xbee = XBee();    //Create Xbee Object
@@ -54,12 +54,49 @@ void Packet_Transmit(uint8_t *packet){
     /* Get length of packet */
     length = strlen((char *) packet);
 
+#ifdef DEBUG_S
     /* Debug */
     Serial.print("\nLength is: ");
     Serial.print(length);
+#endif
 
     /* Transfer the packet */
     ZBTxRequest zbTx = ZBTxRequest(addr64, packet, length);
+    xbee.send(zbTx);
+}
+
+/******************************************
+ *
+ *   Name:        Packet_TransmitBIN
+ *   Returns:     Nothing
+ *   Parameter:   uint8_t *packet
+ *   Description: Transmits using Arduino Xbee functions,
+ *                    the packet is transfered as a
+ *                    binary packet.
+ *
+ *****************************************/
+void Packet_TransmitBIN(uint8_t *packet){
+
+    /* Packet to be transmitted */
+    uint8_t payload[MAX_SIZE];
+
+    /* Clear the payload */
+    memset(payload, '\0', sizeof(payload));
+
+    /* Obtain length of the packet */
+    length = strlen((char *) packet);
+
+#ifdef DEBUG_S
+    /* Debug */
+    Serial.print("\nLength is: ");
+    Serial.print(length);
+#endif
+
+    /* Transfer information into payload */
+    memcpy(payload, &packet, length);
+    
+    /* Transfer the payload */
+    ZBTxRequest zbTx = ZBTxRequest(addr64, payload, length);
     xbee.send(zbTx);
 }
 
