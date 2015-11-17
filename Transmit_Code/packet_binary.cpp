@@ -11,6 +11,7 @@
 /* Necessary Libraries */
 #include "schema.h"
 #include "sensors.h"
+#include "overflow_checker.h"
 
 
 /********************************
@@ -90,7 +91,3 @@ void samplePacketBinary(void)
     packet.humidity_centi_pct = humidity_raw;
     packet.n += 1;
 }
-
-
-
-

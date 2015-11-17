@@ -7,14 +7,30 @@
  *
  ******************************************/
 
-/* Necessary Libraries */
+/* Program Libraries */
+#include "sensors.h"
 #include "transmit.h"
+#include "schema.h"
+#include "config.h"
+#include "overflow_checker.h"
 
 /* Arduino Libraries */
-#include <XBee.h>
+#include <Wire.h>
+
+/* External Libraries */
+#include <SHT1x.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Adafruit_INA219.h>
+#include <Adafruit_BMP085>
+#include <Xbee.h>
 
 /* Global Variable for Packet (BAD FIND ALTERNATIVE) */
-uint8_t G_packet[MAX_SIZE];
+#ifdef UART
+    uint8_t G_packet[MAX_SIZE];
+#elif BINARY
+    schema_3 G_packet;
+#endif
 
 /******************************************
  *
@@ -32,7 +48,11 @@ void setup(){
     int i = 0;
 
     /* Packet initialization */
-    Packet_Clear(G_packet);
+#ifdef UART
+    Packet_ClearUART(G_packet);
+#elif BINARY
+    Packet_ClearBIN(G_packet);
+#endif
 
     /* Create Xbee Object */
     XBee xbee = XBee();
@@ -40,7 +60,11 @@ void setup(){
     xbee.begin(Serial);
 
     /* Generate a test packet */
-    Test_Packet_Gen(G_packet);
+#ifdef UART
+    Test_Packet_GenUART(G_packet);
+#elif
+    Test_Packet_GenBIN(G_packet);
+#endif
 }
 
 /******************************************
