@@ -22,7 +22,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
-#include <Adafruit_BMP085>
+#include <Adafruit_BMP085.h>
 #include <Xbee.h>
 
 /* Global Variable for Packet (BAD FIND ALTERNATIVE) */

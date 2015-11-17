@@ -31,12 +31,12 @@ void Gen_config(void){
     /* Check Generation & Assign Sensor Functions */
     #ifdef APPLE
         Sensors_init = &a_Sensors_init;
-	Sensors_sampleBatterymV = &a_Sensors_sampleBatterymV;
-	Sensors_samplePanelmV = &a_Sensors_samplePanelmV;
-	Sensors_sampleSolarIrrmV = &a_Sensors_sampleSolarIrrmV;
-	Sensors_samplePressurepa = &a_Sensors_samplePressurepa;
-	Sensors_sampleHumiditypct = &a_Sensors_sampleHumiditypct;
-	Sensors_sampleTempdecic = &a_Sensors_sampleTempdecic;
+        Sensors_sampleBatterymV = &a_Sensors_sampleBatterymV;
+        Sensors_samplePanelmV = &a_Sensors_samplePanelmV;
+        Sensors_sampleSolarIrrmV = &a_Sensors_sampleSolarIrrmV;
+        Sensors_samplePressurepa = &a_Sensors_samplePressurepa;
+        Sensors_sampleHumiditypct = &a_Sensors_sampleHumiditypct;
+        Sensors_sampleTempdecic = &a_Sensors_sampleTempdecic;
     #elif CRANBERRY
     #elif DRAGONFRUIT
     #endif

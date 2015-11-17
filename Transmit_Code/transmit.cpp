@@ -68,6 +68,34 @@ void Packet_ClearBIN(schema_3 *packet){
 
 /******************************************
  *
+ *   Name:        Packet_ConUART
+ *   Returns:     Nothing
+ *   Parameter:   uint8_t *packet
+ *   Description: Constructs a packet with data polled 
+ *                    from the sensors.
+ *
+ *****************************************/
+void Packet_ConUART(uint8_t *packet){
+
+    /* EMPTY */
+}
+
+/******************************************
+ *
+ *   Name:        Packet_ConBIN
+ *   Returns:     Nothing
+ *   Parameter:   schema_3 *packet
+ *   Description: Constructs a packet with data polled
+ *                    from the sensors.
+ *
+ *****************************************/
+void Packet_ConBIN(schema_3 *packet){
+
+    /* EMPTY */
+}
+
+/******************************************
+ *
  *   Name:        Packet_TransmitUART
  *   Returns:     Nothing
  *   Parameter:   uint8_t *packet

@@ -32,6 +32,10 @@
 void Packet_ClearUART(uint8_t *packet);
 void Packet_ClearBIN(schema_3 *packet);
 
+/* Paacket Construction */
+void Packet_ConUART(uint8_t *packet);
+void Packet_ConBIN(schema_3 *packet);
+
 /* Transmission Code */
 void Packet_TransmitUART(uint8_t *packet);
 void Packet_TransmitBIN(schema_3 *packet);
