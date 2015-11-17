@@ -1,12 +1,29 @@
+/*********************************
+ *
+ *    File: packet_binary.cpp
+ *    REIS Weatherbox Firmware
+ *    
+ *    File containing packet organization (BINARY)
+ *
+*********************************/
+
+
+/* Necessary Libraries */
 #include "schema.h"
 #include "sensors.h"
 
+
+/********************************
+ *
+ *    Name: clear_packet(void)
+ *    Returns: Nothing
+ *    Parameter: Nothing
+ *    Description: Clears/Initializes the packet to 0
+ *
+********************************/
+
 void clear_packet(void)
 {
-/* Given: Nothing.
-   Returns: Nothing.
-   Actions: Clears the packet by setting all variables to 0.
-*/
 
     /* Variable Declaration/Initialization */
     int i = 0;
@@ -28,19 +45,19 @@ void clear_packet(void)
     }
 }
 
+/************************************
+ *
+ *    Name: samplePacketBinary
+ *    Returns: Nothing
+ *    Parameter: Nothing
+ *    Description: Samples for data and puts the results in a packet.
+ *                 The binary packet format can take up to 60 samples.
+ *
+************************************/
+
+
 void samplePacketBinary(void)
 {
-/* Given: Nothing.
-   Returns: Nothing.
-   Actions: This function samples for data and puts the results in a packet.
-            The binary packet format can take up to 60 samples. Each subsequent
-	    sample iterates the number of data points, allowing us to keep tracK
-	    of how many samples we've already taken.
-	    The sample function takes care of the stacking.
-
-	    Note: Solar irradiance is sampled each second, and the other less
-	    important data points can be sampled less frequently.
-*/
 
     /* Variable Declaration/Initialization */
     int n = packet.n;
