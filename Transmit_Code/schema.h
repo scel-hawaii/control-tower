@@ -1,19 +1,18 @@
-/*
-	File: schema.h
-
-	Description: This file contains the structure for our packet schema.
-	The packet schema keeps all of the variables for the functions which
-	we'll send to the XBee API to be transmitted.
-	
-	Notes: When a new packet schema is made, create a new structure.
-	BINARY packet is position dependent on where everything is placed
-	and sent.
-*/
+/*******************************
+ *
+ *    File: schema.h
+ *    REIS Weatherbox Firmware
+ *    
+ *    Header file containing structure for packet schema
+ *
+********************************/
 
 /* For now, only schema_3 is included, as the main schema for packets  */
 
+/* Necessary Libraries */
 #include <stdint.h>
 
+/* Main schema definition */
 typedef struct {
     
     uint16_t schema;

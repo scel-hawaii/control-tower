@@ -1,6 +1,6 @@
 /************************************
  *
- *    File: packetUART.cpp
+ *    File: packet_UART.cpp
  *    REIS Weatherbox Firmware
  *
  *    File containing packet organization (UART)
@@ -10,7 +10,7 @@
 
 /* Necessary Libraries */
 #include "packet.h"
-
+#include "utilities.h"
 
 /************************************ 
  *

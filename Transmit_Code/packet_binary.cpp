@@ -11,11 +11,12 @@
 /* Necessary Libraries */
 #include "schema.h"
 #include "sensors.h"
-
+#include "packet.h"
+#include "utilities.h"
 
 /********************************
  *
- *    Name: clear_packet(void)
+ *    Name: clear_packet
  *    Returns: Nothing
  *    Parameter: Nothing
  *    Description: Clears/Initializes the packet to 0
