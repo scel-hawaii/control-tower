@@ -7,14 +7,39 @@
  *
  ******************************************/
 
-/* Necessary Libraries */
+/* Program Libraries */
+//#include "sensors.h"
 #include "transmit.h"
+#include "schema.h"
+#include "config.h"
 
 /* Arduino Libraries */
+#include <Wire.h>
+
+/* External Libraries */
+#include <SHT1x.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+#include <Adafruit_INA219.h>
+#include <Adafruit_BMP085.h>
 #include <XBee.h>
+#include <EEPROM.h>
 
 /* Global Variable for Packet (BAD FIND ALTERNATIVE) */
-uint8_t G_packet[MAX_SIZE];
+#ifdef UART
+    uint8_t G_packet[MAX_SIZE];
+#elseif BINARY
+    schema_3 G_packet;
+#endif
+
+/* Global function pointers */
+void (*Sensors_init)(void);
+int (*Sensors_sampleBatterymV)(void);
+int (*Sensors_samplePanelmV)(void);
+int (*Sensors_sampleSolarIrrmV)(void);
+int (*Sensors_samplePressurepa)(void);
+int (*Sensors_sampleHumiditypct)(void);
+int (*Sensors_sampleTempdecic)(void);
 
 /******************************************
  *
@@ -31,8 +56,15 @@ void setup(){
     /* Variables */
     int i = 0;
 
+    /* Generation Configuration */
+    Gen_config();
+    
     /* Packet initialization */
-    Packet_Clear(G_packet);
+#ifdef UART
+    Packet_ClearUART(G_packet);
+#elseif BINARY
+    Packet_ClearBIN(G_packet);
+#endif
 
     /* Create Xbee Object */
     XBee xbee = XBee();
@@ -40,7 +72,11 @@ void setup(){
     xbee.begin(Serial);
 
     /* Generate a test packet */
-    Test_Packet_Gen(G_packet);
+#ifdef UART
+    Test_Packet_GenUART(G_packet);
+#elseif
+    Test_Packet_GenBIN(G_packet);
+#endif
 }
 
 /******************************************
@@ -59,7 +95,7 @@ void loop(){
     /* Transmit the packet */
 #ifdef UART
     Packet_TransmitUART(G_packet);
-#elif BINARY
+#elseif BINARY
     Packet_TransmitBIN(G_packet);
 #endif
 
