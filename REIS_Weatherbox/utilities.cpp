@@ -55,13 +55,30 @@ long sampleBatteryVoltage(void)
 
 /*********************************
  *
- *    Name: 
- *    Returns:
- *    Parameter:
- *    Description:
+ *    Name: cofigureADC 
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: Configures the ADC. Normally in the Arduino IDE, 
+ *                 we don't have to worry about this but we change the 
+ *                 registers to speed up the ADC sample times a little. 
+ *                 More documentation available online.
  *
 *********************************/
 
+/* Define various ADC prescaler */
+const unsigned char PS_16 = (1 << ADPS2);
+const unsigned char PS_32 = (1 << ADPS2) | (1 << ADPS0);
+const unsigned char PS_64 = (1 << ADPS2) | (1 << ADPS1);
+const unsigned char PS_128 = (1 <<ADPS2) | (1 << ADPS1) | (1 << ADPS0);
+
+void configureADC(void)
+{
+	/* Setup faster ADC */
+	ADCSRA &= ~PS_128; //remove bit set by Arduino library
+	//you can choose a prescaler from above
+	// PS_16, PS_32, PS_64, PS_128
+	ADCSRA |= PS_64; //set our own prescaler to 64
+}
 
 
 
