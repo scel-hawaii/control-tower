@@ -81,9 +81,7 @@ void loop(){
     /* Debug: Notify packet was transmitted */
     /* The F() keeps the char array in PROGMEM, using only */
     /*      one byte of ram */
-#ifdef DEBUG
     Serial.println(F("\nPacket Transmitted.\n"));
-#endif
 
     /* Necessary delay to prevent overloading receiving end */
     delay(5000);
