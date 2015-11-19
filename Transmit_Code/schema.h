@@ -1,20 +1,3 @@
-<<<<<<< HEAD
-/*******************************
- *
- *    File: schema.h
- *    REIS Weatherbox Firmware
- *    
- *    Header file containing structure for packet schema
- *
-********************************/
-
-/* For now, only schema_3 is included, as the main schema for packets  */
-
-/* Necessary Libraries */
-#include <stdint.h>
-
-/* Main schema definition */
-=======
 /*******************************************
  *
  *    File: schema.h
@@ -38,7 +21,6 @@
 #define SCHEMA_H
 
 /* Struct for Binary packet transfer */
->>>>>>> 9305bb232d931829aece2cb4c703066432b5d1b3
 typedef struct {
     
     /* Identification information */
