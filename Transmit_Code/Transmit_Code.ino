@@ -85,8 +85,4 @@ void loop(){
 
     /* Necessary delay to prevent overloading receiving end */
     delay(5000);
-Serial.println(F("Here"));
-
-    /* Clean-up the Serial Monitor */
-    Serial.flush();
 }

@@ -56,13 +56,15 @@ void Packet_ClearBIN(schema_3 *packet){
     
     /* Use a for loop to clear the info for the data with multiple points */
     for(i = 0; i < 60; i++){
-      j = i/10;
-      k = i/3;
+
+        /* Variables for indices */
+        j = i/10;
+        k = i/3;
 
         /* Polled every 10 */
         (*packet).batt_mv[j] = 0;
         (*packet).panel_mv[j] = 0;
-    Serial.println(i);
+ 
         /* Polled every 3 */
         (*packet).apogee_w_m2[k] = 0;
     }
@@ -109,7 +111,7 @@ void Packet_TransmitUART(uint8_t *packet){
 
     /* Variable Declarations */
     XBee xbee = XBee();    //Create Xbee Object
-    int len = 0;        //Length of the packet to be sent
+    int len = 0;           //Length of the packet to be sent
     int i = 0;             //Variable to be used to iterate across the packet
 
     /* Obtain address of receiving end */
@@ -126,7 +128,7 @@ void Packet_TransmitUART(uint8_t *packet){
 
     /* Transfer the packet */
     ZBTxRequest zbTx = ZBTxRequest(addr64, packet, len);
-    xbee.send(zbTx);
+    xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
 /******************************************
@@ -157,7 +159,7 @@ void Packet_TransmitBIN(schema_3 *packet){
     memset(payload, '\0', sizeof(payload));
 
     /* Obtain length of the packet */
-    len = sizeof(packet);
+    len = sizeof(*packet);
 
 #ifdef DEBUG_S
     /* Debug */
@@ -166,11 +168,11 @@ void Packet_TransmitBIN(schema_3 *packet){
 #endif
 
     /* Transfer information into payload */
-    memcpy(payload, &packet, len);
+    memcpy(payload, packet, len);
     
     /* Transfer the payload */
     ZBTxRequest zbTx = ZBTxRequest(addr64, payload, len);
-    xbee.send(zbTx);
+    xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
 /******************************************
@@ -232,7 +234,7 @@ void Test_Packet_GenBIN(schema_3 *packet){
 
 #ifdef DEBUG_S
     /* Debug */
-    Serial.println(F("\n Generating - BIN"));
+    Serial.println(F("Generating - BIN"));
 #endif
 
     /* Store values into packet */
