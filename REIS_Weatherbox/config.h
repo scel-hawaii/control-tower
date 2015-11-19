@@ -19,6 +19,24 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+/* Debug with Arduino Serial Monitor */
+//#define DEBUG_S
+
+/*-------------------------*/
+/*---Transmission Config---*/
+/*-------------------------*/
+
+/* Transmission method declarations: only define one */
+//define UART
+#define BINARY
+
+/* Macros */
+#define MAX_SIZE 250
+
+/*-------------------------*/
+/*----Generation Config----*/
+/*-------------------------*/
+
 /* Generation Declarations: Only define one */
 #define APPLE
 //#define CRANBERRY
@@ -65,7 +83,9 @@
 #elif defined(DRAGONFRUIT)
 #endif
 
-/* Function Pointers */
+/*-------------------------*/
+/*----Function Pointers----*/
+/*-------------------------*/
 extern void (*Sensors_init)(void);
 extern int (*Sensors_sampleBatterymV)(void);
 extern int (*Sensors_samplePanelmV)(void);
@@ -74,7 +94,9 @@ extern int (*Sensors_samplePressurepa)(void);
 extern int (*Sensors_sampleHumiditypct)(void);
 extern int (*Sensors_sampleTempdecic)(void);
 
-/* Configuration Function */
+/*-------------------------*/
+/*-Configuration Functions-*/
+/*-------------------------*/
 void Gen_config(void);
 
 #endif
