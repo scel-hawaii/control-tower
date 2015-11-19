@@ -53,6 +53,25 @@ long sampleBatteryVoltage(void)
 	return ((temp*5000.0/1023));
 }
 
+
+/**********************************
+ *
+ *    Name: chk_health
+ *    Returns: 
+ *    Parameter: LowPassFilter* f
+ *    Description:
+ *
+**********************************/
+
+
+
+
+
+
+
+
+
+
 /*********************************
  *
  *    Name: cofigureADC 
