@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /*******************************
  *
  *    File: schema.h
@@ -14,7 +13,6 @@
 #include <stdint.h>
 
 /* Main schema definition */
-=======
 /*******************************************
  *
  *    File: schema.h
@@ -38,25 +36,24 @@
 #define SCHEMA_H
 
 /* Struct for Binary packet transfer */
->>>>>>> 9305bb232d931829aece2cb4c703066432b5d1b3
 typedef struct {
     
     /* Identification information */
     uint16_t schema;             //Schema ID number
-    uint16_t address;		         //Address of Arduino
+    uint16_t address;		 //Address of Arduino
     
     /* Overflow flags */
-    uint8_t overflow_num;	       //Number of times function millis() overflowed
+    uint8_t overflow_num;	 //Number of times function millis() overflowed
 
     /* Data variables */
-    uint8_t n;			             //Number of data points in packet (0...30)
+    uint8_t n;			 //Number of data points in packet (0...30)
     int16_t bmp085_temp_decic;   //Temperature value (celsius)
-    uint16_t batt_mv[6];	       //Battery voltage (millivolts)
-    uint16_t panel_mv[6];	       //Panel voltage (millivolts)
+    uint16_t batt_mv[6];	 //Battery voltage (millivolts)
+    uint16_t panel_mv[6];	 //Panel voltage (millivolts)
     uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
     uint16_t apogee_w_m2[20];    //Solar Irradiance (millivolts)
-    uint32_t uptime_ms;		       //Time since the start of program
-    uint32_t bmp085_press_pa;	   //Pressure value (pascals)
+    uint32_t uptime_ms;		 //Time since the start of program
+    uint32_t bmp085_press_pa;	 //Pressure value (pascals)
 
 } schema_3;
 #endif
