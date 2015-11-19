@@ -169,7 +169,14 @@ void Packet_TransmitBIN(schema_3 *packet){
 
     /* Transfer information into payload */
     memcpy(payload, packet, len);
-    
+
+#ifdef DEBUG_S
+/* Checks to see if the data was transferred correctly */
+/* Can check any data value in struct schema_3 in schema.h */
+Serial.println(((schema_3*)payload)->batt_mv[1]);
+Serial.println("Hi");
+#endif
+
     /* Transfer the payload */
     ZBTxRequest zbTx = ZBTxRequest(addr64, payload, len);
     xbee.send(zbTx); //!!Prints packet to serial monitor

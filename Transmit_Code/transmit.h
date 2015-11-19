@@ -26,7 +26,7 @@
 #define BINARY
 
 /* Debug with Serial Monitor */
-#define DEBUG_S
+//#define DEBUG_S
 
 /* Packet Initialization/Clear */
 void Packet_ClearUART(uint8_t *packet);
