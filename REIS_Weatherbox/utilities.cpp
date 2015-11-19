@@ -57,19 +57,30 @@ long sampleBatteryVoltage(void)
 /**********************************
  *
  *    Name: chk_health
- *    Returns: 
+ *    Returns: GOOD_SOLAR, NORMAL, POOR
  *    Parameter: LowPassFilter* f
- *    Description:
+ *    Description: 
  *
 **********************************/
 
+int chkHealth(void)
+{
+	int apogee_voltage = 0, panel_voltage = 0;
 
+	apogee_voltage = LPF_get_current_output(&solar_filter);
+	panel_voltage = 2*analogRead(_PIN_SOLAR_V);
 
-
-
-
-
-
+	if(LPF_get_current_output(&battery_filter) >= THRESH_GOOD_BATT_V)
+		return NORMAL;
+#ifdef HEALTH_GOOD_APOGEE
+	else if(apogee_voltage >= THRESH_GOOD_APOGEE_V)
+#else //HEALTH_GOOD_PANEL
+	else if(panel_voltage >= THRESH_GOOD_PANEL_V)
+#endif
+		return GOOD_SOLAR;
+	else
+		return POOR;
+}
 
 
 /*********************************
