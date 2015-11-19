@@ -21,7 +21,7 @@
 /* Macros */
 #define MAX_SIZE 250
 
-/* Method of Transfer ONLY DEINE ONE (Eventually move to config.h) */
+/* Method of Transfer Only define ONE (Potentially move to config.h) */
 //#define UART
 #define BINARY
 

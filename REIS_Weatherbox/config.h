@@ -19,7 +19,7 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
-/* Generation Declarations: Only Uncomment ONE generation */
+/* Generation Declarations: Only define one */
 #define APPLE
 //#define CRANBERRY
 //#define DRAGONFRUIT
@@ -59,21 +59,20 @@
     #define _PIN_SCL A5
 
 /* Cranberry Pin Configuration */
-#elif CRANBERRY
+#elif defined(CRANBERRY)
 
 /* Dragonfruit Pin Configuration */
-#elif DRAGONFRUIT
+#elif defined(DRAGONFRUIT)
 #endif
 
-
 /* Function Pointers */
-void (*Sensors_init)(void);
-int (*Sensors_sampleBatterymV)(void);
-int (*Sensors_samplePanelmV)(void);
-int (*Sensors_sampleSolarIrrmV)(void);
-int (*Sensors_samplePressurepa)(void);
-int (*Sensors_sampleHumiditypct)(void);
-int (*Sensors_sampleTempdecic)(void);
+extern void (*Sensors_init)(void);
+extern int (*Sensors_sampleBatterymV)(void);
+extern int (*Sensors_samplePanelmV)(void);
+extern int (*Sensors_sampleSolarIrrmV)(void);
+extern int (*Sensors_samplePressurepa)(void);
+extern int (*Sensors_sampleHumiditypct)(void);
+extern int (*Sensors_sampleTempdecic)(void);
 
 /* Configuration Function */
 void Gen_config(void);

@@ -43,26 +43,30 @@ void Packet_ClearUART(uint8_t *packet){
 void Packet_ClearBIN(schema_3 *packet){
 
     /* Variables used for indexes */
-    int i = 0;
+    int i, j, k;
 
     /* Initialize values contained in the packet */
-    packet->schema = 3;
-    packet->address = EEPROM.read(2) | (EEPROM.read(3) << 8); //Addr from EEPROM
-    packet->uptime_ms = 0;
-    packet->n = 0;
-    packet->bmp085_press_pa = 0;
-    packet->bmp085_temp_decic = 0;
-    packet->humidity_centi_pct = 0;
+    (*packet).schema = 3;
+    (*packet).address = EEPROM.read(2) | (EEPROM.read(3) << 8); //Addr from EEPROM
+    (*packet).uptime_ms = 0;
+    (*packet).n = 0;
+    (*packet).bmp085_press_pa = 0;
+    (*packet).bmp085_temp_decic = 0;
+    (*packet).humidity_centi_pct = 0;
     
     /* Use a for loop to clear the info for the data with multiple points */
-    for(i = 0; i < 60; i++){ //Simulates one minute
-        
-        /* Polled every 10 seconds */
-        packet->batt_mv[i/10] = 0;
-        packet->panel_mv[i/10] = 0;
+    for(i = 0; i < 60; i++){
 
-        /* Polled every 3 seconds */
-        packet->apogee_w_m2[i/3] = 0;
+        /* Variables for indices */
+        j = i/10;
+        k = i/3;
+
+        /* Polled every 10 */
+        (*packet).batt_mv[j] = 0;
+        (*packet).panel_mv[j] = 0;
+ 
+        /* Polled every 3 */
+        (*packet).apogee_w_m2[k] = 0;
     }
 }
 
@@ -107,24 +111,24 @@ void Packet_TransmitUART(uint8_t *packet){
 
     /* Variable Declarations */
     XBee xbee = XBee();    //Create Xbee Object
-    int length = 0;        //Length of the packet to be sent
+    int len = 0;           //Length of the packet to be sent
     int i = 0;             //Variable to be used to iterate across the packet
 
     /* Obtain address of receiving end */
     XBeeAddress64 addr64 = XBeeAddress64(0,0);
 
     /* Get length of packet */
-    length = strlen((char *) packet);
+    len = strlen((char *) packet);
 
 #ifdef DEBUG_S
     /* Debug */
-    Serial.print("\nLength is: ");
-    Serial.print(length);
+    Serial.println(F("UART Length is: "));
+    Serial.print(len);
 #endif
 
     /* Transfer the packet */
-    ZBTxRequest zbTx = ZBTxRequest(addr64, packet, length);
-    xbee.send(zbTx);
+    ZBTxRequest zbTx = ZBTxRequest(addr64, packet, len);
+    xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
 /******************************************
@@ -143,7 +147,7 @@ void Packet_TransmitBIN(schema_3 *packet){
     XBee xbee = XBee();
 
     /* Variable to contain length */
-    int length = 0;
+    int len = 0;
 
     /* Obtain address of receiving end */
     XBeeAddress64 addr64 = XBeeAddress64(0,0);
@@ -155,20 +159,20 @@ void Packet_TransmitBIN(schema_3 *packet){
     memset(payload, '\0', sizeof(payload));
 
     /* Obtain length of the packet */
-    length = strlen((char *) packet);
+    len = sizeof(*packet);
 
 #ifdef DEBUG_S
     /* Debug */
-    Serial.print("\nLength is: ");
-    Serial.print(length);
+    Serial.println(F("BIN Length is: "));
+    Serial.print(len);
 #endif
 
     /* Transfer information into payload */
-    memcpy(payload, &packet, length);
+    memcpy(payload, packet, len);
     
     /* Transfer the payload */
-    ZBTxRequest zbTx = ZBTxRequest(addr64, payload, length);
-    xbee.send(zbTx);
+    ZBTxRequest zbTx = ZBTxRequest(addr64, payload, len);
+    xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
 /******************************************
@@ -193,6 +197,11 @@ void Test_Packet_GenUART(uint8_t *packet){
     /* Fill with Hard-coded information */
     s = "test yes";
     s += '\0';
+
+#ifdef DEBUG_S
+    /* Debug */
+    Serial.println(F("Generating - UART"));
+#endif
 
     /* Put array information into Packet */
     for(i = 0; i < s.length(); i++){
@@ -222,6 +231,11 @@ void Test_Packet_GenBIN(schema_3 *packet){
     int humidity_raw = 6;
     int n = 10;
     unsigned long uptime = 1000;
+
+#ifdef DEBUG_S
+    /* Debug */
+    Serial.println(F("Generating - BIN"));
+#endif
 
     /* Store values into packet */
     packet->batt_mv[n/10] = batt_mv_raw;

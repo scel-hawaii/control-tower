@@ -8,38 +8,21 @@
  ******************************************/
 
 /* Program Libraries */
-//#include "sensors.h"
 #include "transmit.h"
-#include "schema.h"
-#include "config.h"
 
 /* Arduino Libraries */
-#include <Wire.h>
+#include <EEPROM.h>
 
 /* External Libraries */
-#include <SHT1x.h>
-#include <OneWire.h>
-#include <DallasTemperature.h>
-#include <Adafruit_INA219.h>
-#include <Adafruit_BMP085.h>
 #include <XBee.h>
-#include <EEPROM.h>
+#include <stdint.h>
 
 /* Global Variable for Packet (BAD FIND ALTERNATIVE) */
 #ifdef UART
     uint8_t G_packet[MAX_SIZE];
-#elseif BINARY
-    schema_3 G_packet;
+#elif defined(BINARY)
+    schema_3 *G_packet;
 #endif
-
-/* Global function pointers */
-void (*Sensors_init)(void);
-int (*Sensors_sampleBatterymV)(void);
-int (*Sensors_samplePanelmV)(void);
-int (*Sensors_sampleSolarIrrmV)(void);
-int (*Sensors_samplePressurepa)(void);
-int (*Sensors_sampleHumiditypct)(void);
-int (*Sensors_sampleTempdecic)(void);
 
 /******************************************
  *
@@ -53,28 +36,24 @@ int (*Sensors_sampleTempdecic)(void);
  *****************************************/
 void setup(){
 
-    /* Variables */
-    int i = 0;
-
-    /* Generation Configuration */
-    Gen_config();
-    
-    /* Packet initialization */
-#ifdef UART
-    Packet_ClearUART(G_packet);
-#elseif BINARY
-    Packet_ClearBIN(G_packet);
-#endif
-
     /* Create Xbee Object */
     XBee xbee = XBee();
     Serial.begin(9600);
     xbee.begin(Serial);
 
+    /* Packet initialization */
+#ifdef UART
+    Packet_ClearUART(G_packet);
+#elif defined(BINARY)
+    /* Allocate memory for the struct */
+    G_packet = (schema_3 *)malloc(sizeof(schema_3));
+    Packet_ClearBIN(G_packet);
+#endif
+
     /* Generate a test packet */
 #ifdef UART
     Test_Packet_GenUART(G_packet);
-#elseif
+#elif defined(BINARY)
     Test_Packet_GenBIN(G_packet);
 #endif
 }
@@ -95,16 +74,15 @@ void loop(){
     /* Transmit the packet */
 #ifdef UART
     Packet_TransmitUART(G_packet);
-#elseif BINARY
+#elif defined(BINARY)
     Packet_TransmitBIN(G_packet);
 #endif
 
     /* Debug: Notify packet was transmitted */
-    Serial.print("\nPacket Transmitted.\n");
+    /* The F() keeps the char array in PROGMEM, using only */
+    /*      one byte of ram */
+    Serial.println(F("\nPacket Transmitted.\n"));
 
     /* Necessary delay to prevent overloading receiving end */
     delay(5000);
-
-    /* Clean-up the Serial Monitor */
-    Serial.flush();
 }

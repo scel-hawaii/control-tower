@@ -7,9 +7,6 @@
  *
  ******************************************/
 
-/* Program Libraries */
-#include "config.h"
-
 /* External Libraries */
 #include <SHT1x.h>
 #include <OneWire.h>
