@@ -64,7 +64,7 @@ void setup(){
     /* Initialization */
     Sensors_init();
     Serial.begin(9600);
-    xbee.being(Serial);
+    xbee.begin(Serial);
 
     /* Packet Initialization */
 #ifdef UART
