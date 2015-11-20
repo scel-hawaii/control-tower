@@ -173,7 +173,48 @@ void Packet_ConUART(uint8_t *packet){
  *****************************************/
 void Packet_ConBIN(schema_3 *packet){
 
-    /* EMPTY */
+    /* Note: Address and Schema data already put in during Init */
+    
+    /* Index Variable */
+    int n = (*packet).n;
+
+    /* Variables to hold Sensor Readings */
+    int BatterymV = 0;
+    int SolarIrrmV = 0;
+    int SolarIrr_w_m2 = 0;
+    int Humiditypct = 0;
+    int PanelmV = 0;
+    int Pressurepa = 0;
+    int Tempdecic = 0;
+    unsigned long uptime;
+
+    /* Sample Sensors */
+    BatterymV = (*Sensors_sampleBatterymV)();
+    SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
+    Humiditypct = (*Sensors_sampleHumiditypct)();
+    PanelmV = (*Sensors_samplePanelmV)();
+    Pressurepa = (*Sensors_samplePressurepa)();
+    Tempdecic = (*Sensors_sampleTempdecic)();
+
+    /* Uptime data */
+    uptime = millis();
+    
+    /* Check overflow before putting in uptime */
+    (*packet).overflow_num += chk_overflow(uptime, (*packet).uptime_ms);
+
+    /* Save new uptime */
+    (*packet).uptime_ms = uptime;
+
+    /* Pack sensor data */
+    (*packet).batt_mv[n/10] = BatterymV;
+    (*packet).panel_mv[n/10] = PanelmV;
+    (*packet).bm085_press_pa = Pressurepa;
+    (*packet).bmp085_temp_decic = Tempdecic;
+    (*packet).humidity_centi_pct = Humiditypct;
+    (*packet).apogee_w_m2[n/3] = SolarIrrmV;
+    
+    /* Increment index */
+    (*packet).n += 1;
 }
 
 /******************************************
@@ -322,12 +363,12 @@ void Test_Packet_GenBIN(schema_3 *packet){
 #endif
 
     /* Store values into packet */
-    packet->batt_mv[n/10] = batt_mv_raw;
-    packet->panel_mv[n/10] = panel_mv_raw;
-    packet->apogee_w_m2[n/3] = apogee_raw;
-    packet->bmp085_press_pa = pressure_raw;
-    packet->bmp085_temp_decic = temperature_raw;
-    packet->humidity_centi_pct = humidity_raw;
-    packet->n = n;
-    packet->uptime_ms = uptime;
+    (*packet).batt_mv[n/10] = batt_mv_raw;
+    (*packet).panel_mv[n/10] = panel_mv_raw;
+    (*packet).apogee_w_m2[n/3] = apogee_raw;
+    (*packet).bmp085_press_pa = pressure_raw;
+    (*packet).bmp085_temp_decic = temperature_raw;
+    (*packet).humidity_centi_pct = humidity_raw;
+    (*packet).n = n;
+    (*packet).uptime_ms = uptime;
 }
