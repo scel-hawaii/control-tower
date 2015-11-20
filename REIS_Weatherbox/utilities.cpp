@@ -37,7 +37,6 @@ int chk_overflow(unsigned long current_value, unsigned long previous_value)
  *                 averages it
  *
  *******************************************/
-
 long sampleBatteryVoltage(void)
 {
   double temp;
@@ -51,8 +50,39 @@ long sampleBatteryVoltage(void)
 	return ((temp*5000.0/1023));
 }
 
+/*******************************************
+ *
+ *    Name: initHealthSamples
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: Initialize our battery sample by averaging 200 samples
+ *                 then sending it to the Low Pass Filter by making it
+ *                 the initial sample
+ *
+ *******************************************/
+void initHealthSamples(void)
+{
+  /* Variable Declaration */
+  int i;
 
-/*****************************************
+  /* Sample battery and solar 200 times */
+  for(i=0; i < 200; i++)
+  {
+    battery_sample += analogRead(_PIN_BATT_V);
+    solar_sample += analogRead(_PIN_APOGEE_V);
+  }
+
+  /* Average samples */
+  battery_sample = battery_sample/200;
+  solar_sample = solar_sample/200;
+
+  /* Initialize Low Pass Filter with sample */
+  LPF_filter_init(&battery_filter, (float)battery_sample, BATT_LOWPASS_ALPHA);
+  LPF_filter_init(&solar_filter, (float)solar_sample, BATT_LOWPASS_ALPHA);
+}
+
+
+/******************************************
  *
  *    Name: chk_health
  *    Returns: GOOD_SOLAR, NORMAL, POOR

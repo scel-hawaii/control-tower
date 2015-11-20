@@ -12,6 +12,7 @@
 #include "sensors.h"
 #include "transmit.h"
 #include "low_pass.h"
+#include "utilities.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
@@ -48,7 +49,7 @@ void setup(){
     Serial.begin(9600);
 
     /* Health Check */
-
+    initHealthsamples();
 }
 
 /*********************************************

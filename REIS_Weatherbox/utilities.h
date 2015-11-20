@@ -64,12 +64,13 @@ P_STATE power_state;
 // Defines the alpha value for the battery lowpass filter
 #define BATT_LOWPASS_ALPHA 0.005
 
-//DEfines the alpha value for the solar lowpass filter
+//Defines the alpha value for the solar lowpass filter
 #define BATT_LOWPASS_ALPHA 0.005
 
 
 int chk_overflow(unsigned long current_value, unsigned long previous_value);
 long sampleBatteryVoltage(void);
+void initHealthSamples(void);
 int chkHealth(void);
 void sendHealth(void);
 void health_data_transmit(void);
