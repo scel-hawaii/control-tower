@@ -49,7 +49,7 @@ void a_Sensors_init(void){
  *
  ******************************************/
 int a_Sensors_sampleBatterymV(void){
-    int value = analogRead(_PIN_BATT_V)*5000.0/1023;
+    int value = analogRead(_PIN_BATT_V)*5000.0/1024;
     return value;
 }
 
@@ -62,7 +62,7 @@ int a_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 int a_Sensors_samplePanelmV(void){
-    int value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
+    int value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1024;
     return value;
 }
 
@@ -75,7 +75,7 @@ int a_Sensors_samplePanelmV(void){
  *
  ******************************************/
 int a_Sensors_sampleSolarIrrmV(void){
-    int value = analogRead(_PIN_APOGEE_V)*5000.0/1023;
+    int value = analogRead(_PIN_APOGEE_V)*5000.0/1024;
     return value;
 }
 

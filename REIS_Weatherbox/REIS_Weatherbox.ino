@@ -34,6 +34,15 @@
     schema_3 *G_packet;
 #endif
 
+/* Global Function Pointers */
+void (*Sensors_init)(void);
+int (*Sensors_sampleBatterymV)(void);
+int (*Sensors_samplePanelmV)(void);
+int (*Sensors_sampleSolarIrrmV)(void);
+int (*Sensors_samplePressurepa)(void);
+int (*Sensors_sampleHumiditypct)(void);
+int (*Sensors_sampleTempdecic)(void);
+
 /*********************************************
  *
  *    Name:        setup
@@ -80,23 +89,13 @@ void setup(){
  ********************************************/
 void loop(){
 
-    /* Variables to hold Sensor Readings */
-    int BatterymV = 0;
-    int SolarIrrmV = 0;
-    int Humiditypct = 0;
-    int PanelmV = 0;
-    int Pressurepa = 0;
-    int Tempdecic = 0;
-
-    /* Sample Sensors */
-    BatterymV = (*Sensors_sampleBatterymV)();
-    SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
-    Humiditypct = (*Sensors_sampleHumiditypct)();
-    PanelmV = (*Sensors_samplePanelmV)();
-    Pressurepa = (*Sensors_samplePressurepa)();
-    Tempdecic = (*Sensors_samplePressurepa)();
 
     /* Packet Construction */
+#ifdef UART
+    Packet_ConUART(G_packet);
+#elif defined(BINARY)
+    Packet_ConBIN(G_packet);
+#endif
 
     /* Transmit Packet */
 #ifdef UART

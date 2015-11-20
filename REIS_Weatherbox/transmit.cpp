@@ -81,7 +81,85 @@ void Packet_ClearBIN(schema_3 *packet){
  *****************************************/
 void Packet_ConUART(uint8_t *packet){
 
-    /* EMPTY */
+    /* Index Variable */
+    int i = 0;
+
+    /* Get Addresss of Arduino*/
+    uint16_t address = EEPROM.read(2) | (EEPROM.read(3) << 8);
+    
+    /* Set up char array */
+    String s;
+
+    /* Variables to hold Sensor Readings */
+    int BatterymV = 0;
+    int SolarIrrmV = 0;
+    int SolarIrr_w_m2 = 0;
+    int Humiditypct = 0;
+    int PanelmV = 0;
+    int Pressurepa = 0;
+    int Tempdecic = 0;
+    unsigned long uptime;
+
+    /* Sample Sensors */
+    BatterymV = (*Sensors_sampleBatterymV)();
+    SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
+    Humiditypct = (*Sensors_sampleHumiditypct)();
+    PanelmV = (*Sensors_samplePanelmV)();
+    Pressurepa = (*Sensors_samplePressurepa)();
+    Tempdecic = (*Sensors_sampleTempdecic)();
+
+    /* Set up packet format */
+    s = "{";
+
+    /* String() will convert data type of argument into a string */
+    /* Address */
+    s += "\"address\": ";
+    s += String(address);
+
+    /* Weatherbox uptime */
+    uptime = millis();
+    s += ", \"uptime_ms\": ";
+    s += String(uptime);
+
+    /* Temperature */
+    s += ", \"bmp085_temp_decic\": ";
+    s += String(Tempdecic);
+
+    /* Humidity */
+    s += ", \"sht1x_humid_pct\": ";
+    s += String(Humiditypct); 
+
+    /* Pressure */
+    s += ", \"bmp085_press_pa\": ";
+    s += String(Pressurepa);
+
+    /* Battery Voltage */
+    s += ", \"batt_mv\": ";
+    s += String(BatterymV);
+
+    /*  Panel Voltage */
+    s += ", \"panel_mv\": ";
+    s += String(PanelmV);
+
+    /* Solar Irradiance */
+    s += ", \"apogee_mv\": ";
+    s += String(SolarIrrmV);
+    SolarIrr_w_m2 = SolarIrrmV * 5.0;
+    s += ", \"apogee_w_m2\": ";
+    s += String(SolarIrr_w_m2);
+
+    /* End of packet formatting */
+    s += "}";
+    s += '\0';
+
+    /* Note: This packet does NOT contain (in comparison to */
+    /*       old Apple code) panel_ua (current value),      */
+    /*       dallas_roof_c (temp), and dallas_amb_c (temp). */
+    
+    /* Put array information into Packet */
+    for(i = 0; i < s.length(); i++){
+      packet[i] = s[i];
+    }
 }
 
 /******************************************
@@ -194,7 +272,7 @@ void Packet_TransmitBIN(schema_3 *packet){
  *****************************************/
 void Test_Packet_GenUART(uint8_t *packet){
 
-    /* Necessary Variables */
+    /* Index Variables */
     int i = 0;
 
     /* Set up array */
