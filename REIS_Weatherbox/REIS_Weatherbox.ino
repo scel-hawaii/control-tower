@@ -15,6 +15,7 @@
 
 /* Arudino Libraries */
 #include <Wire.h>
+#include <EEPROM.h>
 
 /* External Libraries */
 #include <SHT1x.h>
@@ -22,7 +23,7 @@
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
-#include <Xbee.h>
+#include <XBee.h>
 
 /*********************************************
  *
@@ -40,7 +41,7 @@ void setup(){
     Gen_config();
 
     /* Create Xbee Object */
-    Xbee xbee = XBee();
+    XBee xbee = XBee();
 
     /* Initialization */
     Sensors_init();

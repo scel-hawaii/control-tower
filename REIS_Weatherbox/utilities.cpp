@@ -109,18 +109,3 @@ void configureADC(void)
 	// PS_16, PS_32, PS_64, PS_128
 	ADCSRA |= PS_64; //set our own prescaler to 64
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
