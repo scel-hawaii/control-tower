@@ -8,7 +8,7 @@
 
 #include "schema.h"
 #include "low_pass.h"
-#include "sensors.h"
+#include "config.h"
 
 #define TRUE 1
 #define FALSE 0
