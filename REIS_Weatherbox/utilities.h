@@ -4,7 +4,7 @@
  *    REIS Weatherbox Firmware
  *    Header file for utility functions
  *
-*****************************************/
+ *****************************************/
 
 #include "low_pass.h"
 #include "sensors.h"
@@ -12,9 +12,9 @@
 #define TRUE 1
 #define FALSE 0
 #define ADC_SAMPLE_NUM 200
-#define THRESH_GOOD_BATT_V 3750 //in mV
+#define THRESH_GOOD_BATT_V 763
 #define THRESH_GOOD_APOGEE_V 511
-#define THRESH_GOOD_PANEL_V 
+#define THRESH_GOOD_PANEL_V 614 
 
 /* State of Health macros */
 #define NORMAL 0

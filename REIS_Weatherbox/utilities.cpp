@@ -5,7 +5,7 @@
  *
  *    File containing utility functions
  *
-*******************************/
+ ******************************/
 
 
 #include "utilities.h"
@@ -19,7 +19,7 @@
  *    Description: Compares the previous runtime with the current runtime to
  *                 check if an overflow occured
  *
-*******************************/
+ ******************************/
 
 int chk_overflow(unsigned long current_value, unsigned long previous_value)
 {
@@ -38,7 +38,7 @@ int chk_overflow(unsigned long current_value, unsigned long previous_value)
  *    Description: Samples the battery ADC voltage a number of times and
  *                 averages it
  *
-********************************/
+ *******************************/
 
 long sampleBatteryVoltage(void)
 {
@@ -61,7 +61,7 @@ long sampleBatteryVoltage(void)
  *    Parameter: LowPassFilter* f
  *    Description: 
  *
-**********************************/
+ *********************************/
 
 int chkHealth(void)
 {
@@ -93,7 +93,7 @@ int chkHealth(void)
  *                 registers to speed up the ADC sample times a little. 
  *                 More documentation available online.
  *
-*********************************/
+ ********************************/
 
 /* Define various ADC prescaler */
 const unsigned char PS_16 = (1 << ADPS2);
