@@ -65,6 +65,7 @@ void setup(){
     Sensors_init();
     Serial.begin(9600);
     xbee.begin(Serial);
+    initHealtSamples();
 
     /* Packet Initialization */
 #ifdef UART
