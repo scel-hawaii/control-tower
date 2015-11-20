@@ -1,18 +1,15 @@
-/*******************************
+/****************************************
  *
  *    File: utilities.cpp
  *    REIS Weatherbox Firmware
  *
  *    File containing utility functions
  *
- ******************************/
+ ****************************************/
 
-
-#include "schema.h"
 #include "utilities.h"
 
-
-/*******************************
+/*****************************************
  *
  *    Name: chk_overflow
  *    Returns: 0 or 1
@@ -20,7 +17,7 @@
  *    Description: Compares the previous runtime with the current runtime to
  *                 check if an overflow occured
  *
- ******************************/
+ ****************************************/
 
 int chk_overflow(unsigned long current_value, unsigned long previous_value)
 {
@@ -31,7 +28,7 @@ int chk_overflow(unsigned long current_value, unsigned long previous_value)
 }
 
 
-/*******************************
+/********************************************
  *
  *    Name: sampleBatteryVoltage
  *    Returns: An averaged battery voltage
@@ -39,7 +36,7 @@ int chk_overflow(unsigned long current_value, unsigned long previous_value)
  *    Description: Samples the battery ADC voltage a number of times and
  *                 averages it
  *
- *******************************/
+ *******************************************/
 
 long sampleBatteryVoltage(void)
 {
@@ -55,22 +52,25 @@ long sampleBatteryVoltage(void)
 }
 
 
-/**********************************
+/*****************************************
  *
  *    Name: chk_health
  *    Returns: GOOD_SOLAR, NORMAL, POOR
- *    Parameter: LowPassFilter* f
- *    Description: 
+ *    Parameter: None.
+ *    Description: Compares current output to defined thresholds to determine
+ *                 the state of health
  *
- *********************************/
+ *****************************************/
 
 int chkHealth(void)
 {
 	int apogee_voltage = 0, panel_voltage = 0;
 
+	//Read current and panel voltage
 	apogee_voltage = LPF_get_current_output(&solar_filter);
 	panel_voltage = 2*analogRead(_PIN_SOLAR_V);
 
+	//Compare current and voltages to threshold value
 	if(LPF_get_current_output(&battery_filter) >= THRESH_GOOD_BATT_V)
 		return NORMAL;
 #ifdef HEALTH_GOOD_APOGEE
@@ -82,6 +82,15 @@ int chkHealth(void)
 	else
 		return POOR;
 }
+
+/******************************************
+ *
+ *    Name: sendHealth
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: Transmits health data
+ *
+ ******************************************/
 
 void sendHealth(void)
 {
@@ -108,12 +117,29 @@ void sendHealth(void)
 	}
 }
 
+
+/******************************************
+ *
+ *    Name: health_data_transmit
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: Gets packet health and transmits it
+ *
+ ******************************************/
 void health_data_transmit(void)
 {
 	getPacketHealth();
 	transmitPacketHealth();
 }
 
+/******************************************
+ *
+ *    Name: transmitPacketHealth
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: Transmits the packet health.
+ *
+ ******************************************/
 void transmitPacketHealth(void)
 {
 	memset(rf_payload, '\0', sizeof(rf_payload));
@@ -122,6 +148,14 @@ void transmitPacketHealth(void)
 	xbee.send(zbtx);
 }
 
+/******************************************
+ *
+ *    Name: getPacketHealth
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: Retrieves packet health.
+ *
+ ******************************************/
 void getPacketHealth(void)
 {
 	health.schema = 5;

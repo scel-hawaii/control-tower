@@ -6,6 +6,7 @@
  *
  *****************************************/
 
+#include "schema.h"
 #include "low_pass.h"
 #include "sensors.h"
 
@@ -78,21 +79,5 @@ void pstate_system(int state);
 void pstate_xbee(int state);
 void pstate_sensors_array(int state);
 void sync_pstate(void);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
