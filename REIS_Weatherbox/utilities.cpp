@@ -8,6 +8,7 @@
  ******************************/
 
 
+#include "schema.h"
 #include "utilities.h"
 
 
@@ -82,30 +83,91 @@ int chkHealth(void)
 		return POOR;
 }
 
-
-/*********************************
- *
- *    Name: cofigureADC 
- *    Returns: Nothing.
- *    Parameter: None.
- *    Description: Configures the ADC. Normally in the Arduino IDE, 
- *                 we don't have to worry about this but we change the 
- *                 registers to speed up the ADC sample times a little. 
- *                 More documentation available online.
- *
- ********************************/
-
-/* Define various ADC prescaler */
-const unsigned char PS_16 = (1 << ADPS2);
-const unsigned char PS_32 = (1 << ADPS2) | (1 << ADPS0);
-const unsigned char PS_64 = (1 << ADPS2) | (1 << ADPS1);
-const unsigned char PS_128 = (1 <<ADPS2) | (1 << ADPS1) | (1 << ADPS0);
-
-void configureADC(void)
+void sendHealth(void)
 {
-	/* Setup faster ADC */
-	ADCSRA &= ~PS_128; //remove bit set by Arduino library
-	//you can choose a prescaler from above
-	// PS_16, PS_32, PS_64, PS_128
-	ADCSRA |= PS_64; //set our own prescaler to 64
+	long transmit_health = 600000;
+	
+	if(millis() - health_transmit_timer >= transmit_health)
+	{
+		//Power on system to transmit health data
+		pstate_system(_ACTIVE);
+		
+		//Wait for the system to fully turn on
+		transmit_timer = millis();
+		int wake_time = 3000;
+		while(millis() - transmit_timer) <= wake_time);
+
+		//Transmit health data
+		health_data_transmit();
+
+		//Power off system again until next health data transmission
+		pstate_system(_POWER_SAVE);
+
+		//Update time since last health transmission
+		health_transmit_timer = millis();
+	}
 }
+
+void health_data_transmit(void)
+{
+	getPacketHealth();
+	transmitPacketHealth();
+}
+
+void transmitPacketHealth(void)
+{
+	memset(rf_payload, '\0', sizeof(rf_payload));
+	memcpy(rf_payload, &health, sizeof(health));
+	ZBTxRequest zbtx = ZBTxRequest(addr64, rf_payload, sizeof(health));
+	xbee.send(zbtx);
+}
+
+void getPacketHealth(void)
+{
+	health.schema = 5;
+	health.address = address;
+	health.uptime_ms = millis();
+	health.batt_mv = 1000*(analogRead(_PIN_BATT_V)*5/1023);
+}
+
+
+/****************** Power Management Functions *******************/
+
+void pstate_system(int state)
+{
+	if(state == _ACTIVE)
+	{
+	    pstate_xbee(_ON);
+	    pstate_sensor_array(_ON);
+	}
+	
+	else if(state == _POWER_SAVE)
+	{
+	    pstate_xbee(_OFF);
+	    pstate_sensors_array(_OFF);
+	}
+}
+
+void pstate_xbee(int state)
+{
+	power_state.xbee = state;
+	sync_pstate();
+}
+
+void pstate_sensors_array(int state)
+{
+	power_state.sensors_array = state;
+	sync_pstate();
+}
+
+void sync_pstate(void)
+{
+	digitalWrite(_PIN_XBEE_SLEEP, !power_state.xbee);
+	digitalWrite(_Pin_PSWITCH, power_state.sensor_array);
+	
+}
+
+/******************************************************************/
+
+
+
