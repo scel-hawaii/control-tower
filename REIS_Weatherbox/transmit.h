@@ -11,6 +11,7 @@
 #include "schema.h"
 #include "config.h"
 #include "sensors.h"
+#include "utilities.h"
 
 /* External Libraries */
 #include <EEPROM.h>

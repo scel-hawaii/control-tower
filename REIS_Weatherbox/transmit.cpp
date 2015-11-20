@@ -208,7 +208,7 @@ void Packet_ConBIN(schema_3 *packet){
     /* Pack sensor data */
     (*packet).batt_mv[n/10] = BatterymV;
     (*packet).panel_mv[n/10] = PanelmV;
-    (*packet).bm085_press_pa = Pressurepa;
+    (*packet).bmp085_press_pa = Pressurepa;
     (*packet).bmp085_temp_decic = Tempdecic;
     (*packet).humidity_centi_pct = Humiditypct;
     (*packet).apogee_w_m2[n/3] = SolarIrrmV;

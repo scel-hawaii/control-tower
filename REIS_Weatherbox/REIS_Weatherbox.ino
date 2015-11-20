@@ -65,7 +65,7 @@ void setup(){
     Sensors_init();
     Serial.begin(9600);
     xbee.begin(Serial);
-    initHealtSamples();
+    initHealthSamples();
 
     /* Packet Initialization */
 #ifdef UART
@@ -89,8 +89,7 @@ void setup(){
  * 
  ********************************************/
 void loop(){
-
-
+      
     /* Packet Construction */
 #ifdef UART
     Packet_ConUART(G_packet);
@@ -100,10 +99,15 @@ void loop(){
 
     /* Transmit Packet */
 #ifdef UART
-    Packet_TrnsmitUART(G_packet);
+    Packet_TransmitUART(G_packet);
 #elif defined(BINARY)
     Packet_TransmitBIN(G_packet);
 #endif
 
     /* Clear Packet Buffer */
+#ifdef UART
+    Packet_ClearUART(G_packet);
+#elif defined(BINARY)
+    Packet_ClearBIN(G_packet);
+#endif
 }
