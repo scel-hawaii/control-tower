@@ -12,6 +12,8 @@
 #include "sensors.h"
 #include "transmit.h"
 #include "low_pass.h"
+#include "schema.h"
+#include "utilities.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
@@ -24,6 +26,13 @@
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
 #include <XBee.h>
+
+/* Global Variable for Packet (BAD FIND ALTERNATIVE) */
+#ifdef UART
+    uint8_t G_packet[MAX_SIZE];
+#elif defined(BINARY)
+    schema_3 *G_packet;
+#endif
 
 /*********************************************
  *
@@ -46,9 +55,16 @@ void setup(){
     /* Initialization */
     Sensors_init();
     Serial.begin(9600);
+    xbee.being(Serial);
 
-    /* Health Check */
-
+    /* Packet Initialization */
+#ifdef UART
+    Packet_ClearUART(G_packet);
+#elif defined(BINARY)
+    /* Allocate memory for the struct */
+    G_packet = (schema_3 *)malloc(sizeof(schema_3));
+    Packet_ClearBIN(G_packet);
+#endif
 }
 
 /*********************************************
@@ -83,7 +99,11 @@ void loop(){
     /* Packet Construction */
 
     /* Transmit Packet */
+#ifdef UART
+    Packet_TrnsmitUART(G_packet);
+#elif defined(BINARY)
+    Packet_TransmitBIN(G_packet);
+#endif
 
     /* Clear Packet Buffer */
-
 }
