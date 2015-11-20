@@ -93,7 +93,7 @@ int chkHealth(void)
  *                 registers to speed up the ADC sample times a little. 
  *                 More documentation available online.
  *
-*********************************/
+ ********************************/
 
 /* Define various ADC prescaler */
 const unsigned char PS_16 = (1 << ADPS2);
