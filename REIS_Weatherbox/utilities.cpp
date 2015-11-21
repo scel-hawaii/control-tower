@@ -72,13 +72,13 @@ void initHealthSamples(void){
     LowPassFilter solar_filter;
     LowPassFilter battery_filter;
 
-    /* Sample battery and solar 200 times */
+    /* Sample 200 times */
     for(i = 0; i < 200; i++){
         battery_sample += analogRead(_PIN_BATT_V);
         solar_sample += analogRead(_PIN_APOGEE_V);
     }
 
-    /* Average samples */
+    /* Average the samples */
     battery_sample = battery_sample/200;
     solar_sample = solar_sample/200;
 
