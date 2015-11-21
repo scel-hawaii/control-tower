@@ -17,9 +17,8 @@ typedef struct lpf{
     float alpha;
 } LowPassFilter;
 
-/* Define solar and battery filters as LPF type */
-LowPassFilter solar_filter;
-LowPassFilter battery_filter;
+extern LowPassFilter solar_filter; //GLOBAL!! Find alternative (pointers)
+extern LowPassFilter battery_filter; //GLOBAL!! Find alternative (pointers)
 
 /* LPF functions */
 void LPF_filter_init(LowPassFilter *f, float output, float alpha);

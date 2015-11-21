@@ -14,7 +14,7 @@
  ******************************************/
 
 /* External Libraries */
-#include <stdint.h> 
+#include <stdint.h>
 
 /* Check for previous includes */
 #ifndef SCHEMA_H

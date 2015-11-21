@@ -6,9 +6,18 @@
  *
  *****************************************/
 
+/* Program Libraries */
 #include "schema.h"
 #include "low_pass.h"
 #include "config.h"
+
+/* External Libraries */
+#include <EEPROM.h>
+#include <XBee.h>
+
+/* Check for previous includes */
+#ifndef UTILITIES_H
+#define UTILITIES_H
 
 #define TRUE 1
 #define FALSE 0
@@ -25,15 +34,15 @@
 #define POOR 2
 
 /* Struct definitions */
-schema_health health;
+extern schema_health health; //GLOBAL!! Find alternative (pointers)
 
 struct P_STATE{
     int xbee;
     int sensor_array;
 };
 
-P_STATE power_state;
-
+extern P_STATE power_state; //GLOBAL!! Find alternative (pointers)
+    
 //Number of samples to take
 #define ADC_SAMPLE_NUM 30
 
@@ -67,7 +76,6 @@ P_STATE power_state;
 //Defines the alpha value for the solar lowpass filter
 #define BATT_LOWPASS_ALPHA 0.005
 
-
 int chk_overflow(unsigned long current_value, unsigned long previous_value);
 long sampleBatteryVoltage(void);
 void initHealthSamples(void);
@@ -80,5 +88,4 @@ void pstate_system(int state);
 void pstate_xbee(int state);
 void pstate_sensors_array(int state);
 void sync_pstate(void);
-
-
+#endif 
