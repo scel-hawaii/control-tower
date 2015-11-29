@@ -27,12 +27,9 @@
 #include <Adafruit_BMP085.h>
 #include <XBee.h>
 
-/* Global Variable for Packet (BAD FIND ALTERNATIVE) */
-#ifdef UART
-    uint8_t G_packet[MAX_SIZE];
-#elif defined(BINARY)
-    schema_3 *G_packet;
-#endif
+/* Global Variable for Packet  */
+uint8_t G_UARTpacket[MAX_SIZE];
+schema_3 G_BINpacket;
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
@@ -42,6 +39,9 @@ int (*Sensors_sampleSolarIrrmV)(void);
 int (*Sensors_samplePressurepa)(void);
 int (*Sensors_sampleHumiditypct)(void);
 int (*Sensors_sampleTempdecic)(void);
+void (*Packet_Clear)(void);
+void (*Packet_Con)(void);
+void (*Packet_Transmit)(void);
 
 /*********************************************
  *
@@ -58,6 +58,9 @@ void setup(){
     /* Generation Check */
     Gen_config();
 
+    /* Transmission Method Check */
+    Transmit_config();
+
     /* Create Xbee Object */
     XBee xbee = XBee();
 
@@ -68,13 +71,7 @@ void setup(){
     initHealthSamples();
 
     /* Packet Initialization */
-#ifdef UART
-    Packet_ClearUART(G_packet);
-#elif defined(BINARY)
-    /* Allocate memory for the struct */
-    G_packet = (schema_3 *)malloc(sizeof(schema_3));
-    Packet_ClearBIN(G_packet);
-#endif
+    Packet_Clear();
 }
 
 /*********************************************
@@ -91,23 +88,11 @@ void setup(){
 void loop(){
       
     /* Packet Construction */
-#ifdef UART
-    Packet_ConUART(G_packet);
-#elif defined(BINARY)
-    Packet_ConBIN(G_packet);
-#endif
+    Packet_Con();
 
     /* Transmit Packet */
-#ifdef UART
-    Packet_TransmitUART(G_packet);
-#elif defined(BINARY)
-    Packet_TransmitBIN(G_packet);
-#endif
+    Packet_Transmit();
 
     /* Clear Packet Buffer */
-#ifdef UART
-    Packet_ClearUART(G_packet);
-#elif defined(BINARY)
-    Packet_ClearBIN(G_packet);
-#endif
+    Packet_Clear();
 }

@@ -14,19 +14,19 @@
  *
  *   Name:        Packet_ClearUART
  *   Returns:     Nothing
- *   Parameter:   uint8_t *packet
+ *   Parameter:   uint8_t Global packet
  *   Description: Clears/Initializes the packet to
  *                    NULL.
  *
  *****************************************/
-void Packet_ClearUART(uint8_t *packet){
+void Packet_ClearUART(void){
 
     /* Variables Declarations */
     int i = 0;
 
     /* Set packet to NULL */
     for(i = 0; i < MAX_SIZE; i++){
-        packet[i] = '\0';
+        G_UARTpacket[i] = '\0';
     }
 }
 
@@ -35,24 +35,24 @@ void Packet_ClearUART(uint8_t *packet){
  *
  *   Name:        Packet_ClearBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 *packet
+ *   Parameter:   schema_3 Global packet
  *   Description: Clears/Initializes the packet schema
  *                    information.
  *
  *****************************************/
-void Packet_ClearBIN(schema_3 *packet){
+void Packet_ClearBIN(void){
 
     /* Variables used for indexes */
     int i, j, k;
 
     /* Initialize values contained in the packet */
-    (*packet).schema = 3;
-    (*packet).address = EEPROM.read(2) | (EEPROM.read(3) << 8); //Addr from EEPROM
-    (*packet).uptime_ms = 0;
-    (*packet).n = 0;
-    (*packet).bmp085_press_pa = 0;
-    (*packet).bmp085_temp_decic = 0;
-    (*packet).humidity_centi_pct = 0;
+    G_BINpacket.schema = 3;
+    G_BINpacket.address = EEPROM.read(2) | (EEPROM.read(3) << 8); //Addr from EEPROM
+    G_BINpacket.uptime_ms = 0;
+    G_BINpacket.n = 0;
+    G_BINpacket.bmp085_press_pa = 0;
+    G_BINpacket.bmp085_temp_decic = 0;
+    G_BINpacket.humidity_centi_pct = 0;
     
     /* Use a for loop to clear the info for the data with multiple points */
     for(i = 0; i < 60; i++){
@@ -62,11 +62,11 @@ void Packet_ClearBIN(schema_3 *packet){
         k = i/3;
 
         /* Polled every 10 */
-        (*packet).batt_mv[j] = 0;
-        (*packet).panel_mv[j] = 0;
+        G_BINpacket.batt_mv[j] = 0;
+        G_BINpacket.panel_mv[j] = 0;
  
         /* Polled every 3 */
-        (*packet).apogee_w_m2[k] = 0;
+        G_BINpacket.apogee_w_m2[k] = 0;
     }
 }
 
@@ -74,12 +74,12 @@ void Packet_ClearBIN(schema_3 *packet){
  *
  *   Name:        Packet_ConUART
  *   Returns:     Nothing
- *   Parameter:   uint8_t *packet
+ *   Parameter:   uint8_t Global packet
  *   Description: Constructs a packet with data polled 
  *                    from the sensors.
  *
  *****************************************/
-void Packet_ConUART(uint8_t *packet){
+void Packet_ConUART(void){
 
     /* Index Variable */
     int i = 0;
@@ -158,7 +158,7 @@ void Packet_ConUART(uint8_t *packet){
     
     /* Put array information into Packet */
     for(i = 0; i < s.length(); i++){
-      packet[i] = s[i];
+      G_UARTpacket[i] = s[i];
     }
 }
 
@@ -166,17 +166,17 @@ void Packet_ConUART(uint8_t *packet){
  *
  *   Name:        Packet_ConBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 *packet
+ *   Parameter:   schema_3 Global packet
  *   Description: Constructs a packet with data polled
  *                    from the sensors.
  *
  *****************************************/
-void Packet_ConBIN(schema_3 *packet){
+void Packet_ConBIN(void){
 
     /* Note: Address and Schema data already put in during Init */
     
     /* Index Variable */
-    int n = (*packet).n;
+    int n = G_BINpacket.n;
 
     /* Variables to hold Sensor Readings */
     int BatterymV = 0;
@@ -200,33 +200,33 @@ void Packet_ConBIN(schema_3 *packet){
     uptime = millis();
     
     /* Check overflow before putting in uptime */
-    (*packet).overflow_num += chk_overflow(uptime, (*packet).uptime_ms);
+    G_BINpacket.overflow_num += chk_overflow(uptime, G_BINpacket.uptime_ms);
 
     /* Save new uptime */
-    (*packet).uptime_ms = uptime;
+    G_BINpacket.uptime_ms = uptime;
 
     /* Pack sensor data */
-    (*packet).batt_mv[n/10] = BatterymV;
-    (*packet).panel_mv[n/10] = PanelmV;
-    (*packet).bmp085_press_pa = Pressurepa;
-    (*packet).bmp085_temp_decic = Tempdecic;
-    (*packet).humidity_centi_pct = Humiditypct;
-    (*packet).apogee_w_m2[n/3] = SolarIrrmV;
+    G_BINpacket.batt_mv[n/10] = BatterymV;
+    G_BINpacket.panel_mv[n/10] = PanelmV;
+    G_BINpacket.bmp085_press_pa = Pressurepa;
+    G_BINpacket.bmp085_temp_decic = Tempdecic;
+    G_BINpacket.humidity_centi_pct = Humiditypct;
+    G_BINpacket.apogee_w_m2[n/3] = SolarIrrmV;
     
     /* Increment index */
-    (*packet).n += 1;
+    G_BINpacket.n += 1;
 }
 
 /******************************************
  *
  *   Name:        Packet_TransmitUART
  *   Returns:     Nothing
- *   Parameter:   uint8_t *packet
+ *   Parameter:   uint8_t Global packet
  *   Description: Transmits using Arduino Xbee functions,
  *                    Xbees must be in API mode.
  *
  *****************************************/
-void Packet_TransmitUART(uint8_t *packet){
+void Packet_TransmitUART(void){
 
     /* Variable Declarations */
     XBee xbee = XBee();    //Create Xbee Object
@@ -237,7 +237,7 @@ void Packet_TransmitUART(uint8_t *packet){
     XBeeAddress64 addr64 = XBeeAddress64(0,0);
 
     /* Get length of packet */
-    len = strlen((char *) packet);
+    len = strlen((char *) G_UARTpacket);
 
 #ifdef DEBUG_S
     /* Debug */
@@ -246,7 +246,7 @@ void Packet_TransmitUART(uint8_t *packet){
 #endif
 
     /* Transfer the packet */
-    ZBTxRequest zbTx = ZBTxRequest(addr64, packet, len);
+    ZBTxRequest zbTx = ZBTxRequest(addr64, G_UARTpacket, len);
     xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
@@ -254,13 +254,13 @@ void Packet_TransmitUART(uint8_t *packet){
  *
  *   Name:        Packet_TransmitBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 *packet
+ *   Parameter:   schema_3 Global packet
  *   Description: Transmits using Arduino Xbee functions,
  *                    the packet is transfered as a
  *                    binary packet.
  *
  *****************************************/
-void Packet_TransmitBIN(schema_3 *packet){
+void Packet_TransmitBIN(void){
 
     /* Create Xbee object */
     XBee xbee = XBee();
@@ -278,7 +278,7 @@ void Packet_TransmitBIN(schema_3 *packet){
     memset(payload, '\0', sizeof(payload));
 
     /* Obtain length of the packet */
-    len = sizeof(*packet);
+    len = sizeof(G_BINpacket);
 
 #ifdef DEBUG_S
     /* Debug */
@@ -287,12 +287,12 @@ void Packet_TransmitBIN(schema_3 *packet){
 #endif
 
     /* Transfer information into payload */
-    memcpy(payload, packet, len);
+    memcpy(payload, &G_BINpacket, len);
 
 #ifdef DEBUG_S
     /* Checks to see if the data was transferred correctly */
     /* Can check any data value in struct schema_3 defined in schema.h */
-    Serial.println(((schema_3 *)payload)->batt_mv[1]);
+    Serial.println(((schema_3)payload)->batt_mv[1]);
 #endif
 
     /* Transfer the payload */
@@ -304,14 +304,14 @@ void Packet_TransmitBIN(schema_3 *packet){
  *
  *   Name:        Test_Packet_GenUART
  *   Returns:     Nothing
- *   Parameter:   uint8_t *packet
+ *   Parameter:   uint8_t Global packet
  *   Description: Constructs a packet with hard-coded
  *                    information.  Used for the initial
  *                    test of the Transmission functions.
  *                    To be replaced by Packet Construction.
  *
  *****************************************/
-void Test_Packet_GenUART(uint8_t *packet){
+void Test_Packet_GenUART(void){
 
     /* Index Variables */
     int i = 0;
@@ -330,7 +330,7 @@ void Test_Packet_GenUART(uint8_t *packet){
 
     /* Put array information into Packet */
     for(i = 0; i < s.length(); i++){
-      packet[i] = s[i];
+      G_UARTpacket[i] = s[i];
     }
 }
 
@@ -338,14 +338,14 @@ void Test_Packet_GenUART(uint8_t *packet){
  *
  *   Name:        Test_Packet_GenBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 *packet
+ *   Parameter:   schema_3 Global packet
  *   Description: Constructs a packet with hard-coded
  *                    information.  Used for the initial
  *                    test of the Transmission functions.
  *                    To be replaced by Packet Construction.
  *
  *****************************************/
-void Test_Packet_GenBIN(schema_3 *packet){
+void Test_Packet_GenBIN(void){
 
     /* Hard-coded data to put into packet */
     int batt_mv_raw = 1;
@@ -363,12 +363,12 @@ void Test_Packet_GenBIN(schema_3 *packet){
 #endif
 
     /* Store values into packet */
-    (*packet).batt_mv[n/10] = batt_mv_raw;
-    (*packet).panel_mv[n/10] = panel_mv_raw;
-    (*packet).apogee_w_m2[n/3] = apogee_raw;
-    (*packet).bmp085_press_pa = pressure_raw;
-    (*packet).bmp085_temp_decic = temperature_raw;
-    (*packet).humidity_centi_pct = humidity_raw;
-    (*packet).n = n;
-    (*packet).uptime_ms = uptime;
+    G_BINpacket.batt_mv[n/10] = batt_mv_raw;
+    G_BINpacket.panel_mv[n/10] = panel_mv_raw;
+    G_BINpacket.apogee_w_m2[n/3] = apogee_raw;
+    G_BINpacket.bmp085_press_pa = pressure_raw;
+    G_BINpacket.bmp085_temp_decic = temperature_raw;
+    G_BINpacket.humidity_centi_pct = humidity_raw;
+    G_BINpacket.n = n;
+    G_BINpacket.uptime_ms = uptime;
 }

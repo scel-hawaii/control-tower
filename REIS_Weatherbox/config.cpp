@@ -12,6 +12,7 @@
 
 /* Program Libraries */
 #include "sensors.h"
+#include "transmit.h"
 #include "config.h"
 
 /*******************************************
@@ -39,5 +40,19 @@ void Gen_config(void){
         Sensors_sampleTempdecic = &a_Sensors_sampleTempdecic;
     #elif defined(CRANBERRY)
     #elif defined(DRAGONFRUIT)
+    #endif
+}
+
+void Transmit_config(void){
+
+    /* Assign Transmit functions based on transmission config */
+    #ifdef UART
+        Packet_Clear = &Packet_ClearUART;
+        Packet_Con = &Packet_ConUART;
+        Packet_Transmit = &Packet_TransmitUART;
+    #elif defined(BINARY)
+        Packet_Clear = &Packet_ClearBIN;
+        Packet_Con = &Packet_ConBIN;
+        Packet_Transmit = &Packet_TransmitBIN;
     #endif
 }
