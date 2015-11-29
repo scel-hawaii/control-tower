@@ -86,6 +86,8 @@
 /*-------------------------*/
 /*----Function Pointers----*/
 /*-------------------------*/
+
+/* Sensors */
 extern void (*Sensors_init)(void);
 extern int (*Sensors_sampleBatterymV)(void);
 extern int (*Sensors_samplePanelmV)(void);
@@ -94,9 +96,15 @@ extern int (*Sensors_samplePressurepa)(void);
 extern int (*Sensors_sampleHumiditypct)(void);
 extern int (*Sensors_sampleTempdecic)(void);
 
+/* Transmit */
+extern void (*Packet_Clear)(void);
+extern void (*Packet_Con)(void);
+extern void (*Packet_Transmit)(void);
+
 /*-------------------------*/
 /*-Configuration Functions-*/
 /*-------------------------*/
 void Gen_config(void);
+void Transmit_config(void);
 
 #endif

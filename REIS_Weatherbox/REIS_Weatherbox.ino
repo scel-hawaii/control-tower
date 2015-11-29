@@ -39,6 +39,9 @@ int (*Sensors_sampleSolarIrrmV)(void);
 int (*Sensors_samplePressurepa)(void);
 int (*Sensors_sampleHumiditypct)(void);
 int (*Sensors_sampleTempdecic)(void);
+void (*Packet_Clear)(void);
+void (*Packet_Con)(void);
+void (*Packet_Transmit)(void);
 
 /*********************************************
  *
@@ -55,6 +58,9 @@ void setup(){
     /* Generation Check */
     Gen_config();
 
+    /* Transmission Method Check */
+    Transmit_config();
+
     /* Create Xbee Object */
     XBee xbee = XBee();
 
@@ -65,11 +71,7 @@ void setup(){
     initHealthSamples();
 
     /* Packet Initialization */
-#ifdef UART
-    Packet_ClearUART();
-#elif defined(BINARY)
-    Packet_ClearBIN();
-#endif
+    Packet_Clear();
 }
 
 /*********************************************
@@ -86,23 +88,11 @@ void setup(){
 void loop(){
       
     /* Packet Construction */
-#ifdef UART
-    Packet_ConUART();
-#elif defined(BINARY)
-    Packet_ConBIN();
-#endif
+    Packet_Con();
 
     /* Transmit Packet */
-#ifdef UART
-    Packet_TransmitUART();
-#elif defined(BINARY)
-    Packet_TransmitBIN();
-#endif
+    Packet_Transmit();
 
     /* Clear Packet Buffer */
-#ifdef UART
-    Packet_ClearUART();
-#elif defined(BINARY)
-    Packet_ClearBIN();
-#endif
+    Packet_Clear();
 }
