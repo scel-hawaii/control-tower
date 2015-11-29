@@ -157,19 +157,35 @@ void sendHealth(void){
     }
 }
 
-
 /******************************************
  *
  *    Name: health_data_transmit
  *    Returns: Nothing.
  *    Parameter: None.
- *    Description: Gets packet health and transmits it
+ *    Description: This function calls two other functions 1) get the packet health, then
+ *                 2) transmit the packet health
  *
  ******************************************/
 void health_data_transmit(void){
 
     getPacketHealth();
     transmitPacketHealth();
+}
+
+/******************************************
+ *
+ *    Name: getPacketHealth
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: Retrieves packet health by utilizing schema_health.
+ *
+ ******************************************/
+void getPacketHealth(void){
+    
+    health.schema = 5;
+    health.address = EEPROM.read(2) | (EEPROM.read(3) << 8);
+    health.uptime_ms = millis();
+    health.batt_mv = 1000*(analogRead(_PIN_BATT_V)*5/1023);
 }
 
 /******************************************
@@ -197,25 +213,18 @@ void transmitPacketHealth(void)
     xbee.send(zbtx);
 }
 
-/******************************************
+
+/************************* Power Management Functions *************************/
+
+/********************************************
  *
- *    Name: getPacketHealth
+ *    Name: pstate_system
  *    Returns: Nothing.
- *    Parameter: None.
- *    Description: Retrieves packet health.
+ *    Parameter: state
+ *    Description: Given an integer (0 or 1),  this function will switch the sleep state for the xbee
+ *                 and the power state for the sensor array. 
  *
- ******************************************/
-void getPacketHealth(void){
-    
-    health.schema = 5;
-    health.address = EEPROM.read(2) | (EEPROM.read(3) << 8);
-    health.uptime_ms = millis();
-    health.batt_mv = 1000*(analogRead(_PIN_BATT_V)*5/1023);
-}
-
-
-/****************** Power Management Functions *******************/
-
+ *******************************************/
 void pstate_system(int state){
 
     if(state == _ACTIVE){
@@ -230,22 +239,54 @@ void pstate_system(int state){
     }
 }
 
+
+/*******************************************
+ *
+ *    Name: pstate_xbee
+ *    Returns: Nothing.
+ *    Parameter: state
+ *    Description: Given an integer (0 or 1) this function will switch the sleep state for the xbee.
+ *                 power_state is of type P_STATE which is a struct that has integer variables xbee and
+ *                 sensor_array. This function sets the xbee variable to 0 or 1, then calls the sync
+ *                 function. 
+ *
+ ******************************************/
 void pstate_xbee(int state){
 
     power_state.xbee = state;
     sync_pstate();
 }
 
+/******************************************
+ *
+ *    Name: pstate_sensors_array
+ *    Returns: Nothing
+ *    Parameter: state
+ *    Description: Given an integer (0 or 1) this function will switch the power state for the sensor
+ *                 array. power_state is of type P_STATE which is a struct that has integer variables
+ *                 xbee and sensor_array. This function sets the sensor_array variable to 0 or 1, then
+ *                 then calls the sync function.
+ *
+ *****************************************/
 void pstate_sensors_array(int state){
 
     power_state.sensor_array = state;
     sync_pstate();
 }
 
+/*****************************************
+ *
+ *    Name: sync_pstate
+ *    Returns: Nothing.
+ *    Parameter: None.
+ *    Description: This function uses digitalWrite to set the pins on the XBEE(??) which switches the
+ *                 power state for the sensor array and the xbee sleep mode.
+ *
+ ****************************************/
 void sync_pstate(void){
 
     digitalWrite(_PIN_XBEE_SLEEP, !power_state.xbee);
     digitalWrite(_PIN_PSWITCH, power_state.sensor_array);	
 }
 
-/******************************************************************/
+/*****************************************************************************/
