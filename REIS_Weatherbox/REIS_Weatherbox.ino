@@ -27,12 +27,9 @@
 #include <Adafruit_BMP085.h>
 #include <XBee.h>
 
-/* Global Variable for Packet (BAD FIND ALTERNATIVE) */
-#ifdef UART
-    uint8_t G_packet[MAX_SIZE];
-#elif defined(BINARY)
-    schema_3 *G_packet;
-#endif
+/* Global Variable for Packet  */
+uint8_t G_UARTpacket[MAX_SIZE];
+schema_3 G_BINpacket;
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
@@ -69,11 +66,9 @@ void setup(){
 
     /* Packet Initialization */
 #ifdef UART
-    Packet_ClearUART(G_packet);
+    Packet_ClearUART();
 #elif defined(BINARY)
-    /* Allocate memory for the struct */
-    G_packet = (schema_3 *)malloc(sizeof(schema_3));
-    Packet_ClearBIN(G_packet);
+    Packet_ClearBIN();
 #endif
 }
 
@@ -92,22 +87,22 @@ void loop(){
       
     /* Packet Construction */
 #ifdef UART
-    Packet_ConUART(G_packet);
+    Packet_ConUART();
 #elif defined(BINARY)
-    Packet_ConBIN(G_packet);
+    Packet_ConBIN();
 #endif
 
     /* Transmit Packet */
 #ifdef UART
-    Packet_TransmitUART(G_packet);
+    Packet_TransmitUART();
 #elif defined(BINARY)
-    Packet_TransmitBIN(G_packet);
+    Packet_TransmitBIN();
 #endif
 
     /* Clear Packet Buffer */
 #ifdef UART
-    Packet_ClearUART(G_packet);
+    Packet_ClearUART();
 #elif defined(BINARY)
-    Packet_ClearBIN(G_packet);
+    Packet_ClearBIN();
 #endif
 }

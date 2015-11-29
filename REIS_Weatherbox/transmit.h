@@ -21,19 +21,24 @@
 #ifndef TRANSMIT_H
 #define TRANSMIT_H
 
+/* Global Variable for Packet  */
+extern uint8_t G_UARTpacket[MAX_SIZE];
+extern schema_3 G_BINpacket;
+
+
 /* Packet Initialization/Clear */
-void Packet_ClearUART(uint8_t *packet);
-void Packet_ClearBIN(schema_3 *packet);
+void Packet_ClearUART(void);
+void Packet_ClearBIN(void);
 
 /* Paacket Construction */
-void Packet_ConUART(uint8_t *packet);
-void Packet_ConBIN(schema_3 *packet);
+void Packet_ConUART(void);
+void Packet_ConBIN(void);
 
 /* Transmission Code */
-void Packet_TransmitUART(uint8_t *packet);
-void Packet_TransmitBIN(schema_3 *packet);
+void Packet_TransmitUART(void);
+void Packet_TransmitBIN(void);
 
 /* Test Packet Generation */
-void Test_Packet_GenUART(uint8_t *packet);
-void Test_Packet_GenBIN(schema_3 *packet);
+void Test_Packet_GenUART(void);
+void Test_Packet_GenBIN(void);
 #endif

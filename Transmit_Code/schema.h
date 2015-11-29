@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 /*******************************
  *
  *    File: schema.h
@@ -14,8 +12,6 @@
 /* Necessary Libraries */
 #include <stdint.h>
 
-/* Main schema definition */
->>>>>>> 052e73cbba547e145bb949b33dd22045e2f2f343
 /*******************************************
  *
  *    File: schema.h

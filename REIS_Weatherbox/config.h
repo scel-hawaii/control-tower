@@ -27,7 +27,7 @@
 /*-------------------------*/
 
 /* Transmission method declarations: only define one */
-//define UART
+//#define UART
 #define BINARY
 
 /* Macros */

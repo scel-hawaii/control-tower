@@ -17,12 +17,9 @@
 #include <XBee.h>
 #include <stdint.h>
 
-/* Global Variable for Packet (BAD FIND ALTERNATIVE) */
-#ifdef UART
-    uint8_t G_packet[MAX_SIZE];
-#elif defined(BINARY)
-    schema_3 *G_packet;
-#endif
+/* Global Variable for Packet */
+uint8_t G_UARTpacket[MAX_SIZE];
+schema_3 G_BINpacket;
 
 /******************************************
  *
@@ -43,18 +40,16 @@ void setup(){
 
     /* Packet initialization */
 #ifdef UART
-    Packet_ClearUART(G_packet);
+    Packet_ClearUART();
 #elif defined(BINARY)
-    /* Allocate memory for the struct */
-    G_packet = (schema_3 *)malloc(sizeof(schema_3));
-    Packet_ClearBIN(G_packet);
+    Packet_ClearBIN();
 #endif
 
     /* Generate a test packet */
 #ifdef UART
-    Test_Packet_GenUART(G_packet);
+    Test_Packet_GenUART();
 #elif defined(BINARY)
-    Test_Packet_GenBIN(G_packet);
+    Test_Packet_GenBIN();
 #endif
 }
 
@@ -73,9 +68,9 @@ void loop(){
 
     /* Transmit the packet */
 #ifdef UART
-    Packet_TransmitUART(G_packet);
+    Packet_TransmitUART();
 #elif defined(BINARY)
-    Packet_TransmitBIN(G_packet);
+    Packet_TransmitBIN();
 #endif
 
     /* Debug: Notify packet was transmitted */
