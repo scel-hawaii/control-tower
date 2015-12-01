@@ -20,7 +20,26 @@
  *                     voltage level is good.
  *
  ******************************************/
-void Normal_Routine(void){
+void Normal_Routine(int *count){
+
+    /* Variable Initialization */
+    long wait_ms = 1000;  //Used to ensure we poll exactly every second
+
+    /* Poll sensors & construct packet */
+    Packet_Con();
+
+    /* Increment the poll counter */
+    (*count)++;
+
+    /* Transmit after 60 polls (BINARY) */
+    if((*count) >= 60){
+        Packet_Transmit();
+        Packet_Clear();
+	(*count) = 0;
+    }
+
+    /* Wait to ensure we poll exactly every second */
+    while((millis() - transmit_timer) <= wait_ms);
 
 }
 

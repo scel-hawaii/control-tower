@@ -18,7 +18,7 @@
 #define MAIN_H
 
 /* Healthy Routine */
-void Normal_Routine(void);
+void Normal_Routine(int *count);
 
 /* Unhealthy Routine */
 void PowerSave_Routine(void);

@@ -86,13 +86,13 @@ void setup(){
  * 
  ********************************************/
 void loop(){
-      
-    /* Packet Construction */
-    Packet_Con();
+    
+    /* Variable Initialization */
+    int count = 0;  //To be used as a poll counter
 
-    /* Transmit Packet */
-    Packet_Transmit();
+    /* Check Health */
 
-    /* Clear Packet Buffer */
-    Packet_Clear();
+    /* Run appropriate routine */
+    Normal_Routine(&count);
+    //PowerSave_Routine();
 }
