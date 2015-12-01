@@ -42,7 +42,16 @@ struct P_STATE{
 };
 
 extern P_STATE power_state; //GLOBAL!! Find alternative (pointers)
-    
+
+/* Struct to contain variables for lpf operations */
+typedef struct lpf{
+    float output;
+    float alpha;
+} LowPassFilter;
+
+extern LowPassFilter solar_filter; //GLOBAL!! Find alternative (pointers)
+extern LowPassFilter battery_filter; //GLOBAL!! Find alternative (pointers)
+
 //Number of samples to take
 #define ADC_SAMPLE_NUM 30
 
@@ -76,7 +85,10 @@ extern P_STATE power_state; //GLOBAL!! Find alternative (pointers)
 //Defines the alpha value for the solar lowpass filter
 #define BATT_LOWPASS_ALPHA 0.005
 
+/* Overflow function */
 int chk_overflow(unsigned long current_value, unsigned long previous_value);
+
+/* Health functions */
 long sampleBatteryVoltage(void);
 void initHealthSamples(void);
 int chkHealth(void);
@@ -84,8 +96,15 @@ void sendHealth(void);
 void health_data_transmit(void);
 void transmitPacketHealth(void);
 void getPacketHealth(void);
+
+/* Power Management functions */
 void pstate_system(int state);
 void pstate_xbee(int state);
 void pstate_sensors_array(int state);
 void sync_pstate(void);
+
+/* LPF functions */
+void LPF_filter_init(LowPassFilter *f, float output, float alpha);
+float LPF_update_filter(LowPassFilter *f, float new_value);
+float LPF_get_current_output(LowPassFilter *f);
 #endif
