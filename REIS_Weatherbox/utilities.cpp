@@ -162,7 +162,8 @@ void sendHealth(void){
  *    Name: health_data_transmit
  *    Returns: Nothing.
  *    Parameter: None.
- *    Description: This function calls two other functions 1) get the packet health, then
+ *    Description: This function calls two other functions 
+ *                 1) get the packet health, then
  *                 2) transmit the packet health
  *
  ******************************************/
@@ -221,7 +222,8 @@ void transmitPacketHealth(void)
  *    Name: pstate_system
  *    Returns: Nothing.
  *    Parameter: state
- *    Description: Given an integer (0 or 1),  this function will switch the sleep state for the xbee
+ *    Description: Given an integer (0 or 1),  this function will switch the 
+ *                 sleep state for the xbee
  *                 and the power state for the sensor array. 
  *
  *******************************************/
@@ -245,9 +247,12 @@ void pstate_system(int state){
  *    Name: pstate_xbee
  *    Returns: Nothing.
  *    Parameter: state
- *    Description: Given an integer (0 or 1) this function will switch the sleep state for the xbee.
- *                 power_state is of type P_STATE which is a struct that has integer variables xbee and
- *                 sensor_array. This function sets the xbee variable to 0 or 1, then calls the sync
+ *    Description: Given an integer (0 or 1) this function will switch 
+ *                 the sleep state for the xbee.
+ *                 power_state is of type P_STATE which is a struct 
+ *                 that has integer variables xbee and
+ *                 sensor_array. This function sets the xbee variable
+ *                 to 0 or 1, then calls the sync
  *                 function. 
  *
  ******************************************/
@@ -262,9 +267,12 @@ void pstate_xbee(int state){
  *    Name: pstate_sensors_array
  *    Returns: Nothing
  *    Parameter: state
- *    Description: Given an integer (0 or 1) this function will switch the power state for the sensor
- *                 array. power_state is of type P_STATE which is a struct that has integer variables
- *                 xbee and sensor_array. This function sets the sensor_array variable to 0 or 1, then
+ *    Description: Given an integer (0 or 1) this function will 
+ *                 switch the power state for the sensor
+ *                 array. power_state is of type P_STATE which 
+ *                 is a struct that has integer variables
+ *                 xbee and sensor_array. This function sets the 
+ *                 sensor_array variable to 0 or 1, then
  *                 then calls the sync function.
  *
  *****************************************/
@@ -279,8 +287,10 @@ void pstate_sensors_array(int state){
  *    Name: sync_pstate
  *    Returns: Nothing.
  *    Parameter: None.
- *    Description: This function uses digitalWrite to set the pins on the XBEE(??) which switches the
- *                 power state for the sensor array and the xbee sleep mode.
+ *    Description: This function uses digitalWrite to set the 
+ *                 pins on the XBEE(??) which switches the
+ *                 power state for the sensor array and the 
+ *                 xbee sleep mode.
  *
  ****************************************/
 void sync_pstate(void){

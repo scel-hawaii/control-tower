@@ -20,13 +20,12 @@
  *    Name:        Gen_config
  *    Returns:     Nothing
  *    Parameter:   Nothing
- *    Description:  the generation and assigns
+ *    Description: Checks the generation and assigns
  *                     the function pointers to the
  *                     appropriate functions.
  *
  *
  ******************************************/
-
 void Gen_config(void){
     
     /* Check Generation & Assign Sensor Functions */
@@ -43,6 +42,16 @@ void Gen_config(void){
     #endif
 }
 
+/*******************************************
+ *
+ *    Name:        Transmit_config
+ *    Returns:     Nothing
+ *    Parameter:   Nothing
+ *    Description: Checks the transmission configuration
+ *                     and assigns the function pointers 
+ *                     to the appropriate functions.
+ *
+ ******************************************/
 void Transmit_config(void){
 
     /* Assign Transmit functions based on transmission config */
