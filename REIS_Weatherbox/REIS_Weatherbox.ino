@@ -27,9 +27,17 @@
 #include <Adafruit_BMP085.h>
 #include <XBee.h>
 
-/* Global Variable for Packet  */
+/* Global Variables for Packet  */
 uint8_t G_UARTpacket[MAX_SIZE];
 schema_3 G_BINpacket;
+schema_health G_health;
+
+/* Global for Filters */
+LowPassFilter G_solar_filter;
+LowPassFilter G_battery_filter;
+
+/* Global Variable */
+int G_count;
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
@@ -43,9 +51,6 @@ void (*Packet_Clear)(void);
 void (*Packet_Con)(void);
 void (*Packet_Transmit)(void);
 void (*Normal_Routine)(int *count);
-
-/* Global Variable */
-int G_count;
 
 /*********************************************
  *

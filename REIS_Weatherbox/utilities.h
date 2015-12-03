@@ -32,9 +32,6 @@
 #define GOOD_SOLAR 1
 #define POOR 2
 
-/* Struct definitions */
-extern schema_health health; //GLOBAL!! Find alternative (pointers)
-
 struct P_STATE{
     int xbee;
     int sensor_array;
@@ -46,8 +43,10 @@ typedef struct lpf{
     float alpha;
 } LowPassFilter;
 
-extern LowPassFilter solar_filter; //GLOBAL!! Find alternative (pointers)
-extern LowPassFilter battery_filter; //GLOBAL!! Find alternative (pointers)
+/* Struct definitions */
+extern schema_health G_health; //GLOBAL!! Find alternative (pointers)
+extern LowPassFilter G_solar_filter; //GLOBAL!! Find alternative (pointers)
+extern LowPassFilter G_battery_filter; //GLOBAL!! Find alternative (pointers)
 
 //Number of samples to take
 #define ADC_SAMPLE_NUM 30

@@ -70,8 +70,6 @@ void initHealthSamples(void){
     int i;
     long battery_sample = 0;
     long solar_sample = 0;
-    LowPassFilter solar_filter;
-    LowPassFilter battery_filter;
 
     /* Sample 200 times */
     for(i = 0; i < 200; i++){
@@ -84,8 +82,8 @@ void initHealthSamples(void){
     solar_sample = solar_sample/200;
 
     /* Initialize Low Pass Filter with sample */
-    LPF_filter_init(&battery_filter, (float)battery_sample, BATT_LOWPASS_ALPHA);
-    LPF_filter_init(&solar_filter, (float)solar_sample, BATT_LOWPASS_ALPHA);
+    LPF_filter_init(&G_battery_filter, (float)battery_sample, BATT_LOWPASS_ALPHA);
+    LPF_filter_init(&G_solar_filter, (float)solar_sample, BATT_LOWPASS_ALPHA);
 }
 
 
@@ -103,11 +101,11 @@ int chkHealth(void){
     int apogee_voltage = 0, panel_voltage = 0;
 
     //Read current and panel voltage
-    apogee_voltage = LPF_get_current_output(&solar_filter);
+    apogee_voltage = LPF_get_current_output(&G_solar_filter);
     panel_voltage = 2*analogRead(_PIN_SOLAR_V);
 
     //Compare current and voltages to threshold value
-    if(LPF_get_current_output(&battery_filter) >= THRESH_GOOD_BATT_V){
+    if(LPF_get_current_output(&G_battery_filter) >= THRESH_GOOD_BATT_V){
         return NORMAL;
     }
 #ifdef HEALTH_GOOD_APOGEE
@@ -185,10 +183,10 @@ void health_data_transmit(void){
 void getPacketHealth(void){
    
     //!!!GLOBAL USE!!!
-    health.schema = 5;
-    health.address = EEPROM.read(2) | (EEPROM.read(3) << 8);
-    health.uptime_ms = millis();
-    health.batt_mv = 1000*(analogRead(_PIN_BATT_V)*5/1023);
+    G_health.schema = 5;
+    G_health.address = EEPROM.read(2) | (EEPROM.read(3) << 8);
+    G_health.uptime_ms = millis();
+    G_health.batt_mv = 1000*(analogRead(_PIN_BATT_V)*5/1023);
 }
 
 /******************************************
@@ -211,8 +209,8 @@ void transmitPacketHealth(void)
     XBeeAddress64 addr64 = XBeeAddress64(0,0);
     
     memset(payload, '\0', sizeof(payload));
-    memcpy(payload, &health, sizeof(health));
-    ZBTxRequest zbtx = ZBTxRequest(addr64, payload, sizeof(health));
+    memcpy(payload, &G_health, sizeof(G_health));
+    ZBTxRequest zbtx = ZBTxRequest(addr64, payload, sizeof(G_health));
     xbee.send(zbtx);
 }
 

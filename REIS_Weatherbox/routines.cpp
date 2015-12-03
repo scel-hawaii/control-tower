@@ -106,14 +106,14 @@ void PowerSave_Routine(void){
 
     /* Update Battery Voltage in LPF filter */
     //!!!battery_filter!!!
-    LPF_update_filter(&battery_filter, analogRead(_PIN_BATT_V));
+    LPF_update_filter(&G_battery_filter, analogRead(_PIN_BATT_V));
 
     /* Initialize time since the last transmission */
     health_transmit_timer = millis();
 
     /* Constantly check battery voltage */
     //!!!battery_filter!!!
-    while(LPF_get_current_output(&battery_filter) < THRESH_REINIT_SYSTEM)
+    while(LPF_get_current_output(&G_battery_filter) < THRESH_REINIT_SYSTEM)
     {
         /* Send health data */
         sendHealth();
@@ -129,7 +129,7 @@ void PowerSave_Routine(void){
 
         /* Update Filter */
         //!!!battery_filter!!!
-        LPF_update_filter(&battery_filter, analogRead(_PIN_BATT_V));
+        LPF_update_filter(&G_battery_filter, analogRead(_PIN_BATT_V));
     }
 
     /* Loop condition met, Battery health is good again */
@@ -142,6 +142,6 @@ void PowerSave_Routine(void){
 
     /* Update Battery and Solar filters */
     //!!!battery_filter!!!
-    LPF_filter_init(&battery_filter, battery_filter.output, BATT_LOWPASS_ALPHA);
-    LPF_filter_init(&solar_filter, solar_filter.output, BATT_LOWPASS_ALPHA);
+    LPF_filter_init(&G_battery_filter, G_battery_filter.output, BATT_LOWPASS_ALPHA);
+    LPF_filter_init(&G_solar_filter, G_solar_filter.output, BATT_LOWPASS_ALPHA);
 }

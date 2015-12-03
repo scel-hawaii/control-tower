@@ -13,7 +13,7 @@
 /* Program Libraries */
 #include "sensors.h"
 #include "transmit.h"
-#include "main.h"
+#include "routines.h"
 #include "config.h"
 
 /*******************************************
