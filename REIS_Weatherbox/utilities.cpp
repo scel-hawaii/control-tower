@@ -229,15 +229,17 @@ void transmitPacketHealth(void)
  *******************************************/
 void pstate_system(int state){
 
+    P_STATE power_state;
+
     if(state == _ACTIVE){
 
-        pstate_xbee(_ON);
-        pstate_sensors_array(_ON);
+        pstate_xbee(_ON, &power_state);
+        pstate_sensors_array(_ON, &power_state);
     }
     else if(state == _POWER_SAVE){
     
-        pstate_xbee(_OFF);
-        pstate_sensors_array(_OFF);
+        pstate_xbee(_OFF, &power_state);
+        pstate_sensors_array(_OFF, &power_state);
     }
 }
 
@@ -246,7 +248,7 @@ void pstate_system(int state){
  *
  *    Name: pstate_xbee
  *    Returns: Nothing.
- *    Parameter: state
+ *    Parameter: state, P_STATE *power_state
  *    Description: Given an integer (0 or 1) this function will switch 
  *                 the sleep state for the xbee.
  *                 power_state is of type P_STATE which is a struct 
@@ -256,17 +258,17 @@ void pstate_system(int state){
  *                 function. 
  *
  ******************************************/
-void pstate_xbee(int state){
+void pstate_xbee(int state, P_STATE *power_state){
 
-    power_state.xbee = state;
-    sync_pstate();
+    (*power_state).xbee = state;
+    sync_pstate(*power_state);
 }
 
 /******************************************
  *
  *    Name: pstate_sensors_array
  *    Returns: Nothing
- *    Parameter: state
+ *    Parameter: state, P_STATE *power_state
  *    Description: Given an integer (0 or 1) this function will 
  *                 switch the power state for the sensor
  *                 array. power_state is of type P_STATE which 
@@ -276,10 +278,10 @@ void pstate_xbee(int state){
  *                 then calls the sync function.
  *
  *****************************************/
-void pstate_sensors_array(int state){
+void pstate_sensors_array(int state, P_STATE *power_state){
 
-    power_state.sensor_array = state;
-    sync_pstate();
+    (*power_state).sensor_array = state;
+    sync_pstate(*power_state);
 }
 
 /*****************************************
@@ -293,7 +295,7 @@ void pstate_sensors_array(int state){
  *                 xbee sleep mode.
  *
  ****************************************/
-void sync_pstate(void){
+void sync_pstate(P_STATE power_state){
 
     digitalWrite(_PIN_XBEE_SLEEP, !power_state.xbee);
     digitalWrite(_PIN_PSWITCH, power_state.sensor_array);	

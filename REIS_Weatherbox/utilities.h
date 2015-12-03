@@ -41,8 +41,6 @@ struct P_STATE{
     int sensor_array;
 };
 
-extern P_STATE power_state; //GLOBAL!! Find alternative (pointers)
-
 /* Struct to contain variables for lpf operations */
 typedef struct lpf{
     float output;
@@ -99,9 +97,9 @@ void getPacketHealth(void);
 
 /* Power Management functions */
 void pstate_system(int state);
-void pstate_xbee(int state);
-void pstate_sensors_array(int state);
-void sync_pstate(void);
+void pstate_xbee(int state, P_STATE *power_state);
+void pstate_sensors_array(int state,P_STATE *power_state);
+void sync_pstate(P_STATE power_state);
 
 /* LPF functions */
 void LPF_filter_init(LowPassFilter *f, float output, float alpha);
