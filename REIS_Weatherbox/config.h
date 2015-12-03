@@ -101,6 +101,9 @@ extern void (*Packet_Clear)(void);
 extern void (*Packet_Con)(void);
 extern void (*Packet_Transmit)(void);
 
+/* Routine */
+extern void (*Normal_Routine)(int *count);
+
 /*-------------------------*/
 /*-Configuration Functions-*/
 /*-------------------------*/

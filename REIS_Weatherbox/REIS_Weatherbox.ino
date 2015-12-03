@@ -11,9 +11,9 @@
 #include "config.h"
 #include "sensors.h"
 #include "transmit.h"
-#include "low_pass.h"
 #include "schema.h"
 #include "utilities.h"
+#include "routines.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
@@ -42,6 +42,10 @@ int (*Sensors_sampleTempdecic)(void);
 void (*Packet_Clear)(void);
 void (*Packet_Con)(void);
 void (*Packet_Transmit)(void);
+void (*Normal_Routine)(int *count);
+
+/* Global Variable */
+int G_count;
 
 /*********************************************
  *
@@ -54,6 +58,9 @@ void (*Packet_Transmit)(void);
  * 
  ********************************************/
 void setup(){
+
+    /* Variable Initialization */
+    G_count = 0;
 
     /* Generation Check */
     Gen_config();
@@ -72,6 +79,12 @@ void setup(){
 
     /* Packet Initialization */
     Packet_Clear();
+
+    /* Set Power State */
+    pstate_system(_ACTIVE);
+
+    /* Delay for configuration settings */
+    delay(500);
 }
 
 /*********************************************
@@ -86,13 +99,16 @@ void setup(){
  * 
  ********************************************/
 void loop(){
-      
-    /* Packet Construction */
-    Packet_Con();
 
-    /* Transmit Packet */
-    Packet_Transmit();
+    /*Check health & run appropriate routine */
+    if(chkHealth() == NORMAL || chkHealth() == GOOD_SOLAR){
 
-    /* Clear Packet Buffer */
-    Packet_Clear();
+        /* Voltages are at a good level to operate normally */
+        Normal_Routine(&G_count);
+    }
+    else{
+
+        /* Voltages are not at a good level, operate in PowerSave */
+        PowerSave_Routine();
+    }
 }

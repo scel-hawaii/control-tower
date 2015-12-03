@@ -1,6 +1,6 @@
 /*******************************************
  *
- *    File: main.h
+ *    File: routines.h
  *    REIS Weatherbox Firmware
  *
  *    Main file to contain the routines in
@@ -14,11 +14,12 @@
 #include "utilities.h"
 
 /* Check for previous includes */
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef ROUTINES_H
+#define ROUTINES_H
 
 /* Healthy Routine */
-void Normal_Routine(void);
+void Normal_RoutineUART(int *count);
+void Normal_RoutineBIN(int *count);
 
 /* Unhealthy Routine */
 void PowerSave_Routine(void);

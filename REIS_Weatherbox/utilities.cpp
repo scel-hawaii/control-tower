@@ -7,6 +7,7 @@
  *
  ****************************************/
 
+/* Program Libraries */
 #include "utilities.h"
 
 /*****************************************
@@ -126,15 +127,15 @@ int chkHealth(void){
  *
  *    Name: sendHealth
  *    Returns: Nothing.
- *    Parameter: None.
+ *    Parameter: Nothing
  *    Description: Transmits health data
  *
  ******************************************/
 void sendHealth(void){
     
     long transmit_health = 600000;
-    unsigned long transmit_timer = 0;
     unsigned long health_transmit_timer = 0;
+    unsigned long transmit_timer = 0;
 
     if(millis() - health_transmit_timer >= transmit_health){
 
@@ -182,7 +183,8 @@ void health_data_transmit(void){
  *
  ******************************************/
 void getPacketHealth(void){
-    
+   
+    //!!!GLOBAL USE!!!
     health.schema = 5;
     health.address = EEPROM.read(2) | (EEPROM.read(3) << 8);
     health.uptime_ms = millis();

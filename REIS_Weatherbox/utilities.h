@@ -8,7 +8,6 @@
 
 /* Program Libraries */
 #include "schema.h"
-#include "low_pass.h"
 #include "config.h"
 
 /* External Libraries */
