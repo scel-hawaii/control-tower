@@ -65,7 +65,14 @@ int a_Sensors_sampleTempdecic(void);
  *****************************************/
 
 /* Sensor Initialization */
+void d_Sensors_init(void);
 
 /* Sampling Functions */
+int d_Sensors_sampleBatterymV(void);
+int d_Sensors_samplePanelmV(void);
+int d_Sensors_sampleSolarIrrmV(void);
+int d_Sensors_samplePressurepa(void);
+int d_Sensors_sampleHumiditypct(void);
+int d_Sensors_sampleTempdecic(void);
 
 #endif

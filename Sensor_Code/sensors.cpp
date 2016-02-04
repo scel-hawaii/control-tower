@@ -107,7 +107,7 @@ int a_Sensors_sampleHumiditypct(void){
 
 /*******************************************
  *
- *    Name:        Sensors_sampleTempdecic 
+ *    Name:        a_Sensors_sampleTempdecic 
  *    Returns:     Temperature (Degrees C)
  *    Parameter:   Nothing
  *    Description: Checks the current Temperature.
@@ -125,3 +125,88 @@ int a_Sensors_sampleTempdecic(void){
 /*---------------------------*/
 /*------- Dragonfruit -------*/
 /*---------------------------*/
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_init      
+ *    Returns:     Nothing
+ *    Parameter:   Nothing
+ *    Description: Intializes  sensors using various 
+ *                     Arduino libraries.
+ *
+ ******************************************/
+void d_Sensors_init(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_sampleBatterymV     
+ *    Returns:     Battery Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the battery voltage.
+ *
+ ******************************************/
+int d_Sensors_sampleBatterymV(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_samplePanelmV 
+ *    Returns:     Panel Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the Solar Panel voltage.
+ *
+ ******************************************/
+int d_Sensors_samplePanelmV(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_sampleSolarIrrmV 
+ *    Returns:     Solar Irradiance Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the Solar Irradiance level.
+ *
+ ******************************************/
+int d_Sensors_sampleSolarIrrmV(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_samplePressurepa 
+ *    Returns:     Weather Pressure (pa)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Pressure.
+ *
+ ******************************************/
+int d_Sensors_samplePressurepa(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_Humiditypct 
+ *    Returns:     Humidity (pct)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Humidity.
+ *
+ ******************************************/
+int d_Sensors_sampleHumiditypct(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_sampleTempdecic 
+ *    Returns:     Temperature (Degrees C)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Temperature.
+ *
+ ******************************************/
+int d_Sensors_sampleTempdecic(void){
+
+}
