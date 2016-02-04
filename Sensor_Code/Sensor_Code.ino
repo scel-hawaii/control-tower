@@ -8,7 +8,7 @@
  ********************************************/
 
 /* Program Libraries */
-#include "apple.h"
+#include "config.h"
 #include "sensors.h"
 
 /* Arduino Libraries */
@@ -20,6 +20,15 @@
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
+
+/* Global Function Pointers */
+void (*Sensors_init)(void);
+int (*Sensors_sampleBatterymV)(void);
+int (*Sensors_samplePanelmV)(void);
+int (*Sensors_sampleSolarIrrmV)(void);
+int (*Sensors_samplePressurepa)(void);
+int (*Sensors_sampleHumiditypct)(void);
+int (*Sensors_sampleTempdecic)(void);
 
 /*******************************************
  *
@@ -33,9 +42,13 @@
  ******************************************/
 void setup(){
 
+    /* Generatiion Check */
+    Gend_config();
+    
     /* Initialize sensors */
     Sensors_init();
     Serial.begin(9600);
+
 }
 
 /*******************************************

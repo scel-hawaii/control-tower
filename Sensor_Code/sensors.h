@@ -7,8 +7,7 @@
  *
  ******************************************/
 
-/* Necessary Libraries */
-#include "apple.h"               //To be replaced by Gen. Config. File
+/* External Libraries */
 #include <SHT1x.h>
 #include <OneWire.h>
 #include <DallasTemperature.h>
@@ -31,14 +30,42 @@ extern SHT1x sht1x;
 extern Adafruit_BMP085 bmp085;
 extern Adafruit_INA219 ina219_Solar;
 
+/******************************************
+ *
+ *    Apple
+ *
+ *****************************************/
+
 /* Sensor Initialization */
-void Sensors_init(void);
+void a_Sensors_init(void);
 
 /* Sampling Functions */
-int Sensors_sampleBatterymV(void);
-int Sensors_samplePanelmV(void);
-int Sensors_sampleSolarIrrmV(void);
-int Sensors_samplePressurepa(void);
-int Sensors_sampleHumiditypct(void);
-int Sensors_sampleTempdecic(void);
+int a_Sensors_sampleBatterymV(void);
+int a_Sensors_samplePanelmV(void);
+int a_Sensors_sampleSolarIrrmV(void);
+int a_Sensors_samplePressurepa(void);
+int a_Sensors_sampleHumiditypct(void);
+int a_Sensors_sampleTempdecic(void);
+
+/******************************************
+ *
+ *    Cranberry
+ *
+ *****************************************/
+
+/* Sensor Initialization */
+
+/* Sampling Functions */
+
+
+/******************************************
+ *
+ *    Dragonfruit
+ *
+ *****************************************/
+
+/* Sensor Initialization */
+
+/* Sampling Functions */
+
 #endif
