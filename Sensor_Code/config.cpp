@@ -12,8 +12,8 @@
 
 /* Program Libraries */
 #include "sensors.h"
-#include "transmit.h"
-#include "routines.h"
+//#include "transmit.h"
+//#include "routines.h"
 #include "config.h"
 
 /*******************************************
@@ -53,25 +53,25 @@ void Gen_config(void){
  *                     to the appropriate functions.
  *
  ******************************************/
-void Transmit_config(void){
+//void Transmit_config(void){
 
     /* Assign Transmit functions based on transmission config */
-    #ifdef UART
-        /* Transmission */
-        Packet_Clear = &Packet_ClearUART;
-        Packet_Con = &Packet_ConUART;
-        Packet_Transmit = &Packet_TransmitUART;
+//    #ifdef UART
+//        /* Transmission */
+//        Packet_Clear = &Packet_ClearUART;
+//        Packet_Con = &Packet_ConUART;
+//        Packet_Transmit = &Packet_TransmitUART;
 
 	/* Routine */
-	Normal_Routine = &Normal_RoutineUART;
+//	Normal_Routine = &Normal_RoutineUART;
 
-    #elif defined(BINARY)
+//    #elif defined(BINARY)
         /* Transmission */
-        Packet_Clear = &Packet_ClearBIN;
-        Packet_Con = &Packet_ConBIN;
-        Packet_Transmit = &Packet_TransmitBIN;
+//        Packet_Clear = &Packet_ClearBIN;
+//        Packet_Con = &Packet_ConBIN;
+//        Packet_Transmit = &Packet_TransmitBIN;
 
 	/* Routine */
-	Normal_Routine = &Normal_RoutineBIN;
-    #endif
-}
+//	Normal_Routine = &Normal_RoutineBIN;
+//    #endif
+//}

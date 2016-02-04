@@ -43,7 +43,7 @@ int (*Sensors_sampleTempdecic)(void);
 void setup(){
 
     /* Generatiion Check */
-    Gend_config();
+    Gen_config();
     
     /* Initialize sensors */
     Sensors_init();

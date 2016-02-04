@@ -127,17 +127,17 @@ extern int (*Sensors_sampleHumiditypct)(void);
 extern int (*Sensors_sampleTempdecic)(void);
 
 /* Transmit */
-extern void (*Packet_Clear)(void);
-extern void (*Packet_Con)(void);
-extern void (*Packet_Transmit)(void);
+//extern void (*Packet_Clear)(void);
+//extern void (*Packet_Con)(void);
+//extern void (*Packet_Transmit)(void);
 
 /* Routine */
-extern void (*Normal_Routine)(int *count);
+//extern void (*Normal_Routine)(int *count);
 
 /*-------------------------*/
 /*-Configuration Functions-*/
 /*-------------------------*/
 void Gen_config(void);
-void Transmit_config(void);
+//void Transmit_config(void);
 
 #endif
