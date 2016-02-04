@@ -45,7 +45,7 @@
 /* Apple Pin Configuration */
 #ifdef APPLE
 
-    #define APPLE_VERSION 23
+    #define APPLE_VERSION 34
 
     #define _PIN_ANEMOMETER0 A0
     #define _PIN_ANEMOMETER1 10
@@ -81,6 +81,36 @@
 
 /* Dragonfruit Pin Configuration */
 #elif defined(DRAGONFRUIT)
+    
+    #define DRAGON_VERSION 10
+
+/* Currently not implemented 
+    #define _PIN_ANEMOMETER0 
+    #define _PIN_ANEMOMETER1 
+    #define _PIN_ANEMOMETER2 
+    #define _PIN_ANEMOMETER3 
+*/
+    #define _PIN_RX 0
+    #define _PIN_TX 1
+
+    #define _PIN_XBEE_TX 2
+    #define _PIN_XBEE_RX 8
+    #define _PIN_XBEE_EN 3
+    #define _PIN_XBEE_DTR A1
+    #define _PIN_XBEE_RSSI A2
+    #define _PIN_XBEE_SLEEP A3
+
+    #define _PIN_SEN_EN 4
+
+    #define _PIN_SDA A4
+    #define _PIN_SCL A5
+
+    #define _PIN_LED1 5
+    #define _PIN_LED2 6
+    #define _PIN_LED3 7
+    #define _PIN_LED4 9
+    #define _PIN_LED5 10
+
 #endif
 
 /*-------------------------*/
