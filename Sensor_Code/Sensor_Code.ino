@@ -65,12 +65,12 @@ void setup(){
 void loop(){
 
     /* Variable Declarations */
-    int BatterymV;
-    int SolarIrrmV;
-    int Humiditypct;
-    int PanelmV;
-    int Pressurepa;
-    int Tempdecic;
+    int BatterymV = -1;
+    int SolarIrrmV = -1;
+    int Humiditypct = -1;
+    int PanelmV = -1;
+    int Pressurepa = -1;
+    int Tempdecic = -1;
     
     /* Poll each sensor and delay for 1 second after each poll */
     BatterymV = Sensors_sampleBatterymV();
@@ -87,12 +87,22 @@ void loop(){
     delay(1000);
 
     /* Debug: Print the values to the Arduino Serial Monitor */
-    Serial.print("Sample Data:\n");
+    Serial.print("\nBatterymV Data:");
     Serial.println(BatterymV);
+
+    Serial.print("\nSolarIrrmV Data:");
     Serial.println(SolarIrrmV);
+
+    Serial.print("\nHumiditypct Data:");
     Serial.println(Humiditypct);
+
+    Serial.print("\nPanelmV Data:");
     Serial.println(PanelmV);
+
+    Serial.print("\nPressurepa Data:");
     Serial.println(Pressurepa);
+
+    Serial.print("Tempdecic Data:");
     Serial.println(Tempdecic);
 
 }

@@ -39,7 +39,21 @@ void Gen_config(void){
         Sensors_sampleHumiditypct = &a_Sensors_sampleHumiditypct;
         Sensors_sampleTempdecic = &a_Sensors_sampleTempdecic;
     #elif defined(CRANBERRY)
+        Sensors_init = &c_Sensors_init;
+        Sensors_sampleBatterymV = &c_Sensors_sampleBatterymV;
+        Sensors_samplePanelmV = &c_Sensors_samplePanelmV;
+        Sensors_sampleSolarIrrmV = &c_Sensors_sampleSolarIrrmV;
+        Sensors_samplePressurepa = &c_Sensors_samplePressurepa;
+        Sensors_sampleHumiditypct = &c_Sensors_sampleHumiditypct;
+        Sensors_sampleTempdecic = &c_Sensors_sampleTempdecic;
     #elif defined(DRAGONFRUIT)
+        Sensors_init = &d_Sensors_init;
+        Sensors_sampleBatterymV = &d_Sensors_sampleBatterymV;
+        Sensors_samplePanelmV = &d_Sensors_samplePanelmV;
+        Sensors_sampleSolarIrrmV = &d_Sensors_sampleSolarIrrmV;
+        Sensors_samplePressurepa = &d_Sensors_samplePressurepa;
+        Sensors_sampleHumiditypct = &d_Sensors_sampleHumiditypct;
+        Sensors_sampleTempdecic = &d_Sensors_sampleTempdecic;
     #endif
 }
 

@@ -9,8 +9,8 @@
  *        programmed onto.
  *
  *    Current Configuration Options:
- *        - Apple 2.3
- *        - Cranberry 1.0
+ *        - Apple 3.4
+ *        - Cranberry 2.0
  *        - Dragonfruit 1.0
  *
  ******************************************/
@@ -38,9 +38,9 @@
 /*-------------------------*/
 
 /* Generation Declarations: Only define one */
-#define APPLE
+//#define APPLE
 //#define CRANBERRY
-//#define DRAGONFRUIT
+#define DRAGONFRUIT
 
 /* Apple Pin Configuration */
 #ifdef APPLE
@@ -78,6 +78,38 @@
 
 /* Cranberry Pin Configuration */
 #elif defined(CRANBERRY)
+    
+    #define CRAN_VERSION 20
+
+/* Currently not implemented 
+    #define _PIN_ANEMOMETER0 
+    #define _PIN_ANEMOMETER1 
+    #define _PIN_ANEMOMETER2 
+    #define _PIN_ANEMOMETER3 
+*/
+    #define _PIN_RX 0
+    #define _PIN_TX 0
+
+    #define _PIN_XBEE_TX 0
+    #define _PIN_XBEE_RX 0
+    #define _PIN_XBEE_EN 0
+    #define _PIN_XBEE_DTR 0
+    #define _PIN_XBEE_RSSI 0
+    #define _PIN_XBEE_SLEEP 0
+
+    #define _PIN_SEN_EN 0
+
+    #define _PIN_SDA 0
+    #define _PIN_SCL 0
+
+    #define _ADDR_BARO 0x60
+    #define _ADDR_PYRO 0
+    #define _ADDR_HYGRO 0x27
+
+    /* Not being used by this gen */
+    #define _PIN_BATT_V 0
+    #define _PIN_SOLAR_V 0
+    #define _PIN_APOGEE_V 0
 
 /* Dragonfruit Pin Configuration */
 #elif defined(DRAGONFRUIT)
@@ -110,6 +142,15 @@
     #define _PIN_LED3 7
     #define _PIN_LED4 9
     #define _PIN_LED5 10
+
+    #define _ADDR_BARO 0x60
+    #define _ADDR_PYRO 0xD0     //Address of ADC output NOT Pyronometer
+    #define _ADDR_HYGRO 0x27
+
+    /* Not being used by this gen */
+    #define _PIN_BATT_V 0
+    #define _PIN_SOLAR_V 0
+    #define _PIN_APOGEE_V 0
 
 #endif
 
