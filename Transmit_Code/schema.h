@@ -1,17 +1,3 @@
-/*******************************
- *
- *    File: schema.h
- *    REIS Weatherbox Firmware
- *    
- *    Header file containing structure for packet schema
- *
-********************************/
-
-/* For now, only schema_3 is included, as the main schema for packets  */
-
-/* Necessary Libraries */
-#include <stdint.h>
-
 /*******************************************
  *
  *    File: schema.h
@@ -28,7 +14,7 @@
  ******************************************/
 
 /* External Libraries */
-#include <stdint.h> 
+#include <stdint.h>
 
 /* Check for previous includes */
 #ifndef SCHEMA_H
@@ -55,4 +41,19 @@ typedef struct {
     uint32_t bmp085_press_pa;	 //Pressure value (pascals)
 
 } schema_3;
+
+/* Struct for Health Check */
+//typedef struct {
+	
+	/* Identification information */
+//	uint16_t schema;	//Schema ID number
+//	uint16_t address;	//ADdress of Arduino
+	
+	/* Data variables */
+//	uint32_t uptime_ms;	//Time since the start of program
+//	uint16_t batt_mv;	//Battery voltage (millivolts)
+
+//} schema_5;
+
+//typedef schema_5 schema_health;
 #endif

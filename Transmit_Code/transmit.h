@@ -9,7 +9,7 @@
 
 /* Program Libraries */
 #include "schema.h"
-//#include "config.h"
+#include "config.h"
 //#include "sensors.h"
 //#include "utilities.h"
 
@@ -20,16 +20,6 @@
 /* Check for previous includes */
 #ifndef TRANSMIT_H
 #define TRANSMIT_H
-
-/* Transmission method declarations */
-//#define UART
-#define BINARY
-
-/* Declaring if main code or not (for use in independent Transmit test) */
-#define TEST
-
-/* Macros */
-#define MAX_SIZE 250
 
 /* Global Variable for Packet  */
 extern uint8_t G_UARTpacket[MAX_SIZE];

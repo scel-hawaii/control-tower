@@ -9,6 +9,7 @@
 
 /* Program Libraries */
 #include "transmit.h"
+#include "config.h"
 
 /* Arduino Libraries */
 #include <EEPROM.h>
