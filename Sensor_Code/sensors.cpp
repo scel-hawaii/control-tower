@@ -22,6 +22,12 @@ SHT1x sht1x(_PIN_HUMID_DATA, _PIN_HUMID_CLK);
 
 Adafruit_BMP085 bmp085;
 Adafruit_INA219 ina219_Solar;
+#elif defined(CRANBERRY)
+Adafruit_MPL115A2 MPL115A2;
+
+#elif defined(DRAGONFRUIT)
+Adafruit_MPL115A2 MPL115A2;
+
 #endif
 
 /*---------------------------*/
@@ -134,7 +140,7 @@ int a_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 void c_Sensors_init(void){
-	Wire.begin();
+	MPL115A2.begin();
 }
 
 /*******************************************
@@ -185,7 +191,9 @@ int c_Sensors_sampleSolarIrrmV(void){
  *
  ******************************************/
 int c_Sensors_samplePressurepa(void){
-
+	int value = 0;
+	value = MPL115A2.getPressure();
+	return value;
 }
 
 /*******************************************
@@ -212,7 +220,9 @@ int c_Sensors_sampleHumiditypct(void){
  *
  ******************************************/
 int c_Sensors_sampleTempdecic(void){
-
+	int value = 0;
+	value = MPL115A2.getTemperature()*10;
+	return value;
 }
 /*---------------------------*/
 /*------- Dragonfruit -------*/
@@ -228,7 +238,7 @@ int c_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 void d_Sensors_init(void){
-	Wire.begin();
+	MPL115A2.begin();
 }
 
 /*******************************************
@@ -279,7 +289,9 @@ int d_Sensors_sampleSolarIrrmV(void){
  *
  ******************************************/
 int d_Sensors_samplePressurepa(void){
-
+	int value = 0;
+	value = MPL115A2.getPressure();
+	return value;
 }
 
 /*******************************************
@@ -306,5 +318,7 @@ int d_Sensors_sampleHumiditypct(void){
  *
  ******************************************/
 int d_Sensors_sampleTempdecic(void){
-
+	int value = 0;
+	value = MPL115A2.getTemperature()*10;
+	return value;
 }
