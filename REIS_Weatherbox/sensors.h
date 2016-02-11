@@ -13,6 +13,7 @@
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
+#include <Adafruit_MPL115A2.h>
 
 /* Check for previous includes */
 #ifndef SENSORS_H
@@ -29,6 +30,7 @@ extern SHT1x sht1x;
 
 extern Adafruit_BMP085 bmp085;
 extern Adafruit_INA219 ina219_Solar;
+extern Adafruit_MPL115A2 MPL115A2;
 
 /******************************************
  *
@@ -54,8 +56,15 @@ int a_Sensors_sampleTempdecic(void);
  *****************************************/
 
 /* Sensor Initialization */
+void c_Sensors_init(void);
 
 /* Sampling Functions */
+int c_Sensors_sampleBatterymV(void);
+int c_Sensors_samplePanelmV(void);
+int c_Sensors_sampleSolarIrrmV(void);
+int c_Sensors_samplePressurepa(void);
+int c_Sensors_sampleHumiditypct(void);
+int c_Sensors_sampleTempdecic(void);
 
 
 /******************************************
@@ -65,7 +74,14 @@ int a_Sensors_sampleTempdecic(void);
  *****************************************/
 
 /* Sensor Initialization */
+void d_Sensors_init(void);
 
 /* Sampling Functions */
+int d_Sensors_sampleBatterymV(void);
+int d_Sensors_samplePanelmV(void);
+int d_Sensors_sampleSolarIrrmV(void);
+int d_Sensors_samplePressurepa(void);
+int d_Sensors_sampleHumiditypct(void);
+int d_Sensors_sampleTempdecic(void);
 
 #endif

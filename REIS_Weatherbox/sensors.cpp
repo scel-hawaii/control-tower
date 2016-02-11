@@ -12,6 +12,7 @@
 #include "config.h"
 
 /* Set Pins */
+#ifdef APPLE
 OneWire oneWire1(_PIN_AMB_TEMP);
 DallasTemperature dallas_amb_sen(&oneWire1);
 OneWire oneWire2(_PIN_ROOF_TEMP);
@@ -21,6 +22,13 @@ SHT1x sht1x(_PIN_HUMID_DATA, _PIN_HUMID_CLK);
 
 Adafruit_BMP085 bmp085;
 Adafruit_INA219 ina219_Solar;
+#elif defined(CRANBERRY)
+Adafruit_MPL115A2 MPL115A2;
+
+#elif defined(DRAGONFRUIT)
+Adafruit_MPL115A2 MPL115A2;
+
+#endif
 
 /*---------------------------*/
 /*---------- Apple ----------*/
@@ -107,7 +115,7 @@ int a_Sensors_sampleHumiditypct(void){
 
 /*******************************************
  *
- *    Name:        Sensors_sampleTempdecic 
+ *    Name:        a_Sensors_sampleTempdecic 
  *    Returns:     Temperature (Degrees C)
  *    Parameter:   Nothing
  *    Description: Checks the current Temperature.
@@ -115,13 +123,202 @@ int a_Sensors_sampleHumiditypct(void){
  ******************************************/
 int a_Sensors_sampleTempdecic(void){
     int value =  bmp085.readTemperature()*10;
-    return value ;
+    return value;
 }
 
 /*---------------------------*/
 /*-------- Cranberry --------*/
 /*---------------------------*/
 
+/*******************************************
+ *
+ *    Name:        c_Sensors_init      
+ *    Returns:     Nothing
+ *    Parameter:   Nothing
+ *    Description: Intializes  sensors using various 
+ *                     Arduino libraries.
+ *
+ ******************************************/
+void c_Sensors_init(void){
+	MPL115A2.begin();
+}
+
+/*******************************************
+ *
+ *    Name:        c_Sensors_sampleBatterymV     
+ *    Returns:     Battery Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the battery voltage.
+ *
+ ******************************************/
+int c_Sensors_sampleBatterymV(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        c_Sensors_samplePanelmV 
+ *    Returns:     Panel Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the Solar Panel voltage.
+ *
+ ******************************************/
+int c_Sensors_samplePanelmV(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        c_Sensors_sampleSolarIrrmV 
+ *    Returns:     Solar Irradiance Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the Solar Irradiance level.
+ *
+ ******************************************/
+int c_Sensors_sampleSolarIrrmV(void){
+	int value = 0;
+	Wire.beginTransmission(_ADDR_PYRO);
+	value = analogRead(_PIN_SDA)*5000.0/1023;
+	return value;
+}
+
+/*******************************************
+ *
+ *    Name:        c_Sensors_samplePressurepa 
+ *    Returns:     Weather Pressure (pa)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Pressure.
+ *
+ ******************************************/
+int c_Sensors_samplePressurepa(void){
+	int value = 0;
+	value = MPL115A2.getPressure();
+	return value;
+}
+
+/*******************************************
+ *
+ *    Name:        c_Sensors_Humiditypct 
+ *    Returns:     Humidity (pct)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Humidity.
+ *
+ ******************************************/
+int c_Sensors_sampleHumiditypct(void){
+	int value = 0;
+	Wire.beginTransmission(_ADDR_HYGRO);
+	value = analogRead(_PIN_SDA);
+	return value;
+}
+
+/*******************************************
+ *
+ *    Name:        c_Sensors_sampleTempdecic 
+ *    Returns:     Temperature (Degrees C)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Temperature.
+ *
+ ******************************************/
+int c_Sensors_sampleTempdecic(void){
+	int value = 0;
+	value = MPL115A2.getTemperature()*10;
+	return value;
+}
 /*---------------------------*/
 /*------- Dragonfruit -------*/
 /*---------------------------*/
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_init      
+ *    Returns:     Nothing
+ *    Parameter:   Nothing
+ *    Description: Intializes  sensors using various 
+ *                     Arduino libraries.
+ *
+ ******************************************/
+void d_Sensors_init(void){
+	MPL115A2.begin();
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_sampleBatterymV     
+ *    Returns:     Battery Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the battery voltage.
+ *
+ ******************************************/
+int d_Sensors_sampleBatterymV(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_samplePanelmV 
+ *    Returns:     Panel Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the Solar Panel voltage.
+ *
+ ******************************************/
+int d_Sensors_samplePanelmV(void){
+
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_sampleSolarIrrmV 
+ *    Returns:     Solar Irradiance Voltage (mV)
+ *    Parameter:   Nothing
+ *    Description: Checks the Solar Irradiance level.
+ *
+ ******************************************/
+int d_Sensors_sampleSolarIrrmV(void){
+	int value = 0;
+	Wire.beginTransmission(_ADDR_PYRO);
+	value = analogRead(_PIN_SDA)*5000.0/1023;
+	return value;
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_samplePressurepa 
+ *    Returns:     Weather Pressure (pa)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Pressure.
+ *
+ ******************************************/
+int d_Sensors_samplePressurepa(void){
+	int value = 0;
+	value = MPL115A2.getPressure();
+	return value;
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_Humiditypct 
+ *    Returns:     Humidity (pct)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Humidity.
+ *
+ ******************************************/
+int d_Sensors_sampleHumiditypct(void){
+	int value = 0;
+	Wire.beginTransmission(_ADDR_HYGRO);
+	value = analogRead(_PIN_SDA);
+	return value;
+}
+
+/*******************************************
+ *
+ *    Name:        d_Sensors_sampleTempdecic 
+ *    Returns:     Temperature (Degrees C)
+ *    Parameter:   Nothing
+ *    Description: Checks the current Temperature.
+ *
+ ******************************************/
+int d_Sensors_sampleTempdecic(void){
+	int value = 0;
+	value = MPL115A2.getTemperature()*10;
+	return value;
+}
