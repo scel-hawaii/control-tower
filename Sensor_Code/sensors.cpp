@@ -179,6 +179,7 @@ int c_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
 	Wire.beginTransmission(_ADDR_PYRO);
 	value = analogRead(_PIN_SDA)*5000.0/1023;
+	Wire.endTransmission();
 	return value;
 }
 
@@ -208,6 +209,7 @@ int c_Sensors_sampleHumiditypct(void){
 	int value = 0;
 	Wire.beginTransmission(_ADDR_HYGRO);
 	value = analogRead(_PIN_SDA);
+	Wire.endTransmission();
 	return value;
 }
 
@@ -277,6 +279,7 @@ int d_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
 	Wire.beginTransmission(_ADDR_PYRO);
 	value = analogRead(_PIN_SDA)*5000.0/1023;
+	Wire.endTransmission();
 	return value;
 }
 
@@ -306,6 +309,7 @@ int d_Sensors_sampleHumiditypct(void){
 	int value = 0;
 	Wire.beginTransmission(_ADDR_HYGRO);
 	value = analogRead(_PIN_SDA);
+	Wire.endTransmission();
 	return value;
 }
 
