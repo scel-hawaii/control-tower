@@ -38,9 +38,9 @@
 /*-------------------------*/
 
 /* Generation Declarations: Only define one */
-#define APPLE
+//#define APPLE
 //#define CRANBERRY
-//#define DRAGONFRUIT
+#define DRAGONFRUIT
 
 /* Apple Pin Configuration */
 #ifdef APPLE
