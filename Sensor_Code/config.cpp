@@ -70,8 +70,8 @@ void Gen_config(void){
 //void Transmit_config(void){
 
     /* Assign Transmit functions based on transmission config */
-//    #ifdef UART
-//        /* Transmission */
+    #ifdef UART
+        /* Transmission */
 //        Packet_Clear = &Packet_ClearUART;
 //        Packet_Con = &Packet_ConUART;
 //        Packet_Transmit = &Packet_TransmitUART;
@@ -79,7 +79,7 @@ void Gen_config(void){
 	/* Routine */
 //	Normal_Routine = &Normal_RoutineUART;
 
-//    #elif defined(BINARY)
+    #elif defined(BINARY)
         /* Transmission */
 //        Packet_Clear = &Packet_ClearBIN;
 //        Packet_Con = &Packet_ConBIN;
@@ -87,5 +87,5 @@ void Gen_config(void){
 
 	/* Routine */
 //	Normal_Routine = &Normal_RoutineBIN;
-//    #endif
+    #endif
 //}

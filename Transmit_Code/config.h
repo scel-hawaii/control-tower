@@ -96,6 +96,8 @@
 */
     #define _PIN_RX 0
     #define _PIN_TX 1
+    #define _PIN_TXDEBUG 3
+    #define _PIN_RXDEBUG 9
 
     #define _PIN_XBEE_TX 2
     #define _PIN_XBEE_RX 8
@@ -103,8 +105,6 @@
     #define _PIN_XBEE_DTR A1
     #define _PIN_XBEE_RSSI A2
     #define _PIN_XBEE_SLEEP A3
-    #define _PIN_XBEE_TXDEBUG 3
-    #define _PIN_XBEE_RXDEBUG 9
 
     #define _PIN_SEN_EN 5
 
