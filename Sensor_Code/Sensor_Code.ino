@@ -13,6 +13,7 @@
 
 /* Arduino Libraries */
 #include <Wire.h>
+#include <SoftwareSerial.h>
 
 /* External Libraries */
 #include <SHT1x.h>
@@ -31,6 +32,9 @@ int (*Sensors_samplePressurepa)(void);
 int (*Sensors_sampleHumiditypct)(void);
 int (*Sensors_sampleTempdecic)(void);
 
+/* Software Serial set up for debugging Cranberry and Dragonfruit */
+SoftwareSerial mySerial(_PIN_RX, _PIN_TX);
+
 /*******************************************
  *
  *    Name:        setup 
@@ -48,7 +52,12 @@ void setup(){
     
     /* Initialize sensors */
     Sensors_init();
+
+#ifdef APPLE
     Serial.begin(9600);
+#elif defined(CRANBERRY || DRAGONFRUIT)
+    mySerial.begin(9600);
+#endif
 
 }
 
@@ -88,6 +97,8 @@ void loop(){
     delay(1000);
 
     /* Debug: Print the values to the Arduino Serial Monitor */
+#ifdef APPLE
+    Serial.pring("-------Sensor Data Readings-------\n");
     Serial.print("\nBatterymV Data:");
     Serial.println(BatterymV);
 
@@ -106,4 +117,24 @@ void loop(){
     Serial.print("Tempdecic Data:");
     Serial.println(Tempdecic);
 
+#elif defined(CRANBERRY || DRAGONFRUIT)
+    mySerial.pring("-------Sensor Data Readings-------\n");
+    mySerial.print("\nBatterymV Data:");
+    mySerial.println(BatterymV);
+
+    mySerial.print("\nSolarIrrmV Data:");
+    mySerial.println(SolarIrrmV);
+
+    mySerial.print("\nHumiditypct Data:");
+    mySerial.println(Humiditypct);
+
+    mySerial.print("\nPanelmV Data:");
+    mySerial.println(PanelmV);
+
+    mySerial.print("\nPressurepa Data:");
+    mySerial.println(Pressurepa);
+
+    mySerial.print("Tempdecic Data:");
+    mySerial.println(Tempdecic);
+#endif
 }

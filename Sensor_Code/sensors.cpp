@@ -152,7 +152,7 @@ void c_Sensors_init(void){
  *
  ******************************************/
 int c_Sensors_sampleBatterymV(void){
-
+	return -1;
 }
 
 /*******************************************
@@ -164,7 +164,7 @@ int c_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 int c_Sensors_samplePanelmV(void){
-
+	return -1;
 }
 
 /*******************************************
@@ -252,7 +252,7 @@ void d_Sensors_init(void){
  *
  ******************************************/
 int d_Sensors_sampleBatterymV(void){
-
+	return -1;
 }
 
 /*******************************************
@@ -264,7 +264,7 @@ int d_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 int d_Sensors_samplePanelmV(void){
-
+	return -1;
 }
 
 /*******************************************
