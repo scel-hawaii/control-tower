@@ -177,9 +177,15 @@ int c_Sensors_samplePanelmV(void){
  ******************************************/
 int c_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
+	int a = 0;
+	int b = 0;
 	Wire.beginTransmission(_ADDR_PYRO);
-	value = analogRead(_PIN_SDA)*5000.0/1023;
+	Wire.write(0);
 	Wire.endTransmission();
+	Wire.requestFrom(_ADDR_PYRO, 2);
+	a = Wire.read();
+	b = Wire.read();
+	value = ((a<<8)|b);
 	return value;
 }
 
@@ -277,9 +283,15 @@ int d_Sensors_samplePanelmV(void){
  ******************************************/
 int d_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
+	int a = 0;
+	int b = 0;
 	Wire.beginTransmission(_ADDR_PYRO);
-	value = analogRead(_PIN_SDA)*5000.0/1023;
+	Wire.write(0);
 	Wire.endTransmission();
+	Wire.requestFrom(_ADDR_PYRO, 2);
+	a = Wire.read();
+	b = Wire.read();
+	value = ((a<<8)|b);
 	return value;
 }
 
