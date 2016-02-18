@@ -55,7 +55,7 @@ void setup(){
 
 #ifdef APPLE
     Serial.begin(9600);
-#elif defined(CRANBERRY || DRAGONFRUIT)
+#elif defined(CRANBERRY) || defined(DRAGONFRUIT)
     mySerial.begin(9600);
 #endif
 
@@ -98,7 +98,7 @@ void loop(){
 
     /* Debug: Print the values to the Arduino Serial Monitor */
 #ifdef APPLE
-    Serial.pring("-------Sensor Data Readings-------\n");
+    Serial.print("-------Sensor Data Readings-------\n");
     Serial.print("\nBatterymV Data:");
     Serial.println(BatterymV);
 
@@ -117,8 +117,8 @@ void loop(){
     Serial.print("Tempdecic Data:");
     Serial.println(Tempdecic);
 
-#elif defined(CRANBERRY || DRAGONFRUIT)
-    mySerial.pring("-------Sensor Data Readings-------\n");
+#elif defined(CRANBERRY) || defined(DRAGONFRUIT)
+    mySerial.print("-------Sensor Data Readings-------\n");
     mySerial.print("\nBatterymV Data:");
     mySerial.println(BatterymV);
 
