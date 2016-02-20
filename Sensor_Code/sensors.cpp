@@ -22,11 +22,13 @@ SHT1x sht1x(_PIN_HUMID_DATA, _PIN_HUMID_CLK);
 
 Adafruit_BMP085 bmp085;
 Adafruit_INA219 ina219_Solar;
+
 #elif defined(CRANBERRY)
 Adafruit_MPL115A2 MPL115A2;
 
 #elif defined(DRAGONFRUIT)
 Adafruit_MPL115A2 MPL115A2;
+MCP342X PyroADC;
 
 #endif
 
@@ -213,9 +215,15 @@ int c_Sensors_samplePressurepa(void){
  ******************************************/
 int c_Sensors_sampleHumiditypct(void){
 	int value = 0;
+	int a = 0;
+	int b = 0;
 	Wire.beginTransmission(_ADDR_HYGRO);
-	value = analogRead(_PIN_SDA);
+	Wire.write(0);
 	Wire.endTransmission();
+	Wire.requestFrom(_ADDR_HYGRO, 2);
+	a = Wire.read();
+	b = Wire.read();
+	value = ((a<<8)|b);
 	return value;
 }
 
@@ -246,7 +254,9 @@ int c_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 void d_Sensors_init(void){
+	Wire.begin(9600);
 	MPL115A2.begin();
+	
 }
 
 /*******************************************
@@ -283,15 +293,10 @@ int d_Sensors_samplePanelmV(void){
  ******************************************/
 int d_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
-	int a = 0;
-	int b = 0;
-	Wire.beginTransmission(_ADDR_PYRO);
-	Wire.write(0);
-	Wire.endTransmission();
-	Wire.requestFrom(_ADDR_PYRO, 2);
-	a = Wire.read();
-	b = Wire.read();
-	value = ((a<<8)|b);
+	PyroADC.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
+				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
+	PyroADC.startConversion();
+	PyroADC.getResult(&value);
 	return value;
 }
 
@@ -319,9 +324,15 @@ int d_Sensors_samplePressurepa(void){
  ******************************************/
 int d_Sensors_sampleHumiditypct(void){
 	int value = 0;
+	int a = 0;
+	int b = 0;
 	Wire.beginTransmission(_ADDR_HYGRO);
-	value = analogRead(_PIN_SDA);
+	Wire.write(0);
 	Wire.endTransmission();
+	Wire.requestFrom(_ADDR_HYGRO, 2);
+	a = Wire.read();
+	b = Wire.read();
+	value = ((a<<8)|b);
 	return value;
 }
 

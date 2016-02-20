@@ -26,6 +26,7 @@
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
 #include <Adafruit_MPL115A2.h>
+#include <MCP342X.h>
 #include <XBee.h>
 
 /* Global Variables for Packet  */
