@@ -25,11 +25,12 @@ Adafruit_INA219 ina219_Solar;
 
 #elif defined(CRANBERRY)
 Adafruit_MPL115A2 MPL115A2;
+HIH613x hih6131(_ADDR_HYGRO);
 
 #elif defined(DRAGONFRUIT)
 Adafruit_MPL115A2 MPL115A2;
 MCP342X PyroADC;
-
+HIH613x hih6131(_ADDR_HYGRO);
 #endif
 
 /*---------------------------*/
@@ -215,15 +216,8 @@ int c_Sensors_samplePressurepa(void){
  ******************************************/
 int c_Sensors_sampleHumiditypct(void){
 	int value = 0;
-	int a = 0;
-	int b = 0;
-	Wire.beginTransmission(_ADDR_HYGRO);
-	Wire.write(0);
-	Wire.endTransmission();
-	Wire.requestFrom(_ADDR_HYGRO, 2);
-	a = Wire.read();
-	b = Wire.read();
-	value = ((a<<8)|b);
+	hih6131.update();
+	value = hih6131.getHumidity();
 	return value;
 }
 
@@ -256,7 +250,6 @@ int c_Sensors_sampleTempdecic(void){
 void d_Sensors_init(void){
 	Wire.begin(9600);
 	MPL115A2.begin();
-	
 }
 
 /*******************************************
@@ -324,15 +317,8 @@ int d_Sensors_samplePressurepa(void){
  ******************************************/
 int d_Sensors_sampleHumiditypct(void){
 	int value = 0;
-	int a = 0;
-	int b = 0;
-	Wire.beginTransmission(_ADDR_HYGRO);
-	Wire.write(0);
-	Wire.endTransmission();
-	Wire.requestFrom(_ADDR_HYGRO, 2);
-	a = Wire.read();
-	b = Wire.read();
-	value = ((a<<8)|b);
+	hih6131.update();
+	value = hih6131.getHumidity();
 	return value;
 }
 

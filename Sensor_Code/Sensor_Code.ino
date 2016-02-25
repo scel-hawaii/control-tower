@@ -22,7 +22,9 @@
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
 #include <Adafruit_MPL115A2.h>
+#include <HIH613x.h>
 #include <MCP342X.h>
+
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);

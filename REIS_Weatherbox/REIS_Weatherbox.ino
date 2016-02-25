@@ -26,6 +26,7 @@
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
 #include <Adafruit_MPL115A2.h>
+#include <HIH613x.h>
 #include <MCP342X.h>
 #include <XBee.h>
 
@@ -112,7 +113,7 @@ void loop(){
 
         /* Voltages are at a good level to operate normally */
         Normal_Routine(&G_count);
-    }
+    
     else{
 
         /* Voltages are not at a good level, operate in PowerSave */
