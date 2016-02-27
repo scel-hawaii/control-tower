@@ -25,11 +25,12 @@ Adafruit_INA219 ina219_Solar;
 
 #elif defined(CRANBERRY)
 Adafruit_MPL115A2 MPL115A2;
+Adafruit_ADS1115 PyroADC_C;
 HIH613x hih6131(_ADDR_HYGRO);
 
 #elif defined(DRAGONFRUIT)
 Adafruit_MPL115A2 MPL115A2;
-MCP342X PyroADC;
+MCP342X PyroADC_D;
 HIH613x hih6131(_ADDR_HYGRO);
 #endif
 
@@ -143,7 +144,7 @@ int a_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 void c_Sensors_init(void){
-	MPL115A2.begin();
+	mpl115a2.begin();
 }
 
 /*******************************************
@@ -180,15 +181,6 @@ int c_Sensors_samplePanelmV(void){
  ******************************************/
 int c_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
-	int a = 0;
-	int b = 0;
-	Wire.beginTransmission(_ADDR_PYRO);
-	Wire.write(0);
-	Wire.endTransmission();
-	Wire.requestFrom(_ADDR_PYRO, 2);
-	a = Wire.read();
-	b = Wire.read();
-	value = ((a<<8)|b);
 	return value;
 }
 
@@ -202,7 +194,7 @@ int c_Sensors_sampleSolarIrrmV(void){
  ******************************************/
 int c_Sensors_samplePressurepa(void){
 	int value = 0;
-	value = MPL115A2.getPressure();
+	value = mpl115a2.getPressure();
 	return value;
 }
 
@@ -231,7 +223,7 @@ int c_Sensors_sampleHumiditypct(void){
  ******************************************/
 int c_Sensors_sampleTempdecic(void){
 	int value = 0;
-	value = MPL115A2.getTemperature()*10;
+	value = mpl115a2.getTemperature()*10;
 	return value;
 }
 /*---------------------------*/
@@ -249,7 +241,7 @@ int c_Sensors_sampleTempdecic(void){
  ******************************************/
 void d_Sensors_init(void){
 	Wire.begin(9600);
-	MPL115A2.begin();
+	mpl115a2.begin();
 }
 
 /*******************************************
@@ -286,10 +278,10 @@ int d_Sensors_samplePanelmV(void){
  ******************************************/
 int d_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
-	PyroADC.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
+	PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
 				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
-	PyroADC.startConversion();
-	PyroADC.getResult(&value);
+	PyroADC_D.startConversion();
+	PyroADC_D.getResult(&value);
 	return value;
 }
 
@@ -303,7 +295,7 @@ int d_Sensors_sampleSolarIrrmV(void){
  ******************************************/
 int d_Sensors_samplePressurepa(void){
 	int value = 0;
-	value = MPL115A2.getPressure();
+	value = mpl115a2.getPressure();
 	return value;
 }
 
@@ -332,6 +324,6 @@ int d_Sensors_sampleHumiditypct(void){
  ******************************************/
 int d_Sensors_sampleTempdecic(void){
 	int value = 0;
-	value = MPL115A2.getTemperature()*10;
+	value = mpl115a2.getTemperature()*10;
 	return value;
 }

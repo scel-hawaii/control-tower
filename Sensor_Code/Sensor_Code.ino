@@ -22,9 +22,9 @@
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
 #include <Adafruit_MPL115A2.h>
+#include <Adafruit_ADS1115.h>
 #include <HIH613x.h>
 #include <MCP342X.h>
-
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
@@ -137,7 +137,7 @@ void loop(){
     mySerial.print("\nPressurepa Data:");
     mySerial.println(Pressurepa);
 
-    mySerial.print("Tempdecic Data:");
+    mySerial.print("\nTempdecic Data:");
     mySerial.println(Tempdecic);
 #endif
 }
