@@ -24,12 +24,12 @@ Adafruit_BMP085 bmp085;
 Adafruit_INA219 ina219_Solar;
 
 #elif defined(CRANBERRY)
-Adafruit_MPL115A2 MPL115A2;
-Adafruit_ADS1115 PyroADC_C;
+Adafruit_MPL115A2 mpl115a2;
+Adafruit_ADS1115 PyroADC_C(_ADDR_PYRO);
 HIH613x hih6131(_ADDR_HYGRO);
 
 #elif defined(DRAGONFRUIT)
-Adafruit_MPL115A2 MPL115A2;
+Adafruit_MPL115A2 mpl115a2;
 MCP342X PyroADC_D;
 HIH613x hih6131(_ADDR_HYGRO);
 #endif
@@ -181,6 +181,7 @@ int c_Sensors_samplePanelmV(void){
  ******************************************/
 int c_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
+	value = PyroADC_C.readADC_SingleEnded(0);
 	return value;
 }
 

@@ -203,7 +203,7 @@ uint16_t Adafruit_ADS1115::readADC_SingleEnded(uint8_t channel)
 	writeRegister(m_i2cAddress, ADS1115_REG_POINTER_CONFIG, config);
 
 	// Wait for the conversion to complete (m_conversionDelay linked with SPS value)
-	_delay_us(m_conversionDelay);
+	delay(m_conversionDelay);
 
 	// Read the conversion results
 	// Shift 12-bit results right 4 bits for the ADS1115
@@ -240,7 +240,7 @@ int16_t Adafruit_ADS1115::readADC_Differential_0_1() {
 	writeRegister(m_i2cAddress, ADS1115_REG_POINTER_CONFIG, config);
 
 	// Wait for the conversion to complete (m_conversionDelay linked with SPS value)
-	_delay_us(m_conversionDelay);
+	delay(m_conversionDelay);
 
 	// Read the conversion results
 	uint16_t res = readRegister(m_i2cAddress, ADS1115_REG_POINTER_CONVERT);
@@ -279,7 +279,7 @@ int16_t Adafruit_ADS1115::readADC_Differential_2_3() {
 	writeRegister(m_i2cAddress, ADS1115_REG_POINTER_CONFIG, config);
 
 	// Wait for the conversion to complete (m_conversionDelay linked with SPS value)
-	_delay_us(m_conversionDelay);
+	delay(m_conversionDelay);
 
 	// Read the conversion results
 	uint16_t res = readRegister(m_i2cAddress, ADS1115_REG_POINTER_CONVERT);
@@ -345,7 +345,7 @@ results without changing the config value.
 int16_t Adafruit_ADS1115::getLastConversionResults()
 {
 	// Wait for the conversion to complete
-	_delay_us(m_conversionDelay);
+	delay(m_conversionDelay);
 
 	// Read the conversion results
 	uint16_t res = readRegister(m_i2cAddress, ADS1115_REG_POINTER_CONVERT);
