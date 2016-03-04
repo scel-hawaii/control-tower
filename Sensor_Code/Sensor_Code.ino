@@ -36,7 +36,11 @@ int (*Sensors_sampleHumiditypct)(void);
 int (*Sensors_sampleTempdecic)(void);
 
 /* Software Serial set up for debugging Cranberry and Dragonfruit */
+#ifdef CRANBERRY
 SoftwareSerial mySerial(_PIN_RX, _PIN_TX);
+#elif defined(DRAGONFRUIT)
+SoftwareSerial mySerial(_PIN_RXDEBUG, _PIN_TXDEBUG);
+#endif
 
 /*******************************************
  *
