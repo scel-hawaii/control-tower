@@ -298,7 +298,7 @@ void pstate_sensors_array(int state, P_STATE *power_state){
 void sync_pstate(P_STATE power_state){
 
     digitalWrite(_PIN_XBEE_SLEEP, !power_state.xbee);
-    digitalWrite(_PIN_PSWITCH, power_state.sensor_array);	
+    digitalWrite(_PIN_SEN_EN, power_state.sensor_array);	
 }
 
 /*****************************************************************************/

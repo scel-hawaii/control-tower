@@ -65,7 +65,7 @@
     #define _PIN_GPS_RX 4
     #define _PIN_GPS_TX 5
 
-    #define _PIN_PSWITCH 6
+    #define _PIN_SEN_EN 6
 
     #define _PIN_HUMID_CLK 7
     #define _PIN_HUMID_DATA 8
