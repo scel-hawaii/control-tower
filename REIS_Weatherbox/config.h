@@ -71,8 +71,8 @@
     #define _PIN_GPS_RX 4
     #define _PIN_GPS_TX 5
 
-    /* Power Switch */
-    #define _PIN_PSWITCH 6
+    /* Sensor On/Off */
+    #define _PIN_SEN_EN 6
 
     /* Humidity */
     #define _PIN_HUMID_CLK 7

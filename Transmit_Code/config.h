@@ -38,8 +38,8 @@
 /*-------------------------*/
 
 /* Generation Declarations: Only define one */
-//#define APPLE
-#define CRANBERRY
+#define APPLE
+//#define CRANBERRY
 //#define DRAGONFRUIT
 
 /* Apple Pin Configuration */
@@ -71,8 +71,8 @@
     #define _PIN_GPS_RX 4
     #define _PIN_GPS_TX 5
 
-    /* Power Switch */
-    #define _PIN_PSWITCH 6
+    /* Sensor On/Off */
+    #define _PIN_SEN_EN 6
 
     /* Humidity */
     #define _PIN_HUMID_CLK 7
@@ -196,26 +196,26 @@
 /*-------------------------*/
 
 /* Sensors */
-//extern void (*Sensors_init)(void);
-//extern int (*Sensors_sampleBatterymV)(void);
-//extern int (*Sensors_samplePanelmV)(void);
-//extern int (*Sensors_sampleSolarIrrmV)(void);
-//extern int (*Sensors_samplePressurepa)(void);
-//extern int (*Sensors_sampleHumiditypct)(void);
-//extern int (*Sensors_sampleTempdecic)(void);
+extern void (*Sensors_init)(void);
+extern int (*Sensors_sampleBatterymV)(void);
+extern int (*Sensors_samplePanelmV)(void);
+extern int (*Sensors_sampleSolarIrrmV)(void);
+extern int (*Sensors_samplePressurepa)(void);
+extern int (*Sensors_sampleHumiditypct)(void);
+extern int (*Sensors_sampleTempdecic)(void);
 
 /* Transmit */
-//extern void (*Packet_Clear)(void);
-//extern void (*Packet_Con)(void);
-//extern void (*Packet_Transmit)(void);
+extern void (*Packet_Clear)(void);
+extern void (*Packet_Con)(void);
+extern void (*Packet_Transmit)(void);
 
 /* Routine */
-//extern void (*Normal_Routine)(int *count);
+extern void (*Normal_Routine)(int *count);
 
 /*-------------------------*/
 /*-Configuration Functions-*/
 /*-------------------------*/
-//void Gen_config(void);
-//void Transmit_config(void);
+void Gen_config(void);
+void Transmit_config(void);
 
 #endif

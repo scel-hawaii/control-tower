@@ -52,27 +52,27 @@ extern LowPassFilter G_battery_filter; //GLOBAL!! Find alternative (pointers)
 #define ADC_SAMPLE_NUM 30
 
 /* Sets the good voltage threshold; Below this threshold, the box goes into
-   a power saving m,ode and waits for the voltage to go above
+   a power saving mode and waits for the voltage to go above
    the THRESH_REINIT_SYSTEM (3.75 volts or approx. 45% capacity remaining)
-   //Calculation: 3.730/5 * 1023 = 763.158 ~ 763 */
+   //Calculation: 3.730/5 * 1023 = 763.158 ~> 763 */
 #define THRESH_GOOD_BATT_V 763
 
 /* When the battery voltage is low, but still above ~30% and
    the solar power is good, the box transmits health data every 10 minutes
-   //Calculation: (3.730/5)*1023 = 757.6338 ~ 757 */
+   //Calculation: (3.730/5)*1023 = 757.6338 ~> 757 */
 #define THRESH_LOW_BATT_V 757
 
 /* Solar is considered good it the solar panel voltage is ~6 volts
-   //Calculation: (6/2)/5*1023 = 613.8 ~ 614 */
+   //Calculation: (6/2)/5*1023 = 613.8 ~> 614 */
 #define THRESH_GOOD_PANEL_V 614 
 
 /* Solar is considered good if the solar irradiance voltage is ~2.5 volts
-   //Calculation: (2.5/5)*1023 = 511.5 ~ 511 */
+   //Calculation: (2.5/5)*1023 = 511.5 ~> 511 */
 #define THRESH_GOOD_APOGEE_V 511
 
 /* Defines the voltage where the system reinitializes transmission and sensing
    Check for the 3.830 volts (approx. 68% capacity remaining)
-   //Calcuation: (3.830/5)*1023 = 783.618 ~ 783 */
+   //Calcuation: (3.830/5)*1023 = 783.618 ~> 783 */
 #define THRESH_REINIT_SYSTEM 783
 
 // Defines the alpha value for the battery lowpass filter
