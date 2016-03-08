@@ -136,7 +136,7 @@ void loop(){
     Serial.print("\n");
 
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
-    mySerial.print("-------Sensor Data Readings
+    mySerial.print("-------Sensor Data Readings #");
     mySerial.print(G_i);
     mySerial.print("-------");
     

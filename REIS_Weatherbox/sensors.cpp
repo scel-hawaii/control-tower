@@ -282,7 +282,7 @@ long d_Sensors_samplePanelmV(void){
  *
  ******************************************/
 long d_Sensors_sampleSolarIrrmV(void){
-	long value = 0;
+	int value = 0;
 	PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
 				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
 	PyroADC_D.startConversion();
