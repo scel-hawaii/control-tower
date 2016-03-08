@@ -42,6 +42,9 @@ SoftwareSerial mySerial(_PIN_RXDEBUG, _PIN_TXDEBUG);
 SoftwareSerial mySerial(_PIN_RX, _PIN_TX);
 #endif
 
+/* Iterator to keep track of test count */
+int G_i;
+
 /*******************************************
  *
  *    Name:        setup 
@@ -58,6 +61,7 @@ void setup(){
     Gen_config();
     
     /* Initialize sensors */
+    G_i = 0;
     Sensors_init();
 
 #ifdef APPLE
@@ -88,6 +92,9 @@ void loop(){
     long PanelmV = -1;
     long Pressurepa = -1;
     long Tempdecic = -1;
+
+    /* Increment */
+    G_i++;
     
     /* Poll each sensor and delay for 1 second after each poll */
     BatterymV = Sensors_sampleBatterymV();
@@ -105,7 +112,10 @@ void loop(){
 
     /* Debug: Print the values to the Arduino Serial Monitor */
 #ifdef APPLE
-    Serial.print("-------Sensor Data Readings-------");
+    Serial.print("-------Sensor Data Readings #");
+    Serial.print(G_i);
+    Serial.print("-------");
+    
     Serial.print("\nBatterymV Data:");
     Serial.println(BatterymV);
 
@@ -126,7 +136,10 @@ void loop(){
     Serial.print("\n");
 
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
-    mySerial.print("-------Sensor Data Readings-------");
+    mySerial.print("-------Sensor Data Readings
+    mySerial.print(G_i);
+    mySerial.print("-------");
+    
     mySerial.print("\nBatterymV Data:");
     mySerial.println(BatterymV);
 
