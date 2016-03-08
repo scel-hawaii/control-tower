@@ -105,7 +105,7 @@ void loop(){
 
     /* Debug: Print the values to the Arduino Serial Monitor */
 #ifdef APPLE
-    Serial.print("-------Sensor Data Readings-------\n");
+    Serial.print("-------Sensor Data Readings-------");
     Serial.print("\nBatterymV Data:");
     Serial.println(BatterymV);
 
@@ -121,11 +121,12 @@ void loop(){
     Serial.print("\nPressurepa Data:");
     Serial.println(Pressurepa);
 
-    Serial.print("Tempdecic Data:");
+    Serial.print("\nTempdecic Data:");
     Serial.println(Tempdecic);
+    Serial.print("\n");
 
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
-    mySerial.print("-------Sensor Data Readings-------\n");
+    mySerial.print("-------Sensor Data Readings-------");
     mySerial.print("\nBatterymV Data:");
     mySerial.println(BatterymV);
 
@@ -143,5 +144,6 @@ void loop(){
 
     mySerial.print("\nTempdecic Data:");
     mySerial.println(Tempdecic);
+    mySerial.print("\n");
 #endif
 }
