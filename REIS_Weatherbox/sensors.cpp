@@ -195,7 +195,7 @@ long c_Sensors_sampleSolarIrrmV(void){
  ******************************************/
 long c_Sensors_samplePressurepa(void){
 	long value = 0;
-	value = mpl115a2.getPressure();
+	value = (mpl115a2.getPressure()*((115-50)/1023.0) +50)*1000;
 	return value;
 }
 
@@ -300,7 +300,7 @@ long d_Sensors_sampleSolarIrrmV(void){
  ******************************************/
 long d_Sensors_samplePressurepa(void){
 	long value = 0;
-	value = mpl115a2.getPressure();
+	value = (mpl115a2.getPressure()*((115-50)/1023.0) +50)*1000;
 	return value;
 }
 
