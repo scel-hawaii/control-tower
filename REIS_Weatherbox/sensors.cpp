@@ -60,8 +60,8 @@ void a_Sensors_init(void){
  *    Description: Checks the battery voltage.
  *
  ******************************************/
-int a_Sensors_sampleBatterymV(void){
-    int value = analogRead(_PIN_BATT_V)*5000.0/1023;
+long a_Sensors_sampleBatterymV(void){
+    long value = analogRead(_PIN_BATT_V)*5000.0/1023;
     return value;
 }
 
@@ -73,8 +73,8 @@ int a_Sensors_sampleBatterymV(void){
  *    Description: Checks the Solar Panel voltage.
  *
  ******************************************/
-int a_Sensors_samplePanelmV(void){
-    int value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
+long a_Sensors_samplePanelmV(void){
+    long value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
     return value;
 }
 
@@ -86,8 +86,8 @@ int a_Sensors_samplePanelmV(void){
  *    Description: Checks the Solar Irradiance level.
  *
  ******************************************/
-int a_Sensors_sampleSolarIrrmV(void){
-    int value = analogRead(_PIN_APOGEE_V)*5000.0/1023;
+long a_Sensors_sampleSolarIrrmV(void){
+    long value = analogRead(_PIN_APOGEE_V)*5000.0/1023;
     return value;
 }
 
@@ -99,8 +99,8 @@ int a_Sensors_sampleSolarIrrmV(void){
  *    Description: Checks the current Pressure.
  *
  ******************************************/
-int a_Sensors_samplePressurepa(void){
-    int value = bmp085.readPressure();
+long a_Sensors_samplePressurepa(void){
+    long value = bmp085.readPressure();
     return value;
 }
 
@@ -112,8 +112,8 @@ int a_Sensors_samplePressurepa(void){
  *    Description: Checks the current Humidity.
  *
  ******************************************/
-int a_Sensors_sampleHumiditypct(void){
-    int value =  sht1x.readHumidity();
+long a_Sensors_sampleHumiditypct(void){
+    long value =  sht1x.readHumidity();
     return value;
 }
 
@@ -125,8 +125,8 @@ int a_Sensors_sampleHumiditypct(void){
  *    Description: Checks the current Temperature.
  *
  ******************************************/
-int a_Sensors_sampleTempdecic(void){
-    int value =  bmp085.readTemperature()*10;
+long a_Sensors_sampleTempdecic(void){
+    long value =  bmp085.readTemperature()*10;
     return value;
 }
 
@@ -155,7 +155,7 @@ void c_Sensors_init(void){
  *    Description: Checks the battery voltage.
  *
  ******************************************/
-int c_Sensors_sampleBatterymV(void){
+long c_Sensors_sampleBatterymV(void){
 	return -1;
 }
 
@@ -167,7 +167,7 @@ int c_Sensors_sampleBatterymV(void){
  *    Description: Checks the Solar Panel voltage.
  *
  ******************************************/
-int c_Sensors_samplePanelmV(void){
+long c_Sensors_samplePanelmV(void){
 	return -1;
 }
 
@@ -179,8 +179,8 @@ int c_Sensors_samplePanelmV(void){
  *    Description: Checks the Solar Irradiance level.
  *
  ******************************************/
-int c_Sensors_sampleSolarIrrmV(void){
-	int value = 0;
+long c_Sensors_sampleSolarIrrmV(void){
+	long value = 0;
 	value = PyroADC_C.readADC_SingleEnded(0);
 	return value;
 }
@@ -193,8 +193,8 @@ int c_Sensors_sampleSolarIrrmV(void){
  *    Description: Checks the current Pressure.
  *
  ******************************************/
-int c_Sensors_samplePressurepa(void){
-	int value = 0;
+long c_Sensors_samplePressurepa(void){
+	long value = 0;
 	value = mpl115a2.getPressure();
 	return value;
 }
@@ -207,8 +207,8 @@ int c_Sensors_samplePressurepa(void){
  *    Description: Checks the current Humidity.
  *
  ******************************************/
-int c_Sensors_sampleHumiditypct(void){
-	int value = 0;
+long c_Sensors_sampleHumiditypct(void){
+	long value = 0;
 	hih6131.update();
 	value = hih6131.getHumidity();
 	return value;
@@ -222,8 +222,8 @@ int c_Sensors_sampleHumiditypct(void){
  *    Description: Checks the current Temperature.
  *
  ******************************************/
-int c_Sensors_sampleTempdecic(void){
-	int value = 0;
+long c_Sensors_sampleTempdecic(void){
+	long value = 0;
 	value = mpl115a2.getTemperature()*10;
 	return value;
 }
@@ -253,8 +253,8 @@ void d_Sensors_init(void){
  *    Description: Checks the battery voltage.
  *
  ******************************************/
-int d_Sensors_sampleBatterymV(void){
-	int value = 0;
+long d_Sensors_sampleBatterymV(void){
+	long value = 0;
 	value = analogRead(_PIN_BATT_V)*5000.0/1023;
 	return value;
 }
@@ -267,8 +267,8 @@ int d_Sensors_sampleBatterymV(void){
  *    Description: Checks the Solar Panel voltage.
  *
  ******************************************/
-int d_Sensors_samplePanelmV(void){
-	int value = 0;
+long d_Sensors_samplePanelmV(void){
+	long value = 0;
 	value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
 	return value;
 }
@@ -281,8 +281,8 @@ int d_Sensors_samplePanelmV(void){
  *    Description: Checks the Solar Irradiance level.
  *
  ******************************************/
-int d_Sensors_sampleSolarIrrmV(void){
-	int value = 0;
+long d_Sensors_sampleSolarIrrmV(void){
+	long value = 0;
 	PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
 				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
 	PyroADC_D.startConversion();
@@ -298,8 +298,8 @@ int d_Sensors_sampleSolarIrrmV(void){
  *    Description: Checks the current Pressure.
  *
  ******************************************/
-int d_Sensors_samplePressurepa(void){
-	int value = 0;
+long d_Sensors_samplePressurepa(void){
+	long value = 0;
 	value = mpl115a2.getPressure();
 	return value;
 }
@@ -312,8 +312,8 @@ int d_Sensors_samplePressurepa(void){
  *    Description: Checks the current Humidity.
  *
  ******************************************/
-int d_Sensors_sampleHumiditypct(void){
-	int value = 0;
+long d_Sensors_sampleHumiditypct(void){
+	long value = 0;
 	hih6131.update();
 	value = hih6131.getHumidity();
 	return value;
@@ -327,8 +327,8 @@ int d_Sensors_sampleHumiditypct(void){
  *    Description: Checks the current Temperature.
  *
  ******************************************/
-int d_Sensors_sampleTempdecic(void){
-	int value = 0;
+long d_Sensors_sampleTempdecic(void){
+	long value = 0;
 	value = mpl115a2.getTemperature()*10;
 	return value;
 }

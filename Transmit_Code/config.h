@@ -29,6 +29,7 @@
 /* Transmission method declarations: only define one */
 //#define UART
 #define BINARY
+#define TEST
 
 /* Macros */
 #define MAX_SIZE 250
@@ -197,12 +198,12 @@
 
 /* Sensors */
 //extern void (*Sensors_init)(void);
-//extern int (*Sensors_sampleBatterymV)(void);
-//extern int (*Sensors_samplePanelmV)(void);
-//extern int (*Sensors_sampleSolarIrrmV)(void);
-//extern int (*Sensors_samplePressurepa)(void);
-//extern int (*Sensors_sampleHumiditypct)(void);
-//extern int (*Sensors_sampleTempdecic)(void);
+//extern long (*Sensors_sampleBatterymV)(void);
+//extern long (*Sensors_samplePanelmV)(void);
+//extern long (*Sensors_sampleSolarIrrmV)(void);
+//extern long (*Sensors_samplePressurepa)(void);
+//extern long (*Sensors_sampleHumiditypct)(void);
+//extern long (*Sensors_sampleTempdecic)(void);
 
 /* Transmit */
 //extern void (*Packet_Clear)(void);

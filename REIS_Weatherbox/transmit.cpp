@@ -91,13 +91,13 @@ void Packet_ConUART(void){
     String s;
 
     /* Variables to hold Sensor Readings */
-    int BatterymV = 0;
-    int SolarIrrmV = 0;
-    int SolarIrr_w_m2 = 0;
-    int Humiditypct = 0;
-    int PanelmV = 0;
-    int Pressurepa = 0;
-    int Tempdecic = 0;
+    long BatterymV = 0;
+    long SolarIrrmV = 0;
+    long SolarIrr_w_m2 = 0;
+    long Humiditypct = 0;
+    long PanelmV = 0;
+    long Pressurepa = 0;
+    long Tempdecic = 0;
     unsigned long uptime;
 
     /* Sample Sensors */
@@ -179,13 +179,13 @@ void Packet_ConBIN(void){
     int n = G_BINpacket.n;
 
     /* Variables to hold Sensor Readings */
-    int BatterymV = 0;
-    int SolarIrrmV = 0;
-    int SolarIrr_w_m2 = 0;
-    int Humiditypct = 0;
-    int PanelmV = 0;
-    int Pressurepa = 0;
-    int Tempdecic = 0;
+    long BatterymV = 0;
+    long SolarIrrmV = 0;
+    long SolarIrr_w_m2 = 0;
+    long Humiditypct = 0;
+    long PanelmV = 0;
+    long Pressurepa = 0;
+    long Tempdecic = 0;
     unsigned long uptime;
 
     /* Sample Sensors */
@@ -348,12 +348,12 @@ void Test_Packet_GenUART(void){
 void Test_Packet_GenBIN(void){
 
     /* Hard-coded data to put into packet */
-    int batt_mv_raw = 1;
-    int panel_mv_raw = 2;
-    int apogee_raw = 3;
-    int pressure_raw = 4;
-    int temperature_raw = 5;
-    int humidity_raw = 6;
+    long batt_mv_raw = 1;
+    long panel_mv_raw = 2;
+    long apogee_raw = 3;
+    long pressure_raw = 4;
+    long temperature_raw = 5;
+    long humidity_raw = 6;
     int n = 10;
     unsigned long uptime = 1000;
 

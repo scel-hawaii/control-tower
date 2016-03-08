@@ -28,12 +28,12 @@
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
-int (*Sensors_sampleBatterymV)(void);
-int (*Sensors_samplePanelmV)(void);
-int (*Sensors_sampleSolarIrrmV)(void);
-int (*Sensors_samplePressurepa)(void);
-int (*Sensors_sampleHumiditypct)(void);
-int (*Sensors_sampleTempdecic)(void);
+long (*Sensors_sampleBatterymV)(void);
+long (*Sensors_samplePanelmV)(void);
+long (*Sensors_sampleSolarIrrmV)(void);
+long (*Sensors_samplePressurepa)(void);
+long (*Sensors_sampleHumiditypct)(void);
+long (*Sensors_sampleTempdecic)(void);
 
 /* Software Serial set up for debugging Cranberry and Dragonfruit */
 #ifdef CRANBERRY
@@ -82,12 +82,12 @@ void setup(){
 void loop(){
 
     /* Variable Declarations */
-    int BatterymV = -1;
-    int SolarIrrmV = -1;
-    int Humiditypct = -1;
-    int PanelmV = -1;
-    int Pressurepa = -1;
-    int Tempdecic = -1;
+    long BatterymV = -1;
+    long SolarIrrmV = -1;
+    long Humiditypct = -1;
+    long PanelmV = -1;
+    long Pressurepa = -1;
+    long Tempdecic = -1;
     
     /* Poll each sensor and delay for 1 second after each poll */
     BatterymV = Sensors_sampleBatterymV();

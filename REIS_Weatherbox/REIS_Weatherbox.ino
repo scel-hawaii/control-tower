@@ -45,12 +45,12 @@ int G_count;
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
-int (*Sensors_sampleBatterymV)(void);
-int (*Sensors_samplePanelmV)(void);
-int (*Sensors_sampleSolarIrrmV)(void);
-int (*Sensors_samplePressurepa)(void);
-int (*Sensors_sampleHumiditypct)(void);
-int (*Sensors_sampleTempdecic)(void);
+long (*Sensors_sampleBatterymV)(void);
+long (*Sensors_samplePanelmV)(void);
+long (*Sensors_sampleSolarIrrmV)(void);
+long (*Sensors_samplePressurepa)(void);
+long (*Sensors_sampleHumiditypct)(void);
+long (*Sensors_sampleTempdecic)(void);
 void (*Packet_Clear)(void);
 void (*Packet_Con)(void);
 void (*Packet_Transmit)(void);
@@ -114,7 +114,7 @@ void loop(){
 
         /* Voltages are at a good level to operate normally */
         Normal_Routine(&G_count);
-    
+    }
     else{
 
         /* Voltages are not at a good level, operate in PowerSave */

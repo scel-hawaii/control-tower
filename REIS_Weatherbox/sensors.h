@@ -48,12 +48,12 @@ extern HIH613x hih6131;
 void a_Sensors_init(void);
 
 /* Sampling Functions */
-int a_Sensors_sampleBatterymV(void);
-int a_Sensors_samplePanelmV(void);
-int a_Sensors_sampleSolarIrrmV(void);
-int a_Sensors_samplePressurepa(void);
-int a_Sensors_sampleHumiditypct(void);
-int a_Sensors_sampleTempdecic(void);
+long a_Sensors_sampleBatterymV(void);
+long a_Sensors_samplePanelmV(void);
+long a_Sensors_sampleSolarIrrmV(void);
+long a_Sensors_samplePressurepa(void);
+long a_Sensors_sampleHumiditypct(void);
+long a_Sensors_sampleTempdecic(void);
 
 /******************************************
  *
@@ -65,12 +65,12 @@ int a_Sensors_sampleTempdecic(void);
 void c_Sensors_init(void);
 
 /* Sampling Functions */
-int c_Sensors_sampleBatterymV(void);
-int c_Sensors_samplePanelmV(void);
-int c_Sensors_sampleSolarIrrmV(void);
-int c_Sensors_samplePressurepa(void);
-int c_Sensors_sampleHumiditypct(void);
-int c_Sensors_sampleTempdecic(void);
+long c_Sensors_sampleBatterymV(void);
+long c_Sensors_samplePanelmV(void);
+long c_Sensors_sampleSolarIrrmV(void);
+long c_Sensors_samplePressurepa(void);
+long c_Sensors_sampleHumiditypct(void);
+long c_Sensors_sampleTempdecic(void);
 
 
 /******************************************
@@ -83,11 +83,11 @@ int c_Sensors_sampleTempdecic(void);
 void d_Sensors_init(void);
 
 /* Sampling Functions */
-int d_Sensors_sampleBatterymV(void);
-int d_Sensors_samplePanelmV(void);
-int d_Sensors_sampleSolarIrrmV(void);
-int d_Sensors_samplePressurepa(void);
-int d_Sensors_sampleHumiditypct(void);
-int d_Sensors_sampleTempdecic(void);
+long d_Sensors_sampleBatterymV(void);
+long d_Sensors_samplePanelmV(void);
+long d_Sensors_sampleSolarIrrmV(void);
+long d_Sensors_samplePressurepa(void);
+long d_Sensors_sampleHumiditypct(void);
+long d_Sensors_sampleTempdecic(void);
 
 #endif
