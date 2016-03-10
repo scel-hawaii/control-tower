@@ -195,7 +195,7 @@ long c_Sensors_sampleSolarIrrmV(void){
  ******************************************/
 long c_Sensors_samplePressurepa(void){
 	long value = 0;
-	value = (mpl115a2.getPressure()*((115-50)/1023.0)+50)*1000;
+	value = mpl115a2.getPressure()*1000;
 	return value;
 }
 
@@ -283,10 +283,14 @@ long d_Sensors_samplePanelmV(void){
  ******************************************/
 long d_Sensors_sampleSolarIrrmV(void){
 	int value = 0;
+	int PGA = 1; //Value should be equal to the gain indicated by
+                     //the gain multiplier MCP342X_GAIN_#X
+		     //Where # is the gain multiplier
 	PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
 				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
 	PyroADC_D.startConversion();
 	PyroADC_D.getResult(&value);
+	value = (value * (62.5/PGA))*1000;
 	return value;
 }
 
@@ -300,7 +304,7 @@ long d_Sensors_sampleSolarIrrmV(void){
  ******************************************/
 long d_Sensors_samplePressurepa(void){
 	long value = 0;
-	value = (mpl115a2.getPressure()*((115-50)/1023.0)+50)*1000;
+	value = mpl115a2.getPressure()*1000;
 	return value;
 }
 
