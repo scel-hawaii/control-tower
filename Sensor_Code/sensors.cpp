@@ -25,7 +25,7 @@ Adafruit_INA219 ina219_Solar;
 
 #elif defined(CRANBERRY)
 Adafruit_MPL115A2 mpl115a2;
-Adafruit_ADS1015 PyroADC_C(_ADDR_PYRO);
+Adafruit_ADS1115 PyroADC_C;
 HIH613x hih6131(_ADDR_HYGRO);
 
 #elif defined(DRAGONFRUIT)
