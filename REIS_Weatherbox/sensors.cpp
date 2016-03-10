@@ -282,15 +282,16 @@ long d_Sensors_samplePanelmV(void){
  *
  ******************************************/
 long d_Sensors_sampleSolarIrrmV(void){
-	int value = 0;
+	long value = 0;
+	int result = 0;
 	int PGA = 1; //Value should be equal to the gain indicated by
                      //the gain multiplier MCP342X_GAIN_#X
 		     //Where # is the gain multiplier
 	PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
 				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
 	PyroADC_D.startConversion();
-	PyroADC_D.getResult(&value);
-	value = (value * (62.5/PGA))*1000;
+	PyroADC_D.getResult(&result);
+	value = (result * (62.5/PGA))*1000;
 	return value;
 }
 
