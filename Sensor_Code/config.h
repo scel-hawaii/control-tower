@@ -125,6 +125,13 @@
     /* Sensor On/Off */
     #define _PIN_SEN_EN 5
 
+    /* Panel and Battery Voltage (Pins of ADC) */
+    #define _PIN_BATT_V 2
+    #define _PIN_SOLAR_V 3
+
+    /* Solar Irradiance (Pins of ADC) */
+    #define _PIN_APOGEE_V 0
+
     /* I2C */
     #define _PIN_SDA A4
     #define _PIN_SCL A5
@@ -133,11 +140,6 @@
     #define _ADDR_BARO 0x60
     #define _ADDR_PYRO 0x91     //Address of ADC output NOT Pyronometer
     #define _ADDR_HYGRO 0x27
-
-    /* Not being used by this gen */
-    #define _PIN_BATT_V 0
-    #define _PIN_SOLAR_V 0
-    #define _PIN_APOGEE_V 0
 
 /* Dragonfruit Pin Configuration */
 #elif defined(DRAGONFRUIT)

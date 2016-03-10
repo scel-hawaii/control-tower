@@ -156,7 +156,9 @@ void c_Sensors_init(void){
  *
  ******************************************/
 long c_Sensors_sampleBatterymV(void){
-	return -1;
+	long value = 0;
+	value = PyroADC_C.readADC_SingleEnded(_PIN_BATT_V);
+	return value;
 }
 
 /*******************************************
@@ -168,7 +170,9 @@ long c_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 long c_Sensors_samplePanelmV(void){
-	return -1;
+	long value = 0;
+	value = PyroADC_C.readADC_SingleEnded(1);
+	return value;
 }
 
 /*******************************************
@@ -181,7 +185,7 @@ long c_Sensors_samplePanelmV(void){
  ******************************************/
 long c_Sensors_sampleSolarIrrmV(void){
 	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(0);
+	value = PyroADC_C.readADC_SingleEnded(_PIN_APOGEE_V);
 	return value;
 }
 
@@ -291,7 +295,7 @@ long d_Sensors_sampleSolarIrrmV(void){
 				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
 	PyroADC_D.startConversion();
 	PyroADC_D.getResult(&result);
-	value = (result * (62.5/PGA))*1000;
+	value = (result * (0.0625/PGA));
 	return value;
 }
 
