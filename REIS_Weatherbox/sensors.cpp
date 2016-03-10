@@ -25,7 +25,7 @@ Adafruit_INA219 ina219_Solar;
 
 #elif defined(CRANBERRY)
 Adafruit_MPL115A2 mpl115a2;
-Adafruit_ADS1115 PyroADC_C(_ADDR_PYRO);
+Adafruit_ADS1015 PyroADC_C(_ADDR_PYRO);
 HIH613x hih6131(_ADDR_HYGRO);
 
 #elif defined(DRAGONFRUIT)
@@ -171,7 +171,7 @@ long c_Sensors_sampleBatterymV(void){
  ******************************************/
 long c_Sensors_samplePanelmV(void){
 	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(1)*0.0635;
+	value = PyroADC_C.readADC_SingleEnded(_PIN_SOLAR_V)*0.0635;
 	return value;
 }
 

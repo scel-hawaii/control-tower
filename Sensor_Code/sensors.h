@@ -14,7 +14,7 @@
 #include <Adafruit_INA219.h>
 #include <Adafruit_BMP085.h>
 #include <Adafruit_MPL115A2.h>
-#include <Adafruit_ADS1115.h>
+#include <Adafruit_ADS1015.h>
 #include <HIH613x.h>
 #include <MCP342X.h>
 
@@ -34,7 +34,7 @@ extern SHT1x sht1x;
 extern Adafruit_BMP085 bmp085;
 extern Adafruit_INA219 ina219_Solar;
 extern Adafruit_MPL115A2 mpl115a2;
-extern Adafruit_ADS1115 PyroADC_C;
+extern Adafruit_ADS1015 PyroADC_C;
 extern MCP342X PyroADC_D;
 extern HIH613x hih6131;
 
