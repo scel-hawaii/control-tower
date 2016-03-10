@@ -157,7 +157,7 @@ void c_Sensors_init(void){
  ******************************************/
 long c_Sensors_sampleBatterymV(void){
 	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(_PIN_BATT_V)*0.0635;
+	value = PyroADC_C.readADC_SingleEnded(_PIN_BATT_V)*0.1875;
 	return value;
 }
 
@@ -171,7 +171,7 @@ long c_Sensors_sampleBatterymV(void){
  ******************************************/
 long c_Sensors_samplePanelmV(void){
 	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(_PIN_SOLAR_V)*0.0635;
+	value = PyroADC_C.readADC_SingleEnded(_PIN_SOLAR_V)*0.1875;
 	return value;
 }
 
@@ -185,7 +185,7 @@ long c_Sensors_samplePanelmV(void){
  ******************************************/
 long c_Sensors_sampleSolarIrrmV(void){
 	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(1)*0.0635;
+	value = PyroADC_C.readADC_SingleEnded(1)*0.1875;
 	return value;
 }
 
