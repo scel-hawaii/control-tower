@@ -53,5 +53,16 @@ Note: These values are displayed in XCTU as hex values.
 UART Test:
 * The string "test yes"
 
-Binary Test:
-* 
+Binary Test (Assuming you're following Schema 1):
+* Some API packet coding identification
+* Schema number: 01
+* Hex code for the Microcontroller address
+* Hex code for up time of the program
+* Hex code for overflow (if occurred) otherwise: 00
+* Hex code for n count: 0A
+* Hex code for Battery mV: 01
+* Hex code for Panel mV: 02
+* Hex code for Pressure: 04
+* Hex code for Temperature: 05
+* Hex code for Humidity: 06
+* Hex code for Solar Irradiance: 03

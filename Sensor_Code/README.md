@@ -44,11 +44,11 @@ Cranberry & Dragonfruit:
 4. Open Serial Monitor (Ctrl-Shift-M).
 5. Sensor readings will appear here. New readings occur ~every 6 seconds.
 
-# Expected Results (Inside SCEL room):
+# Averages of Expected Results (Inside SCEL room):
 
-* Battery mV =
-* SolarIrrmV = 
-* Humiditypct =
-* PanelmV = 
-* Tempdecic = 
-* Pressure pa = 
+* Battery mV = ~4095 (Varies upon battery source level)
+* SolarIrrmV = ~1908 (with lamp at full power and full exposure)
+* Humiditypct = ~54 (slight exposure to lamp heat, but not direct)
+* PanelmV = ~4050 (with lamp at full power and full exposure)
+* Tempdecic = ~26 (slight exposure to lamp heat, but not direct)
+* Pressure pa = ~101056
