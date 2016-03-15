@@ -30,6 +30,9 @@
 //#define UART
 #define BINARY
 
+/* Configuration for Testing */
+//#define TEST
+
 /* Macros */
 #define MAX_SIZE 250
 
