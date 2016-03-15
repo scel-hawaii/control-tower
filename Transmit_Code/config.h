@@ -141,7 +141,7 @@
 
     /* Address of Component */
     #define _ADDR_BARO 0x60
-    #define _ADDR_PYRO 0x91     //Address of ADC output NOT Pyronometer
+    #define _ADDR_PYRO 0x48     //Address of ADC output NOT Pyronometer
     #define _ADDR_HYGRO 0x27
 
 /* Dragonfruit Pin Configuration */
@@ -193,7 +193,7 @@
 
     /* Not being used by this gen */
     #define _PIN_APOGEE_V 0
-
+    
 #endif
 
 /*-------------------------*/

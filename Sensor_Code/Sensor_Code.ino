@@ -92,6 +92,8 @@ void loop(){
     long PanelmV = -1;
     long Pressurepa = -1;
     long Tempdecic = -1;
+    long RoofTempdecic = -1;
+    long AmbTempdecic = -1;
 
     /* Increment */
     G_i++;
@@ -109,6 +111,12 @@ void loop(){
     delay(1000);
     Pressurepa = Sensors_samplePressurepa();
     delay(1000);
+#ifdef APPLE
+    RoofTempdecic = a_Sensors_sampleRoofTempdecic();
+    delay(1000);
+    AmbTempdecic = a_Sensors_sampleAmbTempdecic();
+    delay(1000);
+#endif
 
     /* Debug: Print the values to the Arduino Serial Monitor */
 #ifdef APPLE
@@ -133,6 +141,12 @@ void loop(){
 
     Serial.print("\nTempdecic Data:");
     Serial.println(Tempdecic);
+    
+    Serial.print("\nRoofTempdecic Data:");
+    Serial.println(RoofTempdecic);
+    
+    Serial.print("\nTempdecic Data:");
+    Serial.println(Tempdecic);
     Serial.print("\n");
 
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
@@ -155,8 +169,8 @@ void loop(){
     mySerial.print("\nPressurepa Data:");
     mySerial.println(Pressurepa);
 
-    mySerial.print("\nTempdecic Data:");
-    mySerial.println(Tempdecic);
+    mySerial.print("\nAmbTempdecic Data:");
+    mySerial.println(AmbTempdecic);
     mySerial.print("\n");
 #endif
 }
