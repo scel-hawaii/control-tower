@@ -20,7 +20,12 @@
 
 /* Global Variable for Packet */
 uint8_t G_UARTpacket[MAX_SIZE];
-schema_3 G_BINpacket;
+
+#ifdef APPLE
+schema_2 G_BINpacket;
+#elif defined(CRANBERRY) || defined(DRAGONFRUIT)
+schema_1 G_BINpacket;
+#endif
 
 /******************************************
  *

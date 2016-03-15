@@ -23,8 +23,12 @@
 
 /* Global Variable for Packet  */
 extern uint8_t G_UARTpacket[MAX_SIZE];
-extern schema_3 G_BINpacket;
 
+#ifdef APPLE
+extern schema_2 G_BINpacket;
+#elif defined(CRANBERRY) || defined(DRAGONFRUIT)
+extern schema_1 G_BINpacket;
+#endif
 
 /* Packet Initialization/Clear */
 void Packet_ClearUART(void);

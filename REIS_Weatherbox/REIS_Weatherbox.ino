@@ -33,8 +33,13 @@
 
 /* Global Variables for Packet  */
 uint8_t G_UARTpacket[MAX_SIZE];
-schema_3 G_BINpacket;
 schema_health G_health;
+
+#ifdef APPLE
+schema_2 G_BINpacket;
+#elif defined(CRANBERRY) || defined(DRAGONFRUIT)
+schema_1 G_BINpacket;
+#endif
 
 /* Global for Filters */
 LowPassFilter G_solar_filter;

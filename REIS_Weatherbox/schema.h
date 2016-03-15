@@ -22,37 +22,43 @@
 
 /* Struct for Binary packet transfer */
 typedef struct {
-    
-    /* Identification information */
-    uint16_t schema;             //Schema ID number
+    uint16_t schema = 1;             //Schema ID number
     uint16_t address;		 //Address of Arduino
-    
-    /* Overflow flags */
-    uint8_t overflow_num;	 //Number of times function millis() overflowed
-
-    /* Data variables */
-    uint8_t n;			 //Number of data points in packet (0...30)
-    int16_t bmp085_temp_decic;   //Temperature value (celsius)
-    uint16_t batt_mv[6];	 //Battery voltage (millivolts)
-    uint16_t panel_mv[6];	 //Panel voltage (millivolts)
-    uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
-    uint16_t apogee_w_m2[20];    //Solar Irradiance (millivolts)
     uint32_t uptime_ms;		 //Time since the start of program
+    uint8_t overflow_num;	 //Number of times function millis() overflowed
+    uint8_t n;			 //Number of data points in packet (0...30)
+    uint16_t batt_mv[15];	 //Battery voltage (millivolts)
+    uint16_t panel_mv[15];	 //Panel voltage (millivolts)
     uint32_t bmp085_press_pa;	 //Pressure value (pascals)
+    int16_t bmp085_temp_decic;   //Temperature value (celsius)
+    uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
+    uint16_t apogee_w_m2[60];    //Solar Irradiance (millivolts)
+} schema_1;
 
-} schema_3;
+/* Struct for Apple's packet, contains additional temperatures */
+typedef struct {
+    uint16_t schema = 2;             //Schema ID number
+    uint16_t address;		 //Address of Arduino
+    uint32_t uptime_ms;		 //Time since the start of program
+    uint8_t overflow_num;	 //Number of times function millis() overflowed
+    uint8_t n;			 //Number of data points in packet (0...30)
+    uint16_t batt_mv[15];	 //Battery voltage (millivolts)
+    uint16_t panel_mv[15];	 //Panel voltage (millivolts)
+    uint32_t bmp085_press_pa;	 //Pressure value (pascals)
+    int16_t bmp085_temp_decic;   //Temperature value (celsius)
+    uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
+    uint16_t apogee_w_m2[60];    //Solar Irradiance (millivolts)
+    int16_t dallas_amb_c[15];    //Ambient temperature value (celcius)
+    int16_t dallas_roof_c[15];   //Outside temperature value (celcius)
+} schema_2;
+
 
 /* Struct for Health Check */
 typedef struct {
-	
-	/* Identification information */
 	uint16_t schema;	//Schema ID number
 	uint16_t address;	//ADdress of Arduino
-	
-	/* Data variables */
 	uint32_t uptime_ms;	//Time since the start of program
 	uint16_t batt_mv;	//Battery voltage (millivolts)
-
 } schema_5;
 
 typedef schema_5 schema_health;

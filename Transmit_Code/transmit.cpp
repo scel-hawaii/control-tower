@@ -35,7 +35,7 @@ void Packet_ClearUART(void){
  *
  *   Name:        Packet_ClearBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 Global packet
+ *   Parameter:   schema Global packet
  *   Description: Clears/Initializes the packet schema
  *                    information.
  *
@@ -46,7 +46,6 @@ void Packet_ClearBIN(void){
     int i, j, k;
 
     /* Initialize values contained in the packet */
-    G_BINpacket.schema = 3;
     G_BINpacket.address = EEPROM.read(2) | (EEPROM.read(3) << 8); //Addr from EEPROM
     G_BINpacket.uptime_ms = 0;
     G_BINpacket.n = 0;
@@ -58,15 +57,18 @@ void Packet_ClearBIN(void){
     for(i = 0; i < 60; i++){
 
         /* Variables for indices */
-        j = i/10;
-        k = i/3;
+        j = i/4;
 
-        /* Polled every 10 */
+        /* Polled every 4 seconds */
         G_BINpacket.batt_mv[j] = 0;
         G_BINpacket.panel_mv[j] = 0;
+#ifdef APPLE
+        G_BINpacket.dallas_amb_c[j] = 0;
+	G_BINpacket.dallas_roof_c[j] = 0;
+#endif
  
-        /* Polled every 3 */
-        G_BINpacket.apogee_w_m2[k] = 0;
+        /* Polled every second */
+        G_BINpacket.apogee_w_m2[i] = 0;
     }
 }
 
@@ -84,14 +86,9 @@ void Packet_ConUART(void){
     /* Index Variable */
     int i = 0;
 
-    /* Address initialization */
-    uint16_t address = 0;
-
     /* Get Addresss of Arduino*/
-#ifndef TEST
-    address = EEPROM.read(2) | (EEPROM.read(3) << 8);
-#endif
-
+    uint16_t address = EEPROM.read(2) | (EEPROM.read(3) << 8);
+    
     /* Set up char array */
     String s;
 
@@ -103,17 +100,22 @@ void Packet_ConUART(void){
     long PanelmV = 0;
     long Pressurepa = 0;
     long Tempdecic = 0;
+    long Dallas_RoofTemp_c = 0;
+    long Dallas_AmbTemp_c = 0;
     unsigned long uptime;
 
     /* Sample Sensors */
-#ifndef TEST
     BatterymV = (*Sensors_sampleBatterymV)();
     SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
     Humiditypct = (*Sensors_sampleHumiditypct)();
     PanelmV = (*Sensors_samplePanelmV)();
     Pressurepa = (*Sensors_samplePressurepa)();
     Tempdecic = (*Sensors_sampleTempdecic)();
+#ifdef APPLE
+    Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
+    Dallas_AmbTemp_c = a_Sensors_sampleAmbTempdecic();
 #endif
+
     /* Set up packet format */
     s = "{";
 
@@ -130,6 +132,14 @@ void Packet_ConUART(void){
     /* Temperature */
     s += ", \"bmp085_temp_decic\": ";
     s += String(Tempdecic);
+
+#ifdef APPLE
+    /* Outside Temperature */
+    s += ", \"dallas_roof_c\": ";
+    s += String(Dallas_RoofTemp_c);
+    s += ", \"dallas_amb_c\": ";
+    s += String(Dallas_AmbTemp_c);
+#endif
 
     /* Humidity */
     s += ", \"sht1x_humid_pct\": ";
@@ -159,8 +169,7 @@ void Packet_ConUART(void){
     s += '\0';
 
     /* Note: This packet does NOT contain (in comparison to */
-    /*       old Apple code) panel_ua (current value),      */
-    /*       dallas_roof_c (temp), and dallas_amb_c (temp). */
+    /*       old Apple code) panel_ua (current value).      */
     
     /* Put array information into Packet */
     for(i = 0; i < s.length(); i++){
@@ -172,7 +181,7 @@ void Packet_ConUART(void){
  *
  *   Name:        Packet_ConBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 Global packet
+ *   Parameter:   schema Global packet
  *   Description: Constructs a packet with data polled
  *                    from the sensors.
  *
@@ -192,37 +201,42 @@ void Packet_ConBIN(void){
     long PanelmV = 0;
     long Pressurepa = 0;
     long Tempdecic = 0;
+    long Dallas_RoofTemp_c = 0;
+    long Dallas_AmbTemp_c = 0;
     unsigned long uptime;
 
     /* Sample Sensors */
-#ifndef TEST
     BatterymV = (*Sensors_sampleBatterymV)();
     SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
     Humiditypct = (*Sensors_sampleHumiditypct)();
     PanelmV = (*Sensors_samplePanelmV)();
     Pressurepa = (*Sensors_samplePressurepa)();
     Tempdecic = (*Sensors_sampleTempdecic)();
+#ifdef APPLE
+    Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
+    Dallas_AmbTemp_c = a_Sensors_sampleAmbTempdecic();
 #endif
 
     /* Uptime data */
     uptime = millis();
     
     /* Check overflow before putting in uptime */
-#ifndef TEST
     G_BINpacket.overflow_num += chk_overflow(uptime, G_BINpacket.uptime_ms);
-#endif
 
     /* Save new uptime */
     G_BINpacket.uptime_ms = uptime;
 
     /* Pack sensor data */
-    G_BINpacket.batt_mv[n/10] = BatterymV;
-    G_BINpacket.panel_mv[n/10] = PanelmV;
+    G_BINpacket.batt_mv[n/4] = BatterymV;
+    G_BINpacket.panel_mv[n/4] = PanelmV;
     G_BINpacket.bmp085_press_pa = Pressurepa;
     G_BINpacket.bmp085_temp_decic = Tempdecic;
     G_BINpacket.humidity_centi_pct = Humiditypct;
-    G_BINpacket.apogee_w_m2[n/3] = SolarIrrmV;
-    
+    G_BINpacket.apogee_w_m2[n] = SolarIrrmV;
+#ifdef APPLE
+    G_BINpacket.dallas_amb_c[n/4] = Dallas_AmbTemp_decic;
+    G_BINpacket.dallas_roof_c[n/4] = Dallas_RoofTemp_decic;
+#endif
     /* Increment index */
     G_BINpacket.n += 1;
 }
@@ -264,7 +278,7 @@ void Packet_TransmitUART(void){
  *
  *   Name:        Packet_TransmitBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 Global packet
+ *   Parameter:   schema Global packet
  *   Description: Transmits using Arduino Xbee functions,
  *                    the packet is transfered as a
  *                    binary packet.
@@ -348,7 +362,7 @@ void Test_Packet_GenUART(void){
  *
  *   Name:        Test_Packet_GenBIN
  *   Returns:     Nothing
- *   Parameter:   schema_3 Global packet
+ *   Parameter:   schema Global packet
  *   Description: Constructs a packet with hard-coded
  *                    information.  Used for the initial
  *                    test of the Transmission functions.
@@ -364,6 +378,8 @@ void Test_Packet_GenBIN(void){
     long pressure_raw = 4;
     long temperature_raw = 5;
     long humidity_raw = 6;
+    long dallas_ambtemp_decic = 7;
+    long dallas_rooftemp_decic = 8;
     int n = 10;
     unsigned long uptime = 1000;
 
@@ -373,12 +389,16 @@ void Test_Packet_GenBIN(void){
 #endif
 
     /* Store values into packet */
-    G_BINpacket.batt_mv[n/10] = batt_mv_raw;
-    G_BINpacket.panel_mv[n/10] = panel_mv_raw;
-    G_BINpacket.apogee_w_m2[n/3] = apogee_raw;
+    G_BINpacket.batt_mv[n/4] = batt_mv_raw;
+    G_BINpacket.panel_mv[n/4] = panel_mv_raw;
+    G_BINpacket.apogee_w_m2[n] = apogee_raw;
     G_BINpacket.bmp085_press_pa = pressure_raw;
     G_BINpacket.bmp085_temp_decic = temperature_raw;
     G_BINpacket.humidity_centi_pct = humidity_raw;
     G_BINpacket.n = n;
     G_BINpacket.uptime_ms = uptime;
+#ifdef APPLE
+    G_BINpacket.dallas_amb_c[n/4] = dallas_ambtemp_decic;
+    G_BINpacket.dallas_roof_c[n/4] = dallas_rooftemp_decic;
+#endif
 }
