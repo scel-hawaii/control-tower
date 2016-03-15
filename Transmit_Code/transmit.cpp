@@ -104,6 +104,7 @@ void Packet_ConUART(void){
     long Dallas_AmbTemp_c = 0;
     unsigned long uptime;
 
+#ifndef TEST
     /* Sample Sensors */
     BatterymV = (*Sensors_sampleBatterymV)();
     SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
@@ -114,6 +115,7 @@ void Packet_ConUART(void){
 #ifdef APPLE
     Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
     Dallas_AmbTemp_c = a_Sensors_sampleAmbTempdecic();
+#endif
 #endif
 
     /* Set up packet format */
@@ -205,6 +207,7 @@ void Packet_ConBIN(void){
     long Dallas_AmbTemp_c = 0;
     unsigned long uptime;
 
+#ifndef TEST
     /* Sample Sensors */
     BatterymV = (*Sensors_sampleBatterymV)();
     SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
@@ -215,6 +218,7 @@ void Packet_ConBIN(void){
 #ifdef APPLE
     Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
     Dallas_AmbTemp_c = a_Sensors_sampleAmbTempdecic();
+#endif
 #endif
 
     /* Uptime data */
@@ -234,8 +238,8 @@ void Packet_ConBIN(void){
     G_BINpacket.humidity_centi_pct = Humiditypct;
     G_BINpacket.apogee_w_m2[n] = SolarIrrmV;
 #ifdef APPLE
-    G_BINpacket.dallas_amb_c[n/4] = Dallas_AmbTemp_decic;
-    G_BINpacket.dallas_roof_c[n/4] = Dallas_RoofTemp_decic;
+    G_BINpacket.dallas_amb_c[n/4] = Dallas_AmbTemp_c;
+    G_BINpacket.dallas_roof_c[n/4] = Dallas_RoofTemp_c;
 #endif
     /* Increment index */
     G_BINpacket.n += 1;
