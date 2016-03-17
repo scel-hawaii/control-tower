@@ -93,7 +93,6 @@ void loop(){
     long Pressurepa = -1;
     long Tempdecic = -1;
     long RoofTempdecic = -1;
-    long AmbTempdecic = -1;
 
     /* Increment */
     G_i++;
@@ -113,8 +112,6 @@ void loop(){
     delay(1000);
 #ifdef APPLE
     RoofTempdecic = a_Sensors_sampleRoofTempdecic();
-    delay(1000);
-    AmbTempdecic = a_Sensors_sampleAmbTempdecic();
     delay(1000);
 #endif
 
@@ -144,10 +141,6 @@ void loop(){
     
     Serial.print("\nRoofTempdecic Data:");
     Serial.println(RoofTempdecic);
-    
-    Serial.print("\nAmbTempdecic Data:");
-    Serial.println(AmbTempdecic);
-    Serial.print("\n");
 
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
     mySerial.print("-------Sensor Data Readings #");

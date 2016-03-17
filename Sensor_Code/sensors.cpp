@@ -141,22 +141,8 @@ long a_Sensors_sampleTempdecic(void){
  ******************************************/
 long a_Sensors_sampleRoofTempdecic(void){
     long value =  0;
-    value = dallas_roof_sen.getTempCByIndex(0);
-    return value;
-}
-
-/*******************************************
- *
- *    Name:        a_Sensors_sampleAmbTempdecic 
- *    Returns:     Temperature (Degrees C)
- *    Parameter:   Nothing
- *    Description: Checks the ambient Temperature using
- *                    the outside temperature sensor.
- *
- ******************************************/
-long a_Sensors_sampleAmbTempdecic(void){
-    long value =  0;
-    value = dallas_amb_sen.getTempCByIndex(0);
+    dallas_roof_sen.requestTemperatures();
+    value = dallas_roof_sen.getTempCByIndex(0)*10;
     return value;
 }
 

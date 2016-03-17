@@ -48,7 +48,6 @@ typedef struct {
     int16_t bmp085_temp_decic;   //Temperature value (celsius)
     uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
     uint16_t apogee_w_m2[60];    //Solar Irradiance (millivolts)
-    int16_t dallas_amb_c[15];    //Ambient temperature value (celcius)
     int16_t dallas_roof_c[15];   //Outside temperature value (celcius)
 } schema_2;
 

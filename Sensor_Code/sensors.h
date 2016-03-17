@@ -55,7 +55,6 @@ long a_Sensors_samplePressurepa(void);
 long a_Sensors_sampleHumiditypct(void);
 long a_Sensors_sampleTempdecic(void);
 long a_Sensors_sampleRoofTempdecic(void);
-long a_Sensors_sampleAmbTempdecic(void);
 
 /******************************************
  *

@@ -63,7 +63,6 @@ void Packet_ClearBIN(void){
         G_BINpacket.batt_mv[j] = 0;
         G_BINpacket.panel_mv[j] = 0;
 #ifdef APPLE
-        G_BINpacket.dallas_amb_c[j] = 0;
 	G_BINpacket.dallas_roof_c[j] = 0;
 #endif
  
@@ -114,7 +113,6 @@ void Packet_ConUART(void){
     Tempdecic = (*Sensors_sampleTempdecic)();
 #ifdef APPLE
     Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
-    Dallas_AmbTemp_c = a_Sensors_sampleAmbTempdecic();
 #endif
 #endif
 
@@ -139,8 +137,6 @@ void Packet_ConUART(void){
     /* Outside Temperature */
     s += ", \"dallas_roof_c\": ";
     s += String(Dallas_RoofTemp_c);
-    s += ", \"dallas_amb_c\": ";
-    s += String(Dallas_AmbTemp_c);
 #endif
 
     /* Humidity */
@@ -204,7 +200,6 @@ void Packet_ConBIN(void){
     long Pressurepa = 0;
     long Tempdecic = 0;
     long Dallas_RoofTemp_c = 0;
-    long Dallas_AmbTemp_c = 0;
     unsigned long uptime;
 
 #ifndef TEST
@@ -217,7 +212,6 @@ void Packet_ConBIN(void){
     Tempdecic = (*Sensors_sampleTempdecic)();
 #ifdef APPLE
     Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
-    Dallas_AmbTemp_c = a_Sensors_sampleAmbTempdecic();
 #endif
 #endif
 
@@ -238,7 +232,6 @@ void Packet_ConBIN(void){
     G_BINpacket.humidity_centi_pct = Humiditypct;
     G_BINpacket.apogee_w_m2[n] = SolarIrrmV;
 #ifdef APPLE
-    G_BINpacket.dallas_amb_c[n/4] = Dallas_AmbTemp_c;
     G_BINpacket.dallas_roof_c[n/4] = Dallas_RoofTemp_c;
 #endif
     /* Increment index */
@@ -382,8 +375,7 @@ void Test_Packet_GenBIN(void){
     long pressure_raw = 4;
     long temperature_raw = 5;
     long humidity_raw = 6;
-    long dallas_ambtemp_decic = 7;
-    long dallas_rooftemp_decic = 8;
+    long dallas_rooftemp_decic = 7;
     int n = 10;
     unsigned long uptime = 1000;
 
@@ -402,7 +394,6 @@ void Test_Packet_GenBIN(void){
     G_BINpacket.n = n;
     G_BINpacket.uptime_ms = uptime;
 #ifdef APPLE
-    G_BINpacket.dallas_amb_c[n/4] = dallas_ambtemp_decic;
     G_BINpacket.dallas_roof_c[n/4] = dallas_rooftemp_decic;
 #endif
 }
