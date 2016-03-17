@@ -145,8 +145,8 @@ void loop(){
     Serial.print("\nRoofTempdecic Data:");
     Serial.println(RoofTempdecic);
     
-    Serial.print("\nTempdecic Data:");
-    Serial.println(Tempdecic);
+    Serial.print("\nAmbTempdecic Data:");
+    Serial.println(AmbTempdecic);
     Serial.print("\n");
 
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
@@ -169,8 +169,8 @@ void loop(){
     mySerial.print("\nPressurepa Data:");
     mySerial.println(Pressurepa);
 
-    mySerial.print("\nAmbTempdecic Data:");
-    mySerial.println(AmbTempdecic);
+    mySerial.print("\Tempdecic Data:");
+    mySerial.println(Tempdecic);
     mySerial.print("\n");
 #endif
 }
