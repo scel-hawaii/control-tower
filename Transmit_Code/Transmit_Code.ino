@@ -45,6 +45,11 @@ void setup(){
     Serial.begin(9600);
     xbee.begin(Serial);
 
+#ifdef CRANBERRRY || defined(DRAGONFRUIT)
+    pinMode(_PIN_XBEE_EN, OUTPUT);
+    digitalWrite(_PIN_XBEE_EN, HIGH);
+#endif
+
     /* Packet initialization */
 #ifdef UART
     Packet_ClearUART();

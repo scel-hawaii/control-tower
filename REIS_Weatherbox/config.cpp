@@ -69,6 +69,12 @@ void Gen_config(void){
  ******************************************/
 void Transmit_config(void){
 
+    /* Enable XBee */
+    #ifdef CRANBERRY || defined(DRAGONFRUIT)
+        pinMode(_PIN_XBEE_EN, OUTPUT);
+        digitalWrite(_PIN_XBEE_EN, HIGH);
+    #endif
+
     /* Assign Transmit functions based on transmission config */
     #ifdef UART
         /* Transmission */

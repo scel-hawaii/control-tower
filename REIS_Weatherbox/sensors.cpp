@@ -160,7 +160,7 @@ long a_Sensors_sampleRoofTempdecic(void){
  *
  ******************************************/
 void c_Sensors_init(void){
-	mpl115a2.begin();
+    mpl115a2.begin();
 }
 
 /*******************************************
@@ -172,11 +172,11 @@ void c_Sensors_init(void){
  *
  ******************************************/
 long c_Sensors_sampleBatterymV(void){
-	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(_PIN_BATT_V)*0.1875;
-	/* Fix for the voltage divider */
-	value = value * 193.3/146.7;
-	return value;
+    long value = 0;
+    value = PyroADC_C.readADC_SingleEnded(_PIN_BATT_V)*0.1875;
+    /* Fix for the voltage divider */
+    value = value * 193.3/146.7;
+    return value;
 }
 
 /*******************************************
@@ -188,11 +188,11 @@ long c_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 long c_Sensors_samplePanelmV(void){
-	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(_PIN_SOLAR_V)*0.1875;
-	/* Fix for the voltage divider */
-	value = value * 199/98.1; 
-	return value;
+    long value = 0;
+    value = PyroADC_C.readADC_SingleEnded(_PIN_SOLAR_V)*0.1875;
+    /* Fix for the voltage divider */
+    value = value * 199/98.1; 
+    return value;
 }
 
 /*******************************************
@@ -204,9 +204,9 @@ long c_Sensors_samplePanelmV(void){
  *
  ******************************************/
 long c_Sensors_sampleSolarIrrmV(void){
-	long value = 0;
-	value = PyroADC_C.readADC_SingleEnded(1)*0.1875;
-	return value;
+    long value = 0;
+    value = PyroADC_C.readADC_SingleEnded(1)*0.1875;
+    return value;
 }
 
 /*******************************************
@@ -218,9 +218,9 @@ long c_Sensors_sampleSolarIrrmV(void){
  *
  ******************************************/
 long c_Sensors_samplePressurepa(void){
-	long value = 0;
-	value = mpl115a2.getPressure()*1000;
-	return value;
+    long value = 0;
+    value = mpl115a2.getPressure()*1000;
+    return value;
 }
 
 /*******************************************
@@ -232,10 +232,10 @@ long c_Sensors_samplePressurepa(void){
  *
  ******************************************/
 long c_Sensors_sampleHumiditypct(void){
-	long value = 0;
-	hih6131.update();
-	value = hih6131.getHumidity();
-	return value;
+    long value = 0;
+    hih6131.update();
+    value = hih6131.getHumidity();
+    return value;
 }
 
 /*******************************************
@@ -247,9 +247,9 @@ long c_Sensors_sampleHumiditypct(void){
  *
  ******************************************/
 long c_Sensors_sampleTempdecic(void){
-	long value = 0;
-	value = mpl115a2.getTemperature()*10;
-	return value;
+    long value = 0;
+    value = mpl115a2.getTemperature()*10;
+    return value;
 }
 /*---------------------------*/
 /*------- Dragonfruit -------*/
@@ -265,8 +265,8 @@ long c_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 void d_Sensors_init(void){
-	Wire.begin(9600);
-	mpl115a2.begin();
+    Wire.begin(9600);
+    mpl115a2.begin();
 }
 
 /*******************************************
@@ -278,9 +278,9 @@ void d_Sensors_init(void){
  *
  ******************************************/
 long d_Sensors_sampleBatterymV(void){
-	long value = 0;
-	value = analogRead(_PIN_BATT_V)*5000.0/1023;
-	return value;
+    long value = 0;
+    value = analogRead(_PIN_BATT_V)*5000.0/1023;
+    return value;
 }
 
 /*******************************************
@@ -292,9 +292,9 @@ long d_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 long d_Sensors_samplePanelmV(void){
-	long value = 0;
-	value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
-	return value;
+    long value = 0;
+    value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
+    return value;
 }
 
 /*******************************************
@@ -306,17 +306,17 @@ long d_Sensors_samplePanelmV(void){
  *
  ******************************************/
 long d_Sensors_sampleSolarIrrmV(void){
-	long value = 0;
-	int result = 0;
-	int PGA = 1; //Value should be equal to the gain indicated by
-                     //the gain multiplier MCP342X_GAIN_#X
-		     //Where # is the gain multiplier
-	PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
-				MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
-	PyroADC_D.startConversion();
-	PyroADC_D.getResult(&result);
-	value = (result * (0.0625/PGA));
-	return value;
+    long value = 0;
+    int result = 0;
+    int PGA = 1; //Value should be equal to the gain indicated by
+                 //the gain multiplier MCP342X_GAIN_#X
+		 //Where # is the gain multiplier
+    PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
+           MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
+	    PyroADC_D.startConversion();
+	    PyroADC_D.getResult(&result);
+    value = (result * (0.0625/PGA));
+    return value;
 }
 
 /*******************************************
@@ -328,9 +328,9 @@ long d_Sensors_sampleSolarIrrmV(void){
  *
  ******************************************/
 long d_Sensors_samplePressurepa(void){
-	long value = 0;
-	value = mpl115a2.getPressure()*1000;
-	return value;
+    long value = 0;
+    value = mpl115a2.getPressure()*1000;
+    return value;
 }
 
 /*******************************************
@@ -342,10 +342,10 @@ long d_Sensors_samplePressurepa(void){
  *
  ******************************************/
 long d_Sensors_sampleHumiditypct(void){
-	long value = 0;
-	hih6131.update();
-	value = hih6131.getHumidity();
-	return value;
+    long value = 0;
+    hih6131.update();
+    value = hih6131.getHumidity();
+    return value;
 }
 
 /*******************************************
@@ -357,7 +357,7 @@ long d_Sensors_sampleHumiditypct(void){
  *
  ******************************************/
 long d_Sensors_sampleTempdecic(void){
-	long value = 0;
-	value = mpl115a2.getTemperature()*10;
-	return value;
+    long value = 0;
+    value = mpl115a2.getTemperature()*10;
+    return value;
 }
