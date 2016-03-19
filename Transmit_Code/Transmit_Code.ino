@@ -45,7 +45,7 @@ void setup(){
     Serial.begin(9600);
     xbee.begin(Serial);
 
-#ifdef CRANBERRRY || defined(DRAGONFRUIT)
+#ifndef APPLE
     pinMode(_PIN_XBEE_EN, OUTPUT);
 #endif
 
@@ -76,11 +76,6 @@ void setup(){
  *
  *****************************************/
 void loop(){
-    
-    /* Enable XBee */
-#ifdef CRANBERRY || defined(DRAGONFRUIT)
-    digitalWrite(_PIN_XBEE_EN, HIGH);
-#endif
 
     /* Transmit the packet */
 #ifdef UART

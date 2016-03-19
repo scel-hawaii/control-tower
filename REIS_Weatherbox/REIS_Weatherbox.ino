@@ -113,11 +113,6 @@ void setup(){
  ********************************************/
 void loop(){
 
-    /* Enable XBee */
-#ifdef CRANBERRRY || defined(DRAGONFRUIT)
-    digitalWrite(_PIN_XBEE_EN, HIGH);
-#endif
-
     /*Check health & run appropriate routine */
     if(chkHealth() == NORMAL || chkHealth() == GOOD_SOLAR){
 

@@ -70,7 +70,7 @@ void Gen_config(void){
 void Transmit_config(void){
 
     /* Enable XBee */
-    #ifdef CRANBERRY || defined(DRAGONFRUIT)
+    #ifndef APPLE
         pinMode(_PIN_XBEE_EN, OUTPUT);
     #endif
 
