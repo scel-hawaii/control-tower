@@ -47,7 +47,6 @@ void setup(){
 
 #ifdef CRANBERRRY || defined(DRAGONFRUIT)
     pinMode(_PIN_XBEE_EN, OUTPUT);
-    digitalWrite(_PIN_XBEE_EN, HIGH);
 #endif
 
     /* Packet initialization */
