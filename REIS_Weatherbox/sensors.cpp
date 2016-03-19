@@ -30,7 +30,6 @@ HIH613x hih6131(_ADDR_HYGRO);
 
 #elif defined(DRAGONFRUIT)
 Adafruit_MPL115A2 mpl115a2;
-MCP342X PyroADC_D;
 HIH613x hih6131(_ADDR_HYGRO);
 #endif
 
@@ -307,15 +306,21 @@ long d_Sensors_samplePanelmV(void){
  ******************************************/
 long d_Sensors_sampleSolarIrrmV(void){
     long value = 0;
-    int result = 0;
-    int PGA = 1; //Value should be equal to the gain indicated by
-                 //the gain multiplier MCP342X_GAIN_#X
-		 //Where # is the gain multiplier
-    PyroADC_D.configure(MCP342X_MODE_CONTINUOUS | MCP342X_CHANNEL_1 |
-           MCP342X_SIZE_16BIT | MCP342X_GAIN_1X);
-	    PyroADC_D.startConversion();
-	    PyroADC_D.getResult(&result);
-    value = (result * (0.0625/PGA));
+    Wire.beginTransmission(_ADDR_PYRO);
+
+    /* Options */
+    Wire.write(0x8C);
+
+    /* Communicate through I2C */
+    Wire.requestFrom(_ADDR_PYRO, 3);
+    if(Wire.available())
+    {
+        value = Wire.read();
+	value = value << 8;
+	value += Wire.read();
+    }
+    Wire.endTransmission();
+    value = (value*5000.00)/(0x7FFF);
     return value;
 }
 

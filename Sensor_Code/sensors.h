@@ -35,7 +35,6 @@ extern Adafruit_BMP085 bmp085;
 extern Adafruit_INA219 ina219_Solar;
 extern Adafruit_MPL115A2 mpl115a2;
 extern Adafruit_ADS1115 PyroADC_C;
-extern MCP342X PyroADC_D;
 extern HIH613x hih6131;
 
 /******************************************

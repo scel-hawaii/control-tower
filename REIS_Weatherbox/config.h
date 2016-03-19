@@ -181,7 +181,7 @@
     
     /* Address of Component */
     #define _ADDR_BARO 0x60
-    #define _ADDR_PYRO 0xD0     //Address of ADC output NOT Pyronometer
+    #define _ADDR_PYRO 0x48     //Address of ADC output NOT Pyronometer
     #define _ADDR_HYGRO 0x27
 
     /* Debug LEDs */
