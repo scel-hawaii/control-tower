@@ -76,6 +76,11 @@ void setup(){
  *
  *****************************************/
 void loop(){
+    
+    /* Enable XBee */
+#ifdef CRANBERRY || defined(DRAGONFRUIT)
+    digitalWrite(_PIN_XBEE_EN, HIGH);
+#endif
 
     /* Transmit the packet */
 #ifdef UART

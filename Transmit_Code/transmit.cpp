@@ -248,11 +248,6 @@ void Packet_ConBIN(void){
  *
  *****************************************/
 void Packet_TransmitUART(void){
-    
-    /* Enable XBee */
-#ifdef CRANBERRY || defined(DRAGONFRUIT)
-    digitalWrite(_PIN_XBEE_EN, HIGH);
-#endif
 
     /* Variable Declarations */
     XBee xbee = XBee();    //Create Xbee Object
@@ -287,11 +282,6 @@ void Packet_TransmitUART(void){
  *
  *****************************************/
 void Packet_TransmitBIN(void){
-
-    /* Enable XBee */
-#ifdef CRANBERRY || defined(DRAGONFRUIT)
-    digitalWrite(_PIN_XBEE_EN, HIGH);
-#endif
 
     /* Create Xbee object */
     XBee xbee = XBee();
