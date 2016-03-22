@@ -21,6 +21,9 @@
 
 /* Global Variable for Packet */
 uint8_t G_UARTpacket[MAX_SIZE];
+  
+/* Create Xbee Object */
+XBee G_xbee = XBee();
 
 #ifdef APPLE
 schema_2 G_BINpacket;
@@ -40,10 +43,9 @@ schema_1 G_BINpacket;
  *****************************************/
 void setup(){
 
-    /* Create Xbee Object */
-    XBee xbee = XBee();
+    /* Serial Initialization*/
     Serial.begin(9600);
-    xbee.begin(Serial);
+    G_xbee.begin(Serial);
 
 #ifndef APPLE
     pinMode(_PIN_XBEE_EN, OUTPUT);

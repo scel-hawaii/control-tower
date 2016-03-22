@@ -255,7 +255,6 @@ void Packet_TransmitUART(void){
 #endif
 
     /* Variable Declarations */
-    XBee xbee = XBee();    //Create Xbee Object
     int len = 0;           //Length of the packet to be sent
     int i = 0;             //Variable to be used to iterate across the packet
 
@@ -273,7 +272,7 @@ void Packet_TransmitUART(void){
 
     /* Transfer the packet */
     ZBTxRequest zbTx = ZBTxRequest(addr64, G_UARTpacket, len);
-    xbee.send(zbTx); //!!Prints packet to serial monitor
+    G_xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
 /******************************************
@@ -292,9 +291,6 @@ void Packet_TransmitBIN(void){
 #ifndef APPLE    
     digitalWrite(_PIN_XBEE_EN, HIGH);
 #endif
-
-    /* Create Xbee object */
-    XBee xbee = XBee();
 
     /* Variable to contain length */
     int len = 0;
@@ -328,7 +324,7 @@ void Packet_TransmitBIN(void){
 
     /* Transfer the payload */
     ZBTxRequest zbTx = ZBTxRequest(addr64, payload, len);
-    xbee.send(zbTx); //!!Prints packet to serial monitor
+    G_xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
 /******************************************

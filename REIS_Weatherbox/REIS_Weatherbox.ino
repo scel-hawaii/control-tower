@@ -34,6 +34,9 @@
 uint8_t G_UARTpacket[MAX_SIZE];
 schema_health G_health;
 
+/* Global Xbee object */
+XBee G_xbee = XBee();
+
 #ifdef APPLE
 schema_2 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
@@ -81,13 +84,10 @@ void setup(){
     /* Transmission Method Check */
     Transmit_config();
 
-    /* Create Xbee Object */
-    XBee xbee = XBee();
-
     /* Initialization */
     Sensors_init();
     Serial.begin(9600);
-    xbee.begin(Serial);
+    G_xbee.begin(Serial);
     initHealthSamples();
 
     /* Packet Initialization */

@@ -25,6 +25,9 @@
 /* Global Variable for Packet  */
 extern uint8_t G_UARTpacket[MAX_SIZE];
 
+/* Global XBee object */
+extern XBee G_xbee;
+
 #ifdef APPLE
 extern schema_2 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
