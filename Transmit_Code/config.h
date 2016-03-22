@@ -161,8 +161,8 @@
     #define _PIN_TX 1
 
     /* XBEE */
-    #define _PIN_XBEE_TX 2
-    #define _PIN_XBEE_RX 8
+    #define _PIN_XBEE_TX 8
+    #define _PIN_XBEE_RX 2
     #define _PIN_XBEE_EN 3
     #define _PIN_XBEE_DTR A1
     #define _PIN_XBEE_RSSI A2

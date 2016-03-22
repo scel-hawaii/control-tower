@@ -161,7 +161,7 @@ void loop(){
     mySerial.print("\nPressurepa Data:");
     mySerial.println(Pressurepa);
 
-    mySerial.print("\Tempdecic Data:");
+    mySerial.print("\nTempdecic Data:");
     mySerial.println(Tempdecic);
     mySerial.print("\n");
 #endif
