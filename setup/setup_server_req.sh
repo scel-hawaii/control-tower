@@ -1,1 +1,1 @@
-sudo apt-get install `cat server-requirements.txt`
+sudo apt-get -y install `cat server-requirements.txt`
