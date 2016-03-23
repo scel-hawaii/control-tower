@@ -19,8 +19,9 @@ function check_user(){
             echo "user exists"
     else
             echo "ERROR: user does not exist"
-            sudo adduser control_tower --disabled-password
-            exit 1
+            sudo adduser control_tower --disabled-password --gecos ""
+            # We don't want to exit after this
+            # exit 1
     fi
 }
 
