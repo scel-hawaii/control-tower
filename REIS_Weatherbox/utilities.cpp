@@ -200,16 +200,13 @@ void transmitPacketHealth(void)
     /* Payload to send */
     uint8_t payload[MAX_SIZE];
 
-    /* Create Xbee Object */
-    XBee xbee = XBee();
-
     /* Obtain address of receiving end */
     XBeeAddress64 addr64 = XBeeAddress64(0,0);
     
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &G_health, sizeof(G_health));
     ZBTxRequest zbtx = ZBTxRequest(addr64, payload, sizeof(G_health));
-    xbee.send(zbtx);
+    G_xbee.send(zbtx);
 }
 
 

@@ -51,6 +51,9 @@ extern LowPassFilter G_battery_filter; //GLOBAL!! Find alternative (pointers)
 /* Global Timer Variable */
 extern unsigned long G_health_transmit_timer;
 
+/* Global XBee object */
+extern XBee G_xbee;
+
 //Number of samples to take
 #define ADC_SAMPLE_NUM 30
 

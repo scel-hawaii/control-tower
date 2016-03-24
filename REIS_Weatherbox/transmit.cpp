@@ -105,12 +105,12 @@ void Packet_ConUART(void){
 
 #ifndef TEST
     /* Sample Sensors */
-    BatterymV = (*Sensors_sampleBatterymV)();
-    SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
-    Humiditypct = (*Sensors_sampleHumiditypct)();
-    PanelmV = (*Sensors_samplePanelmV)();
-    Pressurepa = (*Sensors_samplePressurepa)();
-    Tempdecic = (*Sensors_sampleTempdecic)();
+    BatterymV = Sensors_sampleBatterymV();
+    SolarIrrmV = Sensors_sampleSolarIrrmV();
+    Humiditypct = Sensors_sampleHumiditypct();
+    PanelmV = Sensors_samplePanelmV();
+    Pressurepa = Sensors_samplePressurepa();
+    Tempdecic = Sensors_sampleTempdecic();
 #ifdef APPLE
     Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
 #endif
@@ -204,12 +204,12 @@ void Packet_ConBIN(void){
 
 #ifndef TEST
     /* Sample Sensors */
-    BatterymV = (*Sensors_sampleBatterymV)();
-    SolarIrrmV = (*Sensors_sampleSolarIrrmV)();
-    Humiditypct = (*Sensors_sampleHumiditypct)();
-    PanelmV = (*Sensors_samplePanelmV)();
-    Pressurepa = (*Sensors_samplePressurepa)();
-    Tempdecic = (*Sensors_sampleTempdecic)();
+    BatterymV = Sensors_sampleBatterymV();
+    SolarIrrmV = Sensors_sampleSolarIrrmV();
+    Humiditypct = Sensors_sampleHumiditypct();
+    PanelmV = Sensors_samplePanelmV();
+    Pressurepa = Sensors_samplePressurepa();
+    Tempdecic = Sensors_sampleTempdecic();
 #ifdef APPLE
     Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
 #endif
@@ -307,22 +307,25 @@ void Packet_TransmitBIN(void){
     /* Obtain length of the packet */
     len = sizeof(G_BINpacket);
 
-#ifdef DEBUG_S
-    /* Debug */
-    Serial.println(F("BIN Length is: "));
-    Serial.print(len);
-#endif
-
     /* Transfer information into payload */
     memcpy(payload, &G_BINpacket, len);
 
 #ifdef DEBUG_S
-    /* Checks to see if the data was transferred correctly */
-    /* Can check any data value in struct schema_3 defined in schema.h */
-    Serial.println(((schema_3)payload)->batt_mv[1]);
+    /* Debug */
+    Serial.println(F("BIN Length is: "));
+    Serial.print(len);
+    Serial.print("\n");
+
+    /* The payload */
+    int i;
+    for(i = 0; i < MAX_SIZE; i++)
+    {
+        Serial.println(payload[i]);
+        Serial.print("\n");
+    }
 #endif
 
-    /* Transfer the payload */
+   /* Transfer the payload */
     ZBTxRequest zbTx = ZBTxRequest(addr64, payload, len);
     G_xbee.send(zbTx); //!!Prints packet to serial monitor
 }
