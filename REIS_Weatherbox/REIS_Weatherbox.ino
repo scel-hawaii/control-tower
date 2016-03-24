@@ -49,6 +49,7 @@ LowPassFilter G_battery_filter;
 
 /* Global Variable */
 int G_count;
+unsigned long G_health_transmit_timer;
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
@@ -77,6 +78,7 @@ void setup(){
 
     /* Variable Initialization */
     G_count = 0;
+    G_health_transmit_timer = 0;
 
     /* Generation Check */
     Gen_config();

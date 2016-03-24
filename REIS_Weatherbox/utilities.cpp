@@ -105,18 +105,17 @@ int chkHealth(void){
     panel_voltage = 2*analogRead(_PIN_SOLAR_V);
 
     //Compare current and voltages to threshold value
-    if(LPF_get_current_output(&G_battery_filter) >= THRESH_GOOD_BATT_V){
+    if(LPF_get_current_output(&G_battery_filter) >= THRESH_GOOD_BATT_V)
+    {
         return NORMAL;
     }
-#ifdef HEALTH_GOOD_APOGEE
-    else if(apogee_voltage >= THRESH_GOOD_APOGEE_V){
-#else 
-    //HEALTH_GOOD_PANEL
-    else if(panel_voltage >= THRESH_GOOD_PANEL_V){
-#endif
+    else if(apogee_voltage >= THRESH_GOOD_APOGEE_V ||
+                panel_voltage >= THRESH_GOOD_PANEL_V)
+    {
         return GOOD_SOLAR;
     }
-    else{
+    else
+    {
         return POOR;
     }
 }
@@ -132,10 +131,9 @@ int chkHealth(void){
 void sendHealth(void){
     
     long transmit_health = 600000;
-    unsigned long health_transmit_timer = 0;
     unsigned long transmit_timer = 0;
 
-    if(millis() - health_transmit_timer >= transmit_health){
+    if(millis() - G_health_transmit_timer >= transmit_health){
 
         //Power on system to transmit health data
         pstate_system(_ACTIVE);
@@ -152,7 +150,7 @@ void sendHealth(void){
         pstate_system(_POWER_SAVE);
 
         //Update time since last health transmission
-        health_transmit_timer = millis();
+        G_health_transmit_timer = millis();
     }
 }
 
