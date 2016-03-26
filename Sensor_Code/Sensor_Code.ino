@@ -35,7 +35,7 @@ long (*Sensors_sampleHumiditypct)(void);
 long (*Sensors_sampleTempdecic)(void);
 
 /* Software Serial set up for debugging Cranberry and Dragonfruit */
-#ifdef CRANBERRY || defined(DRAGONFRUIT)
+#if defined(CRANBERRY) || defined(DRAGONFRUIT)
 SoftwareSerial mySerial(_PIN_RX, _PIN_TX);
 #endif
 
