@@ -1,0 +1,2 @@
+start:
+	python gateway.py
