@@ -10,8 +10,8 @@
  *
  *    Current Configuration Options:
  *        - Apple 3.4
- *        - Cranberry 1.0
- *        - Dragonfruit 1.0
+ *        - Cranberry 3.2
+ *        - Dragonfruit 2.0
  *
  ******************************************/
 
@@ -34,7 +34,7 @@
 //#define TEST
 
 /* Macros */
-#define MAX_SIZE 250
+#define MAX_SIZE 80
 
 /*-------------------------*/
 /*----Generation Config----*/
@@ -101,7 +101,7 @@
 #elif defined(CRANBERRY)
    
     /* Version */
-    #define CRAN_VERSION 10
+    #define CRAN_VERSION 32
 
     /* Wind Sensor - Currently not implemented */ 
     #define _PIN_ANEMOMETER0 0
@@ -113,20 +113,16 @@
     #define _PIN_RX 0
     #define _PIN_TX 1
 
-    /* Debug Receiver/Transmitter */
-    #define _PIN_TXDEBUG 3
-    #define _PIN_RXDEBUG 9
-
     /* XBEE */
-    #define _PIN_XBEE_TX 2
-    #define _PIN_XBEE_RX 8
-    #define _PIN_XBEE_EN 4
+    #define _PIN_XBEE_TX 8
+    #define _PIN_XBEE_RX 2
+    #define _PIN_XBEE_EN 3
     #define _PIN_XBEE_DTR A1
     #define _PIN_XBEE_RSSI A2
     #define _PIN_XBEE_SLEEP A3
 
     /* Sensor On/Off */
-    #define _PIN_SEN_EN 5
+    #define _PIN_SEN_EN 4
 
     /* Panel and Battery Voltage (Pins of ADC) */
     #define _PIN_BATT_V 2
@@ -148,7 +144,7 @@
 #elif defined(DRAGONFRUIT)
     
     /* Version */
-    #define DRAGON_VERSION 10
+    #define DRAGON_VERSION 20
 
     /* Currently not implemented */ 
     #define _PIN_ANEMOMETER0 0

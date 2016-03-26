@@ -159,6 +159,7 @@ long a_Sensors_sampleRoofTempdecic(void){
  *
  ******************************************/
 void c_Sensors_init(void){
+    digitalWrite(_PIN_SEN_EN, HIGH);
     mpl115a2.begin();
 }
 
@@ -264,6 +265,7 @@ long c_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 void d_Sensors_init(void){
+    digitalWrite(_PIN_SEN_EN, HIGH);
     Wire.begin(9600);
     mpl115a2.begin();
 }

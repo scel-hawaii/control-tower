@@ -29,6 +29,10 @@
  ******************************************/
 void Gen_config(void){
     
+    #ifndef APPLE
+        pinMode(_PIN_SEN_EN, OUTPUT);
+    #endif
+    
     /* Check Generation & Assign Sensor Functions */
     #ifdef APPLE
         Sensors_init = &a_Sensors_init;
