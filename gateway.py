@@ -5,6 +5,9 @@ import serial
 import datetime
 import pika
 import pickle
+import logging
+
+logging.basicConfig(filename='gateway.log',level=logging.DEBUG)
 
 connection = pika.BlockingConnection(pika.ConnectionParameters(
                    'localhost'))
@@ -18,6 +21,8 @@ try:
     xbee = ZigBee(ser, escaped=True)
 except serial.serialutil.SerialException as e:
     print "Serial Error: ", e
+    logging.warning("Serial error")
+    logging.warning(str(e))
     sys.exit(1)
 
 while True:
@@ -31,4 +36,4 @@ while True:
     channel.basic_publish(exchange='',
                           routing_key='hello',
                           body=d)
-    print "[" + str(datetime.datetime.now()) + "] " + "Published xbee frame"
+    logging.info("[" + str(datetime.datetime.now()) + "] " + "Published xbee frame")
