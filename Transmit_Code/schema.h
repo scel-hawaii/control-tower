@@ -27,12 +27,12 @@ typedef struct {
     uint32_t uptime_ms;		 //Time since the start of program
     uint8_t overflow_num;	 //Number of times function millis() overflowed
     uint8_t n;			 //Number of data points in packet (0...30)
-    uint16_t batt_mv[6];	 //Battery voltage (millivolts)
-    uint16_t panel_mv[6];	 //Panel voltage (millivolts)
+    uint16_t batt_mv[15];	 //Battery voltage (millivolts)
+    uint16_t panel_mv[15];	 //Panel voltage (millivolts)
     uint32_t bmp085_press_pa;	 //Pressure value (pascals)
     int16_t bmp085_temp_decic;   //Temperature value (celsius)
     uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
-    uint16_t apogee_w_m2[20];    //Solar Irradiance (millivolts)
+    uint16_t apogee_w_m2[60];    //Solar Irradiance (millivolts)
 } schema_1;
 
 /* Struct for Apple's packet, contains additional temperatures */
@@ -42,13 +42,13 @@ typedef struct {
     uint32_t uptime_ms;		 //Time since the start of program
     uint8_t overflow_num;	 //Number of times function millis() overflowed
     uint8_t n;			 //Number of data points in packet (0...30)
-    uint16_t batt_mv[6];	 //Battery voltage (millivolts)
-    uint16_t panel_mv[6];	 //Panel voltage (millivolts)
+    uint16_t batt_mv[15];	 //Battery voltage (millivolts)
+    uint16_t panel_mv[15];	 //Panel voltage (millivolts)
     uint32_t bmp085_press_pa;	 //Pressure value (pascals)
     int16_t bmp085_temp_decic;   //Temperature value (celsius)
     uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
-    uint16_t apogee_w_m2[20];    //Solar Irradiance (millivolts)
-    int16_t dallas_roof_c[6];   //Outside temperature value (celcius)
+    uint16_t apogee_w_m2[60];    //Solar Irradiance (millivolts)
+    int16_t dallas_roof_c[15];   //Outside temperature value (celcius)
 } schema_2;
 
 

@@ -57,8 +57,7 @@ void Packet_ClearBIN(void){
     for(i = 0; i < 60; i++){
 
         /* Variables for indices */
-        j = i/10;
-	k = i/3;
+        j = i/4;
 
         /* Polled every 10 seconds */
         G_BINpacket.batt_mv[j] = 0;
@@ -68,7 +67,7 @@ void Packet_ClearBIN(void){
 #endif
  
         /* Polled every 3 seconds */
-        G_BINpacket.apogee_w_m2[k] = 0;
+        G_BINpacket.apogee_w_m2[i] = 0;
     }
 }
 
@@ -226,14 +225,14 @@ void Packet_ConBIN(void){
     G_BINpacket.uptime_ms = uptime;
 
     /* Pack sensor data */
-    G_BINpacket.batt_mv[n/10] = BatterymV;
-    G_BINpacket.panel_mv[n/10] = PanelmV;
+    G_BINpacket.batt_mv[n/4] = BatterymV;
+    G_BINpacket.panel_mv[n/4] = PanelmV;
     G_BINpacket.bmp085_press_pa = Pressurepa;
     G_BINpacket.bmp085_temp_decic = Tempdecic;
     G_BINpacket.humidity_centi_pct = Humiditypct;
-    G_BINpacket.apogee_w_m2[n/3] = SolarIrrmV;
+    G_BINpacket.apogee_w_m2[n] = SolarIrrmV;
 #ifdef APPLE
-    G_BINpacket.dallas_roof_c[n/10] = Dallas_RoofTemp_c;
+    G_BINpacket.dallas_roof_c[n/4] = Dallas_RoofTemp_c;
 #endif
     /* Increment index */
     G_BINpacket.n += 1;
@@ -395,15 +394,15 @@ void Test_Packet_GenBIN(void){
 #endif
 
     /* Store values into packet */
-    G_BINpacket.batt_mv[n/10] = batt_mv_raw;
-    G_BINpacket.panel_mv[n/10] = panel_mv_raw;
-    G_BINpacket.apogee_w_m2[n/3] = apogee_raw;
+    G_BINpacket.batt_mv[n/4] = batt_mv_raw;
+    G_BINpacket.panel_mv[n/4] = panel_mv_raw;
+    G_BINpacket.apogee_w_m2[n] = apogee_raw;
     G_BINpacket.bmp085_press_pa = pressure_raw;
     G_BINpacket.bmp085_temp_decic = temperature_raw;
     G_BINpacket.humidity_centi_pct = humidity_raw;
     G_BINpacket.n = n;
     G_BINpacket.uptime_ms = uptime;
 #ifdef APPLE
-    G_BINpacket.dallas_roof_c[n/10] = dallas_rooftemp_decic;
+    G_BINpacket.dallas_roof_c[n/4] = dallas_rooftemp_decic;
 #endif
 }
