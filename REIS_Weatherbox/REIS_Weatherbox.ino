@@ -41,6 +41,7 @@ XBee G_xbee = XBee();
 schema_2 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
 schema_1 G_BINpacket;
+SoftwareSerial mySerial(_PIN_RX, _PIN_TX);
 #endif
 
 /* Global for Filters */
@@ -89,7 +90,12 @@ void setup(){
     /* Initialization */
     Sensors_init();
     Serial.begin(9600);
+#ifdef APPLE
     G_xbee.begin(Serial);
+#else
+    mySerial.begin(9600);
+    G_xbee.begin(mySerial);
+#endif
     initHealthSamples();
 
     /* Packet Initialization */

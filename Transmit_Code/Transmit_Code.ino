@@ -13,6 +13,7 @@
 
 /* Arduino Libraries */
 #include <EEPROM.h>
+#include <SoftwareSerial.h>
 
 /* External Libraries */
 #include <XBee.h>
@@ -29,6 +30,7 @@ XBee G_xbee = XBee();
 schema_2 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
 schema_1 G_BINpacket;
+SoftwareSerial mySerial(_PIN_RX, _PIN_TX);
 #endif
 
 /******************************************
@@ -45,7 +47,12 @@ void setup(){
 
     /* Serial Initialization*/
     Serial.begin(9600);
+#ifndef APPLE
+    mySerial.begin(9600);
+    G_xbee.begin(mySerial);
+#elif
     G_xbee.begin(Serial);
+#endif
 
 #ifndef APPLE
     pinMode(_PIN_XBEE_EN, OUTPUT);
