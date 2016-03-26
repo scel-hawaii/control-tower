@@ -23,7 +23,7 @@
 
 /* Create instances of objects */
 extern OneWire oneWire;
-extern DallasTemperature dallas_amb_sen;
+extern DallasTemperature dallas_roof_sen;
 
 extern SHT1x sht1x;
 
