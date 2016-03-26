@@ -50,7 +50,7 @@ void setup(){
     /* Serial Initialization*/
     Serial.begin(9600);
     mySerial.begin(9600);
-    G_xbee.begin(Serial);
+    G_xbee.begin(mySerial);
 
 #ifndef APPLE
     pinMode(_PIN_XBEE_EN, OUTPUT);
