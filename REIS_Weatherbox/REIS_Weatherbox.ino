@@ -42,7 +42,7 @@ XBee G_xbee = XBee();
 schema_2 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
 schema_1 G_BINpacket;
-SoftwareSerial mySerial(_PIN_RX, _PIN_TX);
+SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
 #endif
 
 /* Global for Filters */
