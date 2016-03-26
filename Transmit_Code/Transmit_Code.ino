@@ -50,7 +50,7 @@ void setup(){
 #ifndef APPLE
     mySerial.begin(9600);
     G_xbee.begin(mySerial);
-#elif
+#else
     G_xbee.begin(Serial);
 #endif
 

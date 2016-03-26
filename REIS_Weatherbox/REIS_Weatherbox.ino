@@ -18,6 +18,7 @@
 /* Arudino Libraries */
 #include <Wire.h>
 #include <EEPROM.h>
+#include <SoftwareSerial.h>
 
 /* External Libraries */
 #include <SHT1x.h>

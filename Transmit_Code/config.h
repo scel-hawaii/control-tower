@@ -31,7 +31,7 @@
 #define BINARY
 
 /* Configuration for Testing */
-//#define TEST
+#define TEST
 
 /* Macros */
 #define MAX_SIZE 80
@@ -41,9 +41,9 @@
 /*-------------------------*/
 
 /* Generation Declarations: Only define one */
-//#define APPLE
+#define APPLE
 //#define CRANBERRY
-#define DRAGONFRUIT
+//#define DRAGONFRUIT
 
 /* Apple Pin Configuration */
 #ifdef APPLE
