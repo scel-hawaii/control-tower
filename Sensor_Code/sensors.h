@@ -22,11 +22,8 @@
 #define SENSORS_H
 
 /* Create instances of objects */
-extern OneWire oneWire1;
+extern OneWire oneWire;
 extern DallasTemperature dallas_amb_sen;
-
-extern OneWire oneWire2;
-extern DallasTemperature dallas_roof_sen;
 
 extern SHT1x sht1x;
 

@@ -30,8 +30,10 @@ XBee G_xbee = XBee();
 schema_2 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
 schema_1 G_BINpacket;
-SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
 #endif
+
+/* Software Serial */
+SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
 
 /******************************************
  *
@@ -47,12 +49,8 @@ void setup(){
 
     /* Serial Initialization*/
     Serial.begin(9600);
-#ifndef APPLE
     mySerial.begin(9600);
-    G_xbee.begin(mySerial);
-#else
     G_xbee.begin(Serial);
-#endif
 
 #ifndef APPLE
     pinMode(_PIN_XBEE_EN, OUTPUT);

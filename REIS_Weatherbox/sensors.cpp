@@ -13,10 +13,8 @@
 
 /* Set Pins */
 #ifdef APPLE
-OneWire oneWire1(_PIN_AMB_TEMP);
-DallasTemperature dallas_amb_sen(&oneWire1);
-OneWire oneWire2(_PIN_ROOF_TEMP);
-DallasTemperature dallas_roof_sen(&oneWire2);
+OneWire oneWire(_PIN_ROOF_TEMP);
+DallasTemperature dallas_roof_sen(&oneWire);
 
 SHT1x sht1x(_PIN_HUMID_DATA, _PIN_HUMID_CLK);
 

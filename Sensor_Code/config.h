@@ -62,12 +62,11 @@
     #define _PIN_TX 1
 
     /* XBEE */
-    #define _PIN_XBEE_TX 0
-    #define _PIN_XBEE_RX 1
+    #define _PIN_XBEE_TX 9
+    #define _PIN_XBEE_RX 2
     #define _PIN_XBEE_SLEEP 13
 
     /* Temperature */
-    #define _PIN_AMB_TEMP 2
     #define _PIN_ROOF_TEMP 3
 
     /* GPS */

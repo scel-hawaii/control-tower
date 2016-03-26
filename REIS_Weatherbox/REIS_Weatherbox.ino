@@ -42,7 +42,6 @@ XBee G_xbee = XBee();
 schema_2 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
 schema_1 G_BINpacket;
-SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
 #endif
 
 /* Global for Filters */
@@ -65,6 +64,9 @@ void (*Packet_Clear)(void);
 void (*Packet_Con)(void);
 void (*Packet_Transmit)(void);
 void (*Normal_Routine)(int *count);
+
+/* Software Serial */
+SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
 
 /*********************************************
  *
@@ -91,12 +93,8 @@ void setup(){
     /* Initialization */
     Sensors_init();
     Serial.begin(9600);
-#ifdef APPLE
-    G_xbee.begin(Serial);
-#else
     mySerial.begin(9600);
     G_xbee.begin(mySerial);
-#endif
     initHealthSamples();
 
     /* Packet Initialization */
