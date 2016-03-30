@@ -2,8 +2,6 @@
 import pika
 import cPickle as pickle
 import logging
-import simple_decoder
-import thread
 import datetime
 from decode import PacketDecoder
 
