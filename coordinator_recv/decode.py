@@ -22,6 +22,9 @@ class PacketDecoder:
 			5: self.decode_5,				 # Health packet format
 			6: self.decode_6				 # Text packet
 		}
+		self.unpackers = { 
+			3: self.unpack_3,
+		}
 		self.time_fmt = '%FT%T %z'
 
 	# Check what the schema number is and return it 
@@ -30,6 +33,8 @@ class PacketDecoder:
 		# print "DEBUG Decoder number: " + str(schema)
 		return str(schema)
 
+
+        # Automatically decode a packet
 	def decode(self, rf_data):
 		schema = struct.unpack('<H', rf_data[0:2])[0]
 		try:
@@ -37,6 +42,24 @@ class PacketDecoder:
 		except KeyError:
 			raise ValueError, 'unrecognized schema: ' + str(schema)
 		return f(rf_data)
+
+        # Automatically unpack a packet
+        def unpack(self, rf_data):
+		schema = struct.unpack('<H', rf_data[0:2])[0]
+		try:
+			f = self.unpackers[schema]
+		except KeyError:
+			raise ValueError, 'unrecognized schema: ' + str(schema)
+		return f(rf_data)
+
+        # Automatically generate a query for a given packet
+        def query(self, rf_data):
+		try:
+                    d = self.decode(rf_data)
+                    q = self.create_query(d)
+		except KeyError:
+			raise ValueError, 'unrecognized schema: ' + str(schema)
+		return q
 
 	def decode_json(self, s):
 		return [{'time_offset_s': 0, 'values': json.loads(s)}]
