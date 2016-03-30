@@ -11,10 +11,10 @@ import time
 class PacketDecoder:
 	def __init__(self):
 		self.log_file = open("ControlTower.log", "a")
-			
+
 		self.invalid_id_pattern = re.compile('[^0-9A-Za-z_]')
 		self.status = True
-		self.decoders = { 
+		self.decoders = {
 			8827: self.decode_json,          # '{"' -> 8827
 			0: self.decode_0,
 			1: self.decode_1,
@@ -22,12 +22,12 @@ class PacketDecoder:
 			5: self.decode_5,				 # Health packet format
 			6: self.decode_6				 # Text packet
 		}
-		self.unpackers = { 
+		self.unpackers = {
 			3: self.unpack_3,
 		}
 		self.time_fmt = '%FT%T %z'
 
-	# Check what the schema number is and return it 
+	# Check what the schema number is and return it
 	def check_schema(self, rf_data):
 		schema = struct.unpack('<H', rf_data[0:2])[0]
 		# print "DEBUG Decoder number: " + str(schema)
@@ -82,7 +82,7 @@ class PacketDecoder:
 			if len(values[key]) == 1:
 				values[key] = values[key][0]
 		return values;
-	
+
 	def decode_5(self,s):
 		values_list = self.unpack_5(s)
 		values = {}
@@ -93,8 +93,8 @@ class PacketDecoder:
 	# ===================================
 	#		SCHEMA 6
 	#
-	#		This schema is for text data. We can transmit a max of 
-	#		80 or so bytes using the Xbee API mode, but we can go 
+	#		This schema is for text data. We can transmit a max of
+	#		80 or so bytes using the Xbee API mode, but we can go
 	# 		ahead and use UP to that amount.
 	# ===================================
 
@@ -106,7 +106,7 @@ class PacketDecoder:
 		values_list.pop(0);
 		debug_text = ''.join(values_list)
 		return debug_text;
-	
+
 	def decode_6(self,s):
 		debug_msg = str(self.unpack_6(s))
 		logstr = time.strftime(self.time_fmt)
@@ -286,9 +286,9 @@ class PacketDecoder:
 				query_values = {'address': p['address']}
 
 				# values included in the *last* sample of a packet
-				# This is a special case statement to take care of this. 
+				# This is a special case statement to take care of this.
 				# If you only need to sample one thing, include this here, since the
-				# code in the arduino will sample and overwrite until the last sample. 
+				# code in the arduino will sample and overwrite until the last sample.
 				if i == n-1:
 					query_values['uptime_ms'] = p['uptime_ms']
 					query_values['overflow_num'] = p['overflow_num']
@@ -301,12 +301,12 @@ class PacketDecoder:
 				time_offset_s = -(n - i - 1)
 
 				# values included in *every* sample of a packet
-				# The values here should not have any division done. 
+				# The values here should not have any division done.
 				# Example:
 				# 	query_values['apogee_w_m2'] = p['apogee_w_m2'][i]
 
-				# values included every couple samples of a packet	
-				# be sure to modify if cases to take care of this. 
+				# values included every couple samples of a packet
+				# be sure to modify if cases to take care of this.
 				if (i+1) % 3 == 0 or i == n-1:
 					query_values['apogee_w_m2'] = p['apogee_w_m2'][i/3]
 
