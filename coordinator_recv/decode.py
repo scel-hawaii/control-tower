@@ -63,7 +63,7 @@ class PacketDecoder:
 	def decode_5(self,s):
 		values_list = self.unpack_5(s)
 		values = {}
-		print time.strftime(self.time_fmt) + " " + str(values_list)
+		# print time.strftime(self.time_fmt) + " " + str(values_list)
 		return [{'time_offset_s': 0,
 				 'values': values_list}]
 
@@ -90,7 +90,7 @@ class PacketDecoder:
 		logstr = logstr + "\t Received text data:" + debug_msg + "\n"
 		logstr = logstr.replace("\x00", "")
 		self.log_file.write(logstr)
-		print time.strftime(self.time_fmt) + " " + debug_msg
+		# print time.strftime(self.time_fmt) + " " + debug_msg
 
 		# print "TEXT:" + text
 
@@ -232,7 +232,7 @@ class PacketDecoder:
 		struct_fmt = '<HHBIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
 		values_list = struct.unpack(struct_fmt, s)
 		values = {}
-		print "Got a binary packet at: " + time.strftime(self.time_fmt)
+		# print "Got a binary packet at: " + time.strftime(self.time_fmt)
 		for key, start, end in [('schema', 0, 1),
 								('address', 1, 2),
 								('overflow_num', 2, 3),
@@ -248,7 +248,7 @@ class PacketDecoder:
 			values[key] = values_list[start:end]
 			if len(values[key]) == 1:
 				values[key] = values[key][0]
-		print values
+		# print values
 		return values
 
 	def decode_3(self, s):
