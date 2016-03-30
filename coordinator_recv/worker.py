@@ -3,7 +3,10 @@ import pika
 import cPickle as pickle
 import logging
 import datetime
+import pprint
 from decode import PacketDecoder
+
+pp = pprint.PrettyPrinter(indent=4)
 
 
 decoder = PacketDecoder()
@@ -17,13 +20,15 @@ channel = connection.channel()
 channel.queue_declare(queue='hello')
 
 def parse_data(body):
+    timestamp = datetime.datetime.now()
     d = pickle.loads(body)
     rf_data = d['xbee_frame']['rf_data']
-    decoder.decode(rf_data)
+    print str(timestamp) + ": --------- Start new packet ----------"
+    print decoder.unpack(rf_data)
     print "Finished decoding data"
+    print str(timestamp) + ": --------- End new packet ------------"
 
 def callback(ch, method, properties, body):
-    # thread.start_new_thread( parse, (body,))
     parse_data(body)
 
 def consume(channel):
