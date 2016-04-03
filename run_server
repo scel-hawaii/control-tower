@@ -1,5 +1,0 @@
-/etc/init.d/postgresql start
-node tests.js
-# psql -c "SELECT * FROM outdoor_env"
-node server.js
-
