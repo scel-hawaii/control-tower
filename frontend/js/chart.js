@@ -53,4 +53,20 @@ $(document).ready(function(){
         endpoint: "http://localhost:16906/battery/889"
     }
     createBatteryChart(options);
+
+    setInterval(function(){
+        var options = {
+            element: "batt_888",
+            text: "Dragonfruit - Address 888",
+            endpoint: "http://localhost:16906/battery/888"
+        }
+        createBatteryChart(options);
+        var options = {
+            element: "batt_889",
+            text: "Cranberry - Address 889",
+            endpoint: "http://localhost:16906/battery/889"
+        }
+        createBatteryChart(options);
+        console.log("Updating GUI");
+    }, 30*1000);
 });
