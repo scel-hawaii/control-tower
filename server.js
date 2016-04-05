@@ -1,5 +1,6 @@
 var restify = require('restify');
 var models = require(__dirname + '/models.js');
+var battery = require(__dirname + '/battery.js');
 
 var server = restify.createServer({
   name: 'scel-server',
@@ -19,6 +20,7 @@ server.get('/stuff', models.grabData);
 server.get('/fetchVoltage', models.grabVoltage);
 server.get('/fetchTemperature', models.grabTemperature);
 server.get('/fetchSmoothData', models.grabSmoothData);
+server.get('/battery/:address', battery.fetch);
 server.get('/', models.sayHello);
 
 
