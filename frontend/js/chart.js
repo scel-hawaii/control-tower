@@ -43,13 +43,13 @@ function createChart(data, options){
 $(document).ready(function(){
     var options = {
         element: "batt_888",
-        text: "batt_888",
+        text: "Dragonfruit - Address 888",
         endpoint: "http://localhost:16906/battery/888"
     }
     createBatteryChart(options);
     var options = {
         element: "batt_889",
-        text: "batt_889",
+        text: "Cranberry - Address 889",
         endpoint: "http://localhost:16906/battery/889"
     }
     createBatteryChart(options);
