@@ -250,6 +250,7 @@ class PacketDecoder:
 
 	# ===================================
 	#		SCHEMA 3
+        #               The most current up to date firmware for apple_v32, cranberry and dragonfruit
 	# ===================================
 	def unpack_3(self, s):
 		struct_fmt = '<HHBIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
