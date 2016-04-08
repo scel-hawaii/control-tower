@@ -60,4 +60,7 @@ def consume(channel):
     while True:
         channel.start_consuming()
 
+
+timestamp = datetime.datetime.now()
+print str(timestamp) + "Starting worker process."
 consume(channel)
