@@ -24,24 +24,46 @@ function pgQuery(qString, callback){
   });
 }
 
-function fetch(address, callback){
-    q = "SELECT db_time, batt_mv FROM outdoor_env " +
-        "WHERE address=" +
-        address + " " +
-        "AND batt_mv IS NOT NULL " +
-        "ORDER BY db_time DESC " +
-        "LIMIT 1000";
-    console.log(q);
-    pgQuery(q, function(results){
-        callback(results.rows);
-    });
-}
+function fetch(req, res, next){
+    var address = req.params.address;
 
-module.exports = {
-    fetch: function(req, res, next){
-        fetch(req.params.address, function(results){
-            res.send(results);
+    if( typeof req.query.start_time === 'undefined') {
+        q = "SELECT db_time, batt_mv FROM outdoor_env " +
+            "WHERE address=" +
+            address + " " +
+            "AND batt_mv IS NOT NULL " +
+            "ORDER BY db_time DESC " +
+            "LIMIT 20000";
+        console.log(q);
+        pgQuery(q, function(results){
+            res.send(results.rows);
             return next();
         });
     }
+    else{
+        if( typeof req.query.end_time === 'undefined'){
+            res.send(400);
+            return next();
+        }
+        console.log(req.query);
+        q = "SELECT db_time, batt_mv FROM outdoor_env " +
+            "WHERE address=" +
+            address + " " +
+            "AND db_time >= " + "'" + req.query.start_time + "'" + " " +
+            "AND db_time < " + "'" + req.query.end_time + "'" + " " +
+            "AND batt_mv IS NOT NULL " +
+            "ORDER BY db_time DESC " +
+            "LIMIT 20000";
+        console.log(q);
+        pgQuery(q, function(results){
+            res.send(results.rows);
+            return next();
+        });
+
+
+    }
+}
+
+module.exports = {
+    fetch: fetch
 }
