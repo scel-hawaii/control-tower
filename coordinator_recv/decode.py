@@ -20,7 +20,8 @@ class PacketDecoder:
 			1: self.decode_1,
 			3: self.decode_3,				 # Schema added by Kenny and Sean in Februrary 2014
 			5: self.decode_5,				 # Health packet format
-			6: self.decode_6				 # Text packet
+			6: self.decode_6,				 # Text packet
+			7: self.decode_7
 		}
 		self.unpackers = {
 			3: self.unpack_3,
@@ -250,6 +251,7 @@ class PacketDecoder:
 
 	# ===================================
 	#		SCHEMA 3
+        #               The most current up to date firmware for apple_v32, cranberry and dragonfruit
 	# ===================================
 	def unpack_3(self, s):
 		struct_fmt = '<HHBIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
@@ -275,6 +277,85 @@ class PacketDecoder:
 		return values
 
 	def decode_3(self, s):
+		p = self.unpack_3(s)
+
+		time_series = []
+
+		n = p['n']            # number of data points in this packet 1..60
+
+		try:
+			for i in xrange(n-1, -1, -1):
+				query_values = {'address': p['address']}
+
+				# values included in the *last* sample of a packet
+				# This is a special case statement to take care of this.
+				# If you only need to sample one thing, include this here, since the
+				# code in the arduino will sample and overwrite until the last sample.
+				if i == n-1:
+					query_values['uptime_ms'] = p['uptime_ms']
+					query_values['overflow_num'] = p['overflow_num']
+					query_values['bmp085_press_pa'] = p['bmp085_press_pa']
+					query_values['bmp085_temp_decic'] = p['bmp085_temp_decic']
+					query_values['humidity_centi_pct'] = p['humidity_centi_pct']
+
+				# subtract n - i - 1 from now() to get this datum's db_time
+				# offset that will be used in the insertion query
+				time_offset_s = -(n - i - 1)
+
+				# values included in *every* sample of a packet
+				# The values here should not have any division done.
+				# Example:
+				# 	query_values['apogee_w_m2'] = p['apogee_w_m2'][i]
+
+				# values included every couple samples of a packet
+				# be sure to modify if cases to take care of this.
+				if (i+1) % 3 == 0 or i == n-1:
+					query_values['apogee_w_m2'] = p['apogee_w_m2'][i/3]
+
+				if (i+1) % 10 == 0 or i == n-1:
+					query_values['batt_mv'] = p['batt_mv'][i/10]
+					query_values['panel_mv'] = p['panel_mv'][i/10]
+
+				# Append the offset so that we can package the db query later
+				time_series.append({'time_offset_s': time_offset_s,
+								'values': query_values})
+		except Exception, err:
+			print traceback.format_exc()
+
+		return time_series
+
+	# ===================================
+	#		SCHEMA 7
+        #               The most current up to date firmware for the new apple design.
+        #               Includes the dallas temperature sensor.
+        #
+        #               TODO: Please update this with the most up to date packet.
+        #               NOT READY FOR PRODUCTION
+	# ===================================
+	def unpack_7(self, s):
+		struct_fmt = '<HHBIB' + 'H'*6 + 'H'*6 + 'IHH' + 'H'*20
+		values_list = struct.unpack(struct_fmt, s)
+		values = {}
+		# print "Got a binary packet at: " + time.strftime(self.time_fmt)
+		for key, start, end in [('schema', 0, 1),
+								('address', 1, 2),
+								('overflow_num', 2, 3),
+								('uptime_ms', 3, 4),
+								('n', 4, 5),
+								('batt_mv', 5, 11),
+								('panel_mv', 11, 17),
+								('bmp085_press_pa', 17, 18),
+								('bmp085_temp_decic', 18, 19),
+								('humidity_centi_pct', 19, 20),
+								('apogee_w_m2', 20, 99),
+								]:
+			values[key] = values_list[start:end]
+			if len(values[key]) == 1:
+				values[key] = values[key][0]
+		# print values
+		return values
+
+	def decode_7(self, s):
 		p = self.unpack_3(s)
 
 		time_series = []
