@@ -41,7 +41,6 @@ function createChart(data, options){
     chart.render();
 }
 
-
 function render_boxes(){
     var databoxes = [
         {
