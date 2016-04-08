@@ -10,7 +10,7 @@ function createBatteryChart(options){
 }
 
 function getData(options){
-  $.get(options.endpoint, function(data){
+  $.get("http://192.168.1.98:16906" + options.endpoint, function(data){
     createChart(data, options);
   });
 }
@@ -27,7 +27,7 @@ function createChart(data, options){
 
     var chart = new CanvasJS.Chart(options.element,
     {
-    zoomEnabled: true,
+      zoomEnabled: true,
       title:{
       text: options.text,
       },
@@ -41,45 +41,32 @@ function createChart(data, options){
     chart.render();
 }
 
-$(document).ready(function(){
-    var options = {
-        element: "batt_888",
-        text: "Dragonfruit - Address 888",
-        endpoint: "http://localhost:16906/battery/888"
-    }
-    createBatteryChart(options);
-    var options = {
-        element: "batt_889",
-        text: "Cranberry - Address 889",
-        endpoint: "http://localhost:16906/battery/889"
-    }
-    createBatteryChart(options);
-    var options = {
-        element: "batt_151",
-        text: "Apple - Address 151",
-        endpoint: "http://localhost:16906/battery/151"
-    }
-    createBatteryChart(options);
-
-    setInterval(function(){
-        var options = {
+function render_boxes(){
+    var databoxes = [
+        {
+            element: "batt_151",
+            text: "Apple_v1: 151",
+            endpoint: "/battery/151"
+        },
+        {
             element: "batt_888",
-            text: "Dragonfruit - Address 888",
-            endpoint: "http://localhost:16906/battery/888"
-        }
-        createBatteryChart(options);
-        var options = {
+            text: "Dragonfruit: 888",
+            endpoint: "/battery/888"
+        },
+        {
             element: "batt_889",
-            text: "Cranberry - Address 889",
-            endpoint: "http://localhost:16906/battery/889"
+            text: "Cranberry: 889",
+            endpoint: "/battery/889"
         }
-        createBatteryChart(options);
-    var options = {
-        element: "batt_151",
-        text: "Apple - Address 151",
-        endpoint: "http://localhost:16906/battery/151"
-    }
-    createBatteryChart(options);
-        console.log("Updating GUI");
+    ]
+    databoxes.forEach(function(d){
+        createBatteryChart(d);
+    });
+}
+
+$(document).ready(function(){
+    render_boxes();
+    setInterval(function(){
+        render_boxes();
     }, 30*1000);
 });
