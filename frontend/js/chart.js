@@ -27,6 +27,7 @@ function createChart(data, options){
 
     var chart = new CanvasJS.Chart(options.element,
     {
+    zoomEnabled: true,
       title:{
       text: options.text,
       },
@@ -53,6 +54,12 @@ $(document).ready(function(){
         endpoint: "http://localhost:16906/battery/889"
     }
     createBatteryChart(options);
+    var options = {
+        element: "batt_151",
+        text: "Apple - Address 151",
+        endpoint: "http://localhost:16906/battery/151"
+    }
+    createBatteryChart(options);
 
     setInterval(function(){
         var options = {
@@ -67,6 +74,12 @@ $(document).ready(function(){
             endpoint: "http://localhost:16906/battery/889"
         }
         createBatteryChart(options);
+    var options = {
+        element: "batt_151",
+        text: "Apple - Address 151",
+        endpoint: "http://localhost:16906/battery/151"
+    }
+    createBatteryChart(options);
         console.log("Updating GUI");
     }, 30*1000);
 });
