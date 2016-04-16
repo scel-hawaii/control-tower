@@ -29,9 +29,9 @@ extern uint8_t G_UARTpacket[MAX_SIZE];
 extern XBee G_xbee;
 
 #ifdef APPLE
-extern schema_2 G_BINpacket;
+extern schema_7 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
-extern schema_1 G_BINpacket;
+extern schema_3 G_BINpacket;
 #endif
 
 /* Packet Initialization/Clear */

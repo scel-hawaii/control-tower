@@ -23,7 +23,7 @@
 /* Struct for Binary packet transfer */
 /* 82 Bytes */
 typedef struct {
-    uint16_t schema = 1;         //Schema ID number
+    uint16_t schema = 3;         //Schema ID number
     uint16_t address;		 //Address of Arduino
     uint32_t uptime_ms;		 //Time since the start of program
     uint8_t overflow_num;	 //Number of times function millis() overflowed
@@ -34,12 +34,12 @@ typedef struct {
     int16_t bmp085_temp_decic;   //Temperature value (celsius)
     uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
     uint16_t apogee_w_m2[20];    //Solar Irradiance (millivolts)
-} schema_1;
+} schema_3;
 
 /* Struct for Apple's packet, contains additional temperatures */
 /* 84 Bytes */
 typedef struct {
-    uint16_t schema = 2;         //Schema ID number
+    uint16_t schema = 7;         //Schema ID number
     uint16_t address;		 //Address of Arduino
     uint32_t uptime_ms;		 //Time since the start of program
     uint8_t overflow_num;	 //Number of times function millis() overflowed
@@ -51,7 +51,7 @@ typedef struct {
     uint16_t humidity_centi_pct; //Humidity value (centi-pascals)
     uint16_t apogee_w_m2[20];    //Solar Irradiance (millivolts)
     int16_t dallas_roof_c;       //Outside temperature value (celcius)
-} schema_2;
+} schema_7;
 
 
 /* Struct for Health Check */
