@@ -19,7 +19,9 @@ the endpoint will return the last 50k samples with those dates as constraints.
 
 **Example:**
 
-`curl http://localhost/battery/151`
+No query: `curl http://localhost/battery/151`
+
+With query: `curl http://192.168.1.98:16906/battery/343?start_time=2016-04-14+02%3A36%3A00+UTC&end_time=2016-04-16+04%3A36%3A00+UTC`
 
 
 
