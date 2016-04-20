@@ -6,9 +6,9 @@ for inputting data as well (with proper tokens).
 
 # Endpoints
 
-## Battery
+## battery/
 
-### /battery/[address]
+### battery/[address]
 
 **Optional Query Parameters**
 * Start Date: A UTC string with a start datetime.
@@ -19,7 +19,7 @@ the endpoint will return the last 50k samples with those dates as constraints.
 
 **Example:**
 
-`/battery/151`
+`curl http://localhost/battery/151`
 
 
 
