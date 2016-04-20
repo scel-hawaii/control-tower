@@ -6,7 +6,7 @@ for inputting data as well (with proper tokens).
 
 # Endpoints
 
-## battery/
+## battery
 
 ### battery/[address]
 
