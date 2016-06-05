@@ -3,18 +3,33 @@
 import pika
 import time
 
-port = 8082
-host = 'localhost'
+class RMQ:
 
-connection = pika.BlockingConnection(pika.ConnectionParameters(
-                   host, port))
-channel = connection.channel()
-channel.queue_declare(queue='hello')
+    def __init__(self):
+        port = 8082
+        host = 'localhost'
+
+        connection = pika.BlockingConnection(pika.ConnectionParameters(
+                           host, port))
+
+        self.channel = connection.channel()
+        self.channel.queue_declare(queue='hello')
+
+    def publish(self, data):
+        self.channel.basic_publish(exchange='',
+                              routing_key='hello',
+                              body=d)
+
+
+queue = RMQ()
 
 while True:
     d = "hello, world"
-    channel.basic_publish(exchange='',
-                          routing_key='hello',
-                          body=d)
+    queue.publish(d);
+
     seconds = 0.5
-    time.sleep(seconds);
+    time.sleep(seconds)
+
+    print "Finished publishing data"
+
+
