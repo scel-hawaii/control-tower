@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+# A quick script to grab data from a queue on rabbitmq, parse it and
+# then display it.
+
 import pika
 import time
 import datetime
