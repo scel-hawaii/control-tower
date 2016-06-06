@@ -2,13 +2,15 @@ import pika
 import time
 import datetime
 import json
+import logging
 
 def callback(ch, method, properties, body):
     packet = json.loads(body)
 
     s = packet['timestamp'] + " " + packet['data']
-    print(s)
+    logging.info(s)
 
+logging.basicConfig(filename='worker_fake.log',level=logging.DEBUG)
 connection = pika.BlockingConnection(pika.ConnectionParameters(
             'localhost', 8082))
 channel = connection.channel()

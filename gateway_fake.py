@@ -4,6 +4,7 @@ import pika
 import time
 import json
 import datetime
+import logging
 
 class RMQ:
 
@@ -23,6 +24,8 @@ class RMQ:
                               body=data)
 
 
+
+logging.basicConfig(filename='gateway_fake.log',level=logging.DEBUG)
 queue = RMQ()
 
 while True:
@@ -37,6 +40,4 @@ while True:
     seconds = 0.001
     time.sleep(seconds)
 
-    print "Finished publishing data"
-
-
+    logging.info("[" + str(datetime.datetime.now()) + "] " + "Published data")
