@@ -37,7 +37,7 @@ while True:
     packet_string = json.dumps(packet)
     queue.publish(packet_string);
 
-    seconds = 0.001
+    seconds = 0.25
     time.sleep(seconds)
 
     logging.info("[" + str(datetime.datetime.now()) + "] " + "Published data")
