@@ -2,6 +2,8 @@
 
 import pika
 import time
+import json
+import datetime
 
 class RMQ:
 
@@ -18,16 +20,21 @@ class RMQ:
     def publish(self, data):
         self.channel.basic_publish(exchange='',
                               routing_key='hello',
-                              body=d)
+                              body=data)
 
 
 queue = RMQ()
 
 while True:
-    d = "hello, world"
-    queue.publish(d);
+    string_now = datetime.datetime.now().isoformat()
+    packet = {
+        'data':'hello, world',
+        'timestamp': string_now
+    }
+    packet_string = json.dumps(packet)
+    queue.publish(packet_string);
 
-    seconds = 0.5
+    seconds = 0.001
     time.sleep(seconds)
 
     print "Finished publishing data"
