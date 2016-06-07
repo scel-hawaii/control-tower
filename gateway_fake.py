@@ -40,4 +40,6 @@ while True:
     seconds = 0.25
     time.sleep(seconds)
 
-    logging.info("[" + str(datetime.datetime.now()) + "] " + "Published data")
+    s = "[" + str(datetime.datetime.now()) + "] " + "Published data"
+    print s
+    logging.info(s)

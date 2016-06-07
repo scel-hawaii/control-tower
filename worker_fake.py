@@ -13,6 +13,7 @@ def callback(ch, method, properties, body):
     packet = json.loads(body)
 
     s = packet['timestamp'] + " " + packet['data']
+    print(s)
     logging.info(s)
 
 logging.basicConfig(filename='worker_fake.log',level=logging.DEBUG)
