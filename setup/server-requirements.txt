@@ -6,8 +6,5 @@ python-pip
 vim
 postgresql
 libpq-dev
-arduino
-x11vnc
-tightvncserver
 screen
 make
