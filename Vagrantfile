@@ -23,6 +23,8 @@ Vagrant.configure(2) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   # config.vm.network "forwarded_port", guest: 80, host: 8080
+  config.vm.network "forwarded_port", guest: 16906, host: 16906
+  config.vm.network "forwarded_port", guest: 3000, host: 3000
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -75,5 +77,13 @@ Vagrant.configure(2) do |config|
      sudo su control_tower -c \
         'cd /home/control_tower/ && git clone \
         https://github.com/scel-hawaii/control-tower.git'
+
+     sudo su control_tower -c \
+        'cd /home/control_tower/control-tower/scripts/ &&
+        bash seed.sh'
+
+     sudo su control_tower -c \
+        'cd /home/control_tower/ &&
+        git clone https://github.com/scel-hawaii/data-api.git'
   SHELL
 end
