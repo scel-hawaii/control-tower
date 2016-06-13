@@ -3,8 +3,12 @@
 *.pyc
 
 # Ignore csv files
-*.csv 
+*.csv
 
 *.log
 
-.vagrant
+node_modules
+*.swp
+*.log
+
+*.vagrant
