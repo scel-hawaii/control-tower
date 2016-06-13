@@ -11,13 +11,13 @@ help:
 	@echo ""
 
 seed:
-	bash scripts/seed.sh
+	bash tasks/seed.sh
 
 export_db:
-	bash scripts/export_db_to_csv.sh
+	bash tasks/export_db_to_csv.sh
 
 import_db:
-	bash scripts/import_db_to_csv.sh
+	bash tasks/import_db_to_csv.sh
 
 version:
 	@echo $(LATEST_VERSION)
