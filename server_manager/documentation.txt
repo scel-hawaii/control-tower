@@ -1,2 +1,0 @@
-In debian, you need to add the user to groups:
-tty and dialout
