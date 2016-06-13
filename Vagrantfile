@@ -81,9 +81,5 @@ Vagrant.configure(2) do |config|
      sudo su control_tower -c \
         'cd /home/control_tower/control-tower/scripts/ &&
         bash seed.sh'
-
-     sudo su control_tower -c \
-        'cd /home/control_tower/ &&
-        git clone https://github.com/scel-hawaii/data-api.git'
   SHELL
 end
