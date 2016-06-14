@@ -8,3 +8,5 @@ postgresql
 libpq-dev
 screen
 make
+nodejs
+nodejs-legacy
