@@ -6,8 +6,6 @@ Backend for the scel sensor network. Contains three components:
 * Database config
 * Server config
 
-
-
 # Raspberry Pi Deployment Instructions
 
 *Note* - these instructions need to be revised.
