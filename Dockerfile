@@ -20,9 +20,7 @@ RUN /etc/init.d/postgresql start &&\
     cd control-tower/db &&\
     bash setup_postgres_user.sh
 
-
 RUN npm install -g npm
-
 
 WORKDIR /control-tower/api
 RUN npm install
@@ -39,9 +37,9 @@ RUN /etc/init.d/postgresql start &&\
     sleep 1 &&\
     psql -d control_tower -c "\\copy outdoor_env FROM 'outdoor_env_small.csv' CSV HEADER"
 
-# End installation
+# End Installation
 
-# EXPOSE 16906
+EXPOSE 16906
 
 WORKDIR /control-tower/api
 CMD /etc/init.d/postgresql start && npm start
