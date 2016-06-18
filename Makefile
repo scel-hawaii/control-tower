@@ -32,3 +32,14 @@ install:
 	mkdir -p $(INSTALL_DIR)
 	cp -fR $(CURRENT_DIR)/* $(INSTALL_DIR)
 	ln -fs /usr/local/control_tower/control_tower.py /usr/local/bin/control_tower
+
+test:
+	bash tasks/test.sh
+
+run-container:
+	docker build -t control-tower-test .
+	docker run -d --name ct-testinstance -p 16906:16906 -t control-tower-test
+
+kill-container:
+	docker kill ct-testinstance
+	docker rm ct-testinstance
