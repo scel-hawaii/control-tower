@@ -2,10 +2,11 @@
 
 # Build the test container
 docker build -t control-tower-test .
-docker run -d --name ct-testinstance -p 16906:16906 -t control-tower-test
+docker run -d --name ct-testinstance -p 16906:16906 -t control-tower-test;
 
 # Wait for the container to go up
-sleep 5;
+echo "Waiting for the API to come up...";
+sleep 10;
 
 # Run a simple test
 curl http://localhost:16906
