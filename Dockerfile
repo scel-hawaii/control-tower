@@ -12,8 +12,8 @@ RUN apt-get -y install python python-dev python-pip \
     nodejs nodejs-legacy build-essential npm \
     sudo
 
-RUN git clone https://github.com/scel-hawaii/control-tower.git
-RUN cd control-tower/setup/ && bash setup_server_req.sh
+ADD . control-tower/
+
 RUN cd control-tower/setup/ && bash setup_python_reqs.sh
 
 RUN /etc/init.d/postgresql start &&\
