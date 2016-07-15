@@ -173,7 +173,7 @@ long c_Sensors_sampleBatterymV(void){
     long value = 0;
     value = PyroADC_C.readADC_SingleEnded(_PIN_BATT_V)*0.1875;
     /* Fix for the voltage divider */
-    value = value * 193.3/146.7;
+    value = value * 1.34;
     return value;
 }
 
@@ -189,7 +189,7 @@ long c_Sensors_samplePanelmV(void){
     long value = 0;
     value = PyroADC_C.readADC_SingleEnded(_PIN_SOLAR_V)*0.1875;
     /* Fix for the voltage divider */
-    value = value * 199/98.1; 
+    value = value * 2; 
     return value;
 }
 

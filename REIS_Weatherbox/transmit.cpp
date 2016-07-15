@@ -64,7 +64,7 @@ void Packet_ClearBIN(void){
         G_BINpacket.batt_mv[j] = 0;
         G_BINpacket.panel_mv[j] = 0;
 #ifdef APPLE
-	G_BINpacket.dallas_roof_c[j] = 0;
+	G_BINpacket.dallas_roof_c = 0;
 #endif
  
         /* Polled every 3 seconds */
@@ -233,7 +233,7 @@ void Packet_ConBIN(void){
     G_BINpacket.humidity_centi_pct = Humiditypct;
     G_BINpacket.apogee_w_m2[n/3] = SolarIrrmV;
 #ifdef APPLE
-    G_BINpacket.dallas_roof_c[n/10] = Dallas_RoofTemp_c;
+    G_BINpacket.dallas_roof_c = Dallas_RoofTemp_c;
 #endif
     /* Increment index */
     G_BINpacket.n += 1;
@@ -404,6 +404,6 @@ void Test_Packet_GenBIN(void){
     G_BINpacket.n = n;
     G_BINpacket.uptime_ms = uptime;
 #ifdef APPLE
-    G_BINpacket.dallas_roof_c[n/10] = dallas_rooftemp_decic;
+    G_BINpacket.dallas_roof_c = dallas_rooftemp_decic;
 #endif
 }

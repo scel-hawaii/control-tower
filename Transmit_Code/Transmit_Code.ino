@@ -27,9 +27,9 @@ uint8_t G_UARTpacket[MAX_SIZE];
 XBee G_xbee = XBee();
 
 #ifdef APPLE
-schema_2 G_BINpacket;
+schema_7 G_BINpacket;
 #elif defined(CRANBERRY) || defined(DRAGONFRUIT)
-schema_1 G_BINpacket;
+schema_3 G_BINpacket;
 #endif
 
 /* Software Serial */
