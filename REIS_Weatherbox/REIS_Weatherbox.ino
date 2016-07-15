@@ -119,16 +119,6 @@ void setup(){
  * 
  ********************************************/
 void loop(){
-
-    /*Check health & run appropriate routine */
-    if(chkHealth() == NORMAL || chkHealth() == GOOD_SOLAR){
-
-        /* Voltages are at a good level to operate normally */
-        Normal_Routine(&G_count);
-    }
-    else{
-
-        /* Voltages are not at a good level, operate in PowerSave */
-        PowerSave_Routine();
-    }
+    /* Voltages are at a good level to operate normally */
+    Normal_Routine(&G_count);
 }
