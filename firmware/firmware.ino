@@ -14,6 +14,7 @@
 #include "schema.h"
 #include "utilities.h"
 #include "routines.h"
+#include "log.h"
 
 /* Arudino Libraries */
 #include <Wire.h>

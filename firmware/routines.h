@@ -12,6 +12,7 @@
 /* Program Libraries */
 #include "transmit.h"
 #include "utilities.h"
+#include "log.h"
 
 /* Check for previous includes */
 #ifndef ROUTINES_H
