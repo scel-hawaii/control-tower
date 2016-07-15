@@ -32,7 +32,6 @@
 #include <XBee.h>
 
 /* Global Variables for Packet  */
-uint8_t G_UARTpacket[MAX_SIZE];
 schema_health G_health;
 
 /* Global Xbee object */

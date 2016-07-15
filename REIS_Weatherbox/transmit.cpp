@@ -10,26 +10,6 @@
 /* Program Libraries */
 #include "transmit.h"
 
-/******************************************
- *
- *   Name:        Packet_ClearUART
- *   Returns:     Nothing
- *   Parameter:   uint8_t Global packet
- *   Description: Clears/Initializes the packet to
- *                    NULL.
- *
- *****************************************/
-void Packet_ClearUART(void){
-
-    /* Variables Declarations */
-    int i = 0;
-
-    /* Set packet to NULL */
-    for(i = 0; i < MAX_SIZE; i++){
-        G_UARTpacket[i] = '\0';
-    }
-}
-
 
 /******************************************
  *
@@ -72,109 +52,6 @@ void Packet_ClearBIN(void){
     }
 }
 
-/******************************************
- *
- *   Name:        Packet_ConUART
- *   Returns:     Nothing
- *   Parameter:   uint8_t Global packet
- *   Description: Constructs a packet with data polled 
- *                    from the sensors.
- *
- *****************************************/
-void Packet_ConUART(void){
-
-    /* Index Variable */
-    int i = 0;
-
-    /* Get Addresss of Arduino*/
-    uint16_t address = EEPROM.read(2) | (EEPROM.read(3) << 8);
-    
-    /* Set up char array */
-    String s;
-
-    /* Variables to hold Sensor Readings */
-    long BatterymV = 0;
-    long SolarIrrmV = 0;
-    long SolarIrr_w_m2 = 0;
-    long Humiditypct = 0;
-    long PanelmV = 0;
-    long Pressurepa = 0;
-    long Tempdecic = 0;
-    long Dallas_RoofTemp_c = 0;
-    long Dallas_AmbTemp_c = 0;
-    unsigned long uptime;
-
-#ifndef TEST
-    /* Sample Sensors */
-    BatterymV = Sensors_sampleBatterymV();
-    SolarIrrmV = Sensors_sampleSolarIrrmV();
-    Humiditypct = Sensors_sampleHumiditypct();
-    PanelmV = Sensors_samplePanelmV();
-    Pressurepa = Sensors_samplePressurepa();
-    Tempdecic = Sensors_sampleTempdecic();
-#ifdef APPLE
-    Dallas_RoofTemp_c = a_Sensors_sampleRoofTempdecic();
-#endif
-#endif
-
-    /* Set up packet format */
-    s = "{";
-
-    /* String() will convert data type of argument into a string */
-    /* Address */
-    s += "\"address\": ";
-    s += String(address);
-
-    /* Weatherbox uptime */
-    uptime = millis();
-    s += ", \"uptime_ms\": ";
-    s += String(uptime);
-
-    /* Temperature */
-    s += ", \"bmp085_temp_decic\": ";
-    s += String(Tempdecic);
-
-#ifdef APPLE
-    /* Outside Temperature */
-    s += ", \"dallas_roof_c\": ";
-    s += String(Dallas_RoofTemp_c);
-#endif
-
-    /* Humidity */
-    s += ", \"sht1x_humid_pct\": ";
-    s += String(Humiditypct); 
-
-    /* Pressure */
-    s += ", \"bmp085_press_pa\": ";
-    s += String(Pressurepa);
-
-    /* Battery Voltage */
-    s += ", \"batt_mv\": ";
-    s += String(BatterymV);
-
-    /*  Panel Voltage */
-    s += ", \"panel_mv\": ";
-    s += String(PanelmV);
-
-    /* Solar Irradiance */
-    s += ", \"apogee_mv\": ";
-    s += String(SolarIrrmV);
-    SolarIrr_w_m2 = SolarIrrmV * 5.0;
-    s += ", \"apogee_w_m2\": ";
-    s += String(SolarIrr_w_m2);
-
-    /* End of packet formatting */
-    s += "}";
-    s += '\0';
-
-    /* Note: This packet does NOT contain (in comparison to */
-    /*       old Apple code) panel_ua (current value).      */
-    
-    /* Put array information into Packet */
-    for(i = 0; i < s.length(); i++){
-      G_UARTpacket[i] = s[i];
-    }
-}
 
 /******************************************
  *
@@ -239,42 +116,6 @@ void Packet_ConBIN(void){
     G_BINpacket.n += 1;
 }
 
-/******************************************
- *
- *   Name:        Packet_TransmitUART
- *   Returns:     Nothing
- *   Parameter:   uint8_t Global packet
- *   Description: Transmits using Arduino Xbee functions,
- *                    Xbees must be in API mode.
- *
- *****************************************/
-void Packet_TransmitUART(void){
-    
-    /* Enable XBee */
-#ifndef APPLE    
-    digitalWrite(_PIN_XBEE_EN, HIGH);
-#endif
-
-    /* Variable Declarations */
-    int len = 0;           //Length of the packet to be sent
-    int i = 0;             //Variable to be used to iterate across the packet
-
-    /* Obtain address of receiving end */
-    XBeeAddress64 addr64 = XBeeAddress64(0,0);
-
-    /* Get length of packet */
-    len = strlen((char *) G_UARTpacket);
-
-#ifdef DEBUG_S
-    /* Debug */
-    Serial.println(F("UART Length is: "));
-    Serial.print(len);
-#endif
-
-    /* Transfer the packet */
-    ZBTxRequest zbTx = ZBTxRequest(addr64, G_UARTpacket, len);
-    G_xbee.send(zbTx); //!!Prints packet to serial monitor
-}
 
 /******************************************
  *
@@ -331,39 +172,6 @@ void Packet_TransmitBIN(void){
     G_xbee.send(zbTx); //!!Prints packet to serial monitor
 }
 
-/******************************************
- *
- *   Name:        Test_Packet_GenUART
- *   Returns:     Nothing
- *   Parameter:   uint8_t Global packet
- *   Description: Constructs a packet with hard-coded
- *                    information.  Used for the initial
- *                    test of the Transmission functions.
- *                    To be replaced by Packet Construction.
- *
- *****************************************/
-void Test_Packet_GenUART(void){
-
-    /* Index Variables */
-    int i = 0;
-
-    /* Set up array */
-    String s;
-    
-    /* Fill with Hard-coded information */
-    s = "test yes";
-    s += '\0';
-
-#ifdef DEBUG_S
-    /* Debug */
-    Serial.println(F("Generating - UART"));
-#endif
-
-    /* Put array information into Packet */
-    for(i = 0; i < s.length(); i++){
-      G_UARTpacket[i] = s[i];
-    }
-}
 
 /******************************************
  *

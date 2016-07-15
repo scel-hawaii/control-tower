@@ -78,23 +78,11 @@ void Transmit_config(void){
         pinMode(_PIN_XBEE_EN, OUTPUT);
     #endif
 
-    /* Assign Transmit functions based on transmission config */
-    #ifdef UART
-        /* Transmission */
-        Packet_Clear = &Packet_ClearUART;
-        Packet_Con = &Packet_ConUART;
-        Packet_Transmit = &Packet_TransmitUART;
-
-	/* Routine */
-	Normal_Routine = &Normal_RoutineUART;
-
-    #elif defined(BINARY)
-        /* Transmission */
-        Packet_Clear = &Packet_ClearBIN;
-        Packet_Con = &Packet_ConBIN;
-        Packet_Transmit = &Packet_TransmitBIN;
+    /* Transmission */
+    Packet_Clear = &Packet_ClearBIN;
+    Packet_Con = &Packet_ConBIN;
+    Packet_Transmit = &Packet_TransmitBIN;
 
 	/* Routine */
 	Normal_Routine = &Normal_RoutineBIN;
-    #endif
 }

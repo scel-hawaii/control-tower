@@ -18,10 +18,6 @@
 #define ROUTINES_H
 
 /* Healthy Routine */
-void Normal_RoutineUART(int *count);
 void Normal_RoutineBIN(int *count);
-
-/* Unhealthy Routine */
-void PowerSave_Routine(void);
 
 #endif

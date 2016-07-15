@@ -26,10 +26,6 @@
 /*---Transmission Config---*/
 /*-------------------------*/
 
-/* Transmission method declarations: only define one */
-//#define UART
-#define BINARY
-
 /* Configuration for Testing */
 //#define TEST
 

@@ -21,9 +21,6 @@
 #ifndef TRANSMIT_H
 #define TRANSMIT_H
 
-/* Global Variable for Packet  */
-extern uint8_t G_UARTpacket[MAX_SIZE];
-
 /* Global XBee object */
 extern XBee G_xbee;
 
@@ -34,18 +31,14 @@ extern schema_3 G_BINpacket;
 #endif
 
 /* Packet Initialization/Clear */
-void Packet_ClearUART(void);
 void Packet_ClearBIN(void);
 
 /* Paacket Construction */
-void Packet_ConUART(void);
 void Packet_ConBIN(void);
 
 /* Transmission Code */
-void Packet_TransmitUART(void);
 void Packet_TransmitBIN(void);
 
 /* Test Packet Generation */
-void Test_Packet_GenUART(void);
 void Test_Packet_GenBIN(void);
 #endif
