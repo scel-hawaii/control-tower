@@ -1,8 +1,9 @@
-BOARD_TAG    = uno
-MONITOR_PORT = /tmp/simavr-uart0
+all:
+	make -f makefile.embed
 
-include /usr/share/arduino/Arduino.mk
-ARDUINO_LIBS = Wire SoftwareSerial SHT1x OneWire DallasTemperature Adafruit_INA219 Adafruit_BMP085 XBee Adafruit_MPL115A2 Adafruit_ADS1015
+test:
+	echo "Creating test"
 
-gui:
-	arduino --verify apple-core.ino
+clean:
+	make -f makefile.embed clean
+
