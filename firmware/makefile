@@ -1,9 +1,9 @@
 all:
-	make -f makefile.embed
+	make -f makefile.board
 
 test:
 	echo "Creating test"
 
 clean:
-	make -f makefile.embed clean
+	make -f makefile.board clean
 
