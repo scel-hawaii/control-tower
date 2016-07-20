@@ -20,8 +20,8 @@
 #define CONFIG_H
 
 /* Debug with Arduino Serial Monitor */
-#define DEBUG_S
-#define DEBUG
+// #define DEBUG_S
+// #define DEBUG
 
 /*-------------------------*/
 /*---Transmission Config---*/

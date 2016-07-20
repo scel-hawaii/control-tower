@@ -1,6 +1,8 @@
 BOARD_TAG    = uno
 MONITOR_PORT = /tmp/simavr-uart0
 
+CPPFLAGS=$(SCEL_BUILD_FLAGS)
+
 include /usr/share/arduino/Arduino.mk
 ARDUINO_LIBS = Wire SoftwareSerial SHT1x OneWire DallasTemperature Adafruit_INA219 Adafruit_BMP085 XBee Adafruit_MPL115A2 Adafruit_ADS1015
 
