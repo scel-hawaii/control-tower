@@ -45,8 +45,11 @@ HIH613x hih6131(_ADDR_HYGRO);
  *
  ******************************************/
 void a_Sensors_init(void){
+#ifdef SENSOR_STUB
+#else
     bmp085.begin();
     ina219_Solar.begin();
+#endif
 }
 
 /*******************************************
@@ -58,8 +61,13 @@ void a_Sensors_init(void){
  *
  ******************************************/
 long a_Sensors_sampleBatterymV(void){
+#ifdef SENSOR_STUB
+    long value = 0;
+    return value;
+#else
     long value = analogRead(_PIN_BATT_V)*5000.0/1023;
     return value;
+#endif
 }
 
 /*******************************************
@@ -71,8 +79,14 @@ long a_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 long a_Sensors_samplePanelmV(void){
+#ifdef SENSOR_STUB
+    long value = 0;
+    return value;
+    return 0;
+#else
     long value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
     return value;
+#endif
 }
 
 /*******************************************
@@ -84,8 +98,14 @@ long a_Sensors_samplePanelmV(void){
  *
  ******************************************/
 long a_Sensors_sampleSolarIrrmV(void){
+#ifdef SENSOR_STUB
+    long value = 0;
+    return value;
+    return 0;
+#else
     long value = analogRead(_PIN_APOGEE_V)*5000.0/1023;
     return value;
+#endif
 }
 
 /*******************************************
@@ -97,8 +117,14 @@ long a_Sensors_sampleSolarIrrmV(void){
  *
  ******************************************/
 long a_Sensors_samplePressurepa(void){
+#ifdef SENSOR_STUB
+    long value = 0;
+    return value;
+    return 0;
+#else
     long value = bmp085.readPressure();
     return value;
+#endif
 }
 
 /*******************************************
@@ -110,8 +136,14 @@ long a_Sensors_samplePressurepa(void){
  *
  ******************************************/
 long a_Sensors_sampleHumiditypct(void){
+#ifdef SENSOR_STUB
+    long value = 0;
+    return value;
+    return 0;
+#else
     long value =  sht1x.readHumidity();
     return value;
+#endif
 }
 
 /*******************************************
@@ -123,8 +155,14 @@ long a_Sensors_sampleHumiditypct(void){
  *
  ******************************************/
 long a_Sensors_sampleTempdecic(void){
+#ifdef SENSOR_STUB
+    long value = 0;
+    return value;
+    return 0;
+#else
     long value =  bmp085.readTemperature()*10;
     return value;
+#endif
 }
 
 /*******************************************
@@ -137,10 +175,16 @@ long a_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 long a_Sensors_sampleRoofTempdecic(void){
+#ifdef SENSOR_STUB
+    long value = 0;
+    return value;
+    return 0;
+#else
     long value =  0;
     dallas_roof_sen.requestTemperatures();
     value = dallas_roof_sen.getTempCByIndex(0)*10;
     return value;
+#endif
 }
 
 /*---------------------------*/
