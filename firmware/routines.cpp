@@ -45,7 +45,6 @@ void Normal_RoutineBIN(int *count){
         Packet_Transmit();
         Packet_Clear();
         (*count) = 0;
-        while(1);
     }
 
     /* Wait to ensure we poll exactly every second */
