@@ -15,6 +15,7 @@
 #include "utilities.h"
 #include "routines.h"
 #include "log.h"
+#include "mod_cmd_mode.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
@@ -110,7 +111,7 @@ void setup(){
  *                     Executed after setup(), and will
  *                     continue running indefinitely,
  *                     unless conditions stop it.
- * 
+ *
  ********************************************/
 void loop(){
     long last_sample_ms = 0;
@@ -120,5 +121,6 @@ void loop(){
             last_sample_ms = millis();
             Normal_Routine(&G_count);
         }
+        cmd_mode_check();
     }
 }
