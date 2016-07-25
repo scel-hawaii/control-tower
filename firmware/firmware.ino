@@ -76,6 +76,9 @@ SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
  * 
  ********************************************/
 void setup(){
+    Serial.begin(9600);
+    mySerial.begin(9600);
+    print_log("POST Start");
 
     /* Variable Initialization */
     G_count = 0;
@@ -88,8 +91,6 @@ void setup(){
 
     /* Initialization */
     Sensors_init();
-    Serial.begin(9600);
-    mySerial.begin(9600);
     G_xbee.begin(mySerial);
 
     /* Packet Initialization */
@@ -97,6 +98,8 @@ void setup(){
 
     /* Set Power State */
     pstate_system(_ACTIVE);
+
+    print_log("POST Complete");
 
     /* Delay for configuration settings */
     delay(500);
