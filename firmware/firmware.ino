@@ -113,6 +113,12 @@ void setup(){
  * 
  ********************************************/
 void loop(){
-    /* Voltages are at a good level to operate normally */
-    Normal_Routine(&G_count);
+    long last_sample_ms = 0;
+    long wait_ms = 1000;
+    while(1){
+        if( (millis() - last_sample_ms ) >= wait_ms){
+            last_sample_ms = millis();
+            Normal_Routine(&G_count);
+        }
+    }
 }

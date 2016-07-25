@@ -47,6 +47,4 @@ void Normal_RoutineBIN(int *count){
         (*count) = 0;
     }
 
-    /* Wait to ensure we poll exactly every second */
-    while((millis() - transmit_timer) <= wait_ms);
 }
