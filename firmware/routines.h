@@ -18,7 +18,6 @@
 #ifndef ROUTINES_H
 #define ROUTINES_H
 
-/* Healthy Routine */
 void Normal_RoutineBIN(int *count);
 
 #endif

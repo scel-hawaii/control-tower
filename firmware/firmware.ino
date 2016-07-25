@@ -32,9 +32,6 @@
 #include <HIH613x.h>
 #include <XBee.h>
 
-/* Global Variables for Packet  */
-schema_health G_health;
-
 /* Global Xbee object */
 XBee G_xbee = XBee();
 
@@ -50,7 +47,6 @@ LowPassFilter G_battery_filter;
 
 /* Global Variable */
 int G_count;
-unsigned long G_health_transmit_timer;
 
 /* Global Function Pointers */
 void (*Sensors_init)(void);
@@ -82,7 +78,6 @@ void setup(){
 
     /* Variable Initialization */
     G_count = 0;
-    G_health_transmit_timer = 0;
 
     /* Generation Check */
     Gen_config();
@@ -95,7 +90,6 @@ void setup(){
     Serial.begin(9600);
     mySerial.begin(9600);
     G_xbee.begin(mySerial);
-    initHealthSamples();
 
     /* Packet Initialization */
     Packet_Clear();
