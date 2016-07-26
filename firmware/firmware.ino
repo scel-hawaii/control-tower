@@ -16,6 +16,7 @@
 #include "routines.h"
 #include "log.h"
 #include "mod_cmd_mode.h"
+#include "ga23_board.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
@@ -33,6 +34,9 @@
 #include <HIH613x.h>
 #include <XBee.h>
 
+
+#ifdef GA23
+#else
 /* Global Xbee object */
 XBee G_xbee = XBee();
 
@@ -64,6 +68,11 @@ void (*Normal_Routine)(int *count);
 
 /* Software Serial */
 SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
+#endif
+
+#ifdef GA23
+ga23_board board;
+#endif
 
 /*********************************************
  *
@@ -73,9 +82,15 @@ SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
  *    Description: Runs once at the start of the sequence.
  *                     Used for initialization. Place all
  *                     init scripts here.
- * 
+ *
  ********************************************/
 void setup(){
+#ifdef GA23
+    ga23_board_init(&board);
+    board.print_build_opts();
+    board.setup();
+    board.post();
+#else
     Serial.begin(9600);
     mySerial.begin(9600);
     print_log("POST Start");
@@ -103,6 +118,7 @@ void setup(){
 
     /* Delay for configuration settings */
     delay(500);
+#endif
 }
 
 /*********************************************
@@ -117,6 +133,16 @@ void setup(){
  *
  ********************************************/
 void loop(){
+#ifdef GA23
+    long last_sample_ms = 0;
+    long wait_ms = 1000;
+    while(1){
+        if( (millis() - last_sample_ms ) >= wait_ms){
+            last_sample_ms = millis();
+            board.sample();
+        }
+    }
+#else
     long last_sample_ms = 0;
     long wait_ms = 1000;
     while(1){
@@ -126,4 +152,6 @@ void loop(){
         }
         cmd_mode_check();
     }
+#endif
+
 }

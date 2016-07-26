@@ -38,7 +38,8 @@
 /*-------------------------*/
 
 /* Generation Declarations: Only define one */
-#define APPLE
+#define GA23
+//#define APPLE
 //#define CRANBERRY
 //#define DRAGONFRUIT
 

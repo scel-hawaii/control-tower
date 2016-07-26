@@ -30,7 +30,10 @@
 void Gen_config(void){
     
     #ifndef APPLE
+        #ifdef GA23
+        #else
         pinMode(_PIN_SEN_EN, OUTPUT);
+        #endif
     #endif
     
     /* Check Generation & Assign Sensor Functions */
@@ -58,6 +61,7 @@ void Gen_config(void){
         Sensors_samplePressurepa = &d_Sensors_samplePressurepa;
         Sensors_sampleHumiditypct = &d_Sensors_sampleHumiditypct;
         Sensors_sampleTempdecic = &d_Sensors_sampleTempdecic;
+    #elif defined(GA23)
     #endif
 }
 
@@ -72,7 +76,8 @@ void Gen_config(void){
  *
  ******************************************/
 void Transmit_config(void){
-
+#ifdef GA23
+#else
     /* Enable XBee */
     #ifndef APPLE
         pinMode(_PIN_XBEE_EN, OUTPUT);
@@ -85,4 +90,5 @@ void Transmit_config(void){
 
 	/* Routine */
 	Normal_Routine = &Normal_RoutineBIN;
+#endif
 }

@@ -21,6 +21,7 @@
  *
  *****************************************/
 void Packet_ClearBIN(void){
+#ifndef GA23
 
     /* Variables used for indexes */
     int i, j, k;
@@ -170,6 +171,7 @@ void Packet_TransmitBIN(void){
    /* Transfer the payload */
     ZBTxRequest zbTx = ZBTxRequest(addr64, payload, len);
     G_xbee.send(zbTx); //!!Prints packet to serial monitor
+#endif
 }
 
 
@@ -185,6 +187,7 @@ void Packet_TransmitBIN(void){
  *
  *****************************************/
 void Test_Packet_GenBIN(void){
+#ifndef GA23
 
     /* Hard-coded data to put into packet */
     long batt_mv_raw = 1;
@@ -213,5 +216,7 @@ void Test_Packet_GenBIN(void){
     G_BINpacket.uptime_ms = uptime;
 #ifdef APPLE
     G_BINpacket.dallas_roof_c = dallas_rooftemp_decic;
+#endif
+
 #endif
 }

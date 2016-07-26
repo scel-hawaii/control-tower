@@ -21,12 +21,14 @@
  ****************************************/
 
 int chk_overflow(unsigned long current_value, unsigned long previous_value){
+#ifndef GA23
     if(current_value < previous_value){
         return TRUE;
     }
     else{
         return FALSE;
     }
+#endif
 }
 
 
@@ -43,6 +45,7 @@ int chk_overflow(unsigned long current_value, unsigned long previous_value){
  *
  *******************************************/
 void pstate_system(int state){
+#ifndef GA23
 
     P_STATE power_state;
 
@@ -56,6 +59,7 @@ void pstate_system(int state){
         pstate_xbee(_OFF, &power_state);
         pstate_sensors_array(_OFF, &power_state);
     }
+#endif
 }
 
 
@@ -74,9 +78,10 @@ void pstate_system(int state){
  *
  ******************************************/
 void pstate_xbee(int state, P_STATE *power_state){
-
+#ifndef GA23
     (*power_state).xbee = state;
     sync_pstate(*power_state);
+#endif
 }
 
 /******************************************
@@ -94,9 +99,10 @@ void pstate_xbee(int state, P_STATE *power_state){
  *
  *****************************************/
 void pstate_sensors_array(int state, P_STATE *power_state){
-
+#ifndef GA23
     (*power_state).sensor_array = state;
     sync_pstate(*power_state);
+#endif
 }
 
 /*****************************************
@@ -111,7 +117,8 @@ void pstate_sensors_array(int state, P_STATE *power_state){
  *
  ****************************************/
 void sync_pstate(P_STATE power_state){
-
+#ifndef GA23
     digitalWrite(_PIN_XBEE_SLEEP, !power_state.xbee);
     digitalWrite(_PIN_SEN_EN, power_state.sensor_array);	
+#endif
 }

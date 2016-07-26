@@ -46,6 +46,7 @@ HIH613x hih6131(_ADDR_HYGRO);
  ******************************************/
 void a_Sensors_init(void){
 #ifdef SENSOR_STUB
+#elif defined GA23
 #else
     bmp085.begin();
     ina219_Solar.begin();
@@ -64,6 +65,7 @@ long a_Sensors_sampleBatterymV(void){
 #ifdef SENSOR_STUB
     long value = 0;
     return value;
+#elif defined GA23
 #else
     long value = analogRead(_PIN_BATT_V)*5000.0/1023;
     return value;
@@ -83,6 +85,7 @@ long a_Sensors_samplePanelmV(void){
     long value = 0;
     return value;
     return 0;
+#elif defined GA23
 #else
     long value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
     return value;
@@ -102,6 +105,7 @@ long a_Sensors_sampleSolarIrrmV(void){
     long value = 0;
     return value;
     return 0;
+#elif defined GA23
 #else
     long value = analogRead(_PIN_APOGEE_V)*5000.0/1023;
     return value;
@@ -121,6 +125,7 @@ long a_Sensors_samplePressurepa(void){
     long value = 0;
     return value;
     return 0;
+#elif defined GA23
 #else
     long value = bmp085.readPressure();
     return value;
@@ -140,6 +145,7 @@ long a_Sensors_sampleHumiditypct(void){
     long value = 0;
     return value;
     return 0;
+#elif defined GA23
 #else
     long value =  sht1x.readHumidity();
     return value;
@@ -159,6 +165,7 @@ long a_Sensors_sampleTempdecic(void){
     long value = 0;
     return value;
     return 0;
+#elif defined GA23
 #else
     long value =  bmp085.readTemperature()*10;
     return value;
@@ -179,6 +186,7 @@ long a_Sensors_sampleRoofTempdecic(void){
     long value = 0;
     return value;
     return 0;
+#elif defined GA23
 #else
     long value =  0;
     dallas_roof_sen.requestTemperatures();
@@ -201,8 +209,12 @@ long a_Sensors_sampleRoofTempdecic(void){
  *
  ******************************************/
 void c_Sensors_init(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     digitalWrite(_PIN_SEN_EN, HIGH);
     mpl115a2.begin();
+#endif
 }
 
 /*******************************************
@@ -214,11 +226,15 @@ void c_Sensors_init(void){
  *
  ******************************************/
 long c_Sensors_sampleBatterymV(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = PyroADC_C.readADC_SingleEnded(_PIN_BATT_V)*0.1875;
     /* Fix for the voltage divider */
     value = value * 1.34;
     return value;
+#endif
 }
 
 /*******************************************
@@ -230,11 +246,15 @@ long c_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 long c_Sensors_samplePanelmV(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = PyroADC_C.readADC_SingleEnded(_PIN_SOLAR_V)*0.1875;
     /* Fix for the voltage divider */
     value = value * 2; 
     return value;
+#endif
 }
 
 /*******************************************
@@ -246,9 +266,13 @@ long c_Sensors_samplePanelmV(void){
  *
  ******************************************/
 long c_Sensors_sampleSolarIrrmV(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = PyroADC_C.readADC_SingleEnded(1)*0.1875;
     return value;
+#endif
 }
 
 /*******************************************
@@ -260,9 +284,13 @@ long c_Sensors_sampleSolarIrrmV(void){
  *
  ******************************************/
 long c_Sensors_samplePressurepa(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = mpl115a2.getPressure()*1000;
     return value;
+#endif
 }
 
 /*******************************************
@@ -274,10 +302,14 @@ long c_Sensors_samplePressurepa(void){
  *
  ******************************************/
 long c_Sensors_sampleHumiditypct(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     hih6131.update();
     value = hih6131.getHumidity();
     return value;
+#endif
 }
 
 /*******************************************
@@ -289,9 +321,13 @@ long c_Sensors_sampleHumiditypct(void){
  *
  ******************************************/
 long c_Sensors_sampleTempdecic(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = mpl115a2.getTemperature()*10;
     return value;
+#endif
 }
 /*---------------------------*/
 /*------- Dragonfruit -------*/
@@ -307,9 +343,13 @@ long c_Sensors_sampleTempdecic(void){
  *
  ******************************************/
 void d_Sensors_init(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     digitalWrite(_PIN_SEN_EN, HIGH);
     Wire.begin(9600);
     mpl115a2.begin();
+#endif
 }
 
 /*******************************************
@@ -321,9 +361,13 @@ void d_Sensors_init(void){
  *
  ******************************************/
 long d_Sensors_sampleBatterymV(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = analogRead(_PIN_BATT_V)*5000.0/1023;
     return value;
+#endif
 }
 
 /*******************************************
@@ -335,9 +379,13 @@ long d_Sensors_sampleBatterymV(void){
  *
  ******************************************/
 long d_Sensors_samplePanelmV(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = 2*analogRead(_PIN_SOLAR_V)*5000.0/1023;
     return value;
+#endif
 }
 
 /*******************************************
@@ -349,6 +397,9 @@ long d_Sensors_samplePanelmV(void){
  *
  ******************************************/
 long d_Sensors_sampleSolarIrrmV(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     Wire.beginTransmission(_ADDR_PYRO);
 
@@ -366,6 +417,7 @@ long d_Sensors_sampleSolarIrrmV(void){
     Wire.endTransmission();
     value = (value*5000.00)/(0x7FFF);
     return value;
+#endif
 }
 
 /*******************************************
@@ -377,9 +429,13 @@ long d_Sensors_sampleSolarIrrmV(void){
  *
  ******************************************/
 long d_Sensors_samplePressurepa(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = mpl115a2.getPressure()*1000;
     return value;
+#endif
 }
 
 /*******************************************
@@ -391,10 +447,14 @@ long d_Sensors_samplePressurepa(void){
  *
  ******************************************/
 long d_Sensors_sampleHumiditypct(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     hih6131.update();
     value = hih6131.getHumidity();
     return value;
+#endif
 }
 
 /*******************************************
@@ -406,7 +466,11 @@ long d_Sensors_sampleHumiditypct(void){
  *
  ******************************************/
 long d_Sensors_sampleTempdecic(void){
+#ifdef SENSOR_STUB
+#elif defined GA23
+#else
     long value = 0;
     value = mpl115a2.getTemperature()*10;
     return value;
+#endif
 }
