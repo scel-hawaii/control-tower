@@ -25,6 +25,17 @@ static void ga23_board_setup(){
 // power on self test
 static void ga23_board_post(){
     Serial.println("POST Begin");
+
+    Serial.println("POST: Check sht1x value");
+    int value = ga23_dev_sht1x_read();
+
+    Serial.print("POST: sht1x value - ");
+    Serial.println(value);
+
+    if(value < 800){
+        Serial.println("POST: Error: Humidity out of range");
+    }
+
     Serial.println("POST End");
 }
 
