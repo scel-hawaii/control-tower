@@ -15,12 +15,7 @@ struct ga23_board{
     int sample_count;
 };
 
-void ga23_board_init(ga23_board*);
-static void ga23_board_print_build_opts();
-static void ga23_board_setup();
-static void ga23_board_post();
-static void ga23_board_sample(ga23_board* b);
-static int ga23_board_ready_tx(ga23_board* b);
-static void ga23_board_tx(ga23_board* b);
+void ga23_board_init(struct ga23_board*);
+
 
 #endif

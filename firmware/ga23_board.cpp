@@ -1,5 +1,12 @@
 #include "ga23_board.h"
 
+static void ga23_board_print_build_opts();
+static void ga23_board_setup();
+static void ga23_board_post();
+static void ga23_board_sample(struct ga23_board* b);
+static int ga23_board_ready_tx(struct ga23_board* b);
+static void ga23_board_tx(struct ga23_board* b);
+
 void ga23_board_init(ga23_board *b){
     b->print_build_opts = &ga23_board_print_build_opts;
     b->setup = &ga23_board_setup;
