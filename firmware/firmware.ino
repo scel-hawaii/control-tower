@@ -71,7 +71,7 @@ SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
 #endif
 
 #ifdef GA23
-ga23_board board;
+struct ga23_board board;
 #endif
 
 /*********************************************
@@ -139,7 +139,12 @@ void loop(){
     while(1){
         if( (millis() - last_sample_ms ) >= wait_ms){
             last_sample_ms = millis();
-            board.sample();
+            if(board.ready_tx(&board)){
+                board.tx(&board);
+            }
+            else{
+                board.sample(&board);
+            }
         }
     }
 #else

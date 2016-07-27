@@ -5,6 +5,9 @@ void ga23_board_init(ga23_board *b){
     b->setup = &ga23_board_setup;
     b->post = &ga23_board_post;
     b->sample = &ga23_board_sample;
+    b->tx = &ga23_board_tx;
+    b->ready_tx = &ga23_board_ready_tx;
+    b->sample_count = 0;
 }
 
 static void ga23_board_print_build_opts()
@@ -48,9 +51,30 @@ static void ga23_board_post(){
     }
 
     Serial.println("POST End");
+
 }
 
-static void ga23_board_sample(){
+static void ga23_board_sample(struct ga23_board* b){
     Serial.println("Sample Start");
+    Serial.println(b->sample_count);
     Serial.println("Sample End");
+    b->sample_count++;
+}
+
+static int ga23_board_ready_tx(struct ga23_board* b){
+    if(b->sample_count > 59){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+static void ga23_board_tx(struct ga23_board* b){
+    Serial.println("Sample Transmit");
+    b->sample_count = 0;
+}
+
+static void ga23_board_soft_rst(){
+    asm volatile ("jmp 0");
 }
