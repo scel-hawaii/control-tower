@@ -90,6 +90,13 @@ void setup(){
     board.print_build_opts();
     board.setup();
     board.post();
+
+    #ifdef _BCFG_ONLY_POST
+    // Stop execution if the ONLY_POST build configuration
+    // flag is defined.
+    while(1);
+    #endif
+
 #else
     Serial.begin(9600);
     mySerial.begin(9600);
