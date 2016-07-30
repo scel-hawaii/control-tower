@@ -27,9 +27,14 @@ static void ga23_board_print_build_opts()
 static void ga23_board_setup(){
     Serial.begin(9600);
     Serial.println("Board Setup Init");
-    delay(100);
     ga23_dev_xbee_open();
-    Serial.println("Board Setup Stop");
+    ga23_dev_sht1x_open();
+    ga23_dev_bmp085_open();
+    ga23_dev_apogee_sp212_open();
+    ga23_dev_batt_open();
+
+    delay(100);
+    Serial.println("Board Setup Done");
 }
 
 // power on self test
