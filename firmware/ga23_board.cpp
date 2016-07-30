@@ -36,6 +36,7 @@ static void ga23_board_setup(){
 static void ga23_board_post(){
     Serial.println("POST Begin");
 
+    // Check sht1x
     Serial.println("POST: Check sht1x value");
     int sht1x_val = ga23_dev_sht1x_read();
 
@@ -46,9 +47,9 @@ static void ga23_board_post(){
         Serial.println("POST: Error: Humidity out of range");
     }
 
+    // Check BMP085
     Serial.println("POST: Check bmp085 value");
     int bmp085_val = ga23_dev_bmp085_read();
-
 
     Serial.print("POST: bmp085 value - ");
     Serial.println(bmp085_val);
@@ -56,6 +57,18 @@ static void ga23_board_post(){
     if(bmp085_val < 800){
         Serial.println("POST: Error: Humidity out of range");
     }
+
+    // Check apogee_sp212
+    Serial.println("POST: Check apogee_sp212 value");
+    int apogee_sp212_val = ga23_dev_apogee_sp212_read();
+
+    Serial.print("POST: bmp085 value - ");
+    Serial.println(apogee_sp212_val);
+
+    if(apogee_sp212_val < 100){
+        Serial.println("POST: Error: Apogee out of range");
+    }
+
 
     Serial.println("POST End");
 

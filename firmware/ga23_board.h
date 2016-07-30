@@ -1,6 +1,7 @@
 #include "ga23_dev_xbee.h"
 #include "ga23_dev_sht1x.h"
 #include "ga23_dev_bmp085.h"
+#include "ga23_dev_apogee_sp212.h"
 
 #ifndef GA23_BOARD_H
 #define GA23_BOARD_H
