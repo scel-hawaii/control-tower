@@ -69,6 +69,16 @@ static void ga23_board_post(){
         Serial.println("POST: Error: Apogee out of range");
     }
 
+    // Check batt
+    Serial.println("POST: Check batt value");
+    int batt_val = ga23_dev_batt_read();
+
+    Serial.print("POST: batt value - ");
+    Serial.println(batt_val);
+
+    if(batt_val < 100){
+        Serial.println("POST: Error: batt out of range");
+    }
 
     Serial.println("POST End");
 
