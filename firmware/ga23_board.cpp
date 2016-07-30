@@ -55,18 +55,18 @@ static void ga23_board_post(){
     Serial.println(bmp085_val);
 
     if(bmp085_val < 800){
-        Serial.println("POST: Error: Humidity out of range");
+        Serial.println("POST: Error: bmp085 pressure out of range");
     }
 
     // Check apogee_sp212
     Serial.println("POST: Check apogee_sp212 value");
     int apogee_sp212_val = ga23_dev_apogee_sp212_read();
 
-    Serial.print("POST: bmp085 value - ");
+    Serial.print("POST: apogee_sp212 solar irr value - ");
     Serial.println(apogee_sp212_val);
 
     if(apogee_sp212_val < 100){
-        Serial.println("POST: Error: Apogee out of range");
+        Serial.println("POST: Error: apogee solar irr out of range");
     }
 
     // Check batt
