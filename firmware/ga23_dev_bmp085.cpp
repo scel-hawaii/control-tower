@@ -9,3 +9,8 @@ int ga23_dev_bmp085_read(void){
     int value = bmp085.readPressure();
     return value;
 }
+
+float ga23_dev_bmp085_read_temp(void){
+    float value = bmp085.readTemperature();
+    return value;
+}

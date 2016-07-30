@@ -6,5 +6,6 @@
 void ga23_dev_bmp085_open(void);
 int ga23_dev_bmp085_avail(void);
 int ga23_dev_bmp085_read(void);
+float ga23_dev_bmp085_read_temp(void);
 #endif
 

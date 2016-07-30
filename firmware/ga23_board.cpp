@@ -54,12 +54,22 @@ static void ga23_board_post(){
 
     // Check BMP085
     Serial.println("POST: Check bmp085 value");
-    int bmp085_val = ga23_dev_bmp085_read();
+    int32_t bmp085_val = ga23_dev_bmp085_read();
 
-    Serial.print("POST: bmp085 value - ");
+    Serial.print("POST: bmp085 value:  ");
     Serial.println(bmp085_val);
 
     if(bmp085_val < 800){
+        Serial.println("POST: Error: bmp085 pressure out of range");
+    }
+
+    Serial.println("POST: Check bmp085 temp");
+    float bmp085_temp = ga23_dev_bmp085_read_temp();
+
+    Serial.print("POST: bmp085 temp: ");
+    Serial.println(bmp085_temp);
+
+    if(bmp085_temp < 800){
         Serial.println("POST: Error: bmp085 pressure out of range");
     }
 
