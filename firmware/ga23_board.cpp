@@ -17,6 +17,16 @@ void ga23_board_init(ga23_board *b){
     b->sample_count = 0;
     b->node_addr = 0;
 
+    // Initialize the packet
+    b->data_packet.schema = 0;
+    b->data_packet.node_addr = 0;
+    b->data_packet.uptime_ms = 0;
+    b->data_packet.batt_mv = 0;
+    b->data_packet.panel_mv = 0;
+    b->data_packet.bmp085_press_pa = 0;
+    b->data_packet.bmp085_temp_decic = 0;
+    b->data_packet.humidity_centi_pct = 0;
+    b->data_packet.apogee_w_m2 = 0;
 }
 
 static void ga23_board_print_build_opts()
