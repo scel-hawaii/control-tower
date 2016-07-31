@@ -212,17 +212,17 @@ static void ga23_board_run_cmd(struct ga23_board* b){
 
 static void ga23_board_tx(struct ga23_board* b){
     uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_];
-    struct ga23_packet data_packet = b->data_packet;
 
-    Serial.println("Sample Transmit");
+    Serial.println("Sample Transmit Start");
 
     memset(payload, '\0', sizeof(payload));
-    memcpy(payload, &data_packet, sizeof(data_packet));
-
+    memcpy(payload, &(b->data_packet) , sizeof(b->data_packet));
     ga23_dev_xbee_write(payload);
 
     // Reset the sample count
     b->sample_count = 0;
+
+    Serial.println("Sample Transmit End");
 }
 
 static void ga23_board_soft_rst(){
