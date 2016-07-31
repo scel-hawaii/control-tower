@@ -1,7 +1,7 @@
 #include "ga23_board.h"
 
 static void ga23_board_print_build_opts();
-static void ga23_board_setup();
+static void ga23_board_setup(struct ga23_board* b);
 static void ga23_board_post();
 static void ga23_board_sample(struct ga23_board* b);
 static int ga23_board_ready_tx(struct ga23_board* b);
@@ -16,6 +16,7 @@ void ga23_board_init(ga23_board *b){
     b->ready_tx = &ga23_board_ready_tx;
     b->sample_count = 0;
     b->node_addr = 0;
+
 
     // Initialize the packet
     b->data_packet.schema = 0;
@@ -36,7 +37,7 @@ static void ga23_board_print_build_opts()
     Serial.println("Generation: apple23");
 }
 
-static void ga23_board_setup(){
+static void ga23_board_setup(struct ga23_board* b){
     Serial.begin(9600);
     Serial.println("Board Setup Init");
 
@@ -47,6 +48,10 @@ static void ga23_board_setup(){
     ga23_dev_apogee_sp212_open();
     ga23_dev_batt_open();
     ga23_dev_spanel_open();
+    ga23_dev_eeprom_naddr_open();
+
+    // load the address from the hardware
+    b->node_addr = ga23_dev_eeprom_naddr_read();
 
     delay(100);
     Serial.println("Board Setup Done");

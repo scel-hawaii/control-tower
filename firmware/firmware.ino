@@ -7,6 +7,8 @@
  *
  ********************************************/
 
+#include <EEPROM.h>
+
 /* Program Libraries */
 #include "config.h"
 #include "sensors.h"
@@ -88,7 +90,7 @@ void setup(){
 #ifdef GA23
     ga23_board_init(&board);
     board.print_build_opts();
-    board.setup();
+    board.setup(&board);
     board.post();
 
     #ifdef _BCFG_ONLY_POST

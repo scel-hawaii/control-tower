@@ -4,6 +4,7 @@
 #include "ga23_dev_apogee_sp212.h"
 #include "ga23_dev_batt.h"
 #include "ga23_dev_spanel.h"
+#include "ga23_dev_eeprom_naddr.h"
 
 #ifndef GA23_BOARD_H
 #define GA23_BOARD_H
@@ -21,7 +22,7 @@ struct ga23_packet{
 };
 
 struct ga23_board{
-    void (*setup)(void);
+    void (*setup)(struct ga23_board* b);
     void (*post)(void);
     void (*sample)(struct ga23_board* b);
     void (*print_build_opts)(void);
