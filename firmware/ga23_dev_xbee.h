@@ -1,5 +1,6 @@
 #include <Arduino.h>
 #include <XBee.h>
+#include <SoftwareSerial.h>
 
 #define _GA23_DEV_XBEE_BUFSIZE_ 150
 
@@ -11,5 +12,9 @@ int ga23_dev_xbee_read(void);
 void ga23_dev_xbee_write(uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_]);
 
 static XBee xbee = XBee();
+
+const byte rx_pin = 2;
+const byte tx_pin = 3;
+static SoftwareSerial soft_serial(rx_pin, tx_pin);
 #endif
 

@@ -2,8 +2,8 @@
 
 void ga23_dev_xbee_open(void)
 {
-    Serial.begin(9600);
-    xbee.begin(Serial);
+    soft_serial.begin(9600);
+    xbee.begin(soft_serial);
 }
 
 int ga23_dev_xbee_avail(void)
