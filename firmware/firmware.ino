@@ -143,18 +143,9 @@ void setup(){
  ********************************************/
 void loop(){
 #ifdef GA23
-    long last_sample_ms = 0;
-    long wait_ms = 1000;
     while(1){
-        if( (millis() - last_sample_ms ) >= wait_ms){
-            last_sample_ms = millis();
-            if(board.ready_tx(&board)){
-                board.tx(&board);
-            }
-            else{
-                board.sample(&board);
-            }
-        }
+        if(board.ready_sample(&board))  board.sample(&board);
+        if(board.ready_tx(&board))      board.tx(&board);
     }
 #else
     long last_sample_ms = 0;

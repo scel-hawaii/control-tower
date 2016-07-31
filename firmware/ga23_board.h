@@ -28,6 +28,8 @@ struct ga23_board{
     void (*print_build_opts)(void);
     void (*tx)(struct ga23_board* b);
     int (*ready_tx)(struct ga23_board* b);
+    int (*ready_sample)(struct ga23_board* b);
+    unsigned long prev_sample_ms;
     int sample_count;
     uint16_t node_addr;
     struct ga23_packet data_packet;

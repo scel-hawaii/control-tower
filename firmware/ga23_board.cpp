@@ -3,19 +3,24 @@
 static void ga23_board_print_build_opts();
 static void ga23_board_setup(struct ga23_board* b);
 static void ga23_board_post();
+
 static void ga23_board_sample(struct ga23_board* b);
-static int ga23_board_ready_tx(struct ga23_board* b);
+static int ga23_board_ready_sample(struct ga23_board* b);
+
 static void ga23_board_tx(struct ga23_board* b);
+static int ga23_board_ready_tx(struct ga23_board* b);
 
 void ga23_board_init(ga23_board *b){
     b->print_build_opts = &ga23_board_print_build_opts;
     b->setup = &ga23_board_setup;
     b->post = &ga23_board_post;
     b->sample = &ga23_board_sample;
+    b->ready_sample = &ga23_board_ready_sample;
     b->tx = &ga23_board_tx;
     b->ready_tx = &ga23_board_ready_tx;
     b->sample_count = 0;
     b->node_addr = 0;
+    b->prev_sample_ms = 0;
 
 
     // Initialize the packet
@@ -149,6 +154,19 @@ static void ga23_board_sample(struct ga23_board* b){
 
 static int ga23_board_ready_tx(struct ga23_board* b){
     if(b->sample_count > 59){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
+
+static int ga23_board_ready_sample(struct ga23_board* b){
+    const int wait_ms = 1000;
+    const int sample_delta = millis() - b->prev_sample_ms;
+
+    if( sample_delta >= wait_ms){
+        b->prev_sample_ms = millis();
         return 1;
     }
     else{
