@@ -15,6 +15,8 @@ void ga23_board_init(ga23_board *b){
     b->tx = &ga23_board_tx;
     b->ready_tx = &ga23_board_ready_tx;
     b->sample_count = 0;
+    b->node_addr = 0;
+
 }
 
 static void ga23_board_print_build_opts()
@@ -27,11 +29,14 @@ static void ga23_board_print_build_opts()
 static void ga23_board_setup(){
     Serial.begin(9600);
     Serial.println("Board Setup Init");
+
+    // Open Devices
     ga23_dev_xbee_open();
     ga23_dev_sht1x_open();
     ga23_dev_bmp085_open();
     ga23_dev_apogee_sp212_open();
     ga23_dev_batt_open();
+    ga23_dev_spanel_open();
 
     delay(100);
     Serial.println("Board Setup Done");
@@ -63,6 +68,7 @@ static void ga23_board_post(){
         Serial.println("POST: Error: bmp085 pressure out of range");
     }
 
+    // Check BMP085 temperature
     Serial.println("POST: Check bmp085 temp");
     uint16_t bmp085_temp = ga23_dev_bmp085_read_temp();
 
@@ -93,6 +99,16 @@ static void ga23_board_post(){
 
     if(batt_val < 100){
         Serial.println("POST: Error: batt out of range");
+    }
+
+    // check panel sensor value
+    Serial.println("POST: check panel sensor value");
+    int spanel_val = ga23_dev_spanel_read();
+    Serial.print("POST: spanel value: ");
+    Serial.println(spanel_val);
+
+    if(spanel_val < 100){
+        Serial.println("POST: ERROR: spanel value out of range");
     }
 
     Serial.println("POST End");
