@@ -64,7 +64,7 @@ static void ga23_board_post(){
     }
 
     Serial.println("POST: Check bmp085 temp");
-    float bmp085_temp = ga23_dev_bmp085_read_temp();
+    uint16_t bmp085_temp = ga23_dev_bmp085_read_temp();
 
     Serial.print("POST: bmp085 temp: ");
     Serial.println(bmp085_temp);

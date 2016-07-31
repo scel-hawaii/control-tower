@@ -5,12 +5,13 @@ void ga23_dev_bmp085_open(void){
     bmp085.begin();
 }
 
-int ga23_dev_bmp085_read(void){
-    int value = bmp085.readPressure();
+uint32_t ga23_dev_bmp085_read(void){
+    uint32_t value = bmp085.readPressure();
     return value;
 }
 
-float ga23_dev_bmp085_read_temp(void){
-    float value = bmp085.readTemperature();
+uint16_t ga23_dev_bmp085_read_temp(void){
+    float value_f = bmp085.readTemperature();
+    uint16_t value = value_f * 10;
     return value;
 }
