@@ -29,7 +29,6 @@ void ga23_board_init(ga23_board *b){
     b->node_addr = 0;
     b->prev_sample_ms = 0;
 
-
     // Initialize the packet
     b->data_packet.schema = 0;
     b->data_packet.node_addr = 0;
@@ -160,7 +159,8 @@ static void ga23_board_sample(struct ga23_board* b){
 }
 
 static int ga23_board_ready_tx(struct ga23_board* b){
-    if(b->sample_count > 59){
+    const int max_samples = 60;
+    if(b->sample_count > max_samples-1){
         return 1;
     }
     else{
@@ -212,14 +212,20 @@ static void ga23_board_run_cmd(struct ga23_board* b){
 
 static void ga23_board_tx(struct ga23_board* b){
     uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_];
+    int schema_len = sizeof(b->data_packet);
 
     Serial.println("Sample Transmit Start");
 
+    // We need to copy our struct data over to a byte array
+    // to get a consistent size for sending over xbee.
+    // Raw structs have alignment bytes that are in-between the
+    // data bytes.
     memset(payload, '\0', sizeof(payload));
-    memcpy(payload, &(b->data_packet) , sizeof(b->data_packet));
-    ga23_dev_xbee_write(payload);
+    memcpy(payload, &(b->data_packet), schema_len);
+    ga23_dev_xbee_write(payload, schema_len);
 
-    // Reset the sample count
+    // Reset the board sample count so that
+    // goes through the sample loop again.
     b->sample_count = 0;
 
     Serial.println("Sample Transmit End");

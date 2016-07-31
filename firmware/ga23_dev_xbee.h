@@ -9,7 +9,7 @@
 void ga23_dev_xbee_open(void);
 int ga23_dev_xbee_avail(void);
 int ga23_dev_xbee_read(void);
-void ga23_dev_xbee_write(uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_]);
+void ga23_dev_xbee_write(uint8_t* data, int data_len);
 
 static XBee xbee = XBee();
 
