@@ -133,6 +133,16 @@ static void ga23_board_post(){
 static void ga23_board_sample(struct ga23_board* b){
     Serial.println("Sample Start");
     Serial.println(b->sample_count);
+
+    struct ga23_packet* data_packet = &(b->data_packet);
+    data_packet->uptime_ms           = millis();
+    data_packet->batt_mv             = ga23_dev_batt_read();
+    data_packet->panel_mv            = ga23_dev_spanel_read();
+    data_packet->bmp085_press_pa     = ga23_dev_bmp085_read();
+    data_packet->bmp085_temp_decic   = ga23_dev_bmp085_read_temp();
+    data_packet->humidity_centi_pct  = ga23_dev_sht1x_read();
+    data_packet->apogee_w_m2         = ga23_dev_apogee_sp212_read();
+
     Serial.println("Sample End");
     b->sample_count++;
 }
@@ -147,7 +157,17 @@ static int ga23_board_ready_tx(struct ga23_board* b){
 }
 
 static void ga23_board_tx(struct ga23_board* b){
+    uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_];
+    struct ga23_packet data_packet = b->data_packet;
+
     Serial.println("Sample Transmit");
+
+    memset(payload, '\0', sizeof(payload));
+    memcpy(payload, &data_packet, sizeof(data_packet));
+
+    ga23_dev_xbee_write(payload);
+
+    // Reset the sample count
     b->sample_count = 0;
 }
 
