@@ -25,10 +25,12 @@ struct ga23_board{
     void (*setup)(struct ga23_board* b);
     void (*post)(void);
     void (*sample)(struct ga23_board* b);
+    void (*run_cmd)(struct ga23_board* b);
     void (*print_build_opts)(void);
     void (*tx)(struct ga23_board* b);
     int (*ready_tx)(struct ga23_board* b);
     int (*ready_sample)(struct ga23_board* b);
+    int (*ready_run_cmd)(struct ga23_board* b);
     unsigned long prev_sample_ms;
     int sample_count;
     uint16_t node_addr;

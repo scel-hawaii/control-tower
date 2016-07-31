@@ -4,6 +4,9 @@ static void ga23_board_print_build_opts();
 static void ga23_board_setup(struct ga23_board* b);
 static void ga23_board_post();
 
+static void ga23_board_run_cmd(struct ga23_board* b);
+static int ga23_board_ready_run_cmd(struct ga23_board* b);
+
 static void ga23_board_sample(struct ga23_board* b);
 static int ga23_board_ready_sample(struct ga23_board* b);
 
@@ -11,6 +14,7 @@ static void ga23_board_tx(struct ga23_board* b);
 static int ga23_board_ready_tx(struct ga23_board* b);
 
 void ga23_board_init(ga23_board *b){
+    // Link functions to make them accessable
     b->print_build_opts = &ga23_board_print_build_opts;
     b->setup = &ga23_board_setup;
     b->post = &ga23_board_post;
@@ -18,6 +22,9 @@ void ga23_board_init(ga23_board *b){
     b->ready_sample = &ga23_board_ready_sample;
     b->tx = &ga23_board_tx;
     b->ready_tx = &ga23_board_ready_tx;
+    b->run_cmd = &ga23_board_run_cmd;
+    b->ready_run_cmd = &ga23_board_ready_run_cmd;
+
     b->sample_count = 0;
     b->node_addr = 0;
     b->prev_sample_ms = 0;
@@ -171,6 +178,35 @@ static int ga23_board_ready_sample(struct ga23_board* b){
     }
     else{
         return 0;
+    }
+}
+
+static int ga23_board_ready_run_cmd(struct ga23_board* b){
+    return Serial.available();
+}
+
+static void ga23_board_run_cmd(struct ga23_board* b){
+    Serial.println("Entered Command Mode");
+    while(Serial.read() != '\n');
+    while(1){
+        if(Serial.available()){
+            char input = Serial.read();
+            Serial.print("GOT A COMMAND: ");
+            Serial.println(input);
+            while(Serial.read() != '\n');
+            if(input == 'E') {
+                break;
+            }
+            else{
+                switch(input){
+                    case 'T':
+                        Serial.println("Stub Command Mode Command");
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 }
 
