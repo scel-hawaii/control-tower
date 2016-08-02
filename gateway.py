@@ -6,7 +6,7 @@ import datetime
 import logging
 import sys
 import os
-import json
+import pickle
 
 class XBeeGateway:
 
@@ -37,7 +37,7 @@ class XBeeGateway:
                     "timestamp": datetime.datetime.now(),
                     "xbee_frame": xbee_frame
                     }
-            d = json.dumps(data)
+            d = pickle.dumps(data)
 
             s = "[" + str(datetime.datetime.now()) + "] " + "Published xbee frame"
             logging.info(s)
