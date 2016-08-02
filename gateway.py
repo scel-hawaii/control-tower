@@ -3,10 +3,10 @@
 from xbee import ZigBee
 import serial
 import datetime
-import pickle
 import logging
 import sys
 import os
+import json
 
 class XBeeGateway:
 
@@ -37,7 +37,7 @@ class XBeeGateway:
                     "timestamp": datetime.datetime.now(),
                     "xbee_frame": xbee_frame
                     }
-            d = pickle.dumps(data)
+            d = json.dumps(data)
 
             s = "[" + str(datetime.datetime.now()) + "] " + "Published xbee frame"
             logging.info(s)
