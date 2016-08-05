@@ -15,15 +15,13 @@ class XBeeGateway:
         print "Setup"
         self.callbacks = []
 
-    def register_callback(self, callback):
-        self.callbacks.append(callback)
-
-    def setup(self):
-        print "Init XBeeGateway"
-        ser_port = '/dev/ttyUSB0'
-        baud_rate = 9600
+    """
+        Set up an XBee Device
+    """
+    def setup_xbee(self, serial_port, baud_rate):
+        print "Setup XBee Device"
         try:
-            ser = serial.Serial(ser_port, baud_rate)
+            ser = serial.Serial(serial_port, baud_rate)
             xbee = ZigBee(ser, escaped=True)
         except serial.serialutil.SerialException as e:
             print "Serial Error: ", e
@@ -31,7 +29,18 @@ class XBeeGateway:
             logging.warning(str(e))
             sys.exit(1)
 
+    """
+        Register a callback to be executed when data is read from
+        the XBee.
+    """
+    def register_callback(self, callback):
+        self.callbacks.append(callback)
 
+
+    """
+        Main loop for the gateway. This is run when you want to start
+        the gateway.
+    """
     def begin(self):
         while True:
             xbee_frame = xbee.wait_read_frame()
@@ -39,6 +48,10 @@ class XBeeGateway:
             for callback in self.callbacks:
                 callback(d)
 
+    """
+        Begin a fake loop using a sample RX packet
+        defined in 'save.p'. Useful for debugging purposes.
+    """
     def begin_fake(self):
         xbee_frame = pickle.load( open( "save.p", "rb" ) )
         while True:
@@ -47,6 +60,9 @@ class XBeeGateway:
             for callback in self.callbacks:
                 callback(d)
 
+    """
+        Timestamp an xbee frame that comes in from an XBee Device
+    """
     def process_packet(self, xbee_frame):
         data = {
                 "timestamp": datetime.datetime.now(),
@@ -54,6 +70,8 @@ class XBeeGateway:
                }
         return pickle.dumps(data)
 
+
+# Self Test
 if __name__ == "__main__":
     def print_data(d):
         print "Got data"
@@ -62,5 +80,5 @@ if __name__ == "__main__":
 
     xbg = XBeeGateway()
     xbg.register_callback(print_data)
-    # xbg.setup()
+    # xbg.setup_xbee()
     xbg.begin_fake()
