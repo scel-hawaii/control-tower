@@ -165,7 +165,7 @@ static void ga23_board_sample(struct ga23_board* b){
 }
 
 static int ga23_board_ready_tx(struct ga23_board* b){
-    const int max_samples = 60;
+    const int max_samples = 30;
     if(b->sample_count > max_samples-1){
         return 1;
     }
@@ -175,7 +175,7 @@ static int ga23_board_ready_tx(struct ga23_board* b){
 }
 
 static int ga23_board_ready_sample(struct ga23_board* b){
-    const int wait_ms = 1000;
+    const int wait_ms = 2000;
     const int sample_delta = millis() - b->prev_sample_ms;
 
     if( sample_delta >= wait_ms){
