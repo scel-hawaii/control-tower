@@ -10,12 +10,6 @@
 #include <EEPROM.h>
 
 /* Program Libraries */
-#include "config.h"
-#include "sensors.h"
-#include "transmit.h"
-#include "schema.h"
-#include "utilities.h"
-#include "routines.h"
 #include "log.h"
 #include "mod_cmd_mode.h"
 #include "gen_apple23/ga23_board.h"

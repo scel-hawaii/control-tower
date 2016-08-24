@@ -1,8 +1,8 @@
 all:
-	platformio run
+	platformio run --environment ga23_debug
 
 upload:
-	platformio run --target upload
+	platformio run --environment ga23_debug --target upload
 
 clean:
 	platformio run --target clean
