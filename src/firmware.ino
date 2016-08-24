@@ -11,7 +11,6 @@
 
 /* Program Libraries */
 #include "log.h"
-#include "mod_cmd_mode.h"
 #include "gen_apple23/ga23_board.h"
 
 /* Arudino Libraries */
