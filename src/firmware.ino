@@ -18,7 +18,7 @@
 #include "routines.h"
 #include "log.h"
 #include "mod_cmd_mode.h"
-#include "ga23_board.h"
+#include "gen_apple23/ga23_board.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
