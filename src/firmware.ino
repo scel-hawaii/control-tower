@@ -30,42 +30,6 @@
 #include <HIH613x.h>
 #include <XBee.h>
 
-
-#ifdef GA23
-#else
-/* Global Xbee object */
-XBee G_xbee = XBee();
-
-#ifdef APPLE
-schema_7 G_BINpacket;
-#elif defined(CRANBERRY) || defined(DRAGONFRUIT)
-schema_3 G_BINpacket;
-#endif
-
-/* Global for Filters */
-LowPassFilter G_solar_filter;
-LowPassFilter G_battery_filter;
-
-/* Global Variable */
-int G_count;
-
-/* Global Function Pointers */
-void (*Sensors_init)(void);
-long (*Sensors_sampleBatterymV)(void);
-long (*Sensors_samplePanelmV)(void);
-long (*Sensors_sampleSolarIrrmV)(void);
-long (*Sensors_samplePressurepa)(void);
-long (*Sensors_sampleHumiditypct)(void);
-long (*Sensors_sampleTempdecic)(void);
-void (*Packet_Clear)(void);
-void (*Packet_Con)(void);
-void (*Packet_Transmit)(void);
-void (*Normal_Routine)(int *count);
-
-/* Software Serial */
-SoftwareSerial mySerial(_PIN_XBEE_RX, _PIN_XBEE_TX);
-#endif
-
 #ifdef GA23
 struct ga23_board board;
 #endif
@@ -92,35 +56,6 @@ void setup(){
     // flag is defined.
     while(1);
     #endif
-
-#else
-    Serial.begin(9600);
-    mySerial.begin(9600);
-    print_log("POST Start");
-
-    /* Variable Initialization */
-    G_count = 0;
-
-    /* Generation Check */
-    Gen_config();
-
-    /* Transmission Method Check */
-    Transmit_config();
-
-    /* Initialization */
-    Sensors_init();
-    G_xbee.begin(mySerial);
-
-    /* Packet Initialization */
-    Packet_Clear();
-
-    /* Set Power State */
-    pstate_system(_ACTIVE);
-
-    print_log("POST Complete");
-
-    /* Delay for configuration settings */
-    delay(500);
 #endif
 }
 
@@ -142,16 +77,6 @@ void loop(){
         if(board.ready_tx(&board))      board.tx(&board);
         if(board.ready_run_cmd(&board))      board.run_cmd(&board);
         if(board.ready_heartbeat_tx(&board))      board.heartbeat_tx(&board);
-    }
-#else
-    long last_sample_ms = 0;
-    long wait_ms = 1000;
-    while(1){
-        if( (millis() - last_sample_ms ) >= wait_ms){
-            last_sample_ms = millis();
-            Normal_Routine(&G_count);
-        }
-        cmd_mode_check();
     }
 #endif
 
