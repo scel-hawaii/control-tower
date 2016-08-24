@@ -21,6 +21,13 @@ struct ga23_packet{
     uint16_t apogee_w_m2;
 };
 
+struct ga23_heartbeat_packet{
+    uint16_t schema;
+    uint16_t node_addr;           // Address of Arduino
+    uint32_t uptime_ms;         // Time since start of program
+    uint16_t batt_mv;           // Battery Voltage (in milli volts)
+};
+
 struct ga23_board{
     void (*setup)(struct ga23_board* b);
     void (*post)(void);
@@ -31,7 +38,12 @@ struct ga23_board{
     int (*ready_tx)(struct ga23_board* b);
     int (*ready_sample)(struct ga23_board* b);
     int (*ready_run_cmd)(struct ga23_board* b);
+
+    int (*ready_heartbeat_tx)(struct ga23_board* b);
+    void (*heartbeat_tx)(struct ga23_board* b);
+
     unsigned long prev_sample_ms;
+    unsigned long prev_heartbeat_ms;
     int sample_count;
     uint16_t node_addr;
     struct ga23_packet data_packet;

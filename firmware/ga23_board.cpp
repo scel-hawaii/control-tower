@@ -13,6 +13,9 @@ static int ga23_board_ready_sample(struct ga23_board* b);
 static void ga23_board_tx(struct ga23_board* b);
 static int ga23_board_ready_tx(struct ga23_board* b);
 
+static int ga23_board_ready_heartbeat_tx(struct ga23_board* b);
+static void ga23_board_heartbeat_tx(struct ga23_board* b);
+
 void ga23_board_init(ga23_board *b){
     // Link functions to make them accessable
     b->print_build_opts = &ga23_board_print_build_opts;
@@ -24,6 +27,9 @@ void ga23_board_init(ga23_board *b){
     b->ready_tx = &ga23_board_ready_tx;
     b->run_cmd = &ga23_board_run_cmd;
     b->ready_run_cmd = &ga23_board_ready_run_cmd;
+
+    b->ready_heartbeat_tx = &ga23_board_ready_heartbeat_tx;
+    b->heartbeat_tx = &ga23_board_heartbeat_tx;
 
     b->sample_count = 0;
     b->node_addr = 0;
@@ -208,6 +214,49 @@ static void ga23_board_run_cmd(struct ga23_board* b){
             }
         }
     }
+}
+
+static int ga23_board_ready_heartbeat_tx(struct ga23_board* b){
+    const int wait_ms = 3000;
+    int sample_delta = millis() - b->prev_heartbeat_ms;
+
+    int max_heartbeat_ms = 1000*60*5;
+
+    // Heartbeats are only enabled for 5 minutes after the
+    // device boots up.
+    if( millis() < max_heartbeat_ms ){
+        if( sample_delta >= wait_ms){
+            b->prev_heartbeat_ms = millis();
+            return 1;
+        }
+        else{
+            return 0;
+        }
+    }
+}
+
+static void ga23_board_heartbeat_tx(struct ga23_board* b){
+    uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_];
+    struct ga23_heartbeat_packet hb_packet;
+
+    hb_packet.schema = 5;
+    hb_packet.uptime_ms = millis();
+    hb_packet.batt_mv = ga23_dev_batt_read();
+    hb_packet.node_addr = ga23_dev_eeprom_naddr_read();
+
+    int schema_len = sizeof(hb_packet);
+
+    Serial.println("TX Heartbeat Start");
+
+    // We need to copy our struct data over to a byte array
+    // to get a consistent size for sending over xbee.
+    // Raw structs have alignment bytes that are in-between the
+    // data bytes.
+    memset(payload, '\0', sizeof(payload));
+    memcpy(payload, &(hb_packet), schema_len);
+    ga23_dev_xbee_write(payload, schema_len);
+
+    Serial.println("TX Heartbeat End");
 }
 
 static void ga23_board_tx(struct ga23_board* b){

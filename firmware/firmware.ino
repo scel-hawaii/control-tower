@@ -147,6 +147,7 @@ void loop(){
         if(board.ready_sample(&board))  board.sample(&board);
         if(board.ready_tx(&board))      board.tx(&board);
         if(board.ready_run_cmd(&board))      board.run_cmd(&board);
+        if(board.ready_heartbeat_tx(&board))      board.heartbeat_tx(&board);
     }
 #else
     long last_sample_ms = 0;

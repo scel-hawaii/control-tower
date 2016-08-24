@@ -1,5 +1,5 @@
 BOARD_TAG    = uno
-MONITOR_PORT = /tmp/simavr-uart0
+MONITOR_PORT = /dev/ttyUSB0
 
 CPPFLAGS=$(SCEL_BUILD_FLAGS)
 
