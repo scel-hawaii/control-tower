@@ -78,6 +78,10 @@ static void ga23_board_setup(struct ga23_board* b){
 static void ga23_board_post(){
     Serial.println("POST Begin");
 
+    // Display node addr
+    Serial.print("POST: node addr ");
+    Serial.println((int) ga23_dev_eeprom_naddr_read());
+
     // Check sht1x
     Serial.println("POST: Check sht1x value");
     int sht1x_val = ga23_dev_sht1x_read();
