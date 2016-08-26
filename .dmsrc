@@ -1,0 +1,5 @@
+# Config file for simulation
+hexfile_dir: ".pioenvs/ga23_debug/"
+hexfile: "firmware.hex"
+build_flags: "-DDEBUG -DSENSOR_STUB"
+
