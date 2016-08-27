@@ -50,13 +50,13 @@ void ga23_board_init(ga23_board *b){
 static void ga23_board_print_build_opts()
 {
     Serial.begin(9600);
-    Serial.println("Board Options ");
-    Serial.println("Generation: apple23");
+    Serial.println("Board Opts");
+    Serial.println("Gen: apple23");
 }
 
 static void ga23_board_setup(struct ga23_board* b){
     Serial.begin(9600);
-    Serial.println("Board Setup Init");
+    Serial.println("Board Setup Start");
 
     // Open Devices
     ga23_dev_xbee_open();
@@ -79,72 +79,72 @@ static void ga23_board_post(){
     Serial.println("POST Begin");
 
     // Display node addr
-    Serial.print("POST: node addr ");
+    Serial.print("P: node addr ");
     Serial.println((int) ga23_dev_eeprom_naddr_read());
 
     // Check sht1x
-    Serial.println("POST: Check sht1x value");
+    Serial.println("P: Check sht1x value");
     int sht1x_val = ga23_dev_sht1x_read();
 
-    Serial.print("POST: sht1x value - ");
+    Serial.print("P: sht1x value - ");
     Serial.println(sht1x_val);
 
     if(sht1x_val < 800){
-        Serial.println("POST: Error: Humidity out of range");
+        Serial.println("P: Error: Humidity out of range");
     }
 
     // Check BMP085
-    Serial.println("POST: Check bmp085 value");
+    Serial.println("P: Check bmp085 value");
     int32_t bmp085_val = ga23_dev_bmp085_read();
 
-    Serial.print("POST: bmp085 value:  ");
+    Serial.print("P: bmp085 value:  ");
     Serial.println(bmp085_val);
 
     if(bmp085_val < 800){
-        Serial.println("POST: Error: bmp085 pressure out of range");
+        Serial.println("P: Error: bmp085 pressure out of range");
     }
 
     // Check BMP085 temperature
-    Serial.println("POST: Check bmp085 temp");
+    Serial.println("P: Check bmp085 temp");
     uint16_t bmp085_temp = ga23_dev_bmp085_read_temp();
 
-    Serial.print("POST: bmp085 temp: ");
+    Serial.print("P: bmp085 temp: ");
     Serial.println(bmp085_temp);
 
     if(bmp085_temp < 800){
-        Serial.println("POST: Error: bmp085 pressure out of range");
+        Serial.println("P: Error: bmp085 pressure out of range");
     }
 
     // Check apogee_sp212
-    Serial.println("POST: Check apogee_sp212 value");
+    Serial.println("P: Check apogee_sp212 value");
     int apogee_sp212_val = ga23_dev_apogee_sp212_read();
 
-    Serial.print("POST: apogee_sp212 solar irr value - ");
+    Serial.print("P: apogee_sp212 solar irr value - ");
     Serial.println(apogee_sp212_val);
 
     if(apogee_sp212_val < 100){
-        Serial.println("POST: Error: apogee solar irr out of range");
+        Serial.println("P: Error: apogee solar irr out of range");
     }
 
     // Check batt
-    Serial.println("POST: Check batt value");
+    Serial.println("P: Check batt value");
     int batt_val = ga23_dev_batt_read();
 
-    Serial.print("POST: batt value - ");
+    Serial.print("P: batt value - ");
     Serial.println(batt_val);
 
     if(batt_val < 100){
-        Serial.println("POST: Error: batt out of range");
+        Serial.println("P: Error: batt out of range");
     }
 
     // check panel sensor value
-    Serial.println("POST: check panel sensor value");
+    Serial.println("P: check panel sensor value");
     int spanel_val = ga23_dev_spanel_read();
-    Serial.print("POST: spanel value: ");
+    Serial.print("P: spanel value: ");
     Serial.println(spanel_val);
 
     if(spanel_val < 100){
-        Serial.println("POST: ERROR: spanel value out of range");
+        Serial.println("P: ERROR: spanel value out of range");
     }
 
     Serial.println("POST End");
@@ -196,12 +196,12 @@ static int ga23_board_ready_run_cmd(struct ga23_board* b){
 }
 
 static void ga23_board_run_cmd(struct ga23_board* b){
-    Serial.println("Entered Command Mode");
+    Serial.println("Enter CMD Mode");
     while(Serial.read() != '\n');
     while(1){
         if(Serial.available()){
             char input = Serial.read();
-            Serial.print("GOT A COMMAND: ");
+            Serial.print("GOT A CMD: ");
             Serial.println(input);
             while(Serial.read() != '\n');
             if(input == 'E') {
@@ -210,7 +210,7 @@ static void ga23_board_run_cmd(struct ga23_board* b){
             else{
                 switch(input){
                     case 'T':
-                        Serial.println("Stub Command Mode Command");
+                        Serial.println("CMD Mode cmd");
                         break;
                     default:
                         break;
@@ -267,7 +267,7 @@ static void ga23_board_tx(struct ga23_board* b){
     uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);
 
-    Serial.println("Sample Transmit Start");
+    Serial.println("Sample TX Start");
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
@@ -281,7 +281,7 @@ static void ga23_board_tx(struct ga23_board* b){
     // goes through the sample loop again.
     b->sample_count = 0;
 
-    Serial.println("Sample Transmit End");
+    Serial.println("Sample TX End");
 }
 
 static void ga23_board_soft_rst(){
