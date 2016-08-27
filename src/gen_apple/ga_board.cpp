@@ -1,35 +1,35 @@
-#include "ga23_board.h"
+#include "ga_board.h"
 
-static void ga23_board_print_build_opts();
-static void ga23_board_setup(struct ga23_board* b);
-static void ga23_board_post();
+static void ga_board_print_build_opts();
+static void ga_board_setup(struct ga_board* b);
+static void ga_board_post();
 
-static void ga23_board_run_cmd(struct ga23_board* b);
-static int ga23_board_ready_run_cmd(struct ga23_board* b);
+static void ga_board_run_cmd(struct ga_board* b);
+static int ga_board_ready_run_cmd(struct ga_board* b);
 
-static void ga23_board_sample(struct ga23_board* b);
-static int ga23_board_ready_sample(struct ga23_board* b);
+static void ga_board_sample(struct ga_board* b);
+static int ga_board_ready_sample(struct ga_board* b);
 
-static void ga23_board_tx(struct ga23_board* b);
-static int ga23_board_ready_tx(struct ga23_board* b);
+static void ga_board_tx(struct ga_board* b);
+static int ga_board_ready_tx(struct ga_board* b);
 
-static int ga23_board_ready_heartbeat_tx(struct ga23_board* b);
-static void ga23_board_heartbeat_tx(struct ga23_board* b);
+static int ga_board_ready_heartbeat_tx(struct ga_board* b);
+static void ga_board_heartbeat_tx(struct ga_board* b);
 
-void ga23_board_init(ga23_board *b){
+void ga_board_init(ga_board *b){
     // Link functions to make them accessable
-    b->print_build_opts = &ga23_board_print_build_opts;
-    b->setup = &ga23_board_setup;
-    b->post = &ga23_board_post;
-    b->sample = &ga23_board_sample;
-    b->ready_sample = &ga23_board_ready_sample;
-    b->tx = &ga23_board_tx;
-    b->ready_tx = &ga23_board_ready_tx;
-    b->run_cmd = &ga23_board_run_cmd;
-    b->ready_run_cmd = &ga23_board_ready_run_cmd;
+    b->print_build_opts = &ga_board_print_build_opts;
+    b->setup = &ga_board_setup;
+    b->post = &ga_board_post;
+    b->sample = &ga_board_sample;
+    b->ready_sample = &ga_board_ready_sample;
+    b->tx = &ga_board_tx;
+    b->ready_tx = &ga_board_ready_tx;
+    b->run_cmd = &ga_board_run_cmd;
+    b->ready_run_cmd = &ga_board_ready_run_cmd;
 
-    b->ready_heartbeat_tx = &ga23_board_ready_heartbeat_tx;
-    b->heartbeat_tx = &ga23_board_heartbeat_tx;
+    b->ready_heartbeat_tx = &ga_board_ready_heartbeat_tx;
+    b->heartbeat_tx = &ga_board_heartbeat_tx;
 
     b->sample_count = 0;
     b->node_addr = 0;
@@ -47,44 +47,44 @@ void ga23_board_init(ga23_board *b){
     b->data_packet.apogee_w_m2 = 0;
 }
 
-static void ga23_board_print_build_opts()
+static void ga_board_print_build_opts()
 {
     Serial.begin(9600);
     Serial.println("Board Opts");
     Serial.println("Gen: apple23");
 }
 
-static void ga23_board_setup(struct ga23_board* b){
+static void ga_board_setup(struct ga_board* b){
     Serial.begin(9600);
     Serial.println("Board Setup Start");
 
     // Open Devices
-    ga23_dev_xbee_open();
-    ga23_dev_sht1x_open();
-    ga23_dev_bmp085_open();
-    ga23_dev_apogee_sp212_open();
-    ga23_dev_batt_open();
-    ga23_dev_spanel_open();
-    ga23_dev_eeprom_naddr_open();
+    ga_dev_xbee_open();
+    ga_dev_sht1x_open();
+    ga_dev_bmp085_open();
+    ga_dev_apogee_sp212_open();
+    ga_dev_batt_open();
+    ga_dev_spanel_open();
+    ga_dev_eeprom_naddr_open();
 
     // load the address from the hardware
-    b->node_addr = ga23_dev_eeprom_naddr_read();
+    b->node_addr = ga_dev_eeprom_naddr_read();
 
     delay(100);
     Serial.println("Board Setup Done");
 }
 
 // power on self test
-static void ga23_board_post(){
+static void ga_board_post(){
     Serial.println("POST Begin");
 
     // Display node addr
     Serial.print("P: node addr ");
-    Serial.println((int) ga23_dev_eeprom_naddr_read());
+    Serial.println((int) ga_dev_eeprom_naddr_read());
 
     // Check sht1x
     Serial.println("P: Check sht1x value");
-    int sht1x_val = ga23_dev_sht1x_read();
+    int sht1x_val = ga_dev_sht1x_read();
 
     Serial.print("P: sht1x value - ");
     Serial.println(sht1x_val);
@@ -95,7 +95,7 @@ static void ga23_board_post(){
 
     // Check BMP085
     Serial.println("P: Check bmp085 value");
-    int32_t bmp085_val = ga23_dev_bmp085_read();
+    int32_t bmp085_val = ga_dev_bmp085_read();
 
     Serial.print("P: bmp085 value:  ");
     Serial.println(bmp085_val);
@@ -106,7 +106,7 @@ static void ga23_board_post(){
 
     // Check BMP085 temperature
     Serial.println("P: Check bmp085 temp");
-    uint16_t bmp085_temp = ga23_dev_bmp085_read_temp();
+    uint16_t bmp085_temp = ga_dev_bmp085_read_temp();
 
     Serial.print("P: bmp085 temp: ");
     Serial.println(bmp085_temp);
@@ -117,7 +117,7 @@ static void ga23_board_post(){
 
     // Check apogee_sp212
     Serial.println("P: Check apogee_sp212 value");
-    int apogee_sp212_val = ga23_dev_apogee_sp212_read();
+    int apogee_sp212_val = ga_dev_apogee_sp212_read();
 
     Serial.print("P: apogee_sp212 solar irr value - ");
     Serial.println(apogee_sp212_val);
@@ -128,7 +128,7 @@ static void ga23_board_post(){
 
     // Check batt
     Serial.println("P: Check batt value");
-    int batt_val = ga23_dev_batt_read();
+    int batt_val = ga_dev_batt_read();
 
     Serial.print("P: batt value - ");
     Serial.println(batt_val);
@@ -139,7 +139,7 @@ static void ga23_board_post(){
 
     // check panel sensor value
     Serial.println("P: check panel sensor value");
-    int spanel_val = ga23_dev_spanel_read();
+    int spanel_val = ga_dev_spanel_read();
     Serial.print("P: spanel value: ");
     Serial.println(spanel_val);
 
@@ -151,24 +151,24 @@ static void ga23_board_post(){
 
 }
 
-static void ga23_board_sample(struct ga23_board* b){
+static void ga_board_sample(struct ga_board* b){
     Serial.println("Sample Start");
     Serial.println(b->sample_count);
 
-    struct ga23_packet* data_packet = &(b->data_packet);
+    struct ga_packet* data_packet = &(b->data_packet);
     data_packet->uptime_ms           = millis();
-    data_packet->batt_mv             = ga23_dev_batt_read();
-    data_packet->panel_mv            = ga23_dev_spanel_read();
-    data_packet->bmp085_press_pa     = ga23_dev_bmp085_read();
-    data_packet->bmp085_temp_decic   = ga23_dev_bmp085_read_temp();
-    data_packet->humidity_centi_pct  = ga23_dev_sht1x_read();
-    data_packet->apogee_w_m2         = ga23_dev_apogee_sp212_read();
+    data_packet->batt_mv             = ga_dev_batt_read();
+    data_packet->panel_mv            = ga_dev_spanel_read();
+    data_packet->bmp085_press_pa     = ga_dev_bmp085_read();
+    data_packet->bmp085_temp_decic   = ga_dev_bmp085_read_temp();
+    data_packet->humidity_centi_pct  = ga_dev_sht1x_read();
+    data_packet->apogee_w_m2         = ga_dev_apogee_sp212_read();
 
     Serial.println("Sample End");
     b->sample_count++;
 }
 
-static int ga23_board_ready_tx(struct ga23_board* b){
+static int ga_board_ready_tx(struct ga_board* b){
     const int max_samples = 20;
     if(b->sample_count > max_samples-1){
         return 1;
@@ -178,7 +178,7 @@ static int ga23_board_ready_tx(struct ga23_board* b){
     }
 }
 
-static int ga23_board_ready_sample(struct ga23_board* b){
+static int ga_board_ready_sample(struct ga_board* b){
     const int wait_ms = 3000;
     const int sample_delta = millis() - b->prev_sample_ms;
 
@@ -191,11 +191,11 @@ static int ga23_board_ready_sample(struct ga23_board* b){
     }
 }
 
-static int ga23_board_ready_run_cmd(struct ga23_board* b){
+static int ga_board_ready_run_cmd(struct ga_board* b){
     return Serial.available();
 }
 
-static void ga23_board_run_cmd(struct ga23_board* b){
+static void ga_board_run_cmd(struct ga_board* b){
     Serial.println("Enter CMD Mode");
     while(Serial.read() != '\n');
     while(1){
@@ -220,7 +220,7 @@ static void ga23_board_run_cmd(struct ga23_board* b){
     }
 }
 
-static int ga23_board_ready_heartbeat_tx(struct ga23_board* b){
+static int ga_board_ready_heartbeat_tx(struct ga_board* b){
     const int wait_ms = 3000;
     int sample_delta = millis() - b->prev_heartbeat_ms;
 
@@ -239,14 +239,14 @@ static int ga23_board_ready_heartbeat_tx(struct ga23_board* b){
     }
 }
 
-static void ga23_board_heartbeat_tx(struct ga23_board* b){
-    uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_];
-    struct ga23_heartbeat_packet hb_packet;
+static void ga_board_heartbeat_tx(struct ga_board* b){
+    uint8_t payload[_GA_DEV_XBEE_BUFSIZE_];
+    struct ga_heartbeat_packet hb_packet;
 
     hb_packet.schema = 5;
     hb_packet.uptime_ms = millis();
-    hb_packet.batt_mv = ga23_dev_batt_read();
-    hb_packet.node_addr = ga23_dev_eeprom_naddr_read();
+    hb_packet.batt_mv = ga_dev_batt_read();
+    hb_packet.node_addr = ga_dev_eeprom_naddr_read();
 
     int schema_len = sizeof(hb_packet);
 
@@ -258,13 +258,13 @@ static void ga23_board_heartbeat_tx(struct ga23_board* b){
     // data bytes.
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &(hb_packet), schema_len);
-    ga23_dev_xbee_write(payload, schema_len);
+    ga_dev_xbee_write(payload, schema_len);
 
     Serial.println("TX Heartbeat End");
 }
 
-static void ga23_board_tx(struct ga23_board* b){
-    uint8_t payload[_GA23_DEV_XBEE_BUFSIZE_];
+static void ga_board_tx(struct ga_board* b){
+    uint8_t payload[_GA_DEV_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);
 
     Serial.println("Sample TX Start");
@@ -275,7 +275,7 @@ static void ga23_board_tx(struct ga23_board* b){
     // data bytes.
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &(b->data_packet), schema_len);
-    ga23_dev_xbee_write(payload, schema_len);
+    ga_dev_xbee_write(payload, schema_len);
 
     // Reset the board sample count so that
     // goes through the sample loop again.
@@ -284,6 +284,6 @@ static void ga23_board_tx(struct ga23_board* b){
     Serial.println("Sample TX End");
 }
 
-static void ga23_board_soft_rst(){
+static void ga_board_soft_rst(){
     asm volatile ("jmp 0");
 }

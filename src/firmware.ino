@@ -11,7 +11,7 @@
 
 /* Program Libraries */
 #include "log.h"
-#include "gen_apple23/ga23_board.h"
+#include "gen_apple/ga_board.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
@@ -30,7 +30,7 @@
 #include <XBee.h>
 
 #ifdef GA23
-struct ga23_board board;
+struct ga_board board;
 #endif
 
 /*********************************************
@@ -45,7 +45,7 @@ struct ga23_board board;
  ********************************************/
 void setup(){
 #ifdef GA23
-    ga23_board_init(&board);
+    ga_board_init(&board);
     board.print_build_opts();
     board.setup(&board);
     board.post();
