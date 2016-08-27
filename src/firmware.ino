@@ -29,7 +29,7 @@
 #include <HIH613x.h>
 #include <XBee.h>
 
-#ifdef GA23
+#ifdef GA
 struct ga_board board;
 #endif
 
@@ -44,7 +44,7 @@ struct ga_board board;
  *
  ********************************************/
 void setup(){
-#ifdef GA23
+#ifdef GA
     ga_board_init(&board);
     board.print_build_opts();
     board.setup(&board);
@@ -70,7 +70,7 @@ void setup(){
  *
  ********************************************/
 void loop(){
-#ifdef GA23
+#ifdef GA
     while(1){
         if(board.ready_sample(&board))  board.sample(&board);
         if(board.ready_tx(&board))      board.tx(&board);
