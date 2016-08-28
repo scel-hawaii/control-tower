@@ -230,7 +230,7 @@ static int ga_board_ready_heartbeat_tx(struct ga_board* b){
     const int wait_ms = 3000;
     int sample_delta = millis() - b->prev_heartbeat_ms;
 
-    int max_heartbeat_ms = 1000*60*5;
+    unsigned long max_heartbeat_ms = (unsigned long) 1000*69*5;
 
     // Heartbeats are only enabled for 5 minutes after the
     // device boots up.
