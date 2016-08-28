@@ -44,8 +44,10 @@ struct ga_board board;
  *
  ********************************************/
 void setup(){
-#ifdef GA
+    #ifdef GA
     ga_board_init(&board);
+    #endif
+
     board.print_build_opts();
     board.setup(&board);
     board.post();
@@ -55,7 +57,6 @@ void setup(){
     // flag is defined.
     while(1);
     #endif
-#endif
 }
 
 /*********************************************
@@ -70,13 +71,10 @@ void setup(){
  *
  ********************************************/
 void loop(){
-#ifdef GA
     while(1){
         if(board.ready_sample(&board))  board.sample(&board);
         if(board.ready_tx(&board))      board.tx(&board);
         if(board.ready_run_cmd(&board))      board.run_cmd(&board);
         if(board.ready_heartbeat_tx(&board))      board.heartbeat_tx(&board);
     }
-#endif
-
 }
