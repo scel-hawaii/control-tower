@@ -243,6 +243,7 @@ static int ga_board_ready_heartbeat_tx(struct ga_board* b){
             return 0;
         }
     }
+    return 0;
 }
 
 static void ga_board_heartbeat_tx(struct ga_board* b){
