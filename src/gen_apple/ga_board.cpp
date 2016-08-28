@@ -21,16 +21,22 @@ void ga_board_init(ga_board *b){
     b->print_build_opts = &ga_board_print_build_opts;
     b->setup = &ga_board_setup;
     b->post = &ga_board_post;
-    b->sample = &ga_board_sample;
-    b->ready_sample = &ga_board_ready_sample;
+
+    // Sample and TX module
     b->tx = &ga_board_tx;
     b->ready_tx = &ga_board_ready_tx;
+    b->sample = &ga_board_sample;
+    b->ready_sample = &ga_board_ready_sample;
+
+    // CMD Parsing Module
     b->run_cmd = &ga_board_run_cmd;
     b->ready_run_cmd = &ga_board_ready_run_cmd;
 
+    // Heartbeat Module
     b->ready_heartbeat_tx = &ga_board_ready_heartbeat_tx;
     b->heartbeat_tx = &ga_board_heartbeat_tx;
 
+    // State Variables
     b->sample_count = 0;
     b->node_addr = 0;
     b->prev_sample_ms = 0;
