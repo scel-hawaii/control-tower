@@ -5,6 +5,9 @@ void ga_dev_apogee_sp212_open(void){
 }
 
 int ga_dev_apogee_sp212_read(void){
-    int v = analogRead(_PIN_GA_APOGEE_SP212_);
-    return v;
+    int value = 555;
+    #ifndef SEN_STUB
+    value = analogRead(_PIN_GA_APOGEE_SP212_);
+    #endif
+    return value;
 }

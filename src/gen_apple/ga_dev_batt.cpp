@@ -5,6 +5,11 @@ void ga_dev_batt_open(void){
 }
 
 int ga_dev_batt_read(void){
-    int val = analogRead(_PIN_GA_BATT_);
-    return val;
+    int value = 555;
+
+    #ifndef SEN_STUB
+    value = analogRead(_PIN_GA_BATT_);
+    #endif
+
+    return value;
 }

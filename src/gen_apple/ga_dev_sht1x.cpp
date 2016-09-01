@@ -12,6 +12,11 @@ void ga_dev_sht1x_open(void)
 
 int ga_dev_sht1x_read(void)
 {
-    int value =  sht1x.readHumidity();
+    int value = 60;
+
+    #ifndef SEN_STUB
+    value =  sht1x.readHumidity();
+    #endif
+
     return value;
 }

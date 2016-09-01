@@ -5,6 +5,11 @@ void ga_dev_spanel_open(void){
 }
 
 int ga_dev_spanel_read(void){
-    int value = digitalRead(_PIN_GA_SPANEL_);
+    int value = 555;
+
+    #ifndef SEN_STUB
+    value = digitalRead(_PIN_GA_SPANEL_);
+    #endif
+
     return value;
 }

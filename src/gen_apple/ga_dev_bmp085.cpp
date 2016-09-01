@@ -6,12 +6,22 @@ void ga_dev_bmp085_open(void){
 }
 
 uint32_t ga_dev_bmp085_read(void){
-    uint32_t value = bmp085.readPressure();
+    uint32_t value = 80;
+
+    #ifndef SEN_STUB
+    value = bmp085.readPressure();
+    #endif
+
     return value;
 }
 
 uint16_t ga_dev_bmp085_read_temp(void){
+    uint16_t value = 89;
+
+    #ifndef SEN_STUB
     float value_f = bmp085.readTemperature();
-    uint16_t value = value_f * 10;
+    value = value_f * 10;
+    #endif
+
     return value;
 }
