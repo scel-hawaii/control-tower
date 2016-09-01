@@ -22,7 +22,7 @@ class XBeeGateway:
         print "Setup XBee Device"
         try:
             ser = serial.Serial(serial_port, baud_rate)
-            xbee = ZigBee(ser, escaped=True)
+            self.xbee = ZigBee(ser, escaped=True)
         except serial.serialutil.SerialException as e:
             print "Serial Error: ", e
             logging.warning("Serial error")
@@ -43,7 +43,7 @@ class XBeeGateway:
     """
     def begin(self):
         while True:
-            xbee_frame = xbee.wait_read_frame()
+            xbee_frame = self.xbee.wait_read_frame()
             d = self.process_packet(xbee_frame)
             for callback in self.callbacks:
                 callback(d)
