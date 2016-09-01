@@ -85,72 +85,66 @@ static void ga_board_post(){
     Serial.println("POST Begin");
 
     // Display node addr
-    Serial.print("P: node addr ");
+    Serial.print("[P] node addr: ");
     Serial.println((int) ga_dev_eeprom_naddr_read());
 
     // Check sht1x
-    Serial.println("P: Check sht1x value");
     int sht1x_val = ga_dev_sht1x_read();
 
-    Serial.print("P: sht1x value - ");
+    Serial.print("[P] sht1x value: ");
     Serial.println(sht1x_val);
 
     if(sht1x_val < 800){
-        Serial.println("P: Error: Humidity out of range");
+        Serial.println("[P] \tERROR: sht1x out of range");
     }
 
     // Check BMP085
-    Serial.println("P: Check bmp085 value");
     int32_t bmp085_val = ga_dev_bmp085_read();
 
-    Serial.print("P: bmp085 value:  ");
+    Serial.print("[P] bmp085 value: ");
     Serial.println(bmp085_val);
 
     if(bmp085_val < 800){
-        Serial.println("P: Error: bmp085 pressure out of range");
+        Serial.println("[P] \tERROR: bmp085_press out of range ");
     }
 
     // Check BMP085 temperature
-    Serial.println("P: Check bmp085 temp");
     uint16_t bmp085_temp = ga_dev_bmp085_read_temp();
 
-    Serial.print("P: bmp085 temp: ");
+    Serial.print("[P] bmp085_temp: ");
     Serial.println(bmp085_temp);
 
     if(bmp085_temp < 800){
-        Serial.println("P: Error: bmp085 pressure out of range");
+        Serial.println("[P] \tERROR: bmp085_temp out of range");
     }
 
     // Check apogee_sp212
-    Serial.println("P: Check apogee_sp212 value");
     int apogee_sp212_val = ga_dev_apogee_sp212_read();
 
-    Serial.print("P: apogee_sp212 solar irr value - ");
+    Serial.print("[P] apogee_sp212 solar irr value: ");
     Serial.println(apogee_sp212_val);
 
     if(apogee_sp212_val < 100){
-        Serial.println("P: Error: apogee solar irr out of range");
+        Serial.println("[P] \tERROR: apogee solar irr out of range");
     }
 
     // Check batt
-    Serial.println("P: Check batt value");
     int batt_val = ga_dev_batt_read();
 
-    Serial.print("P: batt value - ");
+    Serial.print("[P] batt value: ");
     Serial.println(batt_val);
 
     if(batt_val < 100){
-        Serial.println("P: Error: batt out of range");
+        Serial.println("P: \tERROR: batt out of range");
     }
 
     // check panel sensor value
-    Serial.println("P: check panel sensor value");
     int spanel_val = ga_dev_spanel_read();
-    Serial.print("P: spanel value: ");
+    Serial.print("[P] spanel value: ");
     Serial.println(spanel_val);
 
     if(spanel_val < 100){
-        Serial.println("P: ERROR: spanel value out of range");
+        Serial.println("[P] \tERROR: spanel value out of range");
     }
 
     Serial.println("POST End");
