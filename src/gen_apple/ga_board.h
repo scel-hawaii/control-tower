@@ -11,22 +11,39 @@
 
 struct ga_packet{
     uint16_t schema;
-    uint16_t node_addr;           // Address of Arduino
-    uint32_t uptime_ms;         // Time since start of program
-    uint16_t batt_mv;           // Battery Voltage (in milli volts)
-    uint16_t panel_mv;          // Panel Voltage (in milli volts)
-    uint32_t bmp085_press_pa;   // Pressure Value (in pascals)
-    int16_t bmp085_temp_decic;  // Temperature Value (in celsius)
+    uint16_t node_addr;             // Address of Arduino
+    uint32_t uptime_ms;             // Time since start of program
+    uint16_t batt_mv;               // Battery Voltage (in milli volts)
+    uint16_t panel_mv;              // Panel Voltage (in milli volts)
+    uint32_t bmp085_press_pa;       // Pressure Value (in pascals)
+    int16_t bmp085_temp_decic;      // Temperature Value (in celsius)
     uint16_t humidity_centi_pct;
     uint16_t apogee_w_m2;
 };
 
 struct ga_heartbeat_packet{
     uint16_t schema;
-    uint16_t node_addr;           // Address of Arduino
-    uint32_t uptime_ms;         // Time since start of program
-    uint16_t batt_mv;           // Battery Voltage (in milli volts)
+    uint16_t node_addr;             // Address of Arduino
+    uint32_t uptime_ms;             // Time since start of program
+    uint16_t batt_mv;               // Battery Voltage (in milli volts)
 };
+
+
+// Legacy apple schema.
+typedef struct {
+    uint16_t schema;
+    uint16_t address;               // Address of Arduino
+    uint8_t overflow_num;           // Number of times millis overflowed (happens ~every 49 days)
+    uint32_t uptime_ms;             // Time since start of program
+    uint8_t n;                      // number of data points in packet 0..30
+    uint16_t batt_mv[6];            // Battery Voltage (in milli volts)
+    uint16_t panel_mv[6];           // Panel Voltage (in milli volts)
+    uint32_t bmp085_press_pa;       // Pressure Value (in pascals)
+    int16_t bmp085_temp_decic;      // Temperature Value (in celsius)
+    uint16_t humidity_centi_pct;
+    uint16_t apogee_w_m2[20];
+} schema_3;
+
 
 struct ga_board{
     void (*setup)(struct ga_board* b);
@@ -51,6 +68,5 @@ struct ga_board{
 
 
 void ga_board_init(struct ga_board*);
-
 
 #endif
