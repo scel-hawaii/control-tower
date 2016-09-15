@@ -73,7 +73,7 @@ class ServerLauncher:
 				pprint(self.profile)
 
 	def start_server(self):
-		command = ["python", "coordinator_recv/coordinator_recv.py", "--tty", str(self.profile['coordinator-recv'], "--output screen")]
+		command = ["python", "coordinator_recv.py", "--tty", str(self.profile['coordinator-recv'])]
 		print command
 		call(command);
 
@@ -89,6 +89,6 @@ class ServerLauncher:
 		test.start_server()
 		
 		
-# if __name__ == "__main__":
-	# test = ServerLauncher()
-	# test.start_server()
+if __name__ == "__main__":
+	test = ServerLauncher()
+	test.start_server()
