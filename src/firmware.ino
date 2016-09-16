@@ -11,8 +11,12 @@
 
 /* Program Libraries */
 #include "log.h"
-//#include "gen_apple/ga_board.h"
+
+#ifdef GA
+#include "gen_apple/ga_board.h"
+#elif defined(GC)
 #include "gen_cranberry/gc_board.h"
+#endif
 
 /* Arudino Libraries */
 #include <Wire.h>
