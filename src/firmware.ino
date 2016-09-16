@@ -11,7 +11,8 @@
 
 /* Program Libraries */
 #include "log.h"
-#include "gen_apple/ga_board.h"
+//#include "gen_apple/ga_board.h"
+#include "gen_cranberry/gc_board.h"
 
 /* Arudino Libraries */
 #include <Wire.h>
@@ -33,6 +34,9 @@
 struct ga_board board;
 #endif
 
+#ifdef GC
+struct gc_board board;
+#endif
 /*********************************************
  *
  *    Name:        setup
@@ -46,6 +50,10 @@ struct ga_board board;
 void setup(){
     #ifdef GA
     ga_board_init(&board);
+    #endif
+
+    #ifdef GC
+    gc_board_init(&board);
     #endif
 
     board.print_build_opts();
