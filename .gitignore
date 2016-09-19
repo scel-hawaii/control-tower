@@ -1,3 +1,4 @@
 build-uno
 .pioenvs
 .clang_complete
+*.swp
