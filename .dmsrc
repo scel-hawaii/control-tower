@@ -1,5 +1,5 @@
 # Config file for simulation
-hexfile_dir: ".pioenvs/ga_debug/"
+hexfile_dir: ".pioenvs/ga_stub/"
 hexfile: "firmware.hex"
 build_flags: "-DDEBUG -DSENSOR_STUB"
 

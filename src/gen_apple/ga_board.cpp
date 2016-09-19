@@ -56,13 +56,13 @@ void ga_board_init(ga_board *b){
 static void ga_board_print_build_opts()
 {
     Serial.begin(9600);
-    Serial.println("Board Opts");
-    Serial.println("Gen: apple23");
+    Serial.println(F("Board Opts"));
+    Serial.println(F("Gen: apple23"));
 }
 
 static void ga_board_setup(struct ga_board* b){
     Serial.begin(9600);
-    Serial.println("Board Setup Start");
+    Serial.println(F("Board Setup Start"));
 
     // Open Devices
     ga_dev_xbee_open();
@@ -77,87 +77,87 @@ static void ga_board_setup(struct ga_board* b){
     b->node_addr = ga_dev_eeprom_naddr_read();
 
     delay(100);
-    Serial.println("Board Setup Done");
+    Serial.println(F("Board Setup Done"));
 }
 
 // power on self test
 static void ga_board_post(){
-    Serial.println("POST Begin");
+    Serial.println(F("POST Begin"));
 
     // Display node addr
-    Serial.print("[P] node addr: ");
+    Serial.print(F("[P] node addr: "));
     Serial.println((int) ga_dev_eeprom_naddr_read());
 
     // Check sht1x
     int sht1x_val = ga_dev_sht1x_read();
-    Serial.print("[P] sht1x value: ");
+    Serial.print(F("[P] sht1x value: "));
     Serial.print(sht1x_val);
     Serial.println("\%");
 
     if(sht1x_val < 0){
-        Serial.println("[P] \tError: Humidity out of range");
+        Serial.println(F("[P] \tError: Humidity out of range"));
     }
 
     // Check BMP085
     int32_t bmp085_val = ga_dev_bmp085_read();
-    Serial.print("[P] bmp085 value: ");
+    Serial.print(F("[P] bmp085 value: "));
     Serial.print(bmp085_val/10);
-    Serial.print(".");
+    Serial.print(F("."));
     Serial.print((bmp085_val-bmp085_val/10)/1000);
     Serial.println(" mb");
 
     if(bmp085_val < 80000){
-        Serial.println("[P] \tError: bmp085 pressure out of range");
+        Serial.println(F("[P] \tError: bmp085 pressure out of range"));
     }
 
     // Check BMP085 temperature
     uint16_t bmp085_temp = ga_dev_bmp085_read_temp();
-    Serial.print("[P] bmp085 temp: ");
+    Serial.print(F("[P] bmp085 temp: "));
     Serial.print(bmp085_temp/10);
     Serial.print(".");
     Serial.print((bmp085_temp-bmp085_temp/10)/10);
-    Serial.println(" celsius");
+    Serial.println(F(" celsius"));
 
     if(bmp085_temp < 0){
-        Serial.println("[P] Error: bmp085 temperature out of range");
+        Serial.println(F("[P] Error: bmp085 temperature out of range"));
     }
 
     // Check apogee_sp212
     int apogee_sp212_val = ga_dev_apogee_sp212_read();
-    Serial.print("[P] apogee_sp212 solar irr value: ");
+    Serial.print(F("[P] apogee_sp212 solar irr value: "));
     Serial.print(apogee_sp212_val*(5000/1023));
     Serial.println(" mV");
 
     if(apogee_sp212_val < 0){
-        Serial.println("[P] \tError: apogee solar irr out of range");
+        Serial.println(F("[P] \tError: apogee solar irr out of range"));
     }
 
     // Check batt
     int batt_val = ga_dev_batt_read();
-    Serial.print("[P] batt value: ");
+    Serial.print(F("[P] batt value: "));
     Serial.print(batt_val*(5000/1023));
     Serial.println(" mV");
 
     if(batt_val < 0){
-        Serial.println("[P] Error: batt out of range");
+        Serial.println(F("[P] Error: batt out of range"));
     }
 
     // check panel sensor value
     int spanel_val = ga_dev_spanel_read();
-    Serial.print("[P] spanel value: ");
+    Serial.print(F("[P] spanel value: "));
     Serial.print(2*spanel_val*(5000/1023)+70);
-    Serial.println(" mV");
+    Serial.println(F(" mV"));
 
     if(spanel_val < 100){
-        Serial.println("[P] \tERROR: spanel value out of range");
+        Serial.println(F("[P] \tERROR: spanel value out of range"));
     }
 
-    Serial.println("POST End");
+    Serial.println(F("POST End"));
 
 }
 
 static void ga_board_sample(struct ga_board* b){
-    Serial.println("Sample Start");
+    Serial.println(F("Sample Start"));
     Serial.println(b->sample_count);
 
     struct ga_packet* data_packet = &(b->data_packet);
@@ -169,7 +169,7 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->humidity_centi_pct  = ga_dev_sht1x_read();
     data_packet->apogee_w_m2         = ga_dev_apogee_sp212_read();
 
-    Serial.println("Sample End");
+    Serial.println(F("Sample End"));
     b->sample_count++;
 }
 
@@ -201,12 +201,12 @@ static int ga_board_ready_run_cmd(struct ga_board* b){
 }
 
 static void ga_board_run_cmd(struct ga_board* b){
-    Serial.println("Enter CMD Mode");
+    Serial.println(F("Enter CMD Mode"));
     while(Serial.read() != '\n');
     while(1){
         if(Serial.available()){
             char input = Serial.read();
-            Serial.print("GOT A CMD: ");
+            Serial.print(F("GOT A CMD: "));
             Serial.println(input);
             while(Serial.read() != '\n');
             if(input == 'E') {
@@ -215,7 +215,7 @@ static void ga_board_run_cmd(struct ga_board* b){
             else{
                 switch(input){
                     case 'T':
-                        Serial.println("CMD Mode cmd");
+                        Serial.println(F("CMD Mode cmd"));
                         break;
                     default:
                         break;
@@ -262,7 +262,7 @@ static void ga_board_heartbeat_tx(struct ga_board* b){
 
     int schema_len = sizeof(hb_packet);
 
-    Serial.println("TX Heartbeat Start");
+    Serial.println(F("TX Heartbeat Start"));
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
@@ -272,14 +272,14 @@ static void ga_board_heartbeat_tx(struct ga_board* b){
     memcpy(payload, &(hb_packet), schema_len);
     ga_dev_xbee_write(payload, schema_len);
 
-    Serial.println("TX Heartbeat End");
+    Serial.println(F("TX Heartbeat End"));
 }
 
 static void ga_board_tx(struct ga_board* b){
     uint8_t payload[_GA_DEV_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);
 
-    Serial.println("Sample TX Start");
+    Serial.println(F("Sample TX Start"));
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
@@ -293,7 +293,7 @@ static void ga_board_tx(struct ga_board* b){
     // goes through the sample loop again.
     b->sample_count = 0;
 
-    Serial.println("Sample TX End");
+    Serial.println(F("Sample TX End"));
 }
 
 static void ga_board_soft_rst(){
