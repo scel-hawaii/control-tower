@@ -6,6 +6,6 @@
 void ga_dev_bmp085_open(void);
 int ga_dev_bmp085_avail(void);
 uint32_t ga_dev_bmp085_read(void);
-uint16_t ga_dev_bmp085_read_temp(void);
+int16_t ga_dev_bmp085_read_temp(void);
 #endif
 

@@ -15,8 +15,8 @@ uint32_t ga_dev_bmp085_read(void){
     return value;
 }
 
-uint16_t ga_dev_bmp085_read_temp(void){
-    uint16_t value = 89;
+int16_t ga_dev_bmp085_read_temp(void){
+    int16_t value = 89;
 
     #ifndef SEN_STUB
     float value_f = bmp085.readTemperature();
