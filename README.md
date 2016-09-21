@@ -1,13 +1,30 @@
 # Weatherbox
 
-Next generation firmware for the SCEL weatherbox data collection platform. This is a
-re-write from the old weatherbox firmware.
+General firmware for the [SCEL weatherbox data collection platform](https://wiki.scel-hawaii.org/doku.php?id=weatherbox:start).
+This is a re-write of the [old weatherbox firmware](https://github.com/scel-hawaii/weatherbox-firmware-old).
 
-# Contributors
+# Current Contributors
 
 * Kenny Luong
+* Dylan Tokia
+* Allie Kim
+* Nathan Lam
+
+# Previous Contributors
+
 * Ryan Walser (Fall 2015 - Spring 2016)
 * Scott Nakashima (Fall 2015 - Spring 2016)
+
+# Build Instructions
+
+To build, run:
+
+```
+platformio run                  # build all targets
+platformio run -e env_name      # build a specific target
+```
+
+See [platformio.ini](platformio.ini) for platform specific environments.
 
 # Contributing
 

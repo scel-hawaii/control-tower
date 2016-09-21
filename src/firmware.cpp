@@ -1,9 +1,9 @@
 /*********************************************
  *
- *    File: REIS_Weatherbox.ino
- *    REIS Weatherbox Firmware
+ *    File: firmware.cpp
+ *    SCEL Weatherbox Firmware
  *
- *    The main driver file for the REIS Weatherbox
+ *    The main driver file for the SCEL Weatherbox
  *
  ********************************************/
 
