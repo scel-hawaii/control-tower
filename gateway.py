@@ -14,7 +14,7 @@ def print_data(d):
     data = pickle.loads(d)
     print data['timestamp']
 
-serial_port = "/dev/ttyUSB0"
+serial_port = "/dev/cu.usbserial-DN01DS4M"
 baud_rate = 9600
 
 xbg = XBeeGateway()
