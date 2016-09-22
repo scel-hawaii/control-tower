@@ -47,140 +47,139 @@ void gc_board_init(gc_board *b){
     b->data_packet.uptime_ms = 0;
     b->data_packet.batt_mv = 0;
     b->data_packet.panel_mv = 0;
-    b->data_packet.bmp085_press_pa = 0;
-    b->data_packet.bmp085_temp_decic = 0;
-    b->data_packet.humidity_centi_pct = 0;
     b->data_packet.apogee_w_m2 = 0;
+    b->data_packet.hih6131_temp_decic = 0;
+    b->data_packet.hih6131_humidity_pct = 0;
+    b->data_packet.mpl115a2t1_press_kpa = 0;
 }
 
 static void gc_board_print_build_opts()
 {
     Serial.begin(9600);
-    Serial.println("Board Opts");
-    Serial.println("Gen: cranberry");
+    Serial.println(F("Board Opts"));
+    Serial.println(F("Gen: cranberry"));
 }
 
 static void gc_board_setup(struct gc_board* b){
     Serial.begin(9600);
-    Serial.println("Board Setup Start");
+    Serial.println(F("Board Setup Start"));
 
     // Open Devices
     gc_dev_xbee_open();
-    gc_dev_sht1x_open();
-    gc_dev_bmp085_open();
     gc_dev_apogee_sp212_open();
     gc_dev_batt_open();
     gc_dev_spanel_open();
     gc_dev_eeprom_naddr_open();
+    gc_dev_hih6131_open();
+    gc_dev_mpl115a2t1_open();
 
     // load the address from the hardware
     b->node_addr = gc_dev_eeprom_naddr_read();
 
     delay(100);
-    Serial.println("Board Setup Done");
+    Serial.println(F("Board Setup Done"));
 }
 
 // power on self test
 static void gc_board_post(){
-    Serial.println("POST Begin");
+    Serial.println(F("POST Begin"));
 
     // Display node addr
-    Serial.print("P: node addr: ");
+    Serial.print(F("[P] node addr: "));
     Serial.println((int) gc_dev_eeprom_naddr_read());
 
-    // Check sht1x
-    Serial.println("P: Check sht1x value");
-    int sht1x_val = gc_dev_sht1x_read();
+    // Check hih6131 temperature
 
-    Serial.print("P: sht1x value: ");
-    Serial.print(sht1x_val);
-    Serial.println("\%");
+    Serial.println(F("[P] Check hih6131_temp_decic value"));
+    int hih6131_temp_decic_val = gc_dev_hih6131_temp_decic_read();
 
-    if(sht1x_val < 0){
-        Serial.println("P: Error: Humidity out of range");
+    Serial.print(F("[P] hih6131_temp_decic value: "));
+    Serial.print(hih6131_temp_decic_val);
+    Serial.println(F(" C"));
+
+    if(hih6131_temp_decic_val < 0){
+        Serial.println(F("[P] \tError: hih6131 temp out of range"));
     }
 
-    // Check BMP085
-    Serial.println("P: Check bmp085 value");
-    int32_t bmp085_val = gc_dev_bmp085_read();
 
-    Serial.print("P: bmp085 value: ");
-    Serial.print(bmp085_val/10);
-    Serial.print(".");
-    Serial.print((bmp085_val-bmp085_val/10)/1000);
-    Serial.println(" mb");
+    // Check hih6131 humidity
 
-    if(bmp085_val < 80000){
-        Serial.println("P: Error: bmp085 pressure out of range");
+    Serial.println(F("[P] Check hih6131_humidity value"));
+    int hih6131_humidity_pct_val = gc_dev_hih6131_humidity_pct_read();
+
+    Serial.print(F("[P] hih6131_humidity_pct value: "));
+    Serial.print(hih6131_humidity_pct_val);
+    Serial.println(F("\%"));
+
+    if(hih6131_humidity_pct_val < 0){
+        Serial.println(F("[P] \tError: hih6131 humidity out of range"));
     }
 
-    // Check BMP085 temperature
-    Serial.println("P: Check bmp085 temp");
-    uint16_t bmp085_temp = gc_dev_bmp085_read_temp();
 
-    Serial.print("P: bmp085 temp: ");
-    Serial.print(bmp085_temp/10);
-    Serial.print(".");
-    Serial.print((bmp085_temp-bmp085_temp/10)/10);
-    Serial.println(" celsius");
+    // Check mpl115a2t1 pressure
 
-    if(bmp085_temp < 0){
-        Serial.println("P: Error: bmp085 temperature out of range");
+    Serial.println(F("[P] Check mpl115a2t1_press_kpa value"));
+    int mpl115a2t1_press_kpa_val = gc_dev_mpl115a2t1_press_kpa_read();
+
+    Serial.print(F("[P] mpl115a2t1_press_kpa value: "));
+    Serial.print(mpl115a2t1_press_kpa_val);
+    Serial.println(F(" kPa"));
+
+    if(mpl115a2t1_press_kpa_val < 0){
+        Serial.println(F("[P] \tError: mpl115a2t1 pressure out of range"));
     }
+
 
     // Check apogee_sp212
-    Serial.println("P: Check apogee_sp212 value");
+    Serial.println(F("[P] Check apogee_sp212 value"));
     int apogee_sp212_val = gc_dev_apogee_sp212_read();
 
-    Serial.print("P: apogee_sp212 solar irr value: ");
+    Serial.print(F("[P] apogee_sp212 solar irr value: "));
     Serial.print(apogee_sp212_val*(5000/1023));
-    Serial.println(" mV");
+    Serial.println(F(" mV"));
 
     if(apogee_sp212_val < 0){
-        Serial.println("P: Error: apogee solar irr out of range");
+        Serial.println(F("[P] \tError: apogee solar irr out of range"));
     }
 
     // Check batt
-    Serial.println("P: Check batt value");
+    Serial.println(F("[P] Check batt value"));
     int batt_val = gc_dev_batt_read();
 
-    Serial.print("P: batt value: ");
+    Serial.print(F("[P] batt value: "));
     Serial.print(batt_val*(5000/1023));
-    Serial.println(" mV");
+    Serial.println(F(" mV"));
 
     if(batt_val < 0){
-        Serial.println("P: Error: batt out of range");
+        Serial.println(F("[P] \tError: batt out of range"));
     }
 
     // check panel sensor value
-    Serial.println("P: check panel sensor value");
+    Serial.println(F("[P] check panel sensor value"));
     int spanel_val = gc_dev_spanel_read();
-    Serial.print("P: spanel value: ");
+    Serial.print(F("[P] spanel value: "));
     Serial.print(2*spanel_val*(5000/1023)+70);
-    Serial.println(" mV");
+    Serial.println(F(" mV"));
 
     if(spanel_val < 100){
-        Serial.println("P: ERROR: spanel value out of range");
+        Serial.println(F("[P] \tERROR: spanel value out of range"));
     }
 
-    Serial.println("POST End");
+    Serial.println(F("POST End"));
 
 }
 
 static void gc_board_sample(struct gc_board* b){
-    Serial.println("Sample Start");
+    Serial.println(F("Sample Start"));
     Serial.println(b->sample_count);
 
     struct gc_packet* data_packet = &(b->data_packet);
     data_packet->uptime_ms           = millis();
     data_packet->batt_mv             = gc_dev_batt_read();
     data_packet->panel_mv            = gc_dev_spanel_read();
-    data_packet->bmp085_press_pa     = gc_dev_bmp085_read();
-    data_packet->bmp085_temp_decic   = gc_dev_bmp085_read_temp();
-    data_packet->humidity_centi_pct  = gc_dev_sht1x_read();
     data_packet->apogee_w_m2         = gc_dev_apogee_sp212_read();
 
-    Serial.println("Sample End");
+    Serial.println(F("Sample End"));
     b->sample_count++;
 }
 
@@ -212,12 +211,12 @@ static int gc_board_ready_run_cmd(struct gc_board* b){
 }
 
 static void gc_board_run_cmd(struct gc_board* b){
-    Serial.println("Enter CMD Mode");
+    Serial.println(F("Enter CMD Mode"));
     while(Serial.read() != '\n');
     while(1){
         if(Serial.available()){
             char input = Serial.read();
-            Serial.print("GOT A CMD: ");
+            Serial.print(F("GOT A CMD: "));
             Serial.println(input);
             while(Serial.read() != '\n');
             if(input == 'E') {
@@ -226,7 +225,7 @@ static void gc_board_run_cmd(struct gc_board* b){
             else{
                 switch(input){
                     case 'T':
-                        Serial.println("CMD Mode cmd");
+                        Serial.println(F("CMD Mode cmd"));
                         break;
                     default:
                         break;
@@ -267,7 +266,7 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
 
     int schema_len = sizeof(hb_packet);
 
-    Serial.println("TX Heartbeat Start");
+    Serial.println(F("TX Heartbeat Start"));
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
@@ -277,14 +276,14 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
     memcpy(payload, &(hb_packet), schema_len);
     gc_dev_xbee_write(payload, schema_len);
 
-    Serial.println("TX Heartbeat End");
+    Serial.println(F("TX Heartbeat End"));
 }
 
 static void gc_board_tx(struct gc_board* b){
     uint8_t payload[_GC_DEV_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);
 
-    Serial.println("Sample TX Start");
+    Serial.println(F("Sample TX Start"));
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
@@ -298,7 +297,7 @@ static void gc_board_tx(struct gc_board* b){
     // goes through the sample loop again.
     b->sample_count = 0;
 
-    Serial.println("Sample TX End");
+    Serial.println(F("Sample TX End"));
 }
 
 static void gc_board_soft_rst(){

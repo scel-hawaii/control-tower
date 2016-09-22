@@ -1,10 +1,10 @@
 #include "gc_dev_xbee.h"
-#include "gc_dev_sht1x.h"
-#include "gc_dev_bmp085.h"
 #include "gc_dev_apogee_sp212.h"
 #include "gc_dev_batt.h"
 #include "gc_dev_spanel.h"
 #include "gc_dev_eeprom_naddr.h"
+#include "gc_dev_hih6131.h"
+#include "gc_dev_mpl115a2t1.h"
 
 #ifndef GC_BOARD_H
 #define GC_BOARD_H
@@ -15,10 +15,10 @@ struct gc_packet{
     uint32_t uptime_ms;         // Time since start of program
     uint16_t batt_mv;           // Battery Voltage (in milli volts)
     uint16_t panel_mv;          // Panel Voltage (in milli volts)
-    uint32_t bmp085_press_pa;   // Pressure Value (in pascals)
-    int16_t bmp085_temp_decic;  // Temperature Value (in celsius)
-    uint16_t humidity_centi_pct;
     uint16_t apogee_w_m2;
+    int16_t hih6131_temp_decic; // Temperature (Celsius)
+    uint16_t hih6131_humidity_pct;  // Humidity (percentage)
+    uint16_t mpl115a2t1_press_kpa;  // Pressure (kPa)
 };
 
 struct gc_heartbeat_packet{

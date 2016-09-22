@@ -119,7 +119,7 @@ static void ga_board_post(){
     Serial.println(F(" celsius"));
 
     if(bmp085_temp < 0){
-        Serial.println(F("[P] Error: bmp085 temperature out of range"));
+        Serial.println(F("[P] \tError: bmp085 temperature out of range"));
     }
 
     // Check apogee_sp212
@@ -139,7 +139,7 @@ static void ga_board_post(){
     Serial.println(" mV");
 
     if(batt_val < 0){
-        Serial.println(F("[P] Error: batt out of range"));
+        Serial.println(F("[P] \tError: batt out of range"));
     }
 
     // check panel sensor value
