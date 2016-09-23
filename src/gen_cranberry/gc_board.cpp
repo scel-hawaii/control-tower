@@ -42,7 +42,7 @@ void gc_board_init(gc_board *b){
     b->prev_sample_ms = 0;
 
     // Initialize the packet
-    b->data_packet.schema = 0;
+    b->data_packet.schema = 2;
     b->data_packet.node_addr = 0;
     b->data_packet.uptime_ms = 0;
     b->data_packet.batt_mv = 0;
@@ -259,7 +259,7 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
     uint8_t payload[_GC_DEV_XBEE_BUFSIZE_];
     struct gc_heartbeat_packet hb_packet;
 
-    hb_packet.schema = 5;
+    hb_packet.schema = 0;
     hb_packet.uptime_ms = millis();
     hb_packet.batt_mv = gc_dev_batt_read();
     hb_packet.node_addr = gc_dev_eeprom_naddr_read();

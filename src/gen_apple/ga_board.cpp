@@ -42,7 +42,7 @@ void ga_board_init(ga_board *b){
     b->prev_sample_ms = 0;
 
     // Initialize the packet
-    b->data_packet.schema = 0;
+    b->data_packet.schema = 1;
     b->data_packet.node_addr = 0;
     b->data_packet.uptime_ms = 0;
     b->data_packet.batt_mv = 0;
@@ -255,7 +255,7 @@ static void ga_board_heartbeat_tx(struct ga_board* b){
     uint8_t payload[_GA_DEV_XBEE_BUFSIZE_];
     struct ga_heartbeat_packet hb_packet;
 
-    hb_packet.schema = 5;
+    hb_packet.schema = 0;
     hb_packet.uptime_ms = millis();
     hb_packet.batt_mv = ga_dev_batt_read();
     hb_packet.node_addr = ga_dev_eeprom_naddr_read();
