@@ -135,7 +135,7 @@ static void gc_board_post(){
     int apogee_sp212_val = gc_dev_apogee_sp212_read();
 
     Serial.print(F("[P] apogee_sp212 solar irr value: "));
-    Serial.print(apogee_sp212_val*(5000/1023));
+    Serial.print(apogee_sp212_val);
     Serial.println(F(" mV"));
 
     if(apogee_sp212_val < 0){
@@ -147,7 +147,7 @@ static void gc_board_post(){
     int batt_val = gc_dev_batt_read();
 
     Serial.print(F("[P] batt value: "));
-    Serial.print(batt_val*(5000/1023));
+    Serial.print(batt_val);
     Serial.println(F(" mV"));
 
     if(batt_val < 0){
@@ -158,7 +158,7 @@ static void gc_board_post(){
     Serial.println(F("[P] check panel sensor value"));
     int spanel_val = gc_dev_spanel_read();
     Serial.print(F("[P] spanel value: "));
-    Serial.print(2*spanel_val*(5000/1023)+70);
+    Serial.print(spanel_val);
     Serial.println(F(" mV"));
 
     if(spanel_val < 100){

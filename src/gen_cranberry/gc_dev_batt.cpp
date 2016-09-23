@@ -4,7 +4,13 @@ void gc_dev_batt_open(void){
     pinMode(_PIN_GC_BATT_, INPUT);
 }
 
+int gc_dev_batt_read_raw(void){
+  int val = analogRead(_PIN_GC_BATT_);
+  return val;
+}
+
 int gc_dev_batt_read(void){
-    int val = analogRead(_PIN_GC_BATT_);
+    float raw = (float)analogRead(_PIN_GC_BATT_) * (5.0/1023.0);
+    int val = raw * 1000;
     return val;
 }
