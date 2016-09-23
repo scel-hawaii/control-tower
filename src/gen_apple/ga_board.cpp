@@ -101,7 +101,7 @@ static void ga_board_post(){
     // Check BMP085
     int32_t bmp085_val = ga_dev_bmp085_read();
     Serial.print(F("[P] bmp085 value: "));
-    Serial.print(bmp085_val/10);
+    Serial.print(bmp085_val/100);
     Serial.print(F("."));
     Serial.print((bmp085_val-bmp085_val/10)/1000);
     Serial.println(" mb");
@@ -210,12 +210,17 @@ static void ga_board_run_cmd(struct ga_board* b){
             Serial.println(input);
             while(Serial.read() != '\n');
             if(input == 'E') {
+                Serial.println(F("Leaving CMD mode"));
                 break;
             }
             else{
                 switch(input){
                     case 'T':
                         Serial.println(F("CMD Mode cmd"));
+                        break;
+                    case 'P':
+                        Serial.println(F("Running POST"));
+                        b->post();
                         break;
                     default:
                         break;

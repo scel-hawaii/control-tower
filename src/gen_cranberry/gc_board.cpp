@@ -212,7 +212,7 @@ static int gc_board_ready_run_cmd(struct gc_board* b){
 
 static void gc_board_run_cmd(struct gc_board* b){
     Serial.println(F("Enter CMD Mode"));
-    while(Serial.read() != '\n');
+    while(Serial.read() != '\n'); //In Arduino IDE, make sure line ending is \n
     while(1){
         if(Serial.available()){
             char input = Serial.read();
@@ -220,12 +220,17 @@ static void gc_board_run_cmd(struct gc_board* b){
             Serial.println(input);
             while(Serial.read() != '\n');
             if(input == 'E') {
+                Serial.println(F("Leaving CMD Mode"));
                 break;
             }
             else{
                 switch(input){
                     case 'T':
                         Serial.println(F("CMD Mode cmd"));
+                        break;
+                    case 'P':
+                        Serial.println(F("Running POST"));
+                        b->post();
                         break;
                     default:
                         break;
