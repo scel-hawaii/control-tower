@@ -5,11 +5,14 @@ import datetime
 import struct
 import collections
 
+
 schemaDict = {
 	'ga_legacy': 'HHBI'+'B'+'H'*6+'H'*6+'IhH'+'H'*20,
-	'0': 'HHI'+'H'+'H'+'I'+'h'+'H'+'H',	#Apple schema
-	'5': 'HHIH'	#Apple Heartbeat schema
-		  }
+	'0': 'HHIH', #Heartbeat schema
+	'1': 'HHIHHIhHH',	#Apple schema
+	'2': 'HHIHHHhHH', #Cranberry schema
+	'3': 'HHIHHIhHH'
+	}
 
 try:
     ser = serial.Serial('/dev/cu.usbserial-DN01DS4M', 9600)
@@ -44,22 +47,44 @@ while True:
 		
 		dataDict = {}
 
-		if schema == 0:	#if apple schema
-			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0];
-			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0];
-			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0];
-			dataDict["batt_mv"] = struct.unpack('<' + 'H', data[8:10])[0];
-			dataDict["panel_mv"] = struct.unpack('<' + 'H', data[10:12])[0];
-			dataDict["press_pa"] = struct.unpack('<' + 'I', data[12:16])[0];
-			dataDict["temp_c"] = struct.unpack('<' + 'h', data[16:18])[0];
-			dataDict["humidity_centi_pct"] = struct.unpack('<' + 'H', data[18:20])[0];
-			dataDict["apogee_w_m2"] = struct.unpack('<' + 'H', data[20:22])[0];
+		if schema == 1:	#apple schema
+			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0]
+			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0]
+			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0]
+			dataDict["batt_mv"] = struct.unpack('<' + 'H', data[8:10])[0]
+			dataDict["panel_mv"] = struct.unpack('<' + 'H', data[10:12])[0]
+			dataDict["press_pa"] = struct.unpack('<' + 'I', data[12:16])[0]
+			dataDict["temp_c"] = struct.unpack('<' + 'h', data[16:18])[0]
+			dataDict["humidity_centi_pct"] = struct.unpack('<' + 'H', data[18:20])[0]
+			dataDict["apogee_w_m2"] = struct.unpack('<' + 'H', data[20:22])[0]
 
-		elif schema == 5: #if apple heartbeat schema
-			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0];
-			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0];
-			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0];
-			dataDict["batt_mv"] = struct.unpack('<' + 'H', data[8:10])[0];
+		elif schema == 2: #
+			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0]
+			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0]
+			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0]
+			dataDict["batt_mv"] = struct.unpack('<' + 'H', data[8:10])[0]
+			dataDict["panel_mv"] = struct.unpack('<' + 'H', data[10:12])[0]
+			dataDict["apogee_w_m2"] = struct.unpack('<' + 'H', data[12:14])[0]
+			dataDict["temp_c"] = struct.unpack('<' + 'h', data[14:16])[0]
+			dataDict["humidity_centi_pct"] = struct.unpack('<' + 'H', data[16:18])[0]
+			dataDict["press_kpa"] = struct.unpack('<' + 'H', data[18:20])[0]
+		
+		elif schema == 3:
+			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0]
+			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0]
+			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0]
+			dataDict["batt_mv"] = struct.unpack('<' + 'H', data[8:10])[0]
+			dataDict["panel_mv"] = struct.unpack('<' + 'H', data[10:12])[0]
+			dataDict["press_pa"] = struct.unpack('<' + 'I', data[12:16])[0]	
+			dataDict["temp_c"] = struct.unpack('<' + 'h', data[16:18])[0]
+			dataDict["humidity_centi_pct"] = struct.unpack('<' + 'H', data[18:20])[0]
+			dataDict["apogee_w_m2"] = struct.unpack('<' + 'H', data[20:22])[0]
+			
+		elif schema == 0: #if apple heartbeat schema
+			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0]
+			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0]
+			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0]
+			dataDict["batt_mv"] = struct.unpack('<' + 'H', data[8:10])[0]
 
 		#sort alphabetically & display 
 		orderedData = collections.OrderedDict(sorted(dataDict.items()))
