@@ -13,9 +13,10 @@ schemaDict = {
 	'2': 'HHIHHHhHH', #Cranberry schema
 	'3': 'HHIHHIhHH'
 	}
+port = raw_input("Please enter your serial port path/name: ")
 
 try:
-    ser = serial.Serial('/dev/cu.usbserial-DN01DS4M', 9600)
+    ser = serial.Serial(port, 9600)
     xbee = ZigBee(ser, escaped=True)
 except serial.serialutil.SerialException as e:
     print "Serial Error: ", e
@@ -24,7 +25,7 @@ except serial.serialutil.SerialException as e:
 print "Start Program."
 
 while True:
-	valid = 0;
+	valid = 0
 
 	#read xbee data
 	f = xbee.wait_read_frame()
@@ -34,10 +35,10 @@ while True:
 	print str(timestamp) + " Got a packet of length " + str(dlen)
 	
 	#check if schema is valid
-	schema = struct.unpack('<' + 'H', data[0:2])[0];
+	schema = struct.unpack('<' + 'H', data[0:2])[0]
 	for key in schemaDict:
 		if str(schema) == key:
-			valid = 1;		
+			valid = 1		
 			break
 
 	if valid: 
@@ -58,7 +59,7 @@ while True:
 			dataDict["humidity_centi_pct"] = struct.unpack('<' + 'H', data[18:20])[0]
 			dataDict["apogee_w_m2"] = struct.unpack('<' + 'H', data[20:22])[0]
 
-		elif schema == 2: #
+		elif schema == 2: #cranberry schema
 			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0]
 			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0]
 			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0]
@@ -69,7 +70,7 @@ while True:
 			dataDict["humidity_centi_pct"] = struct.unpack('<' + 'H', data[16:18])[0]
 			dataDict["press_kpa"] = struct.unpack('<' + 'H', data[18:20])[0]
 		
-		elif schema == 3:
+		elif schema == 3: #dragonfruit schema
 			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0]
 			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0]
 			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0]
@@ -80,7 +81,7 @@ while True:
 			dataDict["humidity_centi_pct"] = struct.unpack('<' + 'H', data[18:20])[0]
 			dataDict["apogee_w_m2"] = struct.unpack('<' + 'H', data[20:22])[0]
 			
-		elif schema == 0: #if apple heartbeat schema
+		elif schema == 0: #heartbeat schema
 			dataDict["schema"] = struct.unpack('<' + 'H', data[0:2])[0]
 			dataDict["node_addr"] = struct.unpack('<' + 'H', data[2:4])[0]
 			dataDict["uptime_ms"] = struct.unpack('<' + 'I', data[4:8])[0]
