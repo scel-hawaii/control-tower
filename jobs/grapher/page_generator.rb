@@ -35,7 +35,7 @@ box_template =
   }
 
 # Create the connection
-db = PGconn.open(:dbname => 'kluong')
+db = PGconn.open(:dbname => 'control_tower')
 result = db.exec('SELECT DISTINCT address FROM outdoor_env')
 
 box_addrs = []
