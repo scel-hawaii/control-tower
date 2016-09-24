@@ -52,7 +52,7 @@ end
 puts "START sync at: #{Time.new.inspect}"
 
 # Create the connection
-db = PGconn.open(:dbname => 'kluong')
+db = PGconn.open(:dbname => 'control_tower')
 result = db.exec('SELECT DISTINCT address FROM outdoor_env')
 
 box_addrs = []
@@ -68,6 +68,10 @@ puts "Creating data directory"
 data_dir = File.join("./data")
 data_dir = File.join(Dir.pwd(), data_dir)
 root_dir = Dir.pwd()
+
+if not File.directory?(data_dir)
+  Dir.mkdir(data_dir)
+end
 
 box_addrs.each do |addr|
   puts "Graphing box #{addr}"
