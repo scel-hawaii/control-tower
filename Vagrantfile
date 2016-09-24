@@ -82,5 +82,9 @@ Vagrant.configure(2) do |config|
      sudo su control_tower -c \
         'cd /home/control_tower/control-tower/tasks/ &&
         bash seed.sh'
+
+     sudo su control_tower -c \
+        'cd /home/control_tower/control-tower/jobs/grapher/ &&
+        bundle install --path vendor/bundle'
   SHELL
 end
