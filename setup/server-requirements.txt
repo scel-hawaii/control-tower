@@ -12,3 +12,4 @@ nodejs
 nodejs-legacy
 ruby ruby-dev
 gnuplot
+nginx
