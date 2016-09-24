@@ -11,3 +11,4 @@ make
 nodejs
 nodejs-legacy
 ruby ruby-dev
+gnuplot
