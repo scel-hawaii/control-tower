@@ -72,6 +72,7 @@ Vagrant.configure(2) do |config|
      git clone https://github.com/scel-hawaii/control-tower.git
      cd /home/vagrant/control-tower/setup/ && bash setup_server_req.sh
      cd /home/vagrant/control-tower/setup/ && bash setup_python_reqs.sh
+     cd /home/vagrant/control-tower/setup/ && bash setup_ruby_reqs.sh
      cd /home/vagrant/control-tower/db/ && bash setup_postgres_user.sh
 
      sudo su control_tower -c \
