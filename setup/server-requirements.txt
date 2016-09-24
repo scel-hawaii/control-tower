@@ -10,3 +10,4 @@ screen
 make
 nodejs
 nodejs-legacy
+ruby ruby-dev
