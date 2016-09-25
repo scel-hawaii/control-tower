@@ -26,6 +26,7 @@ Vagrant.configure(2) do |config|
   # config.vm.network "forwarded_port", guest: 80, host: 8080
   config.vm.network "forwarded_port", guest: 16906, host: 16906
   config.vm.network "forwarded_port", guest: 3000, host: 3000
+  config.vm.network "forwarded_port", guest: 8090, host: 8090
 
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
@@ -87,5 +88,13 @@ Vagrant.configure(2) do |config|
      sudo su control_tower -c \
         'cd /home/control_tower/control-tower/jobs/grapher/ &&
         bundle install --path vendor/bundle'
+
+     sudo su -c \
+        'cd /home/control_tower/control-tower/setup/conf/ &&
+        cp graphs /etc/nginx/sites-avaiable'
+
+     sudo su -c \
+        'cd /etc/nginx/sites-enabled/ &&
+        ln -s /etc/nginx/sites-available/graphs'
   SHELL
 end
