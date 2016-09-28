@@ -47,17 +47,17 @@ void gd_board_init(gd_board *b){
     b->data_packet.uptime_ms = 0;
     b->data_packet.batt_mv = 0;
     b->data_packet.panel_mv = 0;
-    b->data_packet.bmp085_press_pa = 0;
-    b->data_packet.bmp085_temp_decic = 0;
-    b->data_packet.humidity_centi_pct = 0;
-    b->data_packet.apogee_w_m2 = 0;
+    b->data_packet.apogee_sp215 = 0;
+    b->data_packet.mpl115a2t1_temp = 0;
+    b->data_packet.hih6131_humidity_pct = 0;
+    b->data_packet.mpl115a2t1_press = 0;
 }
 
 static void gd_board_print_build_opts()
 {
     Serial.begin(9600);
     Serial.println(F("Board Opts"));
-    Serial.println(F("Gen: apple23"));
+    Serial.println(F("Gen: dragonfruit"));
 }
 
 static void gd_board_setup(struct gd_board* b){
@@ -66,12 +66,13 @@ static void gd_board_setup(struct gd_board* b){
 
     // Open Devices
     gd_dev_xbee_open();
-    gd_dev_sht1x_open();
-    gd_dev_bmp085_open();
-    gd_dev_apogee_sp212_open();
+    gd_dev_honeywell_HIH6131_open();
+    gd_dev_adafruit_MPL115A2_temp_open();
+    gd_dev_adafruit_MPL115A2_press_open();
     gd_dev_batt_open();
     gd_dev_spanel_open();
     gd_dev_eeprom_naddr_open();
+    gd_dev_apogee_sp215_open();
 
     // load the address from the hardware
     b->node_addr = gd_dev_eeprom_naddr_read();
@@ -88,54 +89,50 @@ static void gd_board_post(){
     Serial.print(F("[P] node addr: "));
     Serial.println((int) gd_dev_eeprom_naddr_read());
 
-    // Check sht1x
-    int sht1x_val = gd_dev_sht1x_read();
-    Serial.print(F("[P] sht1x value: "));
-    Serial.print(sht1x_val);
+    // Check HIH6131
+    int hih6_val = gd_dev_honeywell_HIH6131_read();
+    Serial.print(F("[P] hih6 value: "));
+    Serial.print(h1h6_val);
     Serial.println("\%");
 
-    if(sht1x_val < 0){
+    if(h1h6_val < 0){
         Serial.println(F("[P] \tError: Humidity out of range"));
     }
 
-    // Check BMP085
-    int32_t bmp085_val = gd_dev_bmp085_read();
-    Serial.print(F("[P] bmp085 value: "));
-    Serial.print(bmp085_val/10);
+    // Check MPL115a2 temperature
+    int32_t mpl115a2_temp_val = gd_dev_adafruit_MPL115A2_temp_read();
+    Serial.print(F("[P] mpl115a2 value: "));
+    Serial.print(mpl115a2_temp_val);
     Serial.print(F("."));
-    Serial.print((bmp085_val-bmp085_val/10)/1000);
-    Serial.println(" mb");
 
-    if(bmp085_val < 80000){
-        Serial.println(F("[P] \tError: bmp085 pressure out of range"));
+    if(mpl115a2_temp_val < 0){
+        Serial.println(F("[P] \tError: mpl115a2 temp out of range"));
     }
 
-    // Check BMP085 temperature
-    uint16_t bmp085_temp = gd_dev_bmp085_read_temp();
-    Serial.print(F("[P] bmp085 temp: "));
-    Serial.print(bmp085_temp/10);
+    // Check MPL115a2 pressure
+    uint16_t mpl115a2_press = gd_dev_adafruit_MPL115A2_press_read();
+    Serial.print(F("[P] mpl115a2 pressure: "));
+    Serial.print(mpl115a2_press);
     Serial.print(".");
-    Serial.print((bmp085_temp-bmp085_temp/10)/10);
-    Serial.println(F(" celsius"));
 
-    if(bmp085_temp < 0){
-        Serial.println(F("[P] Error: bmp085 temperature out of range"));
+    if(mpl115a2_press < 0){
+        Serial.println(F("[P] Error: mpl115a2 pressure out of range"));
     }
 
-    // Check apogee_sp212
-    int apogee_sp212_val = gd_dev_apogee_sp212_read();
-    Serial.print(F("[P] apogee_sp212 solar irr value: "));
-    Serial.print(apogee_sp212_val*(5000/1023));
+    // Check apogee_sp215
+    int apogee_sp215_val = gd_dev_apogee_sp215_read();
+    Serial.print(F("[P] apogee_sp215 solar irr value: "));
+    Serial.print(apogee_sp215_val);
     Serial.println(" mV");
 
-    if(apogee_sp212_val < 0){
+    if(apogee_sp215_val < 0){
         Serial.println(F("[P] \tError: apogee solar irr out of range"));
     }
 
     // Check batt
     int batt_val = gd_dev_batt_read();
     Serial.print(F("[P] batt value: "));
-    Serial.print(batt_val*(5000/1023));
+    Serial.print(batt_val);
     Serial.println(" mV");
 
     if(batt_val < 0){
@@ -145,7 +142,7 @@ static void gd_board_post(){
     // check panel sensor value
     int spanel_val = gd_dev_spanel_read();
     Serial.print(F("[P] spanel value: "));
-    Serial.print(2*spanel_val*(5000/1023)+70);
+    Serial.print(spanel_val);
     Serial.println(F(" mV"));
 
     if(spanel_val < 100){
@@ -164,10 +161,10 @@ static void gd_board_sample(struct gd_board* b){
     data_packet->uptime_ms           = millis();
     data_packet->batt_mv             = gd_dev_batt_read();
     data_packet->panel_mv            = gd_dev_spanel_read();
-    data_packet->bmp085_press_pa     = gd_dev_bmp085_read();
-    data_packet->bmp085_temp_decic   = gd_dev_bmp085_read_temp();
-    data_packet->humidity_centi_pct  = gd_dev_sht1x_read();
-    data_packet->apogee_w_m2         = gd_dev_apogee_sp212_read();
+    data_packet->mpl115a2t1_press    = gd_dev_adafruit_MPL115A2_press_read();
+    data_packet->mpl115a2t1_temp     = gd_dev_adafruit_MPL115A2_temp_read();
+    data_packet->hih6131_humidity_pct= gd_dev_honeywell_HIH6131_read();
+    data_packet->apogee_sp215        = gd_dev_apogee_sp215_read();
 
     Serial.println(F("Sample End"));
     b->sample_count++;
