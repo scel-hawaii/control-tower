@@ -28,9 +28,4 @@ while True:
 	timestamp = datetime.datetime.now()
 	print str(timestamp) + " Got a packet of length " + str(dlen)
 
-	if decoder.check_schema(data):
-		dataDict = decoder.sort_packet(data)
-		decoder.print_data(dataDict)
-	else:
-		print "Not A Valid Packet"
-	
+	decoder.decode_data(data)	

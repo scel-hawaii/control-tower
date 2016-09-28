@@ -23,6 +23,18 @@ class Decoder:
         return True   
     return False
 
+  def decode_data(self, data):
+    if self.check_schema(data):
+      dataDict = self.sort_packet(data)
+      self.print_data(dataDict)
+    else:
+      print "Not A Valid Packet"
+
+  def print_data(self, dataDict):
+    orderedData = collections.OrderedDict(sorted(dataDict.items()))
+    for key, value in orderedData.iteritems():
+      print key + ": " + str(value) 
+
   def sort_packet(self, data):
     fmt = '<' + self.schemaDict[str(self.schema)]
     
@@ -70,9 +82,6 @@ class Decoder:
 
     return dataDict 
 
-  def print_data(self, dataDict):
-    orderedData = collections.OrderedDict(sorted(dataDict.items()))
-    for key, value in orderedData.iteritems():
-      print key + ": " + str(value)
+  
 
 
