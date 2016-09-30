@@ -70,6 +70,15 @@ class XBeeGateway:
                }
         return pickle.dumps(data)
 
+    def begin_test(self):
+        while True:
+            f = self.xbee.wait_read_frame()
+            data = f['rf_data']          
+            timestamp = datetime.datetime.now()            
+            for callback in self.callbacks:
+                callback(data, timestamp)
+        
+                  
 
 # Self Test
 if __name__ == "__main__":

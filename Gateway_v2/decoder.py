@@ -15,6 +15,7 @@ class Decoder:
       '2': 'HHIHHHhHH', #Cranberry schema
       '3': 'HHIHHIhHH'  #Dragonfruit Schema 
     }
+    self.callbacks = []
 
   """ 
   Checks if the packet has a valid schema
@@ -31,10 +32,11 @@ class Decoder:
   """ 
   Main Function
   """
-  def decode_data(self, data, callback):
+  def decode_data(self, data, timestamp):
     if self.check_schema(data):
-      dataDict = self.sort_packet(data)
-      callback(dataDict);
+      dataDict = self.sort_packet(data, timestamp)
+      for callback in self.callbacks:
+        callback(dataDict)
     else:
       print "Not A Valid Packet"
 
@@ -46,15 +48,19 @@ class Decoder:
     for key, value in orderedData.iteritems():
       print key + ": " + str(value) 
 
+  def register_callback(self, callback):
+    self.callbacks.append(callback)
+
   """
   Sorts data into a specific schema dictionary 
   """
 
-  def sort_packet(self, data):
+  def sort_packet(self, data, timestamp):
     fmt = '<' + self.schemaDict[str(self.schema_num)]
     dataDict = {}
     unpacked_data = struct.unpack(fmt,data)
 
+    dataDict["time_received"] = timestamp
     if self.schema_num == 1: #apple schema
       dataDict["schema"] = unpacked_data[0]
       dataDict["node_addr"] = unpacked_data[1]
