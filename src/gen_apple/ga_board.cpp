@@ -73,7 +73,7 @@ static void ga_board_setup(struct ga_board* b){
     ga_dev_spanel_open();
     ga_dev_eeprom_naddr_open();
 
-    // load the address from the hardware
+    // load the address from the EEPROM into memory
     b->node_addr = ga_dev_eeprom_naddr_read();
 
     delay(100);
@@ -168,6 +168,7 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->bmp085_temp_decic   = ga_dev_bmp085_read_temp();
     data_packet->humidity_centi_pct  = ga_dev_sht1x_read();
     data_packet->apogee_w_m2         = ga_dev_apogee_sp212_read();
+    data_packet->node_addr           = b->node_addr;
 
     Serial.println(F("Sample End"));
     b->sample_count++;
