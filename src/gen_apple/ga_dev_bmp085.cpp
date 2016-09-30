@@ -5,7 +5,7 @@ void ga_dev_bmp085_open(void){
     bmp085.begin();
 }
 
-uint32_t ga_dev_bmp085_read(void){
+uint32_t ga_dev_bmp085_read_press(void){
     uint32_t value = 80;
 
     #ifndef SEN_STUB

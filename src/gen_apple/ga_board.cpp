@@ -99,7 +99,7 @@ static void ga_board_post(){
     }
 
     // Check BMP085
-    int32_t bmp085_val = ga_dev_bmp085_read();
+    int32_t bmp085_val = ga_dev_bmp085_read_press();
     Serial.print(F("[P] bmp085 value: "));
     Serial.print(bmp085_val/100);
     Serial.print(F("."));
@@ -125,7 +125,7 @@ static void ga_board_post(){
     // Check apogee_sp212
     int apogee_sp212_val = ga_dev_apogee_sp212_read();
     Serial.print(F("[P] apogee_sp212 solar irr value: "));
-    Serial.print(apogee_sp212_val*(5000/1023));
+    Serial.print(apogee_sp212_val);
     Serial.println(" mV");
 
     if(apogee_sp212_val < 0){
@@ -135,7 +135,7 @@ static void ga_board_post(){
     // Check batt
     int batt_val = ga_dev_batt_read();
     Serial.print(F("[P] batt value: "));
-    Serial.print(batt_val*(5000/1023));
+    Serial.print(batt_val);
     Serial.println(" mV");
 
     if(batt_val < 0){
@@ -145,7 +145,7 @@ static void ga_board_post(){
     // check panel sensor value
     int spanel_val = ga_dev_spanel_read();
     Serial.print(F("[P] spanel value: "));
-    Serial.print(2*spanel_val*(5000/1023)+70);
+    Serial.print(spanel_val);
     Serial.println(F(" mV"));
 
     if(spanel_val < 100){
@@ -164,7 +164,7 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->uptime_ms           = millis();
     data_packet->batt_mv             = ga_dev_batt_read();
     data_packet->panel_mv            = ga_dev_spanel_read();
-    data_packet->bmp085_press_pa     = ga_dev_bmp085_read();
+    data_packet->bmp085_press_pa     = ga_dev_bmp085_read_press();
     data_packet->bmp085_temp_decic   = ga_dev_bmp085_read_temp();
     data_packet->humidity_centi_pct  = ga_dev_sht1x_read();
     data_packet->apogee_w_m2         = ga_dev_apogee_sp212_read();

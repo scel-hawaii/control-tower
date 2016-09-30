@@ -4,12 +4,19 @@ void ga_dev_batt_open(void){
     pinMode(_PIN_GA_BATT_, INPUT);
 }
 
+int ga_dev_batt_read_raw(void){
+    int value;
+    value = analogRead(_PIN_GA_BATT_);
+    return value;
+}
+
 int ga_dev_batt_read(void){
-    int value = 555;
+    int val = 555;
 
     #ifndef SEN_STUB
-    value = analogRead(_PIN_GA_BATT_);
+    float raw = (float)analogRead(_PIN_GA_BATT_) * (5.0/1023.0);
+    val = raw * 1000;
     #endif
 
-    return value;
+    return val;
 }

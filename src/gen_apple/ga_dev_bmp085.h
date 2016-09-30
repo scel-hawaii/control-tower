@@ -5,7 +5,6 @@
 #define GA_DEV_BMP085_H
 void ga_dev_bmp085_open(void);
 int ga_dev_bmp085_avail(void);
-uint32_t ga_dev_bmp085_read(void);
+uint32_t ga_dev_bmp085_read_press(void);
 int16_t ga_dev_bmp085_read_temp(void);
 #endif
-
