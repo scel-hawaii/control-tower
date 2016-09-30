@@ -16,6 +16,8 @@
 #include "gen_apple/ga_board.h"
 #elif defined(GC)
 #include "gen_cranberry/gc_board.h"
+#elif defined(GD)
+#include "gen_dragonfruit/gd_board.h"
 #endif
 
 /* Arudino Libraries */
@@ -41,6 +43,10 @@ struct ga_board board;
 #ifdef GC
 struct gc_board board;
 #endif
+
+#ifdef GD
+struct gd_board board;
+#endif
 /*********************************************
  *
  *    Name:        setup
@@ -58,6 +64,10 @@ void setup(){
 
     #ifdef GC
     gc_board_init(&board);
+    #endif
+
+    #ifdef GD
+    gd_board_init(&board);
     #endif
 
     board.print_build_opts();

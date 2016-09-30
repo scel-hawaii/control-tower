@@ -63,7 +63,7 @@ static void gd_board_print_build_opts()
 static void gd_board_setup(struct gd_board* b){
     Serial.begin(9600);
     Serial.println(F("Board Setup Start"));
-
+    digitalWrite(_PIN_SEN_EN_, HIGH);
     // Open Devices
     gd_dev_xbee_open();
     gd_dev_honeywell_HIH6131_open();
@@ -90,7 +90,7 @@ static void gd_board_post(){
     Serial.println((int) gd_dev_eeprom_naddr_read());
 
     // Check HIH6131
-    int hih6_val = gd_dev_honeywell_HIH6131_read();
+    int h1h6_val = gd_dev_honeywell_HIH6131_read();
     Serial.print(F("[P] hih6 value: "));
     Serial.print(h1h6_val);
     Serial.println("\%");

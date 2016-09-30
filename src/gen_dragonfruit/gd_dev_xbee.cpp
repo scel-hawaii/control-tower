@@ -23,3 +23,4 @@ void gd_dev_xbee_write(uint8_t *data, int data_len)
 
     xbee.send(zbtx);
 }
+

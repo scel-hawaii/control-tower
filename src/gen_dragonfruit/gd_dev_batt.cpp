@@ -13,3 +13,4 @@ int gd_dev_batt_read(void){
 
     return value;
 }
+
