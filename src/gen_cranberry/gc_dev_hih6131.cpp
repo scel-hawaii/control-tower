@@ -4,14 +4,16 @@
 static HIH613x hih6131(0x27);
 
 void gc_dev_hih6131_open(void){
-    //Investigate need for PINMODE or if address given
-    //above is enough.
+
 }
 
 int gc_dev_hih6131_temp_decic_read(void){
     int16_t value = 89;
+    byte test;
 
     #ifndef SEN_STUB
+    test = hih6131.update();
+    Serial.println(test);
     value = hih6131.getTemperature();
     #endif
 
@@ -22,6 +24,7 @@ int gc_dev_hih6131_humidity_pct_read(void){
     uint16_t value = 60;
 
     #ifndef SEN_STUB
+    hih6131.update();
     value = hih6131.getHumidity();
     #endif
 

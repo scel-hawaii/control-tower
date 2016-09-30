@@ -23,8 +23,8 @@ public:
 private:
     // core
     byte address;
-    float temperature;
-    float humidity;
+    float temperature = 1;
+    float humidity = 1;
 };
 
 #endif
