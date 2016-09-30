@@ -28,4 +28,4 @@ while True:
 	timestamp = datetime.datetime.now()
 	print str(timestamp) + " Got a packet of length " + str(dlen)
 
-	decoder.decode_data(data)	
+	decoder.decode_data(data, decoder.print_dictionary)	
