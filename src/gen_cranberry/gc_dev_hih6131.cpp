@@ -4,16 +4,14 @@
 static HIH613x hih6131(0x27);
 
 void gc_dev_hih6131_open(void){
-
+    Wire.begin(9600);
 }
 
 int gc_dev_hih6131_temp_decic_read(void){
     int16_t value = 89;
-    byte test;
 
     #ifndef SEN_STUB
-    test = hih6131.update();
-    Serial.println(test);
+    hih6131.update();
     value = hih6131.getTemperature();
     #endif
 

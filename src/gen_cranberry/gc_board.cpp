@@ -43,7 +43,7 @@ void gc_board_init(gc_board *b){
 
     // Initialize the packet
     b->data_packet.schema = 2;
-    b->data_packet.node_addr = 0;
+    b->data_packet.node_addr = gc_dev_eeprom_naddr_read();
     b->data_packet.uptime_ms = 0;
     b->data_packet.batt_mv = 0;
     b->data_packet.panel_mv = 0;
@@ -65,7 +65,7 @@ static void gc_board_setup(struct gc_board* b){
     Serial.println(F("Board Setup Start"));
 
     // Open Devices
-    digitalWrite(6, HIGH);
+    digitalWrite(_PIN_SEN_EN, HIGH);
     gc_dev_xbee_open();
     gc_dev_solar_open();
     gc_dev_batt_open();

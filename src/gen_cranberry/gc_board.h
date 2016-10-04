@@ -9,6 +9,8 @@
 #ifndef GC_BOARD_H
 #define GC_BOARD_H
 
+#define _PIN_SEN_EN 4
+
 struct gc_packet{
     uint16_t schema;
     uint16_t node_addr;           // Address of Arduino

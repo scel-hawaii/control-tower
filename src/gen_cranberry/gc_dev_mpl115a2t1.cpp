@@ -4,7 +4,7 @@
 static Adafruit_MPL115A2 mpl115a2;
 
 void gc_dev_mpl115a2t1_open(void){
-    //mpl115a2.begin();
+    mpl115a2.begin();
 }
 
 int gc_dev_mpl115a2t1_press_kpa_read(void){
