@@ -7,12 +7,12 @@ void gc_dev_mpl115a2t1_open(void){
     mpl115a2.begin();
 }
 
-int gc_dev_mpl115a2t1_press_kpa_read(void){
-    uint16_t value = 80;
+uint32_t gc_dev_mpl115a2t1_press_pa_read(void){
+    float value = 80;
 
     #ifndef SEN_STUB
-    value = mpl115a2.getPressure();
+    value = mpl115a2.getPressure() * 1000;
     #endif
 
-    return value;
+    return (uint32_t)value;
 }

@@ -20,7 +20,7 @@ struct gc_packet{
     uint16_t apogee_w_m2;
     int16_t hih6131_temp_decic; // Temperature (Celsius)
     uint16_t hih6131_humidity_pct;  // Humidity (percentage)
-    uint16_t mpl115a2t1_press_kpa;  // Pressure (kPa)
+    uint32_t mpl115a2t1_press_pa;  // Pressure (kPa)
 };
 
 struct gc_heartbeat_packet{
