@@ -26,6 +26,22 @@ platformio run -e env_name      # build a specific target
 
 See [platformio.ini](platformio.ini) for platform specific environments.
 
+**Note:** Builds are supported through platformio, but verification and validation tests may need a
+linux based operating system to run properly. If you aren't using a linux-based OS, you can
+Vagrant and VirtualBox to provision a virtual machine on your local computer.
+
+After installing Vagrant and Virtualbox, run:
+
+```
+vagrant up
+
+```
+
+Once the installation is complete, run `vagrant SSH` in the project directory to connect
+to the virutal machine.
+
+
+
 # Contributing
 
 See the github flow for more information: https://guides.github.com/introduction/flow/

@@ -3,3 +3,4 @@
 *.swp
 .gcc-flags.json
 build-uno
+.vagrant
