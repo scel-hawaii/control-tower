@@ -157,8 +157,12 @@ static void ga_board_post(){
 }
 
 static void ga_board_sample(struct ga_board* b){
+    Serial.print("[");
+    Serial.print(millis());
+    Serial.print("] ");
     Serial.println(F("Sample Start"));
-    Serial.println(b->sample_count);
+    // Disabled this for apple deployment on 2016-10-06 with T=30s
+    // Serial.println(b->sample_count);
 
     struct ga_packet* data_packet = &(b->data_packet);
     data_packet->uptime_ms           = millis();
@@ -171,10 +175,15 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->node_addr           = b->node_addr;
 
     Serial.println(F("Sample End"));
-    b->sample_count++;
+    b->sample_count = 0;
+
+    // Disabled this for apple deployment on 2016-10-06 with T=30s
+    // b->sample_count++;
 }
 
 static int ga_board_ready_tx(struct ga_board* b){
+    // Disabled this for apple deployment on 2016-10-06 with T=30s
+    /*
     const int max_samples = 20;
     if(b->sample_count > max_samples-1){
         return 1;
@@ -182,11 +191,13 @@ static int ga_board_ready_tx(struct ga_board* b){
     else{
         return 0;
     }
+    */
+    return 0;
 }
 
 static int ga_board_ready_sample(struct ga_board* b){
-    const int wait_ms = 3000;
-    const int sample_delta = millis() - b->prev_sample_ms;
+    const unsigned long wait_ms = 1000*30;
+    const unsigned long sample_delta = millis() - b->prev_sample_ms;
 
     if( sample_delta >= wait_ms){
         b->prev_sample_ms = millis();
@@ -300,6 +311,7 @@ static void ga_board_tx(struct ga_board* b){
     b->sample_count = 0;
 
     Serial.println(F("Sample TX End"));
+    ga_board_tx(b);
 }
 
 static void ga_board_soft_rst(){
