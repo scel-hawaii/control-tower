@@ -4,6 +4,7 @@ import serial
 import datetime
 import struct
 import collections
+import json
 
 class Decoder:
 
@@ -44,9 +45,13 @@ class Decoder:
   Displays given data dictonary    
   """
   def print_dictionary(self, dataDict):
-    orderedData = collections.OrderedDict(sorted(dataDict.items()))
-    for key, value in orderedData.iteritems():
+    for key, value in dataDict.iteritems():
       print key + ": " + str(value) 
+
+  def write_to_file(self, dataDict):
+    json_data = json.dumps(dataDict)
+    f = open('data.json' , 'w') 
+    json.dump(json_data , f)
 
   def register_callback(self, callback):
     self.callbacks.append(callback)
@@ -100,7 +105,7 @@ class Decoder:
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
 
-    return dataDict 
+    return collections.OrderedDict(sorted(dataDict.items()))
 
   
 
