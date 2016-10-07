@@ -1,5 +1,5 @@
 all:
-	platformio run --environment ga_production
+	platformio run 
 
 upload:
 	platformio run --environment ga_production --target upload

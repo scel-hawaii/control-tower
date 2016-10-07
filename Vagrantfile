@@ -71,5 +71,6 @@ Vagrant.configure("2") do |config|
     apt-get install -y python python-pip git vim
     pip install -U platformio
     sudo su vagrant -c "git clone https://github.com/scel-hawaii/weatherbox-firmware.git"
+    cd /vagrant/emu && make install-pkgs-debian
   SHELL
 end
