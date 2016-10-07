@@ -65,7 +65,7 @@ class Decoder:
     dataDict = {}
     unpacked_data = struct.unpack(fmt,data)
 
-    dataDict["time_received"] = timestamp
+    dataDict["time_received"] = str(timestamp)
     if self.schema_num == 1: #apple schema
       dataDict["schema"] = unpacked_data[0]
       dataDict["node_addr"] = unpacked_data[1]
