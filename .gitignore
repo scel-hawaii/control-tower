@@ -4,3 +4,5 @@
 .gcc-flags.json
 build-uno
 .vagrant
+
+simduino_atmega328p_flash.bin
