@@ -177,6 +177,8 @@ static void ga_board_sample(struct ga_board* b){
     Serial.println(F("Sample End"));
     b->sample_count = 0;
 
+    ga_board_tx(b);
+
     // Disabled this for apple deployment on 2016-10-06 with T=30s
     // b->sample_count++;
 }
@@ -311,7 +313,6 @@ static void ga_board_tx(struct ga_board* b){
     b->sample_count = 0;
 
     Serial.println(F("Sample TX End"));
-    ga_board_tx(b);
 }
 
 static void ga_board_soft_rst(){
