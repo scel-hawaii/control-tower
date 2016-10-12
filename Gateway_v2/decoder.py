@@ -4,7 +4,8 @@ import serial
 import datetime
 import struct
 import collections
-import json
+import csv
+import os.path
 
 class Decoder:
 
@@ -49,9 +50,27 @@ class Decoder:
       print key + ": " + str(value) 
 
   def write_to_file(self, dataDict):
-    json_data = json.dumps(dataDict)
-    f = open('data.json' , 'w') 
-    json.dump(json_data , f)
+    fileExists = True
+
+    if(os.path.isfile('data.csv') == False):
+	fileExists = False
+    dataString = ''
+    for key, value in dataDict.iteritems():
+	dataString += str(value)
+	dataString += ','
+	
+    dataString = dataString[:-1]
+    dataString += '\n'
+
+    with open('data.csv', 'a') as csvfile:
+	if(fileExists == False):
+		headerString = ""
+		for key, value in dataDict.iteritems():
+			headerString += str(key) + ','
+		headerString = headerString[:-1]
+		headerString += '\n'
+		csvfile.write(headerString) 
+	csvfile.write(dataString)
 
   def register_callback(self, callback):
     self.callbacks.append(callback)
