@@ -13,6 +13,7 @@ xbg = XBeeGateway()
 
 decoder.register_callback(decoder.print_dictionary)
 decoder.register_callback(decoder.write_to_file)
+decoder.register_callback(decoder.write_to_db)
 xbg.register_callback(decoder.decode_data)
 
 
@@ -21,4 +22,3 @@ baud_rate = 9600
 
 xbg.setup_xbee(port, baud_rate)
 xbg.begin_test()
-
