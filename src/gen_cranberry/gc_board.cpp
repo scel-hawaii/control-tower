@@ -67,7 +67,7 @@ static void gc_board_setup(struct gc_board* b){
     // Open Devices
     digitalWrite(_PIN_SEN_EN, HIGH);
     gc_dev_xbee_open();
-    gc_dev_solar_open();
+    gc_dev_sp212_open();
     gc_dev_batt_open();
     gc_dev_spanel_open();
     gc_dev_eeprom_naddr_open();
@@ -130,7 +130,7 @@ static void gc_board_post(){
 
     // Check apogee_sp212
     Serial.println(F("[P] Check apogee_sp212 value"));
-    int apogee_sp212_val = gc_dev_solar_read();
+    int apogee_sp212_val = gc_dev_sp212_read();
 
     Serial.print(F("[P] apogee_sp212 solar irr value: "));
     Serial.print(apogee_sp212_val);
@@ -175,7 +175,7 @@ static void gc_board_sample(struct gc_board* b){
     data_packet->uptime_ms           = millis();
     data_packet->batt_mv             = gc_dev_batt_read();
     data_packet->panel_mv            = gc_dev_spanel_read();
-    data_packet->apogee_w_m2         = gc_dev_solar_read();
+    data_packet->apogee_w_m2         = gc_dev_sp212_read();
 
     Serial.println(F("Sample End"));
     b->sample_count++;

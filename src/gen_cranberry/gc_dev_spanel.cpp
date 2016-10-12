@@ -1,16 +1,13 @@
 #include "gc_dev_spanel.h"
 
-void gc_dev_spanel_open(void){
-    pinMode(_PIN_GC_SPANEL_, INPUT);
-}
+static Adafruit_ADS1115 adc;
 
-int gc_dev_spanel_read_raw(void){
-    int val = analogRead(_PIN_GC_SPANEL_);
-    return val;
+void gc_dev_spanel_open(void){
+    adc.begin();
 }
 
 int gc_dev_spanel_read(void){
-    float raw = (float)analogRead(_PIN_GC_SPANEL_) * (5.0/1023.0) * 2.0;
-    int val = raw * 1000;
-    return val;
+  uint16_t value;
+  value = ((float)adc.readADC_SingleEnded(3)*188.0)/(1000.0);
+  return value;
 }
