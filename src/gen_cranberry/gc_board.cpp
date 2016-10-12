@@ -142,7 +142,7 @@ static void gc_board_post(){
 
     // Check batt
     Serial.println(F("[P] Check batt value"));
-    int batt_val = gc_dev_batt_read();
+    uint16_t batt_val = gc_dev_batt_read();
 
     Serial.print(F("[P] batt value: "));
     Serial.print(batt_val);
