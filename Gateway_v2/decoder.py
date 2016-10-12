@@ -6,6 +6,7 @@ import struct
 import collections
 import csv
 import os.path
+import psycopg2
 
 class Decoder:
 
