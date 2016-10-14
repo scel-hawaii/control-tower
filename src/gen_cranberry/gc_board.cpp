@@ -154,7 +154,8 @@ static void gc_board_post(){
 
     // check panel sensor value
     Serial.println(F("[P] check panel sensor value"));
-    int spanel_val = gc_dev_spanel_read();
+
+    uint16_t spanel_val = gc_dev_spanel_read();
     Serial.print(F("[P] spanel value: "));
     Serial.print(spanel_val);
     Serial.println(F(" mV"));
