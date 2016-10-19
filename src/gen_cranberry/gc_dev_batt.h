@@ -1,10 +1,8 @@
-#include <Arduino.h>
-
-#define _PIN_GC_BATT_ A3
+#include <Adafruit_ADS1015.h>
+#include <Wire.h>
 
 #ifndef GC_DEV_BATT_H
 #define GC_DEV_BATT_H
 void gc_dev_batt_open(void);
-uint16_t gc_dev_batt_read_raw(void);
 uint16_t gc_dev_batt_read(void);
 #endif

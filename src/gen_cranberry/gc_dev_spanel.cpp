@@ -7,7 +7,11 @@ void gc_dev_spanel_open(void){
 }
 
 int gc_dev_spanel_read(void){
-  uint16_t value;
+  uint16_t value = 6000;
+
+  #ifndef SEN_STUB
   value = ((float)adc.readADC_SingleEnded(3)*188.0)/(1000.0);
+  #endif
+  
   return value;
 }
