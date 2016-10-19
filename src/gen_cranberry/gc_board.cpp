@@ -48,7 +48,7 @@ void gc_board_init(gc_board *b){
     b->data_packet.batt_mv = 0;
     b->data_packet.panel_mv = 0;
     b->data_packet.apogee_w_m2 = 0;
-    b->data_packet.hih6131_temp_decic = 0;
+    b->data_packet.hih6131_temp_centik = 0;
     b->data_packet.hih6131_humidity_pct = 0;
     b->data_packet.mpl115a2t1_press_pa = 0;
 }
@@ -74,14 +74,14 @@ static void gc_board_setup(struct gc_board* b){
     gc_dev_hih6131_open();
     gc_dev_mpl115a2t1_open();
 
-    // load the address from the hardware
+    // Load the address from the hardware
     b->node_addr = gc_dev_eeprom_naddr_read();
 
     delay(100);
     Serial.println(F("Board Setup Done"));
 }
 
-// power on self test
+// Power on self test
 static void gc_board_post(){
     Serial.println(F("POST Begin"));
 
@@ -90,21 +90,18 @@ static void gc_board_post(){
     Serial.println((int) gc_dev_eeprom_naddr_read());
 
     // Check hih6131 temperature
+    Serial.println(F("[P] Check hih6131_temp_centik value"));
+    int hih6131_temp_centik_val = gc_dev_hih6131_temp_centik_read();
 
-    Serial.println(F("[P] Check hih6131_temp_decic value"));
-    int hih6131_temp_decic_val = gc_dev_hih6131_temp_decic_read();
+    Serial.print(F("[P] hih6131_temp_centik value: "));
+    Serial.print(hih6131_temp_centik_val);
+    Serial.println(F(" cK"));
 
-    Serial.print(F("[P] hih6131_temp_decic value: "));
-    Serial.print(hih6131_temp_decic_val);
-    Serial.println(F(" C"));
-
-    if(hih6131_temp_decic_val < 0){
+    if(hih6131_temp_centik_val < 0){
         Serial.println(F("[P] \tError: hih6131 temp out of range"));
     }
 
-
     // Check hih6131 humidity
-
     Serial.println(F("[P] Check hih6131_humidity value"));
     int hih6131_humidity_pct_val = gc_dev_hih6131_humidity_pct_read();
 
@@ -140,7 +137,7 @@ static void gc_board_post(){
         Serial.println(F("[P] \tError: apogee solar irr out of range"));
     }
 
-    // Check batt
+    // Check battery voltage
     Serial.println(F("[P] Check batt value"));
     uint16_t batt_val = gc_dev_batt_read();
 
@@ -165,7 +162,6 @@ static void gc_board_post(){
     }
 
     Serial.println(F("POST End"));
-
 }
 
 static void gc_board_sample(struct gc_board* b){

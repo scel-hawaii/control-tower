@@ -18,7 +18,7 @@ struct gc_packet{
     uint16_t batt_mv;           // Battery Voltage (in milli volts)
     uint16_t panel_mv;          // Panel Voltage (in milli volts)
     uint16_t apogee_w_m2;
-    int16_t hih6131_temp_decic; // Temperature (Celsius)
+    int16_t hih6131_temp_centik; // Temperature (Celsius)
     uint16_t hih6131_humidity_pct;  // Humidity (percentage)
     uint32_t mpl115a2t1_press_pa;  // Pressure (kPa)
 };
@@ -51,8 +51,6 @@ struct gc_board{
     struct gc_packet data_packet;
 };
 
-
 void gc_board_init(struct gc_board*);
-
 
 #endif
