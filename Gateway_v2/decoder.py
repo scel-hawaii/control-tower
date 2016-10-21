@@ -53,7 +53,16 @@ class Decoder:
   def write_to_file(self, dataDict):
     fileExists = True
 
-    if(os.path.isfile('data.csv') == False):
+    if(self.schema_num == 0):
+	fileName = 'heartbeat_data.csv'
+    elif(self.schema_num == 1):
+	fileName = 'apple_data.csv'
+    elif(self.schema_num == 2):
+	fileName = 'cranberry_data.csv'
+    elif(self.schema_num == 3):
+	fileName = 'dragonfruit_data.csv'
+
+    if(os.path.isfile(fileName) == False):
 	fileExists = False
     dataString = ''
     for key, value in dataDict.iteritems():
