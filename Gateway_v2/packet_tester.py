@@ -13,7 +13,7 @@ xbg = XBeeGateway()
 
 decoder.register_callback(decoder.print_dictionary)
 decoder.register_callback(decoder.write_to_file)
-decoder.register_callback(decoder.write_to_db)
+#decoder.register_callback(decoder.write_to_db)
 xbg.register_callback(decoder.decode_data)
 
 

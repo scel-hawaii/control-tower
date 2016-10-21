@@ -15,7 +15,7 @@ class Decoder:
       'ga_legacy': 'HHBI'+'B'+'H'*6+'H'*6+'IhH'+'H'*20,
       '0': 'HHIH', #Heartbeat schema
       '1': 'HHIHHIhHH', #Apple schema
-      '2': 'HHIHHHhHH', #Cranberry schema
+      '2': 'HHIHHHhHI', #Cranberry schema
       '3': 'HHIHHIhHH'  #Dragonfruit Schema
     }
     self.callbacks = []
