@@ -72,7 +72,7 @@ class Decoder:
     dataString = dataString[:-1]
     dataString += '\n'
 
-    with open('data.csv', 'a') as csvfile:
+    with open(fileName, 'a') as csvfile:
 	if(fileExists == False):
 		headerString = ""
 		for key, value in dataDict.iteritems():
