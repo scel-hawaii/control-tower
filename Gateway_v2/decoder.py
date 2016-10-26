@@ -15,7 +15,7 @@ class Decoder:
       'ga_legacy': 'HHBI'+'B'+'H'*6+'H'*6+'IhH'+'H'*20,
       '0': 'HHIH', #Heartbeat schema
       '1': 'HHIHHIhHH', #Apple schema
-      '2': 'HHIHHHhHH', #Cranberry schema
+      '2': 'HHIHHHhHI', #Cranberry schema
       '3': 'HHIHHIhHH'  #Dragonfruit Schema
     }
     self.callbacks = []
@@ -53,7 +53,16 @@ class Decoder:
   def write_to_file(self, dataDict):
     fileExists = True
 
-    if(os.path.isfile('data.csv') == False):
+    if(self.schema_num == 0):
+	fileName = 'heartbeat_data.csv'
+    elif(self.schema_num == 1):
+	fileName = 'apple_data.csv'
+    elif(self.schema_num == 2):
+	fileName = 'cranberry_data.csv'
+    elif(self.schema_num == 3):
+	fileName = 'dragonfruit_data.csv'
+
+    if(os.path.isfile(fileName) == False):
 	fileExists = False
     dataString = ''
     for key, value in dataDict.iteritems():
@@ -63,7 +72,7 @@ class Decoder:
     dataString = dataString[:-1]
     dataString += '\n'
 
-    with open('data.csv', 'a') as csvfile:
+    with open(fileName, 'a') as csvfile:
 	if(fileExists == False):
 		headerString = ""
 		for key, value in dataDict.iteritems():
