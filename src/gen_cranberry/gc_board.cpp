@@ -179,6 +179,9 @@ static void gc_board_sample(struct gc_board* b){
     data_packet->batt_mv             = gc_dev_batt_read();
     data_packet->panel_mv            = gc_dev_spanel_read();
     data_packet->apogee_w_m2         = gc_dev_sp212_read();
+    data_packet->hih6131_temp_centik = gc_dev_hih6131_temp_centik_read();
+    data_packet->hih6131_humidity_pct= gc_dev_hih6131_humidity_pct_read();
+    data_packet->mpl115a2t1_press_pa = gc_dev_mpl115a2t1_press_pa_read();
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;
