@@ -87,25 +87,53 @@ class Decoder:
     con = psycopg2.connect("dbname='control_tower' user='control_tower'")
     cur = con.cursor()
 
-    if(self.schema_num == 0):
-        #create a new empty row
-        cur.execute("INSERT INTO heartbeat (time_received) VALUES ('%s')" %(dataDict["time_received"]))
 
-        #insert data into newly created row
-        for key, value in dataDict.iteritems():
-            if key != 'time_received':
-                sqlCommand = "UPDATE heartbeat SET %s = %s WHERE time_received = '%s'" %(key, str(value), dataDict["time_received"])
+    if self.schema_num == 0:
+        tableName = 'heartbeat'
+    elif self.schema_num == 1:
+        tableName = 'apple'
+    elif self.schema_num == 2:
+        tableName = 'cranberry'
+    elif self.schema_num == 3:
+        tableName = 'dragonfruit'
+    else:
+        print "Invalid packet schema"
+        return
+
+    #create a new empty row
+    cur.execute("INSERT INTO %s (time_received) VALUES ('%s')" %(tableName, dataDict["time_received"]))
+
+    #insert data into newly created row
+    for key, value in dataDict.iteritems():
+        if key != 'time_received':
+                sqlCommand = "UPDATE %s SET %s = %s WHERE time_received = '%s'" %(tableName, key, str(value), dataDict["time_received"])
                 cur.execute(sqlCommand)
 
-#    elif self.schema_num == 1:
-                #do stuff
-
-#    elif self.schema_num == 2:
-                #do stuff
-#    elif self.schema_num == 3:
-                #do stuff
     con.commit()
-
+###
+#    #make connection to database, this can be added elsewhere so it will only be done once
+#    con = psycopg2.connect("dbname='control_tower' user='control_tower'")
+#    cur = con.cursor()
+#
+#    if(self.schema_num == 0):
+#        #create a new empty row
+#        cur.execute("INSERT INTO heartbeat (time_received) VALUES ('%s')" %(dataDict["time_received"]))
+#
+#        #insert data into newly created row
+#        for key, value in dataDict.iteritems():
+#            if key != 'time_received':
+#                sqlCommand = "UPDATE heartbeat SET %s = %s WHERE time_received = '%s'" %(key, str(value), dataDict["time_received"])
+#                cur.execute(sqlCommand)
+#
+#    elif self.schema_num == 1:
+#                #do stuff
+#
+#    elif self.schema_num == 2:
+#                #do stuff
+#    elif self.schema_num == 3:
+#                #do stuff
+#    con.commit()
+###
   def register_callback(self, callback):
     self.callbacks.append(callback)
 
