@@ -4,6 +4,9 @@ void gc_dev_xbee_open(void)
 {
     soft_serial.begin(9600);
     xbee.begin(soft_serial);
+
+    /* Enable the XBee voltage regulator pin to power XBee */
+    digitalWrite(3, HIGH);
 }
 
 int gc_dev_xbee_avail(void)
