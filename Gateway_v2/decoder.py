@@ -148,9 +148,9 @@ class Decoder:
       dataDict["batt_mv"] = unpacked_data[3]
       dataDict["panel_mv"] = unpacked_data[4]
       dataDict["apogee_w_m2"] = unpacked_data[5]
-      dataDict["temp_c"] = unpacked_data[6]
-      dataDict["humidity_centi_pct"] = unpacked_data[7]
-      dataDict["press_kpa"] = unpacked_data[8]
+      dataDict["temp_cK"] = unpacked_data[6]
+      dataDict["humidity_pct"] = unpacked_data[7]
+      dataDict["press_pa"] = unpacked_data[8]
 
     elif self.schema_num == 3: #dragonfruit schema
       dataDict["schema"] = unpacked_data[0]
