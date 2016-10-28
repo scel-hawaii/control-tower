@@ -5,13 +5,14 @@ void gd_dev_spanel_open(void){
 }
 
 int gd_dev_spanel_read(void){
-    int value = 555;
-
+    float value = 555.0;
     #ifndef SEN_STUB
-    value = analogRead(_PIN_GD_SPANEL_);
-    //2*analogRead(_PIN_GD_SPANEL_)*5000.0/1023;
-    #endif
 
+    /* The solar panel has a maximum output voltage of 6V but the ATmega328P
+    microcontroller only allows a maximum input voltage of 5V. To prevent a
+    saturated signal reading, A physical voltage divider is implemented on the
+    board. To account for this voltage divider, a scaling factor of 2 is used. */
+    value = 2.0 * (float)analogRead(_PIN_GD_SPANEL_) *(5000.0/1023);
+    #endif
     return value;
 }
-

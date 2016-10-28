@@ -103,30 +103,30 @@ static void gd_board_post(){
     }
 
     // Check MPL115a2 temperature
-    int32_t mpl115a2_temp_val = gd_dev_adafruit_MPL115A2_temp_read();
-    Serial.print(F("[P] mpl115a2 value: "));
+    uint16_t mpl115a2_temp_val = gd_dev_adafruit_MPL115A2_temp_read();
+    Serial.print(F("[P] mpl115a2 temp: "));
     Serial.print(mpl115a2_temp_val);
-    Serial.print(F("."));
-
+    Serial.println(F(" cK"));
+    
     if(mpl115a2_temp_val < 0){
         Serial.println(F("[P] \tError: mpl115a2 temp out of range"));
     }
 
     // Check MPL115a2 pressure
-    uint16_t mpl115a2_press = gd_dev_adafruit_MPL115A2_press_read();
+    uint32_t mpl115a2_press = gd_dev_adafruit_MPL115A2_press_read();
     Serial.print(F("[P] mpl115a2 pressure: "));
     Serial.print(mpl115a2_press);
-    Serial.print(".");
+    Serial.println(F(" Pa"));
 
     if(mpl115a2_press < 0){
         Serial.println(F("[P] Error: mpl115a2 pressure out of range"));
     }
 
     // Check apogee_sp215
-    int apogee_sp215_val = gd_dev_apogee_sp215_read();
+    uint32_t apogee_sp215_val = gd_dev_apogee_sp215_read();
     Serial.print(F("[P] apogee_sp215 solar irr value: "));
     Serial.print(apogee_sp215_val);
-    Serial.println(" mV");
+    Serial.println(F(" mV"));
 
     if(apogee_sp215_val < 0){
         Serial.println(F("[P] \tError: apogee solar irr out of range"));
@@ -136,13 +136,13 @@ static void gd_board_post(){
     int batt_val = gd_dev_batt_read();
     Serial.print(F("[P] batt value: "));
     Serial.print(batt_val);
-    Serial.println(" mV");
+    Serial.println(F(" mV"));
 
     if(batt_val < 0){
         Serial.println(F("[P] Error: batt out of range"));
     }
 
-    // check panel sensor value
+    // Check panel sensor value
     int spanel_val = gd_dev_spanel_read();
     Serial.print(F("[P] spanel value: "));
     Serial.print(spanel_val);
@@ -228,6 +228,10 @@ static void gd_board_run_cmd(struct gd_board* b){
                 switch(input){
                     case 'T':
                         Serial.println(F("CMD Mode cmd"));
+                        break;
+                    case 'P':
+                        Serial.println(F("Running POST"));
+                        b->post();
                         break;
                     default:
                         break;

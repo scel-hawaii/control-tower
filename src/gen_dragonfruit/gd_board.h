@@ -19,10 +19,10 @@ struct gd_packet{
   uint32_t uptime_ms;         // Time since start of program
   uint16_t batt_mv;           // Battery Voltage (in milli volts)
   uint16_t panel_mv;          // Panel Voltage (in milli volts)
-  uint16_t apogee_sp215;      // Solar radiance
-  int16_t mpl115a2t1_temp;    // Temperature (Celsius)
+  uint32_t apogee_sp215;      // Solar radiance
+  uint16_t mpl115a2t1_temp;    // Temperature (centiKelvin)
   uint16_t hih6131_humidity_pct;  // Humidity (percentage)
-  uint16_t mpl115a2t1_press;  // Pressure (kPa)
+  uint32_t mpl115a2t1_press;  // Pressure (Pa)
 };
 
 struct gd_heartbeat_packet{
