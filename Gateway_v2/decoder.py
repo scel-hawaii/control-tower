@@ -16,7 +16,7 @@ class Decoder:
       '0': 'HHIH', #Heartbeat schema
       '1': 'HHIHHIhHH', #Apple schema
       '2': 'HHIHHHhHI', #Cranberry schema
-      '3': 'HHIHHIhHI'  #Dragonfruit Schema
+      '3': 'HHIHHIHHI'  #Dragonfruit Schema
     }
     self.callbacks = []
 
@@ -158,10 +158,10 @@ class Decoder:
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
       dataDict["panel_mv"] = unpacked_data[4]
-      dataDict["press_pa"] = unpacked_data[5]
-      dataDict["temp_c"] = unpacked_data[6]
-      dataDict["humidity_centi_pct"] = unpacked_data[7]
-      dataDict["apogee_w_m2"] = unpacked_data[8]
+      dataDict["apogee_sp215"] = unpacked_data[5]
+      dataDict["temp_cK"] = unpacked_data[6]
+      dataDict["humidity_pct"] = unpacked_data[7]
+      dataDict["press_pa"] = unpacked_data[8]
 
     elif self.schema_num == 0: #heartbeat schema
       dataDict["schema"] = unpacked_data[0]
