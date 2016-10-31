@@ -1,3 +1,13 @@
+#!/bin/bash
+
+
+#
+# setup_postgres_local.sh
+# Author: Kenny Luong <luong97@hawaii.edu>
+#
+# Creates a control_tower database for the current user
+#
+
 ## Sets up a control_tower databse on the local user
 # TODO: Merge this with the normal script
 

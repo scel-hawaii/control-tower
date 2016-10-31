@@ -1,5 +1,11 @@
 #!/bin/bash
-# Initial database setup script
+
+#
+# setup_postgres_user.sh
+# Author: Kenny Luong <luong97@hawaii.edu>
+#
+# This sets up a database for the control_tower user.
+#
 
 function postgres_command(){
     sudo -u postgres psql -U postgres -d template1 -c "$1"
