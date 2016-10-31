@@ -17,8 +17,7 @@ function pgQuery(qString, callback){
 	pg.connect(connectionString, function(err, client, done) {
 	  if(err) {
 	    return console.error('error fetching client from pool', err);
-	  }
-	  client.query(qString, function(err, result) {
+	  } client.query(qString, function(err, result) {
 	    //call `done()` to release the client back to the pool
 	    done();
 	    if(err) {

@@ -36,7 +36,7 @@ function pgQuery(qString, callback){
 
 
 /*
- * 
+ *
  * TODO: Document this crap better please
  *
  */
@@ -239,28 +239,3 @@ module.exports = {
         });
     }
 }
-
-/*
-var start = new Date();
-start.setDate(start.getDate() - 60);
-start = start;
-end = new Date();
-
-var options = {
-    sensors: ["apogee_w_m2"],
-    startDate: start,
-    sampleSelector: "apogee_w_m2",
-    sampleInter: "100",
-    endDate: (new Date())
-}
-var q = constructSensorQuery(options);
-console.log(q);
-
-var options = {
-    sensors: ["apogee_w_m2"],
-    sampleSelector: "apogee_w_m2",
-    sampleInter: "100"
-}
-var q = constructSensorQuery(options);
-console.log(q);
-*/
