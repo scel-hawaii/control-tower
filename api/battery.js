@@ -1,4 +1,4 @@
-var pg = require('pg').native
+var pg = require('pg')
 var gauss = require('gauss')
 var _ = require('underscore')
 /*
