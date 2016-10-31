@@ -2,19 +2,22 @@ var pg = require('pg')
 var gauss = require('gauss')
 var _ = require('underscore')
 
-function combine(keys, vals) {
-    return keys.reduce (
-        function(prev, val, i) { prev[val] = vals[i]; return prev; }, 
-        {}
-    ); }
-
-/* 
- * Given: An SQL query 
+/*
+ * Given: An SQL query
  * Returns: The result of the SQL query
  *
  */
 function pgQuery(qString, callback){
-	var connectionString = process.env.DATABASE_URL || 'pg://control_tower:renewable123@localhost:5432/control_tower';
+    var username = process.env.USER;
+    var password = username + '123';
+
+	// Example URL string: 'pg://control_tower:password@localhost:5432/control_tower'
+    var defaultUrl = 'pg://' + username + ":" + password + "@localhost:5432/" + username;
+	var connectionString = process.env.DATABASE_URL || defaultUrl;
+
+    console.log(connectionString);
+
+
 	pg.connect(connectionString, function(err, client, done) {
 	  if(err) {
 	    return console.error('error fetching client from pool', err);

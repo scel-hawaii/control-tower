@@ -7,7 +7,13 @@ var _ = require('underscore')
  *
  */
 function pgQuery(qString, callback){
-	var connectionString = process.env.DATABASE_URL || 'pg://control_tower:password@localhost:5432/control_tower';
+    var username = process.env.USER;
+    var password = username + '123';
+
+	// Example URL string: 'pg://control_tower:password@localhost:5432/control_tower'
+    var defaultUrl = 'pg://' + username + ":" + password + "@localhost:5432/" + username;
+	var connectionString = process.env.DATABASE_URL || defaultUrl;
+
 	pg.connect(connectionString, function(err, client, done) {
 	  if(err) {
 	    return console.error('error fetching client from pool', err);
