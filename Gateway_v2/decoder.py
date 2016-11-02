@@ -26,9 +26,20 @@ class Decoder:
   """
   def check_schema(self, data):
     self.schema_num = struct.unpack('<' + 'H', data[0:2])[0]
+    print str(self.schema_num) + ':' + str(len(data))
     for key in self.schemaDict:
       if str(self.schema_num) == key:
-        return True
+	# verify expected packet length
+	
+	if key == '0' and len(data) == 10:
+          return True
+	elif key == '1' and len(data) == 22:
+          return True
+	elif key == '2' and len(data) == 22:
+          return True
+	elif key == '3' and len(data) == 24:
+          return True
+	
     return False
 
 
@@ -36,12 +47,13 @@ class Decoder:
   Main Function
   """
   def decode_data(self, data, timestamp):
+    print "Checking Schema"
     if self.check_schema(data):
       dataDict = self.sort_packet(data, timestamp)
       for callback in self.callbacks:
         callback(dataDict)
     else:
-      print "Not A Valid Packet"
+      print "Not A Valid Packet\n"
 
   """
   Displays given data dictonary
@@ -49,6 +61,7 @@ class Decoder:
   def print_dictionary(self, dataDict):
     for key, value in dataDict.iteritems():
       print key + ": " + str(value)
+    print "\n"
 
   """
   Write the decoded data to respective csv file
