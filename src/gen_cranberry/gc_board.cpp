@@ -67,12 +67,12 @@ static void gc_board_setup(struct gc_board* b){
     // Open Devices
     digitalWrite(_PIN_SEN_EN, HIGH);
     gc_dev_xbee_open();
-    gc_dev_sp212_open();
+    gc_dev_apogee_SP212_open();
     gc_dev_batt_open();
     gc_dev_spanel_open();
     gc_dev_eeprom_naddr_open();
-    gc_dev_hih6131_open();
-    gc_dev_mpl115a2t1_open();
+    gc_dev_honeywell_HIH6131_open();
+    gc_dev_adafruit_MPL115A2_open();
 
     // Load the address from the hardware
     b->node_addr = gc_dev_eeprom_naddr_read();
@@ -91,7 +91,7 @@ static void gc_board_post(){
 
     // Check hih6131 temperature
     Serial.println(F("[P] Check hih6131_temp_centik value"));
-    int hih6131_temp_centik_val = gc_dev_hih6131_temp_centik_read();
+    int hih6131_temp_centik_val = gc_dev_honeywell_HIH6131_temp_centik_read();
 
     Serial.print(F("[P] hih6131_temp_centik value: "));
     Serial.print(hih6131_temp_centik_val);
@@ -103,7 +103,7 @@ static void gc_board_post(){
 
     // Check hih6131 humidity
     Serial.println(F("[P] Check hih6131_humidity value"));
-    int hih6131_humidity_pct_val = gc_dev_hih6131_humidity_pct_read();
+    int hih6131_humidity_pct_val = gc_dev_honeywell_HIH6131_humidity_pct_read();
 
     Serial.print(F("[P] hih6131_humidity_pct value: "));
     Serial.print(hih6131_humidity_pct_val);
@@ -115,7 +115,7 @@ static void gc_board_post(){
 
     // Check mpl115a2t1 pressure
     Serial.println(F("[P] Check mpl115a2t1_press_pa value"));
-    uint32_t mpl115a2t1_press_pa_val = gc_dev_mpl115a2t1_press_pa_read();
+    uint32_t mpl115a2t1_press_pa_val = gc_dev_adafruit_MPL115A2_press_pa_read();
 
     Serial.print(F("[P] mpl115a2t1_press_pa value: "));
     Serial.print(mpl115a2t1_press_pa_val);
@@ -127,7 +127,7 @@ static void gc_board_post(){
 
     // Check apogee_sp212
     Serial.println(F("[P] Check apogee_sp212 value"));
-    int apogee_sp212_val = gc_dev_sp212_read();
+    int apogee_sp212_val = gc_dev_apogee_SP212_solar_irr_read();
 
     Serial.print(F("[P] apogee_sp212 solar irr value: "));
     Serial.print(apogee_sp212_val);
@@ -178,10 +178,10 @@ static void gc_board_sample(struct gc_board* b){
     data_packet->uptime_ms           = millis();
     data_packet->batt_mv             = gc_dev_batt_read();
     data_packet->panel_mv            = gc_dev_spanel_read();
-    data_packet->apogee_w_m2         = gc_dev_sp212_read();
-    data_packet->hih6131_temp_centik = gc_dev_hih6131_temp_centik_read();
-    data_packet->hih6131_humidity_pct= gc_dev_hih6131_humidity_pct_read();
-    data_packet->mpl115a2t1_press_pa = gc_dev_mpl115a2t1_press_pa_read();
+    data_packet->apogee_w_m2         = gc_dev_apogee_SP212_solar_irr_read();
+    data_packet->hih6131_temp_centik = gc_dev_honeywell_HIH6131_temp_centik_read();
+    data_packet->hih6131_humidity_pct= gc_dev_honeywell_HIH6131_humidity_pct_read();
+    data_packet->mpl115a2t1_press_pa = gc_dev_adafruit_MPL115A2_press_pa_read();
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;

@@ -1,10 +1,10 @@
 #include "gc_dev_xbee.h"
-#include "gc_dev_sp212.h"
 #include "gc_dev_batt.h"
 #include "gc_dev_spanel.h"
 #include "gc_dev_eeprom_naddr.h"
-#include "gc_dev_hih6131.h"
-#include "gc_dev_mpl115a2t1.h"
+#include "gc_dev_apogee_SP212.h"
+#include "gc_dev_honeywell_HIH6131.h"
+#include "gc_dev_adafruit_MPL115A2.h"
 
 #ifndef GC_BOARD_H
 #define GC_BOARD_H
