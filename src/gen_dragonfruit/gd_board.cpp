@@ -43,7 +43,7 @@ void gd_board_init(gd_board *b){
 
     // Initialize the packet
     b->data_packet.schema = 3;
-    b->data_packet.node_addr = 0;
+    b->data_packet.node_addr = gd_dev_eeprom_naddr_read();
     b->data_packet.uptime_ms = 0;
     b->data_packet.batt_mv = 0;
     b->data_packet.panel_mv = 0;
