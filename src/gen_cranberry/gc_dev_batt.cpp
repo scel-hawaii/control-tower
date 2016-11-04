@@ -21,3 +21,16 @@ uint16_t gc_dev_batt_read(void){
 
     return value;
 }
+
+void gc_dev_batt_test(void){
+    Serial.println(F("[P] Check batt value"));
+    uint16_t batt_val = gc_dev_batt_read();
+
+    Serial.print(F("[P] batt value: "));
+    Serial.print(batt_val);
+    Serial.println(F(" mV"));
+
+    if(batt_val < 0){
+        Serial.println(F("[P] \tError: batt out of range"));
+    }
+}

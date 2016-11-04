@@ -7,4 +7,6 @@
 void gc_dev_honeywell_HIH6131_open(void);
 uint16_t gc_dev_honeywell_HIH6131_temp_centik_read(void);
 uint16_t gc_dev_honeywell_HIH6131_humidity_pct_read(void);
+void gc_dev_honeywell_HIH6131_temp_centik_test(void);
+void gc_dev_honeywell_HIH6131_humidity_pct_test(void);
 #endif

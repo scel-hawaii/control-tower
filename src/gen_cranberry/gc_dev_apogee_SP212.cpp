@@ -15,3 +15,16 @@ uint16_t gc_dev_apogee_SP212_solar_irr_read(void){
 
     return value;
 }
+
+void gc_dev_apogee_SP212_solar_irr_test(void){
+    Serial.println(F("[P] Check apogee_sp212 value"));
+    int apogee_sp212_val = gc_dev_apogee_SP212_solar_irr_read();
+
+    Serial.print(F("[P] apogee_sp212 solar irr value: "));
+    Serial.print(apogee_sp212_val);
+    Serial.println(F(" mV"));
+
+    if(apogee_sp212_val < 0){
+        Serial.println(F("[P] \tError: apogee solar irr out of range"));
+    }
+}

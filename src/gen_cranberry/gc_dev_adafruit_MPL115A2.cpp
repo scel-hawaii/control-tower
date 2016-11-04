@@ -16,3 +16,16 @@ uint32_t gc_dev_adafruit_MPL115A2_press_pa_read(void){
 
     return value;
 }
+
+void gc_dev_adafruit_MPL115A2_press_pa_test(void){
+    Serial.println(F("[P] Check mpl115a2t1_press_pa value"));
+    uint32_t mpl115a2t1_press_pa_val = gc_dev_adafruit_MPL115A2_press_pa_read();
+
+    Serial.print(F("[P] mpl115a2t1_press_pa value: "));
+    Serial.print(mpl115a2t1_press_pa_val);
+    Serial.println(F(" Pa"));
+
+    if(mpl115a2t1_press_pa_val < 0){
+        Serial.println(F("[P] \tError: mpl115a2t1 pressure out of range"));
+    }
+}

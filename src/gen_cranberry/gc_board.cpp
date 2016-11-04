@@ -86,80 +86,25 @@ static void gc_board_post(){
     Serial.println(F("POST Begin"));
 
     // Display node addr
-    Serial.print(F("[P] node addr: "));
-    Serial.println((int) gc_dev_eeprom_naddr_read());
+    gc_dev_eeprom_naddr_test();
 
     // Check hih6131 temperature
-    Serial.println(F("[P] Check hih6131_temp_centik value"));
-    int hih6131_temp_centik_val = gc_dev_honeywell_HIH6131_temp_centik_read();
-
-    Serial.print(F("[P] hih6131_temp_centik value: "));
-    Serial.print(hih6131_temp_centik_val);
-    Serial.println(F(" cK"));
-
-    if(hih6131_temp_centik_val < 0){
-        Serial.println(F("[P] \tError: hih6131 temp out of range"));
-    }
+    gc_dev_honeywell_HIH6131_temp_centik_test();
 
     // Check hih6131 humidity
-    Serial.println(F("[P] Check hih6131_humidity value"));
-    int hih6131_humidity_pct_val = gc_dev_honeywell_HIH6131_humidity_pct_read();
-
-    Serial.print(F("[P] hih6131_humidity_pct value: "));
-    Serial.print(hih6131_humidity_pct_val);
-    Serial.println(F("\%"));
-
-    if(hih6131_humidity_pct_val < 0){
-        Serial.println(F("[P] \tError: hih6131 humidity out of range"));
-    }
+    gc_dev_honeywell_HIH6131_humidity_pct_test();
 
     // Check mpl115a2t1 pressure
-    Serial.println(F("[P] Check mpl115a2t1_press_pa value"));
-    uint32_t mpl115a2t1_press_pa_val = gc_dev_adafruit_MPL115A2_press_pa_read();
-
-    Serial.print(F("[P] mpl115a2t1_press_pa value: "));
-    Serial.print(mpl115a2t1_press_pa_val);
-    Serial.println(F(" Pa"));
-
-    if(mpl115a2t1_press_pa_val < 0){
-        Serial.println(F("[P] \tError: mpl115a2t1 pressure out of range"));
-    }
+    gc_dev_adafruit_MPL115A2_press_pa_test();
 
     // Check apogee_sp212
-    Serial.println(F("[P] Check apogee_sp212 value"));
-    int apogee_sp212_val = gc_dev_apogee_SP212_solar_irr_read();
-
-    Serial.print(F("[P] apogee_sp212 solar irr value: "));
-    Serial.print(apogee_sp212_val);
-    Serial.println(F(" mV"));
-
-    if(apogee_sp212_val < 0){
-        Serial.println(F("[P] \tError: apogee solar irr out of range"));
-    }
+    gc_dev_apogee_SP212_solar_irr_test();
 
     // Check battery voltage
-    Serial.println(F("[P] Check batt value"));
-    uint16_t batt_val = gc_dev_batt_read();
-
-    Serial.print(F("[P] batt value: "));
-    Serial.print(batt_val);
-    Serial.println(F(" mV"));
-
-    if(batt_val < 0){
-        Serial.println(F("[P] \tError: batt out of range"));
-    }
+    gc_dev_batt_test();
 
     // check panel sensor value
-    Serial.println(F("[P] check panel sensor value"));
-
-    uint16_t spanel_val = gc_dev_spanel_read();
-    Serial.print(F("[P] spanel value: "));
-    Serial.print(spanel_val);
-    Serial.println(F(" mV"));
-
-    if(spanel_val < 100){
-        Serial.println(F("[P] \tERROR: spanel value out of range"));
-    }
+    gc_dev_spanel_test();
 
     Serial.println(F("POST End"));
 }
@@ -223,11 +168,17 @@ static int gc_board_ready_run_cmd(struct gc_board* b){
 }
 
 static void gc_board_run_cmd(struct gc_board* b){
-    Serial.println(F("Enter CMD Mode"));
+    Serial.println(F("\nEnter CMD Mode"));
+    Serial.println(F("[E] - Exit Command Mode"));
+    Serial.println(F("[P] - Run Power On Self-Test"));
+    Serial.println(F("[S] - Sensor Sampling Menu"));
+
+
     while(Serial.read() != '\n'); //In Arduino IDE, make sure line ending is \n
     while(1){
         if(Serial.available()){
-            char input = Serial.read();
+            char input = Serial.read(), input2;
+
             Serial.print(F("GOT A CMD: "));
             Serial.println(input);
             while(Serial.read() != '\n');
@@ -237,13 +188,58 @@ static void gc_board_run_cmd(struct gc_board* b){
             }
             else{
                 switch(input){
-                    case 'T':
-                        Serial.println(F("CMD Mode cmd"));
-                        break;
                     case 'P':
                         Serial.println(F("Running POST"));
                         b->post();
                         break;
+                    case 'S':
+                        Serial.println(F("\nSensor Sampling Menu"));
+                        Serial.println(F("[1] - Node Address"));
+                        Serial.println(F("[2] - HIH6131 Temperature (cK)"));
+                        Serial.println(F("[3] - HIH6131 Humidity (\%)"));
+                        Serial.println(F("[4] - MPL115A2 Pressure (Pa)"));
+                        Serial.println(F("[5] - SP212 Solar Irradiance (mW)"));
+                        Serial.println(F("[6] - Battery Voltage (mW)"));
+                        Serial.println(F("[7] - Solar Panel Voltage (mW)"));
+                        Serial.println(F("[E] - Exit to Main Menu"));
+
+                        while(1){
+                            if(Serial.available()){
+                                input2 = Serial.read();
+                                Serial.print(F("GOT A CMD: "));
+                                Serial.println(input2);
+                                while(Serial.read() != '\n');
+                                    if(input2 == 'E'){
+                                        Serial.println(F("Exiting to Main Menu"));
+                                        break;
+                                    }
+                                    switch(input2){
+                                        case '1':
+                                            gc_dev_eeprom_naddr_test();
+                                            break;
+                                        case '2':
+                                            gc_dev_honeywell_HIH6131_temp_centik_test();
+                                            break;
+                                        case '3':
+                                            gc_dev_honeywell_HIH6131_humidity_pct_test();
+                                            break;
+                                        case '4':
+                                            gc_dev_adafruit_MPL115A2_press_pa_test();
+                                            break;
+                                        case '5':
+                                            gc_dev_apogee_SP212_solar_irr_test();
+                                            break;
+                                        case '6':
+                                            gc_dev_batt_test();
+                                            break;
+                                        case '7':
+                                            gc_dev_spanel_test();
+                                            break;
+                                        default:
+                                            break;
+                                  }
+                              }
+                          }
                     default:
                         break;
                 }
