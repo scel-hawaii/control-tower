@@ -72,10 +72,10 @@ Vagrant.configure(2) do |config|
      sudo apt-get update
      sudo apt-get -y install git gzip zip
      git clone https://github.com/scel-hawaii/control-tower.git
-     cd /home/vagrant/control-tower/setup/ && bash setup_server_req.sh
-     cd /home/vagrant/control-tower/setup/ && bash setup_python_reqs.sh
-     cd /home/vagrant/control-tower/setup/ && bash setup_ruby_reqs.sh
-     cd /home/vagrant/control-tower/db/ && bash setup_postgres_user.sh
+     cd /vagrant/setup/ && bash setup_server_req.sh
+     cd /vagrant/setup/ && bash setup_python_reqs.sh
+     cd /vagrant/setup/ && bash setup_ruby_reqs.sh
+     cd /vagrant/db/ && bash setup_postgres_user.sh
 
      sudo su control_tower -c \
         'cd /home/control_tower/ && git clone \
