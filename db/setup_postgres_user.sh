@@ -12,6 +12,7 @@ function postgres_command(){
 
 function import_db_dump(){
     sudo -u control_tower psql -U control_tower < "control_tower_db.sql"
+    sudo -u control_tower psql -U control_tower < "multi-table.sql"
 }
 
 function check_user(){
