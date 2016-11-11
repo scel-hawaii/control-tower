@@ -12,6 +12,7 @@ function postgres_command(){
 
 function import_db_dump(){
     sudo -u $USER psql -U $USER < "control_tower_db.sql"
+    sudo -u $USER psql -U $USER < "multi-table.sql"
 }
 
 postgres_command "CREATE DATABASE $USER"
