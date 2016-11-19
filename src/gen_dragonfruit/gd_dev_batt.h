@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define _PIN_GD_BATT_ A0
+#define _PIN_GD_BATT_ A7
 
 #ifndef GD_DEV_BATT_H
 #define GD_DEV_BATT_H

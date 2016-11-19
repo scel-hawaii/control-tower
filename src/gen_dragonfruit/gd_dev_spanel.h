@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define _PIN_GD_SPANEL_ A6 
+#define _PIN_GD_SPANEL_ A0
 
 #ifndef GD_DEV_SPANEL
 #define GD_DEV_SPANEL
