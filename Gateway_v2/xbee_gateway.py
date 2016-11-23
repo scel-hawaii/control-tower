@@ -10,13 +10,6 @@ import pickle
 import time
 import threading
                    
-def myfunc(i, stop_event):
-	while(not stop_event.is_set()):
-		print "In Thread"
-		stop_event.wait()
-		pass
-
-
 class XBeeGateway:
 
     def __init__(self):
