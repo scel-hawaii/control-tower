@@ -41,6 +41,6 @@ while True:
 	while t_flag.is_set():
 		t_flag.clear()
 		#sleep 30 seconds then check to see if we have received anything
-		t_flag.wait(30)
+		t_flag.wait(60)
 
 	kill_flag.set()
