@@ -1,12 +1,6 @@
 all: init base-model
 
 init:
-	rm -rf v1.3.tar.gz
-	wget https://github.com/buserror/simavr/archive/v1.3.tar.gz
-	tar xvf v1.3.tar.gz
-	rm v1.3.tar.gz
-	mv simavr-1.3 simavr
-
 	# Arch linux requires a small patch because it comes with a newer version of GCC.
 	# See issue below for info:
 	# 	https://github.com/buserror/simavr/issues/131
@@ -14,6 +8,9 @@ init:
 	sed -i 's/char name\[\]/char name\[128\]/g' simavr/simavr/sim/avr/avr_mcu_section.h
 
 	cd simavr && make
+
+	# Reset the mcu_section.h file to get rid of git warnings
+	git checkout simavr/simavr/sim/avr/avr_mcu_section.h
 
 base-model:
 	cd emu_base_model && make
@@ -24,5 +21,4 @@ install-pkgs-debian:
 
 clean:
 	rm -rf simavr simavr-1.3 v1.3.tar.gz
-
 
