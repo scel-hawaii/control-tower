@@ -8,6 +8,14 @@ import sys
 import os
 import pickle
 import time
+import threading
+                   
+def myfunc(i, stop_event):
+	while(not stop_event.is_set()):
+		print "In Thread"
+		stop_event.wait()
+		pass
+
 
 class XBeeGateway:
 
@@ -41,13 +49,14 @@ class XBeeGateway:
         Main loop for the gateway. This is run when you want to start
         the gateway.
     """
-    
-    def begin_test(self):
-        while True:
+    def begin_test(self, i, t_flag, kill_flag):
+	print 'entered begin_test'
+        while(not kill_flag.is_set()):
             f = self.xbee.wait_read_frame()
+	    t_flag.set()
             data = f['rf_data']          
             timestamp = datetime.datetime.now()            
             for callback in self.callbacks:
                 callback(data, timestamp)
         
-                  
+
