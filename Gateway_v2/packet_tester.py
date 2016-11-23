@@ -39,7 +39,6 @@ while True:
 	newThread.start()
 
 	while t_flag.is_set():
-		print 'Flag Reset'
 		t_flag.clear()
 		#sleep 30 seconds then check to see if we have received anything
 		t_flag.wait(30)

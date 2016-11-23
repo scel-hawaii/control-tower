@@ -43,7 +43,7 @@ class XBeeGateway:
         the gateway.
     """
     def begin_test(self, i, t_flag, kill_flag):
-	print 'entered begin_test'
+	print 'Starting main Gateway Loop\n'
         while(not kill_flag.is_set()):
             f = self.xbee.wait_read_frame()
 	    t_flag.set()
