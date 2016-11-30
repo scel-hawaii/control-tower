@@ -14,13 +14,17 @@ xbg = XBeeGateway()
 
 decoder.register_callback(decoder.print_dictionary)
 decoder.register_callback(decoder.write_to_file)
-#decoder.register_callback(decoder.write_to_db)
+decoder.register_callback(decoder.write_to_db)
 xbg.register_callback(decoder.decode_data)
 
+# port can be accessed by /dev/serial/by-id/<device name> as opposed to /dev/tty/USB0. The latter will never change
+# use the line of code below when running simulation to manually enter port
+#port = raw_input("Please enter your serial port path/name: ")
 
-port = raw_input("Please enter your serial port path/name: ")
+# set port to usb FTDI Device
+port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
+
 baud_rate = 9600
-
 t_flag = threading.Event()
 kill_flag = threading.Event()
 while True:
@@ -33,6 +37,7 @@ while True:
 
 	kill_flag.clear()
 	t_flag.set()
+
 	xbg.setup_xbee(port, baud_rate)
 	newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
 	newThread.daemon = True

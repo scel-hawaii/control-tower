@@ -107,7 +107,7 @@ class Decoder:
   """
   def write_to_db(self, dataDict):
     #make connection to database, this can be added elsewhere so it will only be done once
-    con = psycopg2.connect("dbname='control_tower' user='control_tower'")
+    con = psycopg2.connect("dbname='control_tower' user='control_tower' password='password'")
     cur = con.cursor()
 
 
