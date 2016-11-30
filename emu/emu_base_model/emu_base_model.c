@@ -99,6 +99,16 @@ int main(int argc, char *argv[])
 	int debug = 0;
 	int verbose = 0;
 
+    /*
+     * To allow other programs to know that the model is
+     * online and ready for programming, we create a file
+     * called emu_online.txt
+     *
+     * At the beginning we clean up the file and then write
+     * to it later on once the emulator is running.
+     */
+    char * emu_online_file = "emu_online.txt";
+    int emu_online_flag = 0;
 
 	for (int i = 1; i < argc; i++) {
 		if (!strcmp(argv[i] + strlen(argv[i]) - 4, ".hex"))
@@ -114,6 +124,10 @@ int main(int argc, char *argv[])
 			exit(1);
 		}
 	}
+
+    if( access(emu_online_file, F_OK) != -1 ){
+        remove(emu_online_file);
+    }
 
 	avr = avr_make_mcu_by_name(mmcu); if (!avr) { fprintf(stderr, "%s: Error creating the AVR core\n", argv[0]);
 		exit(1);
@@ -157,10 +171,16 @@ int main(int argc, char *argv[])
 	uart_pty_init(avr, &uart_pty);
 	uart_pty_connect(&uart_pty, '0');
 
+
+
 	while (1) {
 		int state = avr_run(avr);
 		if ( state == cpu_Done || state == cpu_Crashed)
 			break;
+        if( emu_online_flag == 0){
+            fopen(emu_online_file, "w+");
+            emu_online_flag = 1;
+        }
 	}
 
 }
