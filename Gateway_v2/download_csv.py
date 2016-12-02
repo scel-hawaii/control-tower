@@ -1,5 +1,6 @@
 import psycopg2
 import sys
+import datetime
 import csv
 import os.path
 
