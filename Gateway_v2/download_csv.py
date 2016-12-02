@@ -56,7 +56,7 @@ with open(filename, 'a') as csvfile:
     		for value in data:
         		dataString += str(value)
         		dataString += ','
-    			dataString = dataString[:-1]
+    		dataString = dataString[:-1]
 		dataString += '\n'
 		csvfile.write(dataString)
 
