@@ -48,7 +48,7 @@ with open(filename, 'a') as csvfile:
 		data = data.replace(" ", "")
 		data = data.replace("datetime.datetime", "")
 		data = data.split(",")
-		time = datetime.time(data[3], data.pop(4), data.pop(5), data.pop(6))
+		time = datetime.time(int(data[3]), int(data.pop(4)), int(data.pop(5)), int(data.pop(6)))
 		data[3] = str(time)
 		
 
