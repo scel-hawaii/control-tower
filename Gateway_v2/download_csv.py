@@ -27,6 +27,7 @@ colnames.insert(0, "time")
 colnames.insert(0, "day")
 colnames.insert(0, "month")
 colnames.insert(0, "year")
+colnames.insert(0, "index")
 
 """
 setup output csv file
@@ -39,6 +40,8 @@ with open(filename, 'a') as csvfile:
 	headerString += '\n'
 	csvfile.write(headerString)
 
+	# index count
+	index = 0
 	# write data to csv file
 	for line in table:
 		# clean up data ine
@@ -50,7 +53,8 @@ with open(filename, 'a') as csvfile:
 		data = data.split(",")
 		time = datetime.time(int(data[3]), int(data.pop(4)), int(data.pop(4)), int(data.pop(4)))
 		data[3] = str(time)
-		
+		data.insert(0, index)
+		index += 1
 
 		dataString = ''
     		for value in data:
