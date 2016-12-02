@@ -16,8 +16,9 @@ class Decoder:
       '0': 'HHIH', #Heartbeat schema
       '1': 'HHIHHIhHH', #Apple schema
       '2': 'HHIHHHHHI', #Cranberry schema
-      '3': 'HHIHHIHHI'  #Dragonfruit Schema
-    }
+      '3': 'HHIHHIHHI',  #Dragonfruit Schema
+      '5': 'HHIfff'
+	}
     self.callbacks = []
 
   """
@@ -39,7 +40,8 @@ class Decoder:
           return True
 	elif key == '3' and len(data) == 24:
           return True
-	
+	elif key == '5' and len(data) == 20:
+          return True
     return False
 
 
@@ -77,6 +79,8 @@ class Decoder:
 	fileName = 'cranberry_data.csv'
     elif(self.schema_num == 3):
 	fileName = 'dragonfruit_data.csv'
+    elif(self.schema_num == 5):
+	fileName = 'gps_data.csv'
 
     if(os.path.isfile(fileName) == False):
 	fileExists = False
@@ -103,7 +107,7 @@ class Decoder:
   """
   def write_to_db(self, dataDict):
     #make connection to database, this can be added elsewhere so it will only be done once
-    con = psycopg2.connect("dbname='control_tower' user='control_tower'")
+    con = psycopg2.connect("dbname='control_tower' user='control_tower' password='password'")
     cur = con.cursor()
 
 
@@ -181,5 +185,13 @@ class Decoder:
       dataDict["node_addr"] = unpacked_data[1]
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
+	
+    elif self.schema_num == 5: #gps schema 
+      dataDict["schema"] = unpacked_data[0]
+      dataDict["node_addr"] = unpacked_data[1]
+      dataDict["uptime_ms"] = unpacked_data[2] 
+      dataDict["latitude"] = unpacked_data[3]	
+      dataDict["longitude"] = unpacked_data[4] 
+      dataDict["altitude"] = unpacked_data[5]
 
     return collections.OrderedDict(sorted(dataDict.items()))
