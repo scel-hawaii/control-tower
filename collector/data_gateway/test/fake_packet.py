@@ -10,6 +10,8 @@ except serial.serialutil.SerialException as e:
 ser.flushInput()
 ser.flushOutput()
 """
+=======
+#	this denotes the start of the first block
 f = open('test_data','w')
 while True:
 	var = ser.read()
@@ -17,7 +19,11 @@ while True:
 	print str(asc)
 	f.write(str(asc) + '\n')
 f.close()	
+#	this denotes the end of the first block
+
 """
+
+#	this denotes the start of the second block
 f = open('test_data', 'r')
 g = open('packet_data' , 'w')
 for line in f:
@@ -27,4 +33,5 @@ for line in f:
 	#print binascii.a2b_hqx(str(asc))
 g.close()
 f.close()
-
+#	this denotes the end of the second block
+"""
