@@ -20,22 +20,10 @@ import psycopg2
 import psycopg2.extras
 import os
 import datetime
+from multiprocessing import Pool, TimeoutError
 
 def graph_box(generation, node_addr, date, force_redraw=False):
     print "Graphing address %s on date %s" % (node_addr, date)
-
-    # Check if the path exists
-    # replace the date for the filename
-    date_nosep = date.replace("-", "")
-
-    path = "public_html/graphs/%s/%s" % (node_addr, date_nosep)
-    if ( not os.path.exists(path) ):
-        print "\tCreating path %s" % path
-        os.makedirs(path)
-    else:
-        if( force_redraw == False):
-            print "\tGraph already exists"
-            return True
 
     # Run the database query
     results = []
@@ -99,6 +87,19 @@ def graph_box(generation, node_addr, date, force_redraw=False):
         print "\t No data for %s" % date
         return False
 
+    # Check if the path exists
+    # replace the date for the filename
+    date_nosep = date.replace("-", "")
+
+    path = "public_html/graphs/%s/%s" % (node_addr, date_nosep)
+    if ( not os.path.exists(path) ):
+        print "\tCreating path %s" % path
+        os.makedirs(path)
+    else:
+        if( force_redraw == False):
+            print "\tGraph already exists"
+            return True
+
 
     df = pd.DataFrame(results)
 
@@ -143,23 +144,22 @@ def graph_box(generation, node_addr, date, force_redraw=False):
 
     return True
 
-dates = [
-        "2016-11-29",
-        "2016-11-30",
-        "2016-12-01",
-        "2016-12-02"
-        ]
-
-# Generate a list of dates
-datelist = pd.date_range(start="01/01/2015", end=pd.datetime.today(), freq="D").tolist()
-
-dates = []
-
-for date in datelist:
-    ds = date.strftime('%Y-%m-%d')
-    dates.append(ds)
-
-# Graph for all dates in this range
-for date in dates:
+def graph_box_true(date):
     graph_box("apple", "101", date, True)
     graph_box("old", "151", date, True)
+
+
+if __name__ == '__main__':
+    pool = Pool(processes=8)              # start 4 worker processes
+
+    # Generate a list of dates
+    datelist = pd.date_range(start="01/01/2015", end=pd.datetime.today(), freq="D").tolist()
+
+    dates = []
+
+    for date in datelist:
+        ds = date.strftime('%Y-%m-%d')
+        dates.append(ds)
+
+    pool.map(graph_box_true, dates)
+
