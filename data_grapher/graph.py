@@ -25,6 +25,15 @@ from multiprocessing import Pool, TimeoutError
 def graph_box(generation, node_addr, date, force_redraw=False):
     print "Graphing address %s on date %s" % (node_addr, date)
 
+    # Note: it may be more efficient, if for every address we
+    # queue the aggregate per day before.
+    #
+    # This is how we can do it:
+    #
+    # SELECT date_trunc('day', db_time) AS day_start,
+    #    COUNT(*) AS user_count FROM outdoor_env WHERE address=151
+    # GROUP BY date_trunc('day', db_time);
+
     # Run the database query
     results = []
     conn = psycopg2.connect("dbname='control_tower' user='control_tower' host='localhost' password='password'")
