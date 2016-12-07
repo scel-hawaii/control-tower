@@ -116,7 +116,7 @@ def graph_box(generation, node_addr, date, force_redraw=False):
 
     # Export the data to a csv file to allow users to easily
     # download datasets.
-    s = df.to_csv("%s/%s_data.csv" % (path, node_addr))
+    s = df.to_csv("%s/%s_data.csv" % (path, node_addr), index=False)
 
     # replace the date for the filename
     date = date.replace("-", "")
