@@ -85,6 +85,7 @@ def graph_box(generation, node_addr, date, force_redraw=False):
 
     if( len(results) <= 0):
         print "\t No data for %s" % date
+        conn.close()
         return False
 
     # Check if the path exists
@@ -98,6 +99,7 @@ def graph_box(generation, node_addr, date, force_redraw=False):
     else:
         if( force_redraw == False):
             print "\tGraph already exists"
+            conn.close()
             return True
 
 
@@ -142,12 +144,15 @@ def graph_box(generation, node_addr, date, force_redraw=False):
     filename = "%s/apogee_w_m2.png" % (path)
     fig.savefig(filename)
 
+    # close plots so we don't get warnings about memory
+    plt.close("all")
+
+    conn.close()
     return True
 
 def graph_box_true(date):
     graph_box("apple", "101", date, True)
     graph_box("old", "151", date, True)
-
 
 if __name__ == '__main__':
     pool = Pool(processes=8)              # start 4 worker processes
