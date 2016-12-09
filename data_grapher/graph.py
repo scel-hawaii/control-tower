@@ -25,6 +25,20 @@ from multiprocessing import Pool, TimeoutError
 def graph_box(generation, node_addr, date, force_redraw=False):
     print "Graphing address %s on date %s" % (node_addr, date)
 
+    # Check if the path exists
+    # replace the date for the filename
+    date_nosep = date.replace("-", "")
+
+    # If the directory already exists we likely already
+    # plotted it, so don't plot it again.
+    #
+    # if force_redraw is enabled, then bypass this check
+    path = "public_html/graphs/%s/%s" % (node_addr, date_nosep)
+    if ( os.path.exists(path) and force_redraw == False):
+        print "\tGraph directory already exists"
+        print "\t" + str(path)
+        return True
+
     # Note: it may be more efficient, if for every address we
     # queue the aggregate per day before.
     #
@@ -92,24 +106,16 @@ def graph_box(generation, node_addr, date, force_redraw=False):
     for row in rows:
         results.append(row)
 
+    # The path could not exist yet if this is the first time we're rendering
+    # the graph
+    if ( not os.path.exists(path) ):
+        print "\tCreating path %s" % path
+        os.makedirs(path)
+
     if( len(results) <= 0):
         print "\t No data for %s" % date
         conn.close()
         return False
-
-    # Check if the path exists
-    # replace the date for the filename
-    date_nosep = date.replace("-", "")
-
-    path = "public_html/graphs/%s/%s" % (node_addr, date_nosep)
-    if ( not os.path.exists(path) ):
-        print "\tCreating path %s" % path
-        os.makedirs(path)
-    else:
-        if( force_redraw == False):
-            print "\tGraph already exists"
-            conn.close()
-            return True
 
 
     df = pd.DataFrame(results)
@@ -160,8 +166,14 @@ def graph_box(generation, node_addr, date, force_redraw=False):
     return True
 
 def graph_box_true(date):
-    graph_box("apple", "101", date, True)
-    graph_box("old", "151", date, True)
+    redraw = False
+    if("FORCE_REDRAW" in os.environ):
+        print "Force Redraw Enabled"
+        redraw = True
+
+    graph_box("apple", "101", date, redraw)
+    graph_box("cranberry", "779", date, redraw)
+    graph_box("old", "151", date, redraw)
 
 if __name__ == '__main__':
     pool = Pool(processes=8)              # start 4 worker processes
@@ -177,3 +189,7 @@ if __name__ == '__main__':
 
     pool.map(graph_box_true, dates)
 
+    today = pd.datetime.today().strftime('%Y-%m-%d')
+
+    # Graph the latest data for today
+    graph_box("apple", "101", today, True)
