@@ -46,7 +46,7 @@ plot 'public_html/cranberry_data.csv' using 9:1 title "solar irr" with line
 
 set output 'public_html/cranberry/batt_mv.png'
 set ylabel "Battery mV"
-plot 'cranberry_data.csv' using 9:2 title "batt_mv" with line
+plot 'public_html/cranberry_data.csv' using 9:2 title "batt_mv" with line
 
 set output 'public_html/cranberry/humidity.png'
 set ylabel "Humidity pct"
