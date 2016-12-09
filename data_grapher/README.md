@@ -1,7 +1,7 @@
 # data_grapher
 
-Kenny Luong <luong97@hawaii.edu>
-2016-12-01
+Kenny Luong <luong97@hawaii.edu>  
+2016-12-01  
 
 This is a basic grapher and web-based interface that allows
 students in SCEL easily inspect weather sensors.
