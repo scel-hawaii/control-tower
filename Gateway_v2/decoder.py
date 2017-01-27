@@ -156,7 +156,7 @@ class Decoder:
       dataDict["press_pa"] = unpacked_data[5]
       dataDict["temp_c"] = unpacked_data[6]
       dataDict["humidity_centi_pct"] = unpacked_data[7]
-      dataDict["apogee_w_m2"] = unpacked_data[8]
+      dataDict["apogee_w_m2"] = unpacked_data[8] * 0.25
 
     elif self.schema_num == 2: #cranberry schema
       dataDict["schema"] = unpacked_data[0]
