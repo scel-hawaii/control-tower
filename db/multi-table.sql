@@ -29,7 +29,7 @@ CREATE TABLE apple (
     press_pa INTEGER,
     temp_c INTEGER,
     humidity_centi_pct INTEGER,
-    apogee_w_m2 INTEGER    
+    apogee_w_m2 FLOAT    
 );
 
 
@@ -44,7 +44,7 @@ CREATE TABLE cranberry (
     uptime_ms BIGINT,
     batt_mv INTEGER,
     panel_mv INTEGER,
-    apogee_w_m2 INTEGER,
+    apogee_w_m2 FLOAT,
     temp_cK INTEGER,
     humidity_pct INTEGER,
     press_pa INTEGER    
@@ -62,7 +62,7 @@ CREATE TABLE dragonfruit (
     uptime_ms BIGINT,
     batt_mv INTEGER,
     panel_mv INTEGER,
-    apogee_sp215 INTEGER,
+    apogee_sp215 FLOAT,
     temp_cK INTEGER,
     humidity_pct INTEGER,
     press_pa INTEGER    
