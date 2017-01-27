@@ -164,7 +164,7 @@ class Decoder:
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
       dataDict["panel_mv"] = unpacked_data[4]
-      dataDict["apogee_w_m2"] = unpacked_data[5]
+      dataDict["apogee_w_m2"] = unpacked_data[5] * 0.5
       dataDict["temp_cK"] = unpacked_data[6]
       dataDict["humidity_pct"] = unpacked_data[7]
       dataDict["press_pa"] = unpacked_data[8]
@@ -175,7 +175,7 @@ class Decoder:
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
       dataDict["panel_mv"] = unpacked_data[4]
-      dataDict["apogee_sp215"] = unpacked_data[5]
+      dataDict["apogee_sp215"] = unpacked_data[5] * 0.25
       dataDict["temp_cK"] = unpacked_data[6]
       dataDict["humidity_pct"] = unpacked_data[7]
       dataDict["press_pa"] = unpacked_data[8]
