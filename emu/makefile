@@ -20,5 +20,4 @@ install-pkgs-debian:
 	sudo apt-get install -y avr-libc libelf-dev freeglut3-dev pkg-config avrdude
 
 clean:
-	rm -rf simavr simavr-1.3 v1.3.tar.gz
 
