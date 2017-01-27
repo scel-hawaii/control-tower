@@ -1,3 +1,12 @@
+/*******************************
+ *
+ * File: gd_board.cpp
+ *
+ * Contains definitions for board initialization, PlatformIO POST 
+ * commands, and sampling sensors.    
+ *
+ * ****************************/
+
 #include "gd_board.h"
 
 static void gd_board_print_build_opts();
@@ -16,6 +25,14 @@ static int gd_board_ready_tx(struct gd_board* b);
 static int gd_board_ready_heartbeat_tx(struct gd_board* b);
 static void gd_board_heartbeat_tx(struct gd_board* b);
 
+/******************************
+ * 
+ * Name:        gd_board_init
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gd_board 
+ * Description: Initialize Dragonfruit board 
+ * 
+ ******************************/
 void gd_board_init(gd_board *b){
     // Link functions to make them accessable
     b->print_build_opts = &gd_board_print_build_opts;
@@ -53,6 +70,14 @@ void gd_board_init(gd_board *b){
     b->data_packet.mpl115a2t1_press = 0;
 }
 
+/******************************
+ * 
+ * Name:        gd_board_print_build_opts
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Initialize board generation and baudrate
+ * 
+ ******************************/
 static void gd_board_print_build_opts()
 {
     Serial.begin(9600);
@@ -60,6 +85,15 @@ static void gd_board_print_build_opts()
     Serial.println(F("Gen: dragonfruit"));
 }
 
+/******************************
+ * 
+ * Name:        gd_board_setup
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gd_board
+ * Description: Enable sensor pin, initialize sensors,
+ *              obtain node address from eeprom
+ * 
+ ******************************/
 static void gd_board_setup(struct gd_board* b){
     Serial.begin(9600);
     Serial.println(F("Board Setup Start"));
@@ -84,7 +118,16 @@ static void gd_board_setup(struct gd_board* b){
     Serial.println(F("Board Setup Done"));
 }
 
-// power on self test
+/******************************
+ * 
+ * Name:        gd_board_post
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Power on self test when board initially starts
+ *              and poll each sensor. Also used to check 
+ *              sensor values on serial monitor.
+ * 
+ ******************************/
 static void gd_board_post(){
     Serial.println(F("POST Begin"));
 
@@ -153,9 +196,16 @@ static void gd_board_post(){
     }
 
     Serial.println(F("POST End"));
-
 }
 
+/******************************
+ * 
+ * Name:        gd_board_sample
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Sample each sensor and store into data packet
+ * 
+ ******************************/
 static void gd_board_sample(struct gd_board* b){
     Serial.print("[");
     Serial.print(millis());
@@ -181,6 +231,14 @@ static void gd_board_sample(struct gd_board* b){
     gd_board_tx(b);
 }
 
+/******************************
+ * 
+ * Name:        gd_board_ready_tx
+ * Returns:     Integer indicating if ready to transmit
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Checks if board is ready to transmit
+ * 
+ ******************************/
 static int gd_board_ready_tx(struct gd_board* b){
     // Disabled this for dragonfruit deployment on 2016-10-06 with T=30s
     /*
@@ -195,6 +253,17 @@ static int gd_board_ready_tx(struct gd_board* b){
     return 0;
 }
 
+/******************************
+ * 
+ * Name:        gd_board_ready_sample
+ * Returns:     Integer indicating if ready to sample
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Waits 30 seconds between sampling sensors
+ *              and returns a "1" after 30 seconds. This
+ *              implementation is used instead of a delay
+ *              since delay will block all other operations.
+ * 
+ ******************************/
 static int gd_board_ready_sample(struct gd_board* b){
     const unsigned long wait_ms = 1000*30;
     const unsigned long sample_delta = millis() - b->prev_sample_ms;
@@ -208,10 +277,26 @@ static int gd_board_ready_sample(struct gd_board* b){
     }
 }
 
+/******************************
+ * 
+ * Name:        gd_board_ready_run_cmd
+ * Returns:     Number of bytes available to read
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Get the number of bytes avaiable for reading from the serial port
+ * 
+ ******************************/
 static int gd_board_ready_run_cmd(struct gd_board* b){
     return Serial.available();
 }
 
+/******************************
+ * 
+ * Name:        gd_board_run_cmd
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Poll sensors in CMD mode in serial monitor
+ * 
+ ******************************/
 static void gd_board_run_cmd(struct gd_board* b){
     Serial.println(F("Enter CMD Mode"));
     while(Serial.read() != '\n');
@@ -241,6 +326,17 @@ static void gd_board_run_cmd(struct gd_board* b){
     }
 }
 
+/******************************
+ * 
+ * Name:        gd_board_ready_heartbeat_tx
+ * Returns:     Integer indicating if ready to transmit
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Waits 30 seconds between sampling sensors
+ *              and returns a "1" after 30 seconds. This
+ *              implementation is used instead of a delay
+ *              since delay will block all other operations.
+ * 
+ ******************************/
 static int gd_board_ready_heartbeat_tx(struct gd_board* b){
     const int wait_ms = 3000;
     int sample_delta = millis() - b->prev_heartbeat_ms;
@@ -267,6 +363,14 @@ static int gd_board_ready_heartbeat_tx(struct gd_board* b){
     return 0;
 }
 
+/******************************
+ * 
+ * Name:        gd_board_heartbeat_tx
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Transmits heartbeat packet
+ * 
+ ******************************/
 static void gd_board_heartbeat_tx(struct gd_board* b){
     uint8_t payload[_GD_DEV_XBEE_BUFSIZE_];
     struct gd_heartbeat_packet hb_packet;
@@ -291,6 +395,14 @@ static void gd_board_heartbeat_tx(struct gd_board* b){
     Serial.println(F("TX Heartbeat End"));
 }
 
+/******************************
+ * 
+ * Name:        gd_board_tx
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Transmits sensor packet
+ * 
+ ******************************/
 static void gd_board_tx(struct gd_board* b){
     uint8_t payload[_GD_DEV_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);

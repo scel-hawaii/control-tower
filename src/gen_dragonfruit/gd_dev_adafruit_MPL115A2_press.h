@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gd_dev_adafruit_MPL115A2_press.h 
+ *
+ * Contains prototypes for pressure sensor functions
+ *
+ ******************************/
+
 #include "Adafruit_MPL115A2.h"
 
 #ifndef _GD_ADAFRUIT_MPL115A2_PRESS_H

@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gd_dev_batt.h 
+ *
+ * Contains prototypes for battery reading functions 
+ *
+ ******************************/
+
 #include <Arduino.h>
 
 #define _PIN_GD_BATT_ A7

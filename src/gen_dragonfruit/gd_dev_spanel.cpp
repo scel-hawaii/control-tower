@@ -1,9 +1,36 @@
+/*******************************
+ *
+ * File: gd_dev_spanel.cpp
+ *
+ * This module is a driver for the solar panel module. It uses the 
+ * Adafruit "Huge 6V 6W Solar panel" to measure panel voltage in mV.
+ * 
+ * Product page: https://www.adafruit.com/products/1525
+ * 
+ ******************************/
+
 #include "gd_dev_spanel.h"
 
+/******************************
+ * 
+ * Name:        gd_dev_spanel_open
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Initialize solar panel pins
+ * 
+ ******************************/
 void gd_dev_spanel_open(void){
     pinMode(_PIN_GD_SPANEL_, INPUT);
 }
 
+/******************************
+ * 
+ * Name:        gd_dev_spanel_read
+ * Returns:     Solar panel voltage in mV
+ * Parameter:   Nothing
+ * Description: Read solar panel voltage 
+ * 
+ ******************************/
 int gd_dev_spanel_read(void){
     float value = 555.0;
     #ifndef SEN_STUB

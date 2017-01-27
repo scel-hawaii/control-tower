@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gd_dev_spanel.h 
+ *
+ * Contains prototypes for solar panel module functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 
 #define _PIN_GD_SPANEL_ A0

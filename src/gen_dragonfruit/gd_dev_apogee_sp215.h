@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gd_dev_apogee_sp215.h 
+ *
+ * Contains prototypes for solar irradiance functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 #include <Wire.h>
 

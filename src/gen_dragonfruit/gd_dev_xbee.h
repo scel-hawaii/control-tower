@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gd_dev_xbee.h 
+ *
+ * Contains prototypes for the XBee module 
+ *
+ ******************************/
+
 #include <Arduino.h>
 #include <XBee.h>
 #include <SoftwareSerial.h>

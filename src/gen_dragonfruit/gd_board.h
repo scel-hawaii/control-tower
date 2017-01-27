@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gd_board.h 
+ *
+ * Contains struct for Dragonfruit packet, heartbeat, and board 
+ *
+ ******************************/
+
 #include "gd_dev_xbee.h"
 #include "gd_dev_honeywell_HIH6131.h"
 #include "gd_dev_apogee_sp215.h"
@@ -32,7 +40,6 @@ struct gd_heartbeat_packet{
     uint16_t batt_mv;               // Battery Voltage (in milli volts)
 };
 
-
 struct gd_board{
     void (*setup)(struct gd_board* b);
     void (*post)(void);
@@ -54,7 +61,5 @@ struct gd_board{
     struct gd_packet data_packet;
 };
 
-
 void gd_board_init(struct gd_board*);
-
 #endif
