@@ -8,6 +8,13 @@ import csv
 import os.path
 import psycopg2
 
+"""
+Conversion factors for apogee sensors
+http://www.apogeeinstruments.com/content/SP-100-200-spec-sheet.pdf
+"""
+SP215_CONVERSION = 0.25 # W/m^2 per mV
+SP212_CONVERSION = 0.5 # W/m^2 per mV
+
 class Decoder:
 
   def __init__(self):
@@ -156,7 +163,10 @@ class Decoder:
       dataDict["press_pa"] = unpacked_data[5]
       dataDict["temp_c"] = unpacked_data[6]
       dataDict["humidity_centi_pct"] = unpacked_data[7]
-      dataDict["apogee_w_m2"] = unpacked_data[8] * 0.25
+
+      # apple box uses apogee sp215
+      # https://wiki.scel-hawaii.org/doku.php?id=weather:apple:datasheets
+      dataDict["apogee_w_m2"] = unpacked_data[8] * SP215_CONVERSION
 
     elif self.schema_num == 2: #cranberry schema
       dataDict["schema"] = unpacked_data[0]
@@ -164,7 +174,11 @@ class Decoder:
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
       dataDict["panel_mv"] = unpacked_data[4]
-      dataDict["apogee_w_m2"] = unpacked_data[5] * 0.5
+
+      # cranberry box uses apogee sp212
+      # https://wiki.scel-hawaii.org/doku.php?id=weatherbox:cranberry:start
+      dataDict["apogee_w_m2"] = unpacked_data[5] * SP212_CONVERSION
+
       dataDict["temp_cK"] = unpacked_data[6]
       dataDict["humidity_pct"] = unpacked_data[7]
       dataDict["press_pa"] = unpacked_data[8]
@@ -175,7 +189,11 @@ class Decoder:
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
       dataDict["panel_mv"] = unpacked_data[4]
-      dataDict["apogee_sp215"] = unpacked_data[5] * 0.25
+
+      # dragonfruit box uses apogee sp215
+      # https://wiki.scel-hawaii.org/doku.php?id=weatherbox:dragonfruit:parts
+      dataDict["apogee_sp215"] = unpacked_data[5] * SP215_CONVERSION
+
       dataDict["temp_cK"] = unpacked_data[6]
       dataDict["humidity_pct"] = unpacked_data[7]
       dataDict["press_pa"] = unpacked_data[8]
