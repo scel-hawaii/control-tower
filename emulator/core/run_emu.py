@@ -17,7 +17,7 @@ if len(sys.argv) < 2:
     sys.exit("Error, not build specified")
 
 firmware_build = sys.argv[1]
-build_dir = "../.pioenvs/" + firmware_build
+build_dir = "../../.pioenvs/" + firmware_build
 
 if os.path.isdir(build_dir) == False:
     sys.exit("Error, firmware build does not exist: " + firmware_build)

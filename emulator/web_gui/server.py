@@ -40,7 +40,6 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 socketio = SocketIO(app)
 
-
 prev_count = 0;
 current_count = 0;
 max_length = 0;
@@ -102,7 +101,7 @@ def start():
         #
         # So running exec (which will replace the current running process) will
         # maintain compatability with debian.
-        cmd = "exec python2 run_emu.py {fw}".format(fw=firmware_build)
+        cmd = "exec python2 ../core/run_emu.py {fw}".format(fw=firmware_build)
         emu_proc = Popen([cmd], shell=True)
 
     emu_state = "RUNNING"
