@@ -62,7 +62,7 @@ CREATE TABLE dragonfruit (
     uptime_ms BIGINT,
     batt_mv INTEGER,
     panel_mv INTEGER,
-    apogee_sp215 FLOAT,
+    apogee_w_m2 FLOAT,
     temp_cK INTEGER,
     humidity_pct INTEGER,
     press_pa INTEGER    
