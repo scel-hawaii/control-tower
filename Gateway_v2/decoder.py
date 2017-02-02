@@ -192,7 +192,7 @@ class Decoder:
 
       # dragonfruit box uses apogee sp215
       # https://wiki.scel-hawaii.org/doku.php?id=weatherbox:dragonfruit:parts
-      dataDict["apogee_sp215"] = unpacked_data[5] * SP215_CONVERSION
+      dataDict["apogee_w_m2"] = unpacked_data[5] * SP215_CONVERSION
 
       dataDict["temp_cK"] = unpacked_data[6]
       dataDict["humidity_pct"] = unpacked_data[7]
