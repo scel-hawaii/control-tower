@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gc_dev_apogee_sp215.h
+ *
+ * Contains prototypes for solar irradiance functions
+ *
+ ******************************/
+
 #include <Adafruit_ADS1015.h>
 #include <Wire.h>
 

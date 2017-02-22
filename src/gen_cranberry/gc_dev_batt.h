@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gc_dev_batt.h
+ *
+ * Contains prototypes for battery reading functions
+ *
+ ******************************/
+
 #include <Adafruit_ADS1015.h>
 #include <Wire.h>
 

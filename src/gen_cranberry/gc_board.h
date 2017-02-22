@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gc_board.h 
+ *
+ * Contains struct for Dragonfruit packet, heartbeat, and board
+ *
+ ******************************/
+
 #include "gc_dev_xbee.h"
 #include "gc_dev_batt.h"
 #include "gc_dev_spanel.h"

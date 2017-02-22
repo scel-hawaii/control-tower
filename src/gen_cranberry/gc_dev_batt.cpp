@@ -1,10 +1,36 @@
+/*******************************
+ *
+ * File: gc_dev_batt.cpp
+ *
+ * This module is a driver for checking the battery reading in mV.
+ *
+ ******************************/
+
 #include "gc_dev_batt.h"
 
 static Adafruit_ADS1115 adc;
 
+/******************************
+ *
+ * Name:        gc_dev_batt_open
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Initialize battery reading pins
+ *
+ ******************************/
+
 void gc_dev_batt_open(void){
     adc.begin();
 }
+
+/******************************
+ *
+ * Name:        gc_dev_batt_read
+ * Returns:     Battery reading in mV
+ * Parameter:   Nothing
+ * Description: Reads battery voltage
+ *
+ ******************************/
 
 uint16_t gc_dev_batt_read(void){
     uint16_t value = 4000;
@@ -21,6 +47,16 @@ uint16_t gc_dev_batt_read(void){
 
     return value;
 }
+
+/******************************
+ *
+ * Name:        gc_dev_batt_test
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Used by the POST function to sample the
+ *              sensor and displays the sample to the Serial Monitor
+ *
+ ******************************/
 
 void gc_dev_batt_test(void){
     Serial.println(F("[P] Check batt value"));

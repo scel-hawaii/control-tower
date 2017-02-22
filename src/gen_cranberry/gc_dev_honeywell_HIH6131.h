@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gc_dev_honeywell_HIH6131.h 
+ *
+ * Contains prototypes for humidty sensor functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 
 //#define _PIN_GC_HIH6131_ AX

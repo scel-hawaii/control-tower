@@ -1,3 +1,12 @@
+/*******************************
+ *
+ * File: gc_dev_eeprom_naddr.cpp
+ *
+ * This module is a driver for the EEPROM used
+ * to burn the Node ID.
+ * 
+ ******************************/
+
 #include "gc_dev_eeprom_naddr.h"
 
 void gc_dev_eeprom_naddr_open(void){}

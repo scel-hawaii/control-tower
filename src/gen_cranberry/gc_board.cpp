@@ -1,3 +1,12 @@
+/*******************************
+ *
+ * File: gc_board.cpp
+ *
+ * Contains definitions for board initialization, PlatformIO POST
+ * commands, and sampling sensors.
+ *
+ * ****************************/
+
 #include "gc_board.h"
 
 static void gc_board_print_build_opts();
@@ -15,6 +24,15 @@ static int gc_board_ready_tx(struct gc_board* b);
 
 static int gc_board_ready_heartbeat_tx(struct gc_board* b);
 static void gc_board_heartbeat_tx(struct gc_board* b);
+
+/******************************
+ *
+ * Name:        gc_board_init
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gc_board
+ * Description: Initialize Cranberry board
+ *
+ ******************************/
 
 void gc_board_init(gc_board *b){
     // Link functions to make them accessable
@@ -53,12 +71,31 @@ void gc_board_init(gc_board *b){
     b->data_packet.mpl115a2t1_press_pa = 0;
 }
 
+/******************************
+ *
+ * Name:        gc_board_print_build_opts
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Initialize board generation and baudrate
+ *
+ ******************************/
+
 static void gc_board_print_build_opts()
 {
     Serial.begin(9600);
     Serial.println(F("Board Opts"));
     Serial.println(F("Gen: cranberry"));
 }
+
+/******************************
+ *
+ * Name:        gc_board_setup
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gd_board
+ * Description: Enable sensor pin, initialize sensors,
+ *              obtain node address from eeprom
+ *
+ ******************************/
 
 static void gc_board_setup(struct gc_board* b){
     Serial.begin(9600);
@@ -81,7 +118,17 @@ static void gc_board_setup(struct gc_board* b){
     Serial.println(F("Board Setup Done"));
 }
 
-// Power on self test
+/******************************
+ *
+ * Name:        gc_board_post
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Power on self test when board initially starts
+ *              and poll each sensor. Also used to check
+ *              sensor values on serial monitor.
+ *
+ ******************************/
+
 static void gc_board_post(){
     Serial.println(F("POST Begin"));
 
@@ -108,6 +155,15 @@ static void gc_board_post(){
 
     Serial.println(F("POST End"));
 }
+
+/******************************
+ *
+ * Name:        gc_board_sample
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gc-board
+ * Description: Sample each sensor and store into data packet
+ *
+ ******************************/
 
 static void gc_board_sample(struct gc_board* b){
     Serial.print("[");
@@ -137,6 +193,16 @@ static void gc_board_sample(struct gc_board* b){
     gc_board_tx(b);
 }
 
+/******************************
+ *
+ * Name:        gc_board_ready_tx
+ * Returns:     Integer indicating if ready to transmit
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Checks to see if the board is ready
+ *              transmit
+ *
+ ******************************/
+
 static int gc_board_ready_tx(struct gc_board* b){
     //Disabled for Cranberry Deployment, T=30s
 /*    const int max_samples = 20;
@@ -149,6 +215,18 @@ static int gc_board_ready_tx(struct gc_board* b){
 */
     return 0;
 }
+
+/******************************
+ *
+ * Name:        gc_board_ready_sample
+ * Returns:     Integer indicating if ready to sample
+ * Parameter:   Function pointer to struct gc-board
+ * Description: Waits 30 seconds between sampling sensors
+ *              and returns a 1 after thirty seconds. This
+ *              is used in place of a delay because delay
+ *              will block all other operations
+ *
+ ******************************/
 
 static int gc_board_ready_sample(struct gc_board* b){
     const unsigned long wait_ms = 1000*30;
@@ -163,9 +241,27 @@ static int gc_board_ready_sample(struct gc_board* b){
     }
 }
 
+/******************************
+ *
+ * Name:        gc_board_ready_run_cmd
+ * Returns:     Number of bytes available to read
+ * Parameter:   Function pointer to struct gd-board
+ * Description: Get the number of bytes avaiable for reading from the serial port
+ *
+ ******************************/
+
 static int gc_board_ready_run_cmd(struct gc_board* b){
     return Serial.available();
 }
+
+/******************************
+ *
+ * Name:        gc_board_run_cmd
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gc-board
+ * Description: Poll sensors in CMD mode in serial monitor
+ *
+ ******************************/
 
 static void gc_board_run_cmd(struct gc_board* b){
     Serial.println(F("\nEnter CMD Mode"));
@@ -248,6 +344,18 @@ static void gc_board_run_cmd(struct gc_board* b){
     }
 }
 
+/******************************
+ *
+ * Name:        gc_board_run_cmd
+ * Returns:     Integer indicating if ready to transmit
+ * Parameter:   Function pointer to struct gc-board
+ * Description: Waits 3 seconds between sampling sensors
+ *              and returns a 1 after three seconds. This
+ *              is used in place of a delay because delay
+ *              will block all other operations
+ *
+ ******************************/
+
 static int gc_board_ready_heartbeat_tx(struct gc_board* b){
     const int wait_ms = 3000;
     int sample_delta = millis() - b->prev_heartbeat_ms;
@@ -267,6 +375,15 @@ static int gc_board_ready_heartbeat_tx(struct gc_board* b){
     }
     return 0;
 }
+
+/******************************
+ *
+ * Name:        gc_board_heartbeat_tx
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gc-board
+ * Description: Transmits heartbeat packet
+ *
+ ******************************/
 
 static void gc_board_heartbeat_tx(struct gc_board* b){
     uint8_t payload[_GC_DEV_XBEE_BUFSIZE_];
@@ -291,6 +408,15 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
 
     Serial.println(F("TX Heartbeat End"));
 }
+
+/******************************
+ *
+ * Name:        gc_board_tx
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct gc-board
+ * Description: Transmits sensor packet
+ *
+ ******************************/
 
 static void gc_board_tx(struct gc_board* b){
     uint8_t payload[_GC_DEV_XBEE_BUFSIZE_];
