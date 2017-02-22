@@ -6,7 +6,7 @@ void gg_dev_bmp085_open(void){
 }
 
 uint32_t gg_dev_bmp085_read_press(void){
-    uint32_t value = 80;
+    uint32_t value = 100000;
 
     #ifndef SEN_STUB
     value = bmp085.readPressure();
@@ -16,7 +16,7 @@ uint32_t gg_dev_bmp085_read_press(void){
 }
 
 int16_t gg_dev_bmp085_read_temp(void){
-    int16_t value = 89;
+    int16_t value = 1000;
 
     #ifndef SEN_STUB
     float value_f = bmp085.readTemperature();
