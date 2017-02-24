@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: gc_dev_apogee_sp212.h
+ *
+ * Contains prototypes for solar irradiance functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 
 #define _PIN_gg_APOGEE_SP212_ A2
