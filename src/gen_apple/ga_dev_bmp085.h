@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: ga_dev_batt.h
+ *
+ * Contains prototypes for bmp085 sensor functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 #include <Adafruit_BMP085.h>
 

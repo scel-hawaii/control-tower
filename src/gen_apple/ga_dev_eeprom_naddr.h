@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: ga_dev_eeprom_naddr.h 
+ *
+ * Contains prototypes for EEPROM functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 #include <EEPROM.h>
 

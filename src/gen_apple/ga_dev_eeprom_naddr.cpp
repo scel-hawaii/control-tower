@@ -1,3 +1,12 @@
+/*******************************
+ *
+ * File: ga_dev_eeprom_naddr.cpp
+ *
+ * This module is a driver for the EEPROM
+ * containing the node ID
+ *
+ ******************************/
+
 #include "ga_dev_eeprom_naddr.h"
 
 void ga_dev_eeprom_naddr_open(void){}

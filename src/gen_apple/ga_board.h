@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: ga_board.h
+ *
+ * Contains struct for Apple packet, heartbeat, and board
+ *
+ ******************************/
+
 #include "ga_dev_xbee.h"
 #include "ga_dev_sht1x.h"
 #include "ga_dev_bmp085.h"

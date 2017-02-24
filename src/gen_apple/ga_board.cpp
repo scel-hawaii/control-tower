@@ -1,3 +1,12 @@
+/*******************************
+ *
+ * File: ga_board.cpp
+ *
+ * Contains definitions for board initialization, PlatformIO POST
+ * commands, and sampling sensors.
+ *
+ * ****************************/
+
 #include "ga_board.h"
 
 static void ga_board_print_build_opts();
@@ -15,6 +24,15 @@ static int ga_board_ready_tx(struct ga_board* b);
 
 static int ga_board_ready_heartbeat_tx(struct ga_board* b);
 static void ga_board_heartbeat_tx(struct ga_board* b);
+
+/******************************
+ *
+ * Name:        ga_board_init
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct ga_board
+ * Description: Initialize Apple board
+ *
+ ******************************/
 
 void ga_board_init(ga_board *b){
     // Link functions to make them accessable
@@ -53,12 +71,31 @@ void ga_board_init(ga_board *b){
     b->data_packet.apogee_w_m2 = 0;
 }
 
+/******************************
+ *
+ * Name:        ga_board_print_build_opts
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Initialize board generation and baudrate
+ *
+ ******************************/
+
 static void ga_board_print_build_opts()
 {
     Serial.begin(9600);
     Serial.println(F("Board Opts"));
     Serial.println(F("Gen: apple23"));
 }
+
+/******************************
+ *
+ * Name:        ga_board_setup
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct ga_board
+ * Description: Enable sensor pin, initialize sensors,
+ *              obtain node address from eeprom
+ *
+ ******************************/
 
 static void ga_board_setup(struct ga_board* b){
     Serial.begin(9600);
@@ -80,7 +117,17 @@ static void ga_board_setup(struct ga_board* b){
     Serial.println(F("Board Setup Done"));
 }
 
-// power on self test
+/******************************
+ *
+ * Name:        ga_board_post
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Power on self test when board initially starts
+ *              and poll each sensor. Also used to check
+ *              sensor values on serial monitor.
+ *
+ ******************************/
+
 static void ga_board_post(){
     Serial.println(F("POST Begin"));
 
@@ -156,6 +203,15 @@ static void ga_board_post(){
 
 }
 
+/******************************
+ *
+ * Name:        ga_board_sample
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Sample each sensor and store into data packet
+ *
+ ******************************/
+
 static void ga_board_sample(struct ga_board* b){
     Serial.print("[");
     Serial.print(millis());
@@ -183,6 +239,16 @@ static void ga_board_sample(struct ga_board* b){
     // b->sample_count++;
 }
 
+/******************************
+ *
+ * Name:        ga_board_ready_tx
+ * Returns:     Integer indicating if ready to transmit
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Checks to see if the board is ready
+ *              transmit
+ *
+ ******************************/
+
 static int ga_board_ready_tx(struct ga_board* b){
     // Disabled this for apple deployment on 2016-10-06 with T=30s
     /*
@@ -197,6 +263,18 @@ static int ga_board_ready_tx(struct ga_board* b){
     return 0;
 }
 
+/******************************
+ *
+ * Name:        ga_board_ready_sample
+ * Returns:     Integer indicating if ready to sample
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Waits 30 seconds between sampling sensors
+ *              and returns a 1 after thirty seconds. This
+ *              is used in place of a delay because delay
+ *              will block all other operations
+ *
+ ******************************/
+
 static int ga_board_ready_sample(struct ga_board* b){
     const unsigned long wait_ms = 1000*30;
     const unsigned long sample_delta = millis() - b->prev_sample_ms;
@@ -210,9 +288,27 @@ static int ga_board_ready_sample(struct ga_board* b){
     }
 }
 
+/******************************
+ *
+ * Name:        ga_board_ready_run_cmd
+ * Returns:     Number of bytes available to read
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Get the number of bytes avaiable for reading from the serial port
+ *
+ ******************************/
+
 static int ga_board_ready_run_cmd(struct ga_board* b){
     return Serial.available();
 }
+
+/******************************
+ *
+ * Name:        ga_board_run_cmd
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Poll sensors in CMD mode in serial monitor
+ *
+ ******************************/
 
 static void ga_board_run_cmd(struct ga_board* b){
     Serial.println(F("Enter CMD Mode"));
@@ -244,6 +340,18 @@ static void ga_board_run_cmd(struct ga_board* b){
     }
 }
 
+/******************************
+ *
+ * Name:        ga_board_ready_heartbeat_tx
+ * Returns:     Integer indicating if ready to transmit
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Waits 3 seconds between sampling sensors
+ *              and returns a 1 after three seconds. This
+ *              is used in place of a delay because delay
+ *              will block all other operations
+ *
+ ******************************/
+
 static int ga_board_ready_heartbeat_tx(struct ga_board* b){
     const int wait_ms = 3000;
     int sample_delta = millis() - b->prev_heartbeat_ms;
@@ -270,6 +378,15 @@ static int ga_board_ready_heartbeat_tx(struct ga_board* b){
     return 0;
 }
 
+/******************************
+ *
+ * Name:        ga_board_heartbeat_tx
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Transmits heartbeat packet
+ *
+ ******************************/
+
 static void ga_board_heartbeat_tx(struct ga_board* b){
     uint8_t payload[_GA_DEV_XBEE_BUFSIZE_];
     struct ga_heartbeat_packet hb_packet;
@@ -293,6 +410,15 @@ static void ga_board_heartbeat_tx(struct ga_board* b){
 
     Serial.println(F("TX Heartbeat End"));
 }
+
+/******************************
+ *
+ * Name:        ga_board_tx
+ * Returns:     Nothing
+ * Parameter:   Function pointer to struct ga-board
+ * Description: Transmits sensor packet
+ *
+ ******************************/
 
 static void ga_board_tx(struct ga_board* b){
     uint8_t payload[_GA_DEV_XBEE_BUFSIZE_];

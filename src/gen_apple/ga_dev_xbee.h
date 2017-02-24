@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: ga_dev_xbee.h
+ *
+ * Contains prototypes for XBee Transceiver functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 #include <XBee.h>
 #include <SoftwareSerial.h>
@@ -17,4 +25,3 @@ const byte rx_pin = 2;
 const byte tx_pin = 9;
 static SoftwareSerial soft_serial(rx_pin, tx_pin);
 #endif
-

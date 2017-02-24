@@ -1,3 +1,11 @@
+/*******************************
+ *
+ * File: ga_dev_batt.h
+ *
+ * Contains prototypes for battery reading functions
+ *
+ ******************************/
+
 #include <Arduino.h>
 
 #define _PIN_GA_BATT_ A3
