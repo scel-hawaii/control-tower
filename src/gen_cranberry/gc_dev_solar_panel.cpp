@@ -1,6 +1,6 @@
 /*******************************
  *
- * File: gc_dev_spanel.cpp
+ * File: gc_dev_solar_panel.cpp
  *
  * This module is a driver for the solar panel module. It uses the
  * Adafruit "Huge 6V 6W Solar panel" to measure panel voltage in mV.
@@ -9,33 +9,33 @@
  *
  ******************************/
 
-#include "gc_dev_spanel.h"
+#include "gc_dev_solar_panel.h"
 
 static Adafruit_ADS1115 adc;
 
 /******************************
  *
- * Name:        gc_dev_spanel_open
+ * Name:        gc_dev_solar_panel_open
  * Returns:     Nothing
  * Parameter:   Nothing
  * Description: Initialize solar panel pins
  *
  ******************************/
 
-void gc_dev_spanel_open(void){
+void gc_dev_solar_panel_open(void){
     adc.begin();
 }
 
 /******************************
  *
- * Name:        gc_dev_spanel_read
+ * Name:        gc_dev_solar_panel_read
  * Returns:     Solar panel voltage in mV
  * Parameter:   Nothing
  * Description: Read solar panel voltage
  *
  ******************************/
 
-uint16_t gc_dev_spanel_read(void){
+uint16_t gc_dev_solar_panel_read(void){
   uint16_t value = 6000;
 
   #ifndef SEN_STUB
@@ -47,7 +47,7 @@ uint16_t gc_dev_spanel_read(void){
 
 /******************************
  *
- * Name:        gc_dev_spanel_test
+ * Name:        gc_dev_solar_panel_test
  * Returns:     Nothing
  * Parameter:   Nothing
  * Description: Used by the POST function to sample the
@@ -55,15 +55,15 @@ uint16_t gc_dev_spanel_read(void){
  *
  ******************************/
 
-void gc_dev_spanel_test(void){
-    Serial.println(F("[P] check panel sensor value"));
+void gc_dev_solar_panel_test(void){
+    Serial.println(F("[P] check solar panel sensor value"));
 
-    uint16_t spanel_val = gc_dev_spanel_read();
-    Serial.print(F("[P] spanel value: "));
-    Serial.print(spanel_val);
+    uint16_t solar_panel_val = gc_dev_solar_panel_read();
+    Serial.print(F("[P] solar panel value: "));
+    Serial.print(solar_panel_val);
     Serial.println(F(" mV"));
 
-    if(spanel_val < 100){
-        Serial.println(F("[P] \tERROR: spanel value out of range"));
+    if(solar_panel_val < 100){
+        Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 }

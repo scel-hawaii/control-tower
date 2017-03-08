@@ -1,6 +1,6 @@
 /*******************************
  *
- * File: gd_dev_adafruit_MPL115A2_press.cpp
+ * File: gc_dev_adafruit_MPL115A2_pressure.cpp
  *
  * This module is a driver for the MPL115A2 pressure sensor
  * that measures pressure in Pa. Technically this is not an
@@ -12,34 +12,34 @@
  *
  ******************************/
 
-#include "gc_dev_adafruit_MPL115A2.h"
+#include "gc_dev_adafruit_MPL115A2_pressure.h"
 #include "Adafruit_MPL115A2.h"
 
 static Adafruit_MPL115A2 mpl115a2;
 
 /******************************
  *
- * Name:        gc_dev_adafruit_MPL115A2_press_open
+ * Name:        gc_dev_adafruit_MPL115A2_pressure_open
  * Returns:     Nothing
  * Parameter:   Nothing
  * Description: Initialize pressure sensor
  *
  ******************************/
 
-void gc_dev_adafruit_MPL115A2_open(void){
+void gc_dev_adafruit_MPL115A2_pressure_open(void){
     mpl115a2.begin();
 }
 
 /******************************
  *
- * Name:        gc_dev_adafruit_MPL115A2_press_read
+ * Name:        gc_dev_adafruit_MPL115A2_pressure_pa_read
  * Returns:     Pressure value in Pa
  * Parameter:   Nothing
  * Description: Reads pressure sensor
  *
  ******************************/
 
-uint32_t gc_dev_adafruit_MPL115A2_press_pa_read(void){
+uint32_t gc_dev_adafruit_MPL115A2_pressure_pa_read(void){
     uint32_t value = 100000;
 
     #ifndef SEN_STUB
@@ -51,7 +51,7 @@ uint32_t gc_dev_adafruit_MPL115A2_press_pa_read(void){
 
 /******************************
  *
- * Name:        gc_dev_adafruit_MPL115A2_press_pa_test
+ * Name:        gc_dev_adafruit_MPL115A2_pressure_pa_test
  * Returns:     Nothing
  * Parameter:   Nothing
  * Description: Used by the POST function to sample the
@@ -59,15 +59,15 @@ uint32_t gc_dev_adafruit_MPL115A2_press_pa_read(void){
  *
  ******************************/
 
-void gc_dev_adafruit_MPL115A2_press_pa_test(void){
-    Serial.println(F("[P] Check mpl115a2t1_press_pa value"));
-    uint32_t mpl115a2t1_press_pa_val = gc_dev_adafruit_MPL115A2_press_pa_read();
+void gc_dev_adafruit_MPL115A2_pressure_pa_test(void){
+    Serial.println(F("[P] Check mpl115a2t1_pressure_pa value"));
+    uint32_t mpl115a2t1_pressure_pa_val = gc_dev_adafruit_MPL115A2_pressure_pa_read();
 
-    Serial.print(F("[P] mpl115a2t1_press_pa value: "));
-    Serial.print(mpl115a2t1_press_pa_val);
+    Serial.print(F("[P] mpl115a2t1_pressure_pa value: "));
+    Serial.print(mpl115a2t1_pressure_pa_val);
     Serial.println(F(" Pa"));
 
-    if(mpl115a2t1_press_pa_val < 0){
+    if(mpl115a2t1_pressure_pa_val < 0){
         Serial.println(F("[P] \tError: mpl115a2t1 pressure out of range"));
     }
 }

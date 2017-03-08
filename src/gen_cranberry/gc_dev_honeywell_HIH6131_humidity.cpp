@@ -1,6 +1,6 @@
 /*******************************
  *
- * File: gc_dev_honeywell_HIH6131.cpp
+ * File: gc_dev_honeywell_HIH6131_humidity.cpp
  *
  * This module is a driver for the humidity sensor. It uses the Honeywell
  * HIH6131 sensor to measure the humidity percentage value.
@@ -10,42 +10,22 @@
  *
  ******************************/
 
-#include "gc_dev_honeywell_HIH6131.h"
+#include "gc_dev_honeywell_HIH6131_humidity.h"
 #include "HIH613x.h"
 
 static HIH613x hih6131(0x27);
 
 /******************************
  *
- * Name:        gc_dev_honeywell_HIH6131_open
+ * Name:        gc_dev_honeywell_HIH6131_humidity_open
  * Returns:     Nothing
  * Parameter:   Nothing
  * Description: Initialize humidity sensor
  *
  ******************************/
 
-void gc_dev_honeywell_HIH6131_open(void){
+void gc_dev_honeywell_HIH6131_humidity_open(void){
     Wire.begin(9600);
-}
-
-/******************************
- *
- * Name:        gc_dev_honeywell_HIH6131_temp_centik_read
- * Returns:     Temperature in centi-Kelvin
- * Parameter:   Nothing
- * Description: Read temperature sensor
- *
- ******************************/
-
-uint16_t gc_dev_honeywell_HIH6131_temp_centik_read(void){
-    int16_t value = 30000;
-
-    #ifndef SEN_STUB
-    hih6131.update();
-    value = (float)hih6131.getTemperature()*100.0 + 27315.0;
-    #endif
-
-    return value;
 }
 
 /******************************
@@ -70,29 +50,6 @@ uint16_t gc_dev_honeywell_HIH6131_humidity_pct_read(void){
 
 /******************************
  *
- * Name:        gc_dev_honeywell_HIH6131_temp_centik_test
- * Returns:     Nothing
- * Parameter:   Nothing
- * Description: Used by the POST function to sample the
- *              sensor and displays the sample to the Serial Monitor
- *
- ******************************/
-
-void gc_dev_honeywell_HIH6131_temp_centik_test(void){
-    Serial.println(F("[P] Check hih6131_temp_centik value"));
-    int hih6131_temp_centik_val = gc_dev_honeywell_HIH6131_temp_centik_read();
-
-    Serial.print(F("[P] hih6131_temp_centik value: "));
-    Serial.print(hih6131_temp_centik_val);
-    Serial.println(F(" cK"));
-
-    if(hih6131_temp_centik_val < 0){
-        Serial.println(F("[P] \tError: hih6131 temp out of range"));
-    }
-}
-
-/******************************
- *
  * Name:        gc_dev_honeywell_HIH6131_humidity_pct_test
  * Returns:     Nothing
  * Parameter:   Nothing
@@ -102,7 +59,7 @@ void gc_dev_honeywell_HIH6131_temp_centik_test(void){
  ******************************/
 
 void gc_dev_honeywell_HIH6131_humidity_pct_test(void){
-    Serial.println(F("[P] Check hih6131_humidity value"));
+    Serial.println(F("[P] Check hih6131_humidity_pct value"));
     int hih6131_humidity_pct_val = gc_dev_honeywell_HIH6131_humidity_pct_read();
 
     Serial.print(F("[P] hih6131_humidity_pct value: "));

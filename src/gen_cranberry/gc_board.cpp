@@ -61,7 +61,7 @@ void gc_board_init(gc_board *b){
 
     // Initialize the packet
     b->data_packet.schema = 2;
-    b->data_packet.node_addr = gc_dev_eeprom_naddr_read();
+    b->data_packet.node_addr = gc_dev_eeprom_node_address_read();
     b->data_packet.uptime_ms = 0;
     b->data_packet.batt_mv = 0;
     b->data_packet.panel_mv = 0;
@@ -91,7 +91,7 @@ static void gc_board_print_build_opts()
  *
  * Name:        gc_board_setup
  * Returns:     Nothing
- * Parameter:   Function pointer to struct gd_board
+ * Parameter:   Function pointer to struct gc_board
  * Description: Enable sensor pin, initialize sensors,
  *              obtain node address from eeprom
  *
@@ -103,16 +103,17 @@ static void gc_board_setup(struct gc_board* b){
 
     // Open Devices
     digitalWrite(_PIN_SEN_EN, HIGH);
-    gc_dev_xbee_open();
-    gc_dev_apogee_SP212_open();
-    gc_dev_batt_open();
-    gc_dev_spanel_open();
-    gc_dev_eeprom_naddr_open();
-    gc_dev_honeywell_HIH6131_open();
-    gc_dev_adafruit_MPL115A2_open();
+    gc_dev_digi_xbee_open();
+    gc_dev_apogee_SP212_irradiance_open();
+    gc_dev_battery_open();
+    gc_dev_solar_panel_open();
+    gc_dev_eeprom_node_address_open();
+    gc_dev_honeywell_HIH6131_humidity_open();
+    gc_dev_honeywell_HIH6131_temperature_open();
+    gc_dev_adafruit_MPL115A2_pressure_open();
 
     // Load the address from the hardware
-    b->node_addr = gc_dev_eeprom_naddr_read();
+    b->node_addr = gc_dev_eeprom_node_address_read();
 
     delay(100);
     Serial.println(F("Board Setup Done"));
@@ -133,25 +134,25 @@ static void gc_board_post(){
     Serial.println(F("POST Begin"));
 
     // Display node addr
-    gc_dev_eeprom_naddr_test();
+    gc_dev_eeprom_node_address_test();
 
     // Check hih6131 temperature
-    gc_dev_honeywell_HIH6131_temp_centik_test();
+    gc_dev_honeywell_HIH6131_temperature_centik_test();
 
     // Check hih6131 humidity
     gc_dev_honeywell_HIH6131_humidity_pct_test();
 
     // Check mpl115a2t1 pressure
-    gc_dev_adafruit_MPL115A2_press_pa_test();
+    gc_dev_adafruit_MPL115A2_pressure_pa_test();
 
     // Check apogee_sp212
-    gc_dev_apogee_SP212_solar_irr_test();
+    gc_dev_apogee_SP212_irradiance_test();
 
     // Check battery voltage
-    gc_dev_batt_test();
+    gc_dev_battery_test();
 
     // check panel sensor value
-    gc_dev_spanel_test();
+    gc_dev_solar_panel_test();
 
     Serial.println(F("POST End"));
 }
@@ -177,12 +178,12 @@ static void gc_board_sample(struct gc_board* b){
 
     struct gc_packet* data_packet = &(b->data_packet);
     data_packet->uptime_ms           = millis();
-    data_packet->batt_mv             = gc_dev_batt_read();
-    data_packet->panel_mv            = gc_dev_spanel_read();
-    data_packet->apogee_w_m2         = gc_dev_apogee_SP212_solar_irr_read();
-    data_packet->hih6131_temp_centik = gc_dev_honeywell_HIH6131_temp_centik_read();
+    data_packet->batt_mv             = gc_dev_battery_read();
+    data_packet->panel_mv            = gc_dev_solar_panel_read();
+    data_packet->apogee_w_m2         = gc_dev_apogee_SP212_irradiance_read();
+    data_packet->hih6131_temp_centik = gc_dev_honeywell_HIH6131_temperature_centik_read();
     data_packet->hih6131_humidity_pct= gc_dev_honeywell_HIH6131_humidity_pct_read();
-    data_packet->mpl115a2t1_press_pa = gc_dev_adafruit_MPL115A2_press_pa_read();
+    data_packet->mpl115a2t1_press_pa = gc_dev_adafruit_MPL115A2_pressure_pa_read();
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;
@@ -197,7 +198,7 @@ static void gc_board_sample(struct gc_board* b){
  *
  * Name:        gc_board_ready_tx
  * Returns:     Integer indicating if ready to transmit
- * Parameter:   Function pointer to struct gd-board
+ * Parameter:   Function pointer to struct gc-board
  * Description: Checks to see if the board is ready
  *              transmit
  *
@@ -245,7 +246,7 @@ static int gc_board_ready_sample(struct gc_board* b){
  *
  * Name:        gc_board_ready_run_cmd
  * Returns:     Number of bytes available to read
- * Parameter:   Function pointer to struct gd-board
+ * Parameter:   Function pointer to struct gc-board
  * Description: Get the number of bytes avaiable for reading from the serial port
  *
  ******************************/
@@ -311,25 +312,25 @@ static void gc_board_run_cmd(struct gc_board* b){
                                     }
                                     switch(input2){
                                         case '1':
-                                            gc_dev_eeprom_naddr_test();
+                                            gc_dev_eeprom_node_address_test();
                                             break;
                                         case '2':
-                                            gc_dev_honeywell_HIH6131_temp_centik_test();
+                                            gc_dev_honeywell_HIH6131_temperature_centik_test();
                                             break;
                                         case '3':
                                             gc_dev_honeywell_HIH6131_humidity_pct_test();
                                             break;
                                         case '4':
-                                            gc_dev_adafruit_MPL115A2_press_pa_test();
+                                            gc_dev_adafruit_MPL115A2_pressure_pa_test();
                                             break;
                                         case '5':
-                                            gc_dev_apogee_SP212_solar_irr_test();
+                                            gc_dev_apogee_SP212_irradiance_test();
                                             break;
                                         case '6':
-                                            gc_dev_batt_test();
+                                            gc_dev_battery_test();
                                             break;
                                         case '7':
-                                            gc_dev_spanel_test();
+                                            gc_dev_solar_panel_test();
                                             break;
                                         default:
                                             break;
@@ -386,13 +387,13 @@ static int gc_board_ready_heartbeat_tx(struct gc_board* b){
  ******************************/
 
 static void gc_board_heartbeat_tx(struct gc_board* b){
-    uint8_t payload[_GC_DEV_XBEE_BUFSIZE_];
+    uint8_t payload[_GC_DEV_DIGI_XBEE_BUFSIZE_];
     struct gc_heartbeat_packet hb_packet;
 
     hb_packet.schema = 0;
     hb_packet.uptime_ms = millis();
-    hb_packet.batt_mv = gc_dev_batt_read();
-    hb_packet.node_addr = gc_dev_eeprom_naddr_read();
+    hb_packet.batt_mv = gc_dev_battery_read();
+    hb_packet.node_addr = gc_dev_eeprom_node_address_read();
 
     int schema_len = sizeof(hb_packet);
 
@@ -404,7 +405,7 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
     // data bytes.
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &(hb_packet), schema_len);
-    gc_dev_xbee_write(payload, schema_len);
+    gc_dev_digi_xbee_write(payload, schema_len);
 
     Serial.println(F("TX Heartbeat End"));
 }
@@ -419,7 +420,7 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
  ******************************/
 
 static void gc_board_tx(struct gc_board* b){
-    uint8_t payload[_GC_DEV_XBEE_BUFSIZE_];
+    uint8_t payload[_GC_DEV_DIGI_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);
 
     Serial.println(F("Sample TX Start"));
@@ -430,7 +431,7 @@ static void gc_board_tx(struct gc_board* b){
     // data bytes.
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &(b->data_packet), schema_len);
-    gc_dev_xbee_write(payload, schema_len);
+    gc_dev_digi_xbee_write(payload, schema_len);
 
     // Reset the board sample count so that
     // goes through the sample loop again.
