@@ -1,19 +1,19 @@
 /*******************************
  *
- * File: gd_board.h 
+ * File: gd_board.h
  *
- * Contains struct for Dragonfruit packet, heartbeat, and board 
+ * Contains struct for Dragonfruit packet, heartbeat, and board
  *
  ******************************/
 
-#include "gd_dev_xbee.h"
-#include "gd_dev_honeywell_HIH6131.h"
-#include "gd_dev_apogee_sp215.h"
-#include "gd_dev_batt.h"
-#include "gd_dev_spanel.h"
-#include "gd_dev_eeprom_naddr.h"
-#include "gd_dev_adafruit_MPL115A2_temp.h"
-#include "gd_dev_adafruit_MPL115A2_press.h"
+#include "gd_dev_digi_xbee.h"
+#include "gd_dev_honeywell_HIH6131_humidity.h"
+#include "gd_dev_apogee_SP215_irradiance.h"
+#include "gd_dev_battery.h"
+#include "gd_dev_solar_panel.h"
+#include "gd_dev_eeprom_node_address.h"
+#include "gd_dev_adafruit_MPL115A2_temperature.h"
+#include "gd_dev_adafruit_MPL115A2_pressure.h"
 #include <Arduino.h>
 
 #define _PIN_SEN_EN_ 4

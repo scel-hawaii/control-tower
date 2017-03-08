@@ -1,9 +1,9 @@
 /*******************************
  *
- * File: gd_dev_apogee_sp215.cpp
+ * File: gd_dev_apogee_SP215_irradiance.cpp
  *
- * This module is a driver for the solar irradiance sensor. It uses the 
- * Apogee sp215 analog sensor to measure solar irradiance in millivolts (mV) and the ADS1100 
+ * This module is a driver for the solar irradiance sensor. It uses the
+ * Apogee sp215 analog sensor to measure solar irradiance in millivolts (mV) and the ADS1100
  * ADC converter to convert the Apogee sp215 reading into a digital value.
  *
  * Product page: http://www.apogeeinstruments.com/sp-215-amplified-0-5-volt-pyranometer/
@@ -14,17 +14,17 @@
  *
  * ****************************/
 
-#include "gd_dev_apogee_sp215.h"
+#include "gd_dev_apogee_SP215_irradiance.h"
 
 /******************************
- * 
- * Name:        gd_dev_apogee_sp215_open 
+ *
+ * Name:        gd_dev_apogee_SP215_irradiance_open
  * Returns:     Nothing
  * Parameter:   Nothing
- * Description: Initialize solar irradiance sensor 
- * 
+ * Description: Initialize solar irradiance sensor
+ *
  ******************************/
-void gd_dev_apogee_sp215_open(void){
+void gd_dev_apogee_SP215_irradiance_open(void){
 
     /* Initiate Wire library and join I2C bus as slave */
     Wire.begin();
@@ -44,14 +44,15 @@ void gd_dev_apogee_sp215_open(void){
 }
 
 /******************************
- * 
- * Name:        gd_dev_apogee_sp215_read
+ *
+ * Name:        gd_dev_apogee_SP215_irradiance_read
  * Returns:     Solar irradiance value in millivolts (mV)
  * Parameter:   Nothing
- * Description: Reads solar irradiance sensor 
- * 
+ * Description: Reads solar irradiance sensor
+ *
  ******************************/
-uint32_t gd_dev_apogee_sp215_read(void){
+
+uint32_t gd_dev_apogee_SP215_irradiance_read(void){
     uint32_t value = 555;
     #ifndef SEN_STUB
 
@@ -74,4 +75,27 @@ uint32_t gd_dev_apogee_sp215_read(void){
     value = (value*5000.0)/(0x7FFF);
     #endif
     return value;
+}
+
+/******************************
+ *
+ * Name:        gd_dev_apogee_SP215_irradiance_test
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Used by the POST function to sample the
+ *              sensor and displays the sample to Serial Monitor
+ *
+ ******************************/
+
+void gd_dev_apogee_SP215_irradiance_test(void) {
+  Serial.println(F("[P] Check apogee_SP215_irradiance value"));
+  int apogee_sp215_irradiance_val = gd_dev_apogee_SP215_irradiance_read();
+
+  Serial.print(F("[P] apogee_sp215 irradiance value: "));
+  Serial.print(apogee_sp215_irradiance_val);
+  Serial.println(F(" mV"));
+
+  if(apogee_sp215_irradiance_val < 0){
+      Serial.println(F("[P] \tError: apogee irradiance out of range"));
+  }
 }
