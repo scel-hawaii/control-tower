@@ -1,12 +1,12 @@
 /*******************************
  *
- * File: ga_dev_batt.cpp
+ * File: ga_dev_battery.cpp
  *
  * This module is a driver for checking the battery reading in mV.
  *
  ******************************/
 
-#include "ga_dev_batt.h"
+#include "ga_dev_battery.h"
 
 /******************************
  *
@@ -17,8 +17,8 @@
  *
  ******************************/
 
-void ga_dev_batt_open(void){
-    pinMode(_PIN_GA_BATT_, INPUT);
+void ga_dev_battery_open(void){
+    pinMode(_PIN_GA_BATTERY_, INPUT);
 }
 
 /******************************
@@ -30,9 +30,9 @@ void ga_dev_batt_open(void){
  *
  ******************************/
 
-int ga_dev_batt_read_raw(void){
+int ga_dev_battery_read_raw(void){
     int value;
-    value = analogRead(_PIN_GA_BATT_);
+    value = analogRead(_PIN_GA_BATTERY_);
     return value;
 }
 
@@ -45,11 +45,11 @@ int ga_dev_batt_read_raw(void){
  *
  ******************************/
 
-int ga_dev_batt_read(void){
+int ga_dev_battery_read(void){
     int val = 555;
 
     #ifndef SEN_STUB
-    float raw = (float)analogRead(_PIN_GA_BATT_) * (5.0/1023.0);
+    float raw = (float)analogRead(_PIN_GA_BATTERY_) * (5.0/1023.0);
     val = raw * 1000;
     #endif
 

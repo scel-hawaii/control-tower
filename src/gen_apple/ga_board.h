@@ -6,13 +6,15 @@
  *
  ******************************/
 
-#include "ga_dev_xbee.h"
-#include "ga_dev_sht1x.h"
-#include "ga_dev_bmp085.h"
-#include "ga_dev_apogee_sp212.h"
-#include "ga_dev_batt.h"
-#include "ga_dev_spanel.h"
-#include "ga_dev_eeprom_naddr.h"
+#include "ga_dev_digi_xbee.h"
+#include "ga_dev_sensirion_SHT1X_humidity.h"
+#include "ga_dev_apogee_BMP180_temperature.h"
+#include "ga_dev_apogee_BMP180_pressure.h"
+#include "ga_dev_apogee_SP212_irradiance.h"
+#include "ga_dev_battery.h"
+#include "ga_dev_solar_panel.h"
+#include "ga_dev_eeprom_node_address.h"
+
 
 #ifndef GA_BOARD_H
 #define GA_BOARD_H
