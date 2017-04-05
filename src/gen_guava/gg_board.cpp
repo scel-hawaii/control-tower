@@ -102,16 +102,14 @@ static void gg_board_setup(struct gg_board* b){
     Serial.println(F("Board Setup Start"));
 
     // Open Devices
-    gg_dev_xbee_open();
-    gg_dev_sht1x_open();
-    gg_dev_bmp085_open();
-    gg_dev_apogee_sp212_open();
-    gg_dev_batt_open();
-    gg_dev_spanel_open();
-    gg_dev_eeprom_naddr_open();
+    gg_dev_digi_xbee_open();
+    gg_dev_apogee_SP212_irradiance_open();
+    gg_dev_battery_open();
+    gg_dev_solar_panel_open();
+    gg_dev_eeprom_node_address_open();
 
     // load the address from the EEPROM into memory
-    b->node_addr = gg_dev_eeprom_naddr_read();
+    b->node_addr = gg_dev_eeprom_node_address_read();
 
     delay(100);
     Serial.println(F("Board Setup Done"));
@@ -133,10 +131,10 @@ static void gg_board_post(){
 
     // Display node addr
     Serial.print(F("[P] node addr: "));
-    Serial.println((int) gg_dev_eeprom_naddr_read());
+    Serial.println((int) gg_dev_eeprom_node_address_read());
 
     // Check sht1x
-    int sht1x_val = gg_dev_sht1x_read();
+    int sht1x_val = -1;
     Serial.print(F("[P] sht1x value: "));
     Serial.print(sht1x_val);
     Serial.println("\%");
@@ -146,7 +144,7 @@ static void gg_board_post(){
     }
 
     // Check BMP085
-    int32_t bmp085_val = gg_dev_bmp085_read_press();
+    int32_t bmp085_val = -1;
     Serial.print(F("[P] bmp085 value: "));
     Serial.print(bmp085_val/100);
     Serial.print(F("."));
@@ -158,7 +156,7 @@ static void gg_board_post(){
     }
 
     // Check BMP085 temperature
-    uint16_t bmp085_temp = gg_dev_bmp085_read_temp();
+    uint16_t bmp085_temp = -1;
     Serial.print(F("[P] bmp085 temp: "));
     Serial.print(bmp085_temp/10);
     Serial.print(".");
@@ -170,33 +168,33 @@ static void gg_board_post(){
     }
 
     // Check apogee_sp212
-    int apogee_sp212_val = gg_dev_apogee_sp212_read();
-    Serial.print(F("[P] apogee_sp212 solar irr value: "));
+    int apogee_sp212_val = gg_dev_apogee_SP212_irradiance_read();
+    Serial.print(F("[P] apogee_sp212 solar irradiance value: "));
     Serial.print(apogee_sp212_val);
     Serial.println(" mV");
 
     if(apogee_sp212_val < 0){
-        Serial.println(F("[P] \tError: apogee solar irr out of range"));
+        Serial.println(F("[P] \tError: apogee solar irradiance out of range"));
     }
 
     // Check batt
-    int batt_val = gg_dev_batt_read();
-    Serial.print(F("[P] batt value: "));
+    int batt_val = gg_dev_battery_read();
+    Serial.print(F("[P] battery value: "));
     Serial.print(batt_val);
     Serial.println(" mV");
 
     if(batt_val < 0){
-        Serial.println(F("[P] \tError: batt out of range"));
+        Serial.println(F("[P] \tError: battery out of range"));
     }
 
     // check panel sensor value
-    int spanel_val = gg_dev_spanel_read();
-    Serial.print(F("[P] spanel value: "));
+    int spanel_val = gg_dev_solar_panel_read();
+    Serial.print(F("[P] solar panel value: "));
     Serial.print(spanel_val);
     Serial.println(F(" mV"));
 
     if(spanel_val < 100){
-        Serial.println(F("[P] \tERROR: spanel value out of range"));
+        Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 
     Serial.println(F("POST End"));
@@ -222,12 +220,12 @@ static void gg_board_sample(struct gg_board* b){
 
     struct gg_packet* data_packet = &(b->data_packet);
     data_packet->uptime_ms           = millis();
-    data_packet->batt_mv             = gg_dev_batt_read();
-    data_packet->panel_mv            = gg_dev_spanel_read();
-    data_packet->bmp085_press_pa     = gg_dev_bmp085_read_press();
-    data_packet->bmp085_temp_decic   = gg_dev_bmp085_read_temp();
-    data_packet->humidity_centi_pct  = gg_dev_sht1x_read();
-    data_packet->apogee_w_m2         = gg_dev_apogee_sp212_read();
+    data_packet->batt_mv             = gg_dev_battery_read();
+    data_packet->panel_mv            = gg_dev_solar_panel_read();
+    data_packet->bmp085_press_pa     = -1;
+    data_packet->bmp085_temp_decic   = -1;
+    data_packet->humidity_centi_pct  = -1;
+    data_packet->apogee_w_m2         = gg_dev_apogee_SP212_irradiance_read();
     data_packet->node_addr           = b->node_addr;
 
     Serial.println(F("Sample End"));
@@ -388,13 +386,13 @@ static int gg_board_ready_heartbeat_tx(struct gg_board* b){
  ******************************/
 
 static void gg_board_heartbeat_tx(struct gg_board* b){
-    uint8_t payload[_gg_DEV_XBEE_BUFSIZE_];
+    uint8_t payload[_GG_DEV_DIGI_XBEE_BUFSIZE_];
     struct gg_heartbeat_packet hb_packet;
 
     hb_packet.schema = 0;
     hb_packet.uptime_ms = millis();
-    hb_packet.batt_mv = gg_dev_batt_read();
-    hb_packet.node_addr = gg_dev_eeprom_naddr_read();
+    hb_packet.batt_mv = gg_dev_battery_read();
+    hb_packet.node_addr = gg_dev_eeprom_node_address_read();
 
     int schema_len = sizeof(hb_packet);
 
@@ -406,7 +404,7 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
     // data bytes.
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &(hb_packet), schema_len);
-    gg_dev_xbee_write(payload, schema_len);
+    gg_dev_digi_xbee_write(payload, schema_len);
 
     Serial.println(F("TX Heartbeat End"));
 }
@@ -421,7 +419,7 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
  ******************************/
 
 static void gg_board_tx(struct gg_board* b){
-    uint8_t payload[_gg_DEV_XBEE_BUFSIZE_];
+    uint8_t payload[_GG_DEV_DIGI_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);
 
     Serial.println(F("Sample TX Start"));
@@ -432,7 +430,7 @@ static void gg_board_tx(struct gg_board* b){
     // data bytes.
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &(b->data_packet), schema_len);
-    gg_dev_xbee_write(payload, schema_len);
+    gg_dev_digi_xbee_write(payload, schema_len);
 
     // Reset the board sample count so that
     // goes through the sample loop aggin.

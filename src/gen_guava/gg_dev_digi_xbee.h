@@ -1,6 +1,6 @@
 /*******************************
  *
- * File: gc_dev_xbee.h
+ * File: gc_dev_digi_xbee.h
  *
  * Contains prototypes for XBee Transceiver functions
  *
@@ -10,14 +10,14 @@
 #include <XBee.h>
 #include <SoftwareSerial.h>
 
-#define _gg_DEV_XBEE_BUFSIZE_ 150
+#define _GG_DEV_DIGI_XBEE_BUFSIZE_ 150
 
-#ifndef gg_DEV_XBEE
-#define gg_DEV_XBEE
-void gg_dev_xbee_open(void);
-int gg_dev_xbee_avail(void);
-int gg_dev_xbee_read(void);
-void gg_dev_xbee_write(uint8_t* data, int data_len);
+#ifndef GG_DEV_DIGI_XBEE
+#define GG_DEV_DIGI_XBEE
+void gg_dev_digi_xbee_open(void);
+int gg_dev_digi_xbee_avail(void);
+int gg_dev_digi_xbee_read(void);
+void gg_dev_digi_xbee_write(uint8_t* data, int data_len);
 
 static XBee xbee = XBee();
 

@@ -6,13 +6,11 @@
  *
  ******************************/
 
-#include "gg_dev_xbee.h"
-#include "gg_dev_sht1x.h"
-#include "gg_dev_bmp085.h"
-#include "gg_dev_apogee_sp212.h"
-#include "gg_dev_batt.h"
-#include "gg_dev_spanel.h"
-#include "gg_dev_eeprom_naddr.h"
+#include "gg_dev_digi_xbee.h"
+#include "gg_dev_apogee_SP212_irradiance.h"
+#include "gg_dev_battery.h"
+#include "gg_dev_solar_panel.h"
+#include "gg_dev_eeprom_node_address.h"
 
 #ifndef gg_BOARD_H
 #define gg_BOARD_H
