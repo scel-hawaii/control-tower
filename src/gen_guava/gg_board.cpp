@@ -107,6 +107,9 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_battery_open();
     gg_dev_solar_panel_open();
     gg_dev_eeprom_node_address_open();
+    gg_dev_adafruit_BME280_humidity_open();
+    gg_dev_adafruit_BME280_temperature_open();
+    gg_dev_adafruit_BME280_pressure_open();
 
     // load the address from the EEPROM into memory
     b->node_addr = gg_dev_eeprom_node_address_read();
@@ -133,38 +136,34 @@ static void gg_board_post(){
     Serial.print(F("[P] node addr: "));
     Serial.println((int) gg_dev_eeprom_node_address_read());
 
-    // Check sht1x
-    int sht1x_val = -1;
-    Serial.print(F("[P] sht1x value: "));
-    Serial.print(sht1x_val);
+    // Check BME280 Humidity
+    int BME280_humidity_val = gg_dev_adafruit_BME280_humidity_read();
+    Serial.print(F("[P] BME280 Humidity value: "));
+    Serial.print(BME280_humidity_val);
     Serial.println("\%");
 
-    if(sht1x_val < 0){
+    if(BME280_humidity_val < 0){
         Serial.println(F("[P] \tError: Humidity out of range"));
     }
 
-    // Check BMP085
-    int32_t bmp085_val = -1;
-    Serial.print(F("[P] bmp085 value: "));
-    Serial.print(bmp085_val/100);
-    Serial.print(F("."));
-    Serial.print((bmp085_val-bmp085_val/10)/1000);
-    Serial.println(" mb");
+    // Check BME280 Pressure
+    int32_t BME280_pressure_val = gg_dev_adafruit_BME280_pressure_read();
+    Serial.print(F("[P] BME280 Pressure value: "));
+    Serial.print(BME280_pressure_val);
+    Serial.println("\%");
 
-    if(bmp085_val < 80000){
-        Serial.println(F("[P] \tError: bmp085 pressure out of range"));
+    if(BME280_pressure_val < 80000){
+        Serial.println(F("[P] \tError: Pressure out of range"));
     }
 
-    // Check BMP085 temperature
-    uint16_t bmp085_temp = -1;
-    Serial.print(F("[P] bmp085 temp: "));
-    Serial.print(bmp085_temp/10);
-    Serial.print(".");
-    Serial.print((bmp085_temp-bmp085_temp/10)/10);
-    Serial.println(F(" celsius"));
+    // Check BME280 Temperature
+    uint16_t BME280_temperature_val = gg_dev_adafruit_BME280_temperature_read();
+    Serial.print(F("[P] BME280 Temperature value: "));
+    Serial.print(BME280_temperature_val);
+    Serial.println(F(" C"));
 
-    if(bmp085_temp < 0){
-        Serial.println(F("[P] \tError: bmp085 temperature out of range"));
+    if(BME280_temperature_val < 0){
+        Serial.println(F("[P] \tError: Temperature out of range"));
     }
 
     // Check apogee_sp212
@@ -222,9 +221,9 @@ static void gg_board_sample(struct gg_board* b){
     data_packet->uptime_ms           = millis();
     data_packet->batt_mv             = gg_dev_battery_read();
     data_packet->panel_mv            = gg_dev_solar_panel_read();
-    data_packet->bmp085_press_pa     = -1;
-    data_packet->bmp085_temp_decic   = -1;
-    data_packet->humidity_centi_pct  = -1;
+    data_packet->bmp085_press_pa     = gg_dev_adafruit_BME280_pressure_read();
+    data_packet->bmp085_temp_decic   = gg_dev_adafruit_BME280_temperature_read();
+    data_packet->humidity_centi_pct  = gg_dev_adafruit_BME280_humidity_read();
     data_packet->apogee_w_m2         = gg_dev_apogee_SP212_irradiance_read();
     data_packet->node_addr           = b->node_addr;
 

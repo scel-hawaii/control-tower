@@ -26,6 +26,7 @@
 #include <Wire.h>
 #include <EEPROM.h>
 #include <SoftwareSerial.h>
+#include <SPI.h>
 
 /* External Libraries */
 #include <SHT1x.h>
@@ -37,6 +38,7 @@
 #include <Adafruit_ADS1015.h>
 #include <HIH613x.h>
 #include <XBee.h>
+#include <Adafruit_BME280.h>
 
 #ifdef GA
 struct ga_board board;

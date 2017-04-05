@@ -1,8 +1,7 @@
 .pioenvs
 .clang_complete
-*.swp
 .gcc-flags.json
+*.swp
 build-uno
 .vagrant
-
 simduino_atmega328p_flash.bin
