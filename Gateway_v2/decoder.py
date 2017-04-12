@@ -60,10 +60,11 @@ class Decoder:
     if self.check_schema(data):
       dataDict = self.sort_packet(data, timestamp)
       # if the data is from the stub build in the lab do nothing
-      if dataDict["node_addr"] != "65535":
+      if dataDict["node_addr"] != 65535:
       	for callback in self.callbacks:
         	callback(dataDict)
       else:
+	print "NOTICE: Did not write this packet to Database (STUB detected)"
 	self.callbacks[0](dataDict)
     else:
       print "Not A Valid Packet\n"
@@ -118,7 +119,7 @@ class Decoder:
   """
   def write_to_db(self, dataDict):
     #make connection to database, this can be added elsewhere so it will only be done once
-    con = psycopg2.connect("dbname='control_tower' user='control_tower' password='password'")
+    con = psycopg2.connect("dbname='control_tower' user='control_tower' password='password' host='localhost'")
     cur = con.cursor()
 
 
