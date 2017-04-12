@@ -59,8 +59,12 @@ class Decoder:
     print "Checking Schema"
     if self.check_schema(data):
       dataDict = self.sort_packet(data, timestamp)
-      for callback in self.callbacks:
-        callback(dataDict)
+      # if the data is from the stub build in the lab do nothing
+      if dataDict["node_addr"] != "65535":
+      	for callback in self.callbacks:
+        	callback(dataDict)
+      else:
+	self.callbacks[0](dataDict)
     else:
       print "Not A Valid Packet\n"
 
