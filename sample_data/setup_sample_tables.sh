@@ -1,5 +1,4 @@
 #!/bin/bash
-
 #
 # setup_sample_tables.sh
 # Author: Kenny Luong <luong97@hawaii.edu>
@@ -10,6 +9,15 @@
 
 function postgres_command(){
     sudo -u postgres psql -U postgres -d template1 -c "$1"
+    exit_status=$?
+    if [ $exit_status != 0 ]; then
+        echo "ERROR PSQL FAILED WITH COMMAND: $1"
+        # exit $exit_status
+    fi
+}
+
+function psql(){
+    sudo PGPASSWORD=password psql control_tower -h 127.0.0.1 -d control_tower -c "$1"
     exit_status=$?
     if [ $exit_status != 0 ]; then
         echo "ERROR PSQL FAILED WITH COMMAND: $1"
@@ -38,10 +46,10 @@ postgres_command "CREATE USER control_tower WITH PASSWORD 'password'"
 postgres_command "CREATE DATABASE control_tower"
 postgres_command "GRANT ALL PRIVILEGES ON DATABASE control_tower to control_tower"
 import_db_dump
-postgres_command "BULK INSERT heartbeat FROM 'heartbeat_.csv' WITH (FIELDTERMINATOR = ',',ROWTERMINATOR = '\n')"
-postgres_command "BULK INSERT apple FROM 'apple_old.csv' WITH (FIELDTERMINATOR = ',',ROWTERMINATOR = '\n')"
-postgres_command "BULK INSERT cranberry FROM 'cranberry_old.csv' WITH (FIELDTERMINATOR = ',',ROWTERMINATOR = '\n')"
-postgres_command "BULK INSERT dragonfruit FROM 'dragonfruit_old.csv' WITH (FIELDTERMINATOR = ',',ROWTERMINATOR = '\n')"
+psql "\\copy heartbeat FROM './old_data/heartbeat_old.csv';"
+psql "\\copy apple FROM './old_data/apple_old.csv';"
+psql "\\copy cranberry FROM './old_data/cranberry_old.csv';"
+psql "\\copy dragonfruit FROM './old_data/dragonfruit_old.csv;'"
 
 echo "Script Success. Finished setting up database."
 
