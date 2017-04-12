@@ -51,5 +51,3 @@ class XBeeGateway:
             timestamp = datetime.datetime.now()            
             for callback in self.callbacks:
                 callback(data, timestamp)
-        
-

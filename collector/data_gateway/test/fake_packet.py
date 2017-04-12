@@ -9,6 +9,7 @@ except serial.serialutil.SerialException as e:
     sys.exit(1)
 ser.flushInput()
 ser.flushOutput()
+
 #	this denotes the start of the first block
 f = open('test_data','w')
 while True:

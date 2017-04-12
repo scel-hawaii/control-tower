@@ -82,7 +82,7 @@ Vagrant.configure(2) do |config|
         https://github.com/scel-hawaii/control-tower.git'
 
      sudo su control_tower -c \
-        'cd /home/control_tower/control-tower/tasks/ &&
+        'cd /home/control_tower/control-tower/db/ &&
         bash seed.sh'
 
      sudo su control_tower -c \

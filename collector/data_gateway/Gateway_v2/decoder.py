@@ -24,7 +24,7 @@ class Decoder:
       '1': 'HHIHHIhHH', #Apple schema
       '2': 'HHIHHHHHI', #Cranberry schema
       '3': 'HHIHHIHHI',  #Dragonfruit Schema
- 	  '5': 'HHIfff'
+      '5': 'HHIfff'
 	}
     self.callbacks = []
 
