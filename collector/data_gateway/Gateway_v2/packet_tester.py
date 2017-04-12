@@ -11,20 +11,12 @@ from xbee_gateway import XBeeGateway
 
 args = sys.argv
 
-decoder = Decoder()
-xbg = XBeeGateway()
-
-xbg.setup_xbee(port, baud_rate)
-xbg.begin_test()
-decoder.register_callback(decoder.write_to_db)
-xbg.register_callback(decoder.decode_data)
-
 # if we have no special arguments
 if len(args) == 1:
 	# port can be accessed by /dev/serial/by-id/<device name> as opposed to /dev/tty/USB0. The latter will never change
 	# use the line of code below when running simulation to manually enter port
 	port = raw_input("Please enter your serial port path/name: ")
-
+  
 # if we want to automatically get the port...
 elif args[1] == 'auto' or args[1] == 'a':
 	print 'Automatically setting port for USB FTDI Device'
@@ -51,6 +43,14 @@ while True:
 	kill_flag.clear()
 	t_flag.set()
 
+	# setup decoder and xbee device	
+	decoder = Decoder()
+	xbg = XBeeGateway()
+
+	decoder.register_callback(decoder.print_dictionary)
+	decoder.register_callback(decoder.write_to_file)
+	decoder.register_callback(decoder.write_to_db)
+	xbg.register_callback(decoder.decode_data)
 	xbg.setup_xbee(port, baud_rate)
 	newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
 	newThread.daemon = True
