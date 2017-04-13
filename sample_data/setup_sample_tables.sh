@@ -46,10 +46,10 @@ postgres_command "CREATE USER control_tower WITH PASSWORD 'password'"
 postgres_command "CREATE DATABASE control_tower"
 postgres_command "GRANT ALL PRIVILEGES ON DATABASE control_tower to control_tower"
 import_db_dump
-psql "\\copy heartbeat FROM './old_data/heartbeat_old.csv';"
-psql "\\copy apple FROM './old_data/apple_old.csv';"
-psql "\\copy cranberry FROM './old_data/cranberry_old.csv';"
-psql "\\copy dragonfruit FROM './old_data/dragonfruit_old.csv;'"
+psql "\\copy heartbeat FROM '$PWD/old_data/heartbeat_old.csv' WITH (FORMAT CSV);"
+psql "\\copy apple FROM '$PWD/old_data/apple_old.csv' WITH (FORMAT CSV);"
+psql "\\copy cranberry FROM '$PWD/old_data/cranberry_old.csv' WITH (FORMAT CSV);"
+psql "\\copy dragonfruit FROM '$PWD/old_data/dragonfruit_old.csv' WITH (FORMAT CSV);"
 
 echo "Script Success. Finished setting up database."
 
