@@ -6,7 +6,7 @@
 -- Name: heartbeat; Type: TABLE; Schema: public; Owner: control_tower; Tablespace: 
 --
 
-CREATE TABLE old_heartbeat (
+CREATE TABLE heartbeat_old (
     time_received TIMESTAMP NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
@@ -19,7 +19,7 @@ CREATE TABLE old_heartbeat (
 -- Name: apple; Type: TABLE; Schema: public; Owner: control_tower; Tablespace: 
 --
 
-CREATE TABLE old_apple (
+CREATE TABLE apple_old (
     time_received TIMESTAMP NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
@@ -37,7 +37,7 @@ CREATE TABLE old_apple (
 -- Name: cranberry; Type: TABLE; Schema: public; Owner: control_tower; Tablespace: 
 --
 
-CREATE TABLE old_cranberry (
+CREATE TABLE cranberry_old (
     time_received TIMESTAMP NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
@@ -55,7 +55,7 @@ CREATE TABLE old_cranberry (
 -- Name: dragonfruit; Type: TABLE; Schema: public; Owner: control_tower; Tablespace: 
 --
 
-CREATE TABLE old_dragonfruit (
+CREATE TABLE dragonfruit_old (
     time_received TIMESTAMP NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
