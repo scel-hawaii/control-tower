@@ -42,7 +42,8 @@ uint16_t gc_dev_honeywell_HIH6131_temperature_centik_read(void){
 
     #ifndef SEN_STUB
     hih6131.update();
-    value = (float)hih6131.getTemperature()*100.0 + 27315.0;
+    //value = (float)hih6131.getTemperature()*100.0 + 27315.0;
+    value = (float)hih6131.getTemperature();
     #endif
 
     return value;

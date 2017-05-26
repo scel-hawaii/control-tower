@@ -43,7 +43,8 @@ uint32_t gd_dev_adafruit_MPL115A2_pressure_pa_read(void){
     uint32_t value = 100000;
 
     #ifndef SEN_STUB
-    value = mpl115a2.getPressure() * 1000;
+    //value = mpl115a2.getPressure() * 1000;
+    value = mpl115a2.getPressure();
     #endif
 
     return value;

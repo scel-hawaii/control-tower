@@ -56,19 +56,19 @@ void ga_board_init(ga_board *b){
 
     // State Variables
     b->sample_count = 0;
-    b->node_addr = 0;
+    b->node_address = 0;
     b->prev_sample_ms = 0;
 
     // Initialize the packet
     b->data_packet.schema = 1;
-    b->data_packet.node_addr = 0;
-    b->data_packet.uptime_ms = 0;
-    b->data_packet.batt_mv = 0;
-    b->data_packet.panel_mv = 0;
-    b->data_packet.bmp085_press_pa = 0;
-    b->data_packet.bmp085_temp_decic = 0;
-    b->data_packet.humidity_centi_pct = 0;
-    b->data_packet.apogee_w_m2 = 0;
+    b->data_packet.node_address = 0;
+    b->data_packet.uptime_milliseconds = 0;
+    b->data_packet.battery_millivolts = 0;
+    b->data_packet.panel_millivolts = 0;
+    b->data_packet.bmp085_pressure_pascals = 0;
+    b->data_packet.bmp085_temperature_kelvin = 0;
+    b->data_packet.sht1x_humidity_percent = 0;
+    b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
 }
 
 /******************************
@@ -112,7 +112,7 @@ static void ga_board_setup(struct ga_board* b){
     ga_dev_eeprom_node_address_open();
 
     // load the address from the EEPROM into memory
-    b->node_addr = ga_dev_eeprom_node_address_read();
+    b->node_address = ga_dev_eeprom_node_address_read();
 
     delay(100);
     Serial.println(F("Board Setup Done"));
@@ -222,14 +222,14 @@ static void ga_board_sample(struct ga_board* b){
     // Serial.println(b->sample_count);
 
     struct ga_packet* data_packet = &(b->data_packet);
-    data_packet->uptime_ms           = millis();
-    data_packet->batt_mv             = ga_dev_battery_read();
-    data_packet->panel_mv            = ga_dev_solar_panel_read();
-    data_packet->bmp085_press_pa     = ga_dev_apogee_BMP180_pressure_read();
-    data_packet->bmp085_temp_decic   = ga_dev_apogee_BMP180_temperature_read();
-    data_packet->humidity_centi_pct  = ga_dev_sensirion_SHT1X_humidity_read();
-    data_packet->apogee_w_m2         = ga_dev_apogee_SP212_irradiance_read();
-    data_packet->node_addr           = b->node_addr;
+    data_packet->uptime_milliseconds                     = millis();
+    data_packet->battery_millivolts                      = ga_dev_battery_read();
+    data_packet->panel_millivolts                        = ga_dev_solar_panel_read();
+    data_packet->bmp085_pressure_pascals                 = ga_dev_apogee_BMP180_pressure_read();
+    data_packet->bmp085_temperature_kelvin               = ga_dev_apogee_BMP180_temperature_read();
+    data_packet->sht1x_humidity_percent                  = ga_dev_sensirion_SHT1X_humidity_read();
+    data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
+    data_packet->node_address                            = b->node_address;
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;
@@ -393,9 +393,9 @@ static void ga_board_heartbeat_tx(struct ga_board* b){
     struct ga_heartbeat_packet hb_packet;
 
     hb_packet.schema = 0;
-    hb_packet.uptime_ms = millis();
-    hb_packet.batt_mv = ga_dev_battery_read();
-    hb_packet.node_addr = ga_dev_eeprom_node_address_read();
+    hb_packet.uptime_milliseconds = millis();
+    hb_packet.battery_millivolts = ga_dev_battery_read();
+    hb_packet.node_address = ga_dev_eeprom_node_address_read();
 
     int schema_len = sizeof(hb_packet);
 

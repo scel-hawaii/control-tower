@@ -56,19 +56,19 @@ void gd_board_init(gd_board *b){
 
     // State Variables
     b->sample_count = 0;
-    b->node_addr = 0;
+    b->node_address = 0;
     b->prev_sample_ms = 0;
 
     // Initialize the packet
     b->data_packet.schema = 3;
-    b->data_packet.node_addr = gd_dev_eeprom_node_address_read();
-    b->data_packet.uptime_ms = 0;
-    b->data_packet.batt_mv = 0;
-    b->data_packet.panel_mv = 0;
-    b->data_packet.apogee_sp215 = 0;
-    b->data_packet.mpl115a2t1_temp = 0;
-    b->data_packet.hih6131_humidity_pct = 0;
-    b->data_packet.mpl115a2t1_press = 0;
+    b->data_packet.node_address = gd_dev_eeprom_node_address_read();
+    b->data_packet.uptime_milliseconds = 0;
+    b->data_packet.battery_millivolts = 0;
+    b->data_packet.panel_millivolts = 0;
+    b->data_packet.sp215_irradiance_watts_per_square_meter = 0;
+    b->data_packet.mpl115a2t1_temperature_kelvin = 0;
+    b->data_packet.hih6131_humidity_percent = 0;
+    b->data_packet.mpl115a2t1_pressure_pascals = 0;
 }
 
 /******************************
@@ -115,7 +115,7 @@ static void gd_board_setup(struct gd_board* b){
     gd_dev_apogee_SP215_irradiance_open();
 
     // load the address from the hardware
-    b->node_addr = gd_dev_eeprom_node_address_read();
+    b->node_address = gd_dev_eeprom_node_address_read();
 
     delay(100);
     Serial.println(F("Board Setup Done"));
@@ -177,13 +177,13 @@ static void gd_board_sample(struct gd_board* b){
     // Serial.println(b->sample_count);
 
     struct gd_packet* data_packet = &(b->data_packet);
-    data_packet->uptime_ms           = millis();
-    data_packet->batt_mv             = gd_dev_battery_read();
-    data_packet->panel_mv            = gd_dev_solar_panel_read();
-    data_packet->mpl115a2t1_press    = gd_dev_adafruit_MPL115A2_pressure_pa_read();
-    data_packet->mpl115a2t1_temp     = gd_dev_adafruit_MPL115A2_temperature_centik_read();
-    data_packet->hih6131_humidity_pct= gd_dev_honeywell_HIH6131_humidity_pct_read();
-    data_packet->apogee_sp215        = gd_dev_apogee_SP215_irradiance_read();
+    data_packet->uptime_milliseconds                     = millis();
+    data_packet->battery_millivolts                      = gd_dev_battery_read();
+    data_packet->panel_millivolts                        = gd_dev_solar_panel_read();
+    data_packet->mpl115a2t1_pressure_pascals             = gd_dev_adafruit_MPL115A2_pressure_pa_read();
+    data_packet->mpl115a2t1_temperature_kelvin           = gd_dev_adafruit_MPL115A2_temperature_centik_read();
+    data_packet->hih6131_humidity_percent                = gd_dev_honeywell_HIH6131_humidity_pct_read();
+    data_packet->sp215_irradiance_watts_per_square_meter = gd_dev_apogee_SP215_irradiance_read();
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;
@@ -344,9 +344,9 @@ static void gd_board_heartbeat_tx(struct gd_board* b){
     struct gd_heartbeat_packet hb_packet;
 
     hb_packet.schema = 0;
-    hb_packet.uptime_ms = millis();
-    hb_packet.batt_mv = gd_dev_battery_read();
-    hb_packet.node_addr = gd_dev_eeprom_node_address_read();
+    hb_packet.uptime_milliseconds = millis();
+    hb_packet.battery_millivolts = gd_dev_battery_read();
+    hb_packet.node_address = gd_dev_eeprom_node_address_read();
 
     int schema_len = sizeof(hb_packet);
 

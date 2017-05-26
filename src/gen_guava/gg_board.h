@@ -20,21 +20,21 @@
 
 struct gg_packet{
     uint16_t schema;
-    uint16_t node_addr;             // Address of Arduino
-    uint32_t uptime_ms;             // Time since start of program
-    uint16_t batt_mv;               // Battery Voltage (in milli volts)
-    uint16_t panel_mv;              // Panel Voltage (in milli volts)
-    uint32_t bmp085_press_pa;       // Pressure Value (in pascals)
-    int16_t bmp085_temp_decic;      // Temperature Value (in celsius)
-    uint16_t humidity_centi_pct;
-    uint16_t apogee_w_m2;
+    uint16_t node_address;                             // Address of Arduino
+    uint32_t uptime_milliseconds;                       // Time since start of program
+    uint16_t battery_millivolts;                        // Battery Voltage (in milli volts)
+    uint16_t panel_millivolts;                          // Panel Voltage (in milli volts)
+    uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
+    uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
+    uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
+    uint16_t sp215_irradiance_watts_per_square_meter;  // Solar Irradiance Value (in W/m^2)
 };
 
 struct gg_heartbeat_packet{
     uint16_t schema;
-    uint16_t node_addr;             // Address of Arduino
-    uint32_t uptime_ms;             // Time since start of program
-    uint16_t batt_mv;               // Battery Voltage (in milli volts)
+    uint16_t node_address;       // Address of Arduino
+    uint32_t uptime_milliseconds;       // Time since start of program
+    uint16_t battery_millivolts;         // Battery Voltage (in milli volts)
 };
 
 struct gg_board{
@@ -54,7 +54,7 @@ struct gg_board{
     unsigned long prev_sample_ms;
     unsigned long prev_heartbeat_ms;
     int sample_count;
-    uint16_t node_addr;
+    uint16_t node_address;
     struct gg_packet data_packet;
 };
 

@@ -56,19 +56,19 @@ void gg_board_init(gg_board *b){
 
     // State Variables
     b->sample_count = 0;
-    b->node_addr = 0;
+    b->node_address = 0;
     b->prev_sample_ms = 0;
 
     // Initialize the packet
     b->data_packet.schema = 4;
-    b->data_packet.node_addr = 0;
-    b->data_packet.uptime_ms = 0;
-    b->data_packet.batt_mv = 0;
-    b->data_packet.panel_mv = 0;
-    b->data_packet.bmp085_press_pa = 0;
-    b->data_packet.bmp085_temp_decic = 0;
-    b->data_packet.humidity_centi_pct = 0;
-    b->data_packet.apogee_w_m2 = 0;
+    b->data_packet.node_address = 0;
+    b->data_packet.uptime_milliseconds = 0;
+    b->data_packet.battery_millivolts = 0;
+    b->data_packet.panel_millivolts = 0;
+    b->data_packet.bme280_pressure_pascals = 0;
+    b->data_packet.bme280_temperature_kelvin = 0;
+    b->data_packet.bme280_humidity_percent = 0;
+    b->data_packet.sp215_irradiance_watts_per_square_meter = 0;
 }
 
 /******************************
@@ -112,7 +112,7 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_adafruit_BME280_pressure_open();
 
     // load the address from the EEPROM into memory
-    b->node_addr = gg_dev_eeprom_node_address_read();
+    b->node_address = gg_dev_eeprom_node_address_read();
 
     delay(100);
     Serial.println(F("Board Setup Done"));
@@ -218,14 +218,14 @@ static void gg_board_sample(struct gg_board* b){
     // Serial.println(b->sample_count);
 
     struct gg_packet* data_packet = &(b->data_packet);
-    data_packet->uptime_ms           = millis();
-    data_packet->batt_mv             = gg_dev_battery_read();
-    data_packet->panel_mv            = gg_dev_solar_panel_read();
-    data_packet->bmp085_press_pa     = gg_dev_adafruit_BME280_pressure_read();
-    data_packet->bmp085_temp_decic   = gg_dev_adafruit_BME280_temperature_read();
-    data_packet->humidity_centi_pct  = gg_dev_adafruit_BME280_humidity_read();
-    data_packet->apogee_w_m2         = gg_dev_apogee_SP212_irradiance_read();
-    data_packet->node_addr           = b->node_addr;
+    data_packet->uptime_milliseconds                     = millis();
+    data_packet->battery_millivolts                      = gg_dev_battery_read();
+    data_packet->panel_millivolts                        = gg_dev_solar_panel_read();
+    data_packet->bme280_pressure_pascals                 = gg_dev_adafruit_BME280_pressure_read();
+    data_packet->bme280_temperature_kelvin               = gg_dev_adafruit_BME280_temperature_read();
+    data_packet->bme280_humidity_percent                 = gg_dev_adafruit_BME280_humidity_read();
+    data_packet->sp215_irradiance_watts_per_square_meter = gg_dev_apogee_SP212_irradiance_read();
+    data_packet->node_address                            = b->node_address;
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;
@@ -389,9 +389,9 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
     struct gg_heartbeat_packet hb_packet;
 
     hb_packet.schema = 0;
-    hb_packet.uptime_ms = millis();
-    hb_packet.batt_mv = gg_dev_battery_read();
-    hb_packet.node_addr = gg_dev_eeprom_node_address_read();
+    hb_packet.uptime_milliseconds = millis();
+    hb_packet.battery_millivolts = gg_dev_battery_read();
+    hb_packet.node_address = gg_dev_eeprom_node_address_read();
 
     int schema_len = sizeof(hb_packet);
 

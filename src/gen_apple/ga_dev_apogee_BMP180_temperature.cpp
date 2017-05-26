@@ -40,7 +40,7 @@ int16_t ga_dev_apogee_BMP180_temperature_read(void){
 
     #ifndef SEN_STUB
     float value_f = bmp180.readTemperature();
-    value = value_f * 10;
+    //value = value_f * 10;
     #endif
 
     return value;
