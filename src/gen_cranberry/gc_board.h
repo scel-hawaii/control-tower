@@ -2,7 +2,7 @@
  *
  * File: gc_board.h
  *
- * Contains struct for Dragonfruit packet, heartbeat, and board
+ * Contains struct for Cranberry packet, heartbeat, and board
  *
  ******************************/
 
