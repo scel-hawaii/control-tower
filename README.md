@@ -6,7 +6,7 @@ This is a re-write of the [old weatherbox firmware](https://github.com/scel-hawa
 # Current Contributors
 
 * Kenny Luong
-* Dylan Tokia
+* Dylan Tokita
 * Allie Kim
 * Nathan Lam
 
