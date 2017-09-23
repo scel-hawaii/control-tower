@@ -9,7 +9,7 @@ import os
 import pickle
 import time
 import threading
-                   
+
 class XBeeGateway:
 
     def __init__(self):
@@ -42,14 +42,29 @@ class XBeeGateway:
         Main loop for the gateway. This is run when you want to start
         the gateway.
     """
+    # TODO: Understand this extra logic a little more (kill flag, etc.)
+    #   I know it has something to do with checking if a real xbee device has stopped
+    #   responding or not.
     def begin_test(self, i, t_flag, kill_flag):
 	print 'Starting main Gateway Loop\n'
         while(not kill_flag.is_set()):
             f = self.xbee.wait_read_frame()
 	    t_flag.set()
-            data = f['rf_data']          
-            timestamp = datetime.datetime.now()            
+            data = f['rf_data']
+            timestamp = datetime.datetime.now()
             for callback in self.callbacks:
                 callback(data, timestamp)
-        
+
+    """
+        Simple main loop with no extra checking
+        Added by luong97@hawaii.edu on 2017-09-27
+    """
+    def begin_loop(self):
+        while(True):
+            f = self.xbee.wait_read_frame()
+            data = f['rf_data']
+            timestamp = datetime.datetime.now()
+            for callback in self.callbacks:
+                callback(data, timestamp)
+
 

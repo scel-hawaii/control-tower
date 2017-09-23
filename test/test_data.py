@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+
+# This script continously prints test packets to a prompted serial interface. These
+# packets have been collected by previous team members from real devices.
+
 import serial
 import time
 
@@ -8,7 +13,8 @@ dragonfruit = "\x7e\x00\x24\x90\x00\x13\xa2\x00\x40\xe6\x72\x7e\x30\x18\x01\x03\
 badPacket = "\x7e\x00\x16\x90\x00\x7d\x33\xa2\x00\x40\xe6\x4b\x5e\x03\xfd\x01\x00\x59\x90\x95\x95\x94\x88\x48\x48\x49\xe2"
 
 
-port = raw_input("Please enter your serial port path/name: ")
+# port = raw_input("Please enter your serial port path/name: ")
+port = "./ttyV1"
 
 try:
     ser = serial.Serial(port, 9600)
@@ -33,9 +39,6 @@ while(True):
 	elif schemaSend == 4:
 		ser.write(badPacket)
 		schemaSend = 0
-
-
-
 
 	print 'Wrote data to serial hopefully'
 	time.sleep(2)

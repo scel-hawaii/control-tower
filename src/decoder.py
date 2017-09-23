@@ -65,7 +65,7 @@ class Decoder:
         	callback(dataDict)
       else:
 	print "NOTICE: Did not write this packet to Database (STUB detected)"
-	self.callbacks[0](dataDict)
+	len(self.callbacks) > 0 and self.callbacks[0](dataDict)
     else:
       print "Not A Valid Packet\n"
 

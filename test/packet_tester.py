@@ -1,5 +1,9 @@
+#!/usr/bin/env python
+# This script can be used to test packets and see if a device is up
+
 from xbee import ZigBee
 import sys
+import os
 import serial
 import datetime
 import struct
@@ -15,7 +19,8 @@ args = sys.argv
 if len(args) == 1:
 	# port can be accessed by /dev/serial/by-id/<device name> as opposed to /dev/tty/USB0. The latter will never change
 	# use the line of code below when running simulation to manually enter port
-	port = raw_input("Please enter your serial port path/name: ")
+	# port = raw_input("Please enter your serial port path/name: ")
+        port = "../test/ttyV2"
 
 # if we want to automatically get the port...
 elif args[1] == 'auto' or args[1] == 'a':
@@ -49,7 +54,7 @@ while True:
 
 	decoder.register_callback(decoder.print_dictionary)
 	decoder.register_callback(decoder.write_to_file)
-	decoder.register_callback(decoder.write_to_db)
+	# decoder.register_callback(decoder.write_to_db)
 	xbg.register_callback(decoder.decode_data)
 
 	xbg.setup_xbee(port, baud_rate)
