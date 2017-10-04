@@ -9,7 +9,7 @@ Run the following command in the top level directory:
 
 # Testing Procedure
 
-To enjoy the packet_tester.py program, first download or clone the repository at https://github.com/scel-hawaii/data-gateway
+To enjoy the gateway program, first download or clone the control-tower repository at https://github.com/scel-hawaii/control-tower
 
 Equipment Needed:
   Computer
