@@ -1,0 +1,124 @@
+<html>
+  <head>
+  <script src="/assets/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <h1>SCEL Weatherbox Emulator </h1>
+    <div>
+      <p>
+      Emulator State:
+      <strong><span id="emu_state"></span></strong>
+      | Server Status:
+      <strong><span id="server_status"></span></strong>
+      </p>
+
+      <p>
+      <button id="btn-start"> Start </button>
+      <button> Pause </button>
+      <button id="btn-stop"> Stop </button>
+      <button> Restart </button>
+      <button id="btn-clear-txt"> Clear Text </button>
+
+      |
+
+      <strong>Firmware Build:</strong>
+
+			<select id="sel-firmware-build">
+				<option value="ga_stub">ga_stub</option>
+				<option value="gc_stub">gc_stub</option>
+				<option value="gd_stub">gd_stub</option>
+			</select>
+
+
+      | 
+
+
+      <strong>Model:</strong>
+
+			<select>
+				<option value="base_model">base_model</option>
+			</select>
+
+      </p>
+
+
+      <div id="data-container" style="overflow-y: scroll; height:400px; width:800px; border: 2px solid black;">
+        <pre id="data"> </pre>
+      </div>
+      <p>
+			<input id="checkbox-autoscroll-en" type="checkbox" value="autoscroll" checked>Autoscroll<br>
+      </p>
+
+    </div>
+    <br />
+    <br />
+    <br />
+    <hr />
+
+    <p>
+    Built using <a target="_blank" href="https://github.com/buserror/simavr"> simavr</a>.
+    </p>
+
+    </body>
+  <script type="text/javascript" src="/assets/socket.io.min.js"></script>
+  <script>
+    var current_length = 0;
+    var prev_length = 0;
+    var tail_ptr = 0;
+    var autoscroll_en = true;
+
+    $(document).ready(function(){
+      setInterval(function(){
+        $.get("/control/state", function(result){
+          $("#emu_state").text(result);
+        });
+      }, 500);
+
+      $('#btn-start').on("click", function(){
+        var firmware_build = $("#sel-firmware-build").val();
+        $.get("/control/start", {firmware_build: firmware_build});
+      });
+
+      $('#btn-stop').on("click", function(){
+        $.get("/control/stop");
+      });
+
+      $('#btn-clear-txt').on("click", function(){
+        $.get("/control/clear");
+        $("#data").text("");
+      });
+
+      $('#checkbox-autoscroll-en').change(function() {
+        if( $(this).is(":checked")){
+          autoscroll_en = true;
+        }
+        else{
+          autoscroll_en = false;
+        }
+      });
+
+
+    });
+
+      var socket = io.connect('http://' + document.domain + ':' + location.port);
+      socket.on('connect', function() {
+          // socket.emit('message', {data: 'I\'m connected!'});
+          console.log("Connected to websocket server");
+				$("#server_status").text("Online");
+      });
+      socket.on('message', function(result) {
+        // console.log(result);
+        $("#data").append(result.data);
+        if(autoscroll_en){
+          document.getElementById("data-container").scrollTop = document.getElementById("data-container").scrollHeight;
+        }
+      });
+			socket.on('disconnect', function () {
+				$("#server_status").text("Offline");
+			});
+
+
+  </script>
+
+
+</html>
