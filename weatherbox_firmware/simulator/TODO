@@ -1,0 +1,4 @@
+* Simulator should be able to be run
+    * through the command line OR programatically through a class
+    * with a max endtime
+    * with an end condition (string through the serial or something)
