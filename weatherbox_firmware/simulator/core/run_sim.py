@@ -74,4 +74,6 @@ signal.signal(signal.SIGTERM, signal_term_handler)
 while True:
     result = ser.read()
     output_file.write(result)
-    # sys.stdout.write(result)
+
+    # Print the serial output to STDOUT as well as the output.txt file
+    sys.stdout.write(result)
