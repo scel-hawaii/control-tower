@@ -1,4 +1,4 @@
-FROM debian
+FROM ubuntu
 
 # Start Installation
 
@@ -9,8 +9,18 @@ RUN apt-get update
 RUN apt-get -y install python python-dev python-pip \
     postgresql libpq-dev make \
     wget git gzip \
-    nodejs nodejs-legacy build-essential npm \
-    sudo
+    build-essential npm \
+    sudo curl
+
+# RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
+RUN curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -
+RUN sudo apt-get install -y nodejs
+
+# Check if npm and node are installed correctly
+RUN npm --version
+RUN nodejs --version
+
+RUN npm update -g
 
 ADD . control-tower/
 
@@ -20,10 +30,9 @@ RUN /etc/init.d/postgresql start &&\
     cd control-tower/db &&\
     bash setup_postgres_user.sh
 
-RUN npm install -g npm
 
-WORKDIR /control-tower/api
-RUN npm install
+# WORKDIR /control-tower/api
+# RUN npm install
 
 # Seed Database
 USER postgres
@@ -34,7 +43,7 @@ RUN chmod 775 outdoor_env_small.csv
 
 USER postgres
 RUN /etc/init.d/postgresql start &&\
-    sleep 1 &&\
+    sleep 3 &&\
     psql -d control_tower -c "\\copy outdoor_env FROM 'outdoor_env_small.csv' CSV HEADER"
 
 # End Installation
