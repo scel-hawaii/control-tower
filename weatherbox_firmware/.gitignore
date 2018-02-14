@@ -5,3 +5,4 @@
 build-uno
 .vagrant
 simduino_atmega328p_flash.bin
+.piolibdeps
