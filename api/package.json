@@ -1,5 +1,5 @@
 {
-  "name": "scel-server",
+  "name": "scel-api-old",
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
@@ -23,5 +23,6 @@
     "pg": "",
     "pg-native": ""
   },
-  "description": "Weather API -------------"
+  "description": "Weather API -------------",
+  "devDependencies": {}
 }

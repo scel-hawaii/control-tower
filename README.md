@@ -1,9 +1,12 @@
 # Control Tower
 
-Backend for the scel sensor network. Contains three components:
+Central repository for scel-weatherbox project and related modules.
 
-* API
-* Database config
-* Server config
+* [weatherbox-firmware](weatherbox-firmware)
+* [gateway](gateway)
+* [api](api)
+* [db](database)
 
 Developers: See the [development docs](docs/development.md) for more instructions.
+
+
