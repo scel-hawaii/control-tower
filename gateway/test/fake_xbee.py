@@ -9,6 +9,7 @@
 #
 import serial
 import time
+import sys
 
 class FakeXbee:
     def __init__(self, serial_port):
@@ -54,6 +55,7 @@ class FakeXbee:
 
 if __name__ == '__main__':
     xbee = FakeXbee('./ttyV1')
-    xbee.start()
+    xbee.connect()
+    xbee.start_loop()
 
 
