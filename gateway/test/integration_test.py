@@ -22,7 +22,7 @@ from uart_bridge import UartBridge
 from threading import Thread
 from fake_xbee import FakeXbee
 
-include_path = os.path.dirname(os.path.realpath(__file__)) + "/../../src"
+include_path = os.path.dirname(os.path.realpath(__file__)) + "/../src"
 sys.path.insert(0, include_path)
 from xbee_gateway import XBeeGateway
 from decoder import Decoder
