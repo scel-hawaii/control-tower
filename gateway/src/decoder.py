@@ -23,8 +23,9 @@ class Decoder:
       '0': 'HHIH', #Heartbeat schema
       '1': 'HHIHHIhHH', #Apple schema
       '2': 'HHIHHHHHI', #Cranberry schema
-      '3': 'HHIHHIHHI',  #Dragonfruit Schema
- 	  '5': 'HHIfff'
+      '3': 'HHIHHIHHI', #Dragonfruit Schema
+      '4': 'HHIHHIHHH', #Snapdragon Schema
+      	  '5': 'HHIfff'
 	}
     self.callbacks = []
 
@@ -38,7 +39,7 @@ class Decoder:
     for key in self.schemaDict:
       if str(self.schema_num) == key:
 	# verify expected packet length
-	
+
 	if key == '0' and len(data) == 10:
           return True
 	elif key == '1' and len(data) == 22:
@@ -47,10 +48,11 @@ class Decoder:
           return True
 	elif key == '3' and len(data) == 24:
           return True
+	elif key == '4' and len(data) == 22:
+          return True
 	elif key == '5' and len(data) == 20:
           return True
     return False
-
 
   """
   Main Function
@@ -91,6 +93,8 @@ class Decoder:
 	fileName = 'cranberry_data.csv'
     elif(self.schema_num == 3):
 	fileName = 'dragonfruit_data.csv'
+    elif(self.schema_num == 4):
+	fileName = 'snapdragon_data.csv'
     elif(self.schema_num == 5):
 	fileName = 'gps_data.csv'
 
@@ -128,9 +132,11 @@ class Decoder:
     elif self.schema_num == 1:
         tableName = 'apple'
     elif self.schema_num == 2:
-        tableName = 'cranberry'
+        tableName = 'cranblerry'
     elif self.schema_num == 3:
         tableName = 'dragonfruit'
+    elif self.schema_num == 4:
+        tableName = 'snapdragon'
     else:
         print "Invalid packet schema"
         return
@@ -203,18 +209,35 @@ class Decoder:
       dataDict["humidity_pct"] = unpacked_data[7]
       dataDict["press_pa"] = unpacked_data[8]
 
+    elif(self.schema_num == 4): #snapdragon schema
+      dataDict["schema"] = unpacked_data[0]
+      dataDict["node_addr"] = unpacked_data[1]
+      dataDict["uptime_ms"] = unpacked_data[2]
+      dataDict["batt_mv"] = unpacked_data[3]
+      dataDict["panel_mv"] = unpacked_data[4]
+      dataDict["press_pa"] = unpacked_data[5]
+      dataDict["temp_c"] = unpacked_data[6]
+      dataDict["humidity_pct"] = unpacked_data[7]
+
+      # snapdragon box uses apogee sp215
+      # https://wiki.scel-hawaii.org/doku.php?id=weatherbox:team_snapdragon:start
+      dataDict["apogee_w_m2"] = unpacked_data[8] * SP215_CONVERSION
+
+
     elif self.schema_num == 0: #heartbeat schema
       dataDict["schema"] = unpacked_data[0]
       dataDict["node_addr"] = unpacked_data[1]
       dataDict["uptime_ms"] = unpacked_data[2]
       dataDict["batt_mv"] = unpacked_data[3]
-	
-    elif self.schema_num == 5: #gps schema 
+
+    elif self.schema_num == 5: #gps schema
       dataDict["schema"] = unpacked_data[0]
       dataDict["node_addr"] = unpacked_data[1]
-      dataDict["uptime_ms"] = unpacked_data[2] 
-      dataDict["latitude"] = unpacked_data[3]	
-      dataDict["longitude"] = unpacked_data[4] 
+      dataDict["uptime_ms"] = unpacked_data[2]
+      dataDict["latitude"] = unpacked_data[3]
+      dataDict["longitude"] = unpacked_data[4]
       dataDict["altitude"] = unpacked_data[5]
+
+
 
     return collections.OrderedDict(sorted(dataDict.items()))
