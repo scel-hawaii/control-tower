@@ -1,0 +1,12 @@
+version: '2'
+services:
+  db:
+    image: "scel-weatherbox-db"
+    ports:
+     - "5432:5432"
+  api:
+    image: "scel-weatherbox-api"
+    ports:
+     - "16907:16907"
+
+

@@ -12,9 +12,10 @@ function pgQuery(qString, callback){
 
 	// Example URL string: 'pg://control_tower:password@localhost:5432/control_tower'
     var defaultUrl = 'pg://' + username + ":" + password + "@localhost:5432/" + username;
+	const pool = new pg.Pool(defaultUrl);
 	var connectionString = process.env.DATABASE_URL || defaultUrl;
 
-	pg.connect(connectionString, function(err, client, done) {
+	pool.connect(function(err, client, done) {
 	  if(err) {
 	    return console.error('error fetching client from pool', err);
 	  } client.query(qString, function(err, result) {

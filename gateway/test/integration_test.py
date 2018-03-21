@@ -18,11 +18,11 @@ import signal
 import sys
 import time
 import os
-from uart_bridge import UartBridge
+from tty_bridge import TTYBridge
 from threading import Thread
 from fake_xbee import FakeXbee
 
-include_path = os.path.dirname(os.path.realpath(__file__)) + "/../../src"
+include_path = os.path.dirname(os.path.realpath(__file__)) + "/../src"
 sys.path.insert(0, include_path)
 from xbee_gateway import XBeeGateway
 from decoder import Decoder
@@ -46,8 +46,8 @@ signal.signal(signal.SIGINT, signal_handler)
 # |Fake Device| --> ttyV1 --> SOCAT Bridge --> ttyV2 --> |packet tester|
 #
 #
-uart_bridge = UartBridge()
-uart_bridge.start()
+tty_bridge = TTYBridge()
+tty_bridge.start()
 print("Waiting for the UART bridge to come up...")
 time.sleep(2)
 
@@ -86,4 +86,4 @@ gateway.begin_loop()
 # BLOCK UNTIL CONTROL-C
 #
 test_packet_thread.join()
-uart_bridge.wait()
+tty_bridge.wait()
