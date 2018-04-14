@@ -12,8 +12,10 @@ MAC_ADDRESS=$(/sbin/ifconfig | grep Ethernet | awk '{print $5}')
 declare -A reverse_ssh_ports
 reverse_ssh_ports['b8:27:eb:8d:99:9c']=2222
 
+# Remote deployment port
+reverse_ssh_ports['b8:27:eb:73:63:4e']=2223
+
 # reserved for other raspberry pi's
-# reverse_ssh_ports['b8:27:eb:8d:99:9c']=2223
 # reverse_ssh_ports['b8:27:eb:8d:99:9c']=2224
 
 # Iterate through the associate array
