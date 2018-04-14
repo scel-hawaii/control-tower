@@ -32,7 +32,8 @@ if len(args) == 1:
 elif args[1] == 'auto' or args[1] == 'a':
 	print 'Automatically setting port for USB FTDI Device'
 	# set port to usb FTDI Device
-	port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
+	port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN00OK9M-if00-port0'
+
 # we have no extra args
 # we have confusing arguments
 else:
@@ -54,7 +55,7 @@ while True:
 	kill_flag.clear()
 	t_flag.set()
 
-	# setup decoder and xbee device	
+	# setup decoder and xbee device
 	decoder = Decoder()
 	xbg = XBeeGateway()
 
