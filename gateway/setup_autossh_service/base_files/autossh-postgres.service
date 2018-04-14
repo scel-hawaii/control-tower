@@ -1,0 +1,16 @@
+[Unit]
+Description=autossh-postgres
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=autossh
+EnvironmentFile=/etc/default/autossh-postgres
+ExecStart=
+ExecStart=/usr/bin/autossh $SSH_OPTIONS -M 20002
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target

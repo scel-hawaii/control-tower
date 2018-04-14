@@ -1,0 +1,16 @@
+[Unit]
+Description=autossh
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=autossh
+EnvironmentFile=/etc/default/autossh
+ExecStart=
+ExecStart=/usr/bin/autossh $SSH_OPTIONS
+Restart=always
+RestartSec=60
+
+[Install]
+WantedBy=multi-user.target
