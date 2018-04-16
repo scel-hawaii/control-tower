@@ -2,7 +2,7 @@
 
 Central repository for scel-weatherbox project and related modules.
 
-* [weatherbox-firmware](weatherbox-firmware)
+* [weatherbox_firmware](weatherbox_firmware)
 * [gateway](gateway)
 * [api](api)
 * [db](database)
