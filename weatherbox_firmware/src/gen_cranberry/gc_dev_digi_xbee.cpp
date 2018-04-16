@@ -69,6 +69,7 @@ int gc_dev_digi_xbee_read(void)
 
 void gc_dev_digi_xbee_write(uint8_t *data, int data_len)
 {
+    //Address needs to match address on the receiving Xbee
     XBeeAddress64 addr64 = XBeeAddress64(0, 0);
     ZBTxRequest zbtx = ZBTxRequest(addr64, data, data_len);
 

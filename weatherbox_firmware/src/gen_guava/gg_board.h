@@ -11,9 +11,7 @@
 #include "gg_dev_battery.h"
 #include "gg_dev_solar_panel.h"
 #include "gg_dev_eeprom_node_address.h"
-#include "gg_dev_adafruit_BME280_temperature.h"
-#include "gg_dev_adafruit_BME280_humidity.h"
-#include "gg_dev_adafruit_BME280_pressure.h"
+#include "gg_dev_adafruit_BME280_sensor.h"
 
 #ifndef gg_BOARD_H
 #define gg_BOARD_H
