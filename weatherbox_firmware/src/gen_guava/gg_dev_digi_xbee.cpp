@@ -23,8 +23,8 @@
 
 void gg_dev_digi_xbee_open(void)
 {
-    soft_serial.begin(9600);
-    xbee.begin(soft_serial);
+    Serial.begin(9600);
+    xbee.begin(Serial);
 }
 
 /******************************

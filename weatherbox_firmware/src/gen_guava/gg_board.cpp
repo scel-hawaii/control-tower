@@ -107,9 +107,7 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_battery_open();
     gg_dev_solar_panel_open();
     gg_dev_eeprom_node_address_open();
-    gg_dev_adafruit_BME280_humidity_open();
-    gg_dev_adafruit_BME280_temperature_open();
-    gg_dev_adafruit_BME280_pressure_open();
+    gg_dev_adafruit_BME280_sensor_open();
 
     // load the address from the EEPROM into memory
     b->node_address = gg_dev_eeprom_node_address_read();
@@ -137,7 +135,7 @@ static void gg_board_post(){
     Serial.println((int) gg_dev_eeprom_node_address_read());
 
     // Check BME280 Humidity
-    int BME280_humidity_val = gg_dev_adafruit_BME280_humidity_read();
+    uint16_t BME280_humidity_val = gg_dev_adafruit_BME280_humidity_read();
     Serial.print(F("[P] BME280 Humidity value: "));
     Serial.print(BME280_humidity_val);
     Serial.println("\%");
@@ -150,7 +148,7 @@ static void gg_board_post(){
     int32_t BME280_pressure_val = gg_dev_adafruit_BME280_pressure_read();
     Serial.print(F("[P] BME280 Pressure value: "));
     Serial.print(BME280_pressure_val);
-    Serial.println("\%");
+    Serial.println(" Pa");
 
     if(BME280_pressure_val < 80000){
         Serial.println(F("[P] \tError: Pressure out of range"));
@@ -160,14 +158,14 @@ static void gg_board_post(){
     uint16_t BME280_temperature_val = gg_dev_adafruit_BME280_temperature_read();
     Serial.print(F("[P] BME280 Temperature value: "));
     Serial.print(BME280_temperature_val);
-    Serial.println(F(" C"));
+    Serial.println(F(" K"));
 
     if(BME280_temperature_val < 0){
         Serial.println(F("[P] \tError: Temperature out of range"));
     }
 
     // Check apogee_sp212
-    int apogee_sp212_val = gg_dev_apogee_SP212_irradiance_read();
+    uint16_t apogee_sp212_val = gg_dev_apogee_SP212_irradiance_read();
     Serial.print(F("[P] apogee_sp212 solar irradiance value: "));
     Serial.print(apogee_sp212_val);
     Serial.println(" mV");
@@ -177,7 +175,7 @@ static void gg_board_post(){
     }
 
     // Check batt
-    int batt_val = gg_dev_battery_read();
+    uint16_t batt_val = gg_dev_battery_read();
     Serial.print(F("[P] battery value: "));
     Serial.print(batt_val);
     Serial.println(" mV");
@@ -187,7 +185,7 @@ static void gg_board_post(){
     }
 
     // check panel sensor value
-    int spanel_val = gg_dev_solar_panel_read();
+    uint16_t spanel_val = gg_dev_solar_panel_read();
     Serial.print(F("[P] solar panel value: "));
     Serial.print(spanel_val);
     Serial.println(F(" mV"));
