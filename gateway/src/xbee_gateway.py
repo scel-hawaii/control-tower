@@ -109,7 +109,6 @@ class XBeeGateway:
             data = f['rf_data']
             timestamp = datetime.datetime.now()
             socket.send(json.dumps(f_alt))
-            socket.send("COOL")
             for callback in self.callbacks:
                 callback(data, timestamp)
 
