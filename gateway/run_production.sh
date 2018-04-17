@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# If the python virtualenv isn't setup, set it up:
+#   http://docs.python-guide.org/en/latest/dev/virtualenvs/
 if [ ! -d "env" ]; then
     echo "Setting up python virtual environment for the first time (this only needs to be done once)..."
     echo "This may take a couple of minutes..."
