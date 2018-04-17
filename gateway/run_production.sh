@@ -8,5 +8,5 @@ if ! [ -z "$PS_OUTPUT" ]; then
 fi
 
 echo "Starting Server"
-cd src && python gateway_server.py auto
+cd src && python gateway_server.py $@
 
