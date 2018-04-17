@@ -69,6 +69,12 @@ void gc_board_init(gc_board *b){
     b->data_packet.hih6131_temperature_kelvin = 0;
     b->data_packet.hih6131_humidity_percent = 0;
     b->data_packet.mpl115a2t1_pressure_pascals = 0;
+    b->data_packet.ds3231_rtc_year = 0;
+    b->data_packet.ds3231_rtc_month = 0;
+    b->data_packet.ds3231_rtc_day = 0;
+    b->data_packet.ds3231_rtc_hour = 0;
+    b->data_packet.ds3231_rtc_min = 0;
+    b->data_packet.ds3231_rtc_sec = 0;
 }
 
 /******************************
@@ -111,6 +117,7 @@ static void gc_board_setup(struct gc_board* b){
     gc_dev_honeywell_HIH6131_humidity_open();
     gc_dev_honeywell_HIH6131_temperature_open();
     gc_dev_adafruit_MPL115A2_pressure_open();
+    gc_dev_adafruit_DS3231_rtc_open();
 
     // Load the address from the hardware
     b->node_address = gc_dev_eeprom_node_address_read();
@@ -154,6 +161,9 @@ static void gc_board_post(){
     // check panel sensor value
     gc_dev_solar_panel_test();
 
+    // check real-time-clock
+    gc_dev_adafruit_DS3231_rtc_test();
+
     Serial.println(F("POST End"));
 }
 
@@ -184,6 +194,12 @@ static void gc_board_sample(struct gc_board* b){
     data_packet->hih6131_temperature_kelvin              = gc_dev_honeywell_HIH6131_temperature_centik_read();
     data_packet->hih6131_humidity_percent                = gc_dev_honeywell_HIH6131_humidity_pct_read();
     data_packet->mpl115a2t1_pressure_pascals             = gc_dev_adafruit_MPL115A2_pressure_pa_read();
+    data_packet->ds3231_rtc_year = gc_dev_adafruit_DS3231_rtc_year_read();
+    data_packet->ds3231_rtc_month = gc_dev_adafruit_DS3231_rtc_month_read();
+    data_packet->ds3231_rtc_day = gc_dev_adafruit_DS3231_rtc_day_read();
+    data_packet->ds3231_rtc_hour = gc_dev_adafruit_DS3231_rtc_hour_read();
+    data_packet->ds3231_rtc_min = gc_dev_adafruit_DS3231_rtc_min_read();
+    data_packet->ds3231_rtc_sec = gc_dev_adafruit_DS3231_rtc_sec_read();
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;
@@ -298,6 +314,7 @@ static void gc_board_run_cmd(struct gc_board* b){
                         Serial.println(F("[5] - SP212 Solar Irradiance (mW)"));
                         Serial.println(F("[6] - Battery Voltage (mW)"));
                         Serial.println(F("[7] - Solar Panel Voltage (mW)"));
+                        Serial.println(F("[8] - DS3231 Real Time Clock (Date & Time)"));
                         Serial.println(F("[E] - Exit to Main Menu"));
 
                         while(1){
@@ -331,6 +348,9 @@ static void gc_board_run_cmd(struct gc_board* b){
                                             break;
                                         case '7':
                                             gc_dev_solar_panel_test();
+                                            break;
+                                        case '8':
+                                            gc_dev_agc_dev_adafruit_DS3231_rtc_test();
                                             break;
                                         default:
                                             break;
