@@ -9,7 +9,7 @@ socket = context.socket(zmq.SUB)
 
 # print "Collecting updates from weather server..."
 # socket.connect ("tcp://localhost:%s" % port)
-socket.connect("ipc://tmp.socket")
+socket.connect("ipc://decoder.socket")
 
 # Subscribe to zipcode, default is NYC, 10001
 socket.setsockopt(zmq.SUBSCRIBE, "")

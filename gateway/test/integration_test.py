@@ -17,7 +17,9 @@ import subprocess
 import signal
 import sys
 import time
+import zmq
 import os
+import json
 from tty_bridge import TTYBridge
 from threading import Thread
 from fake_xbee import FakeXbee
@@ -59,6 +61,7 @@ def start_test_packet():
     fake_xbee.connect()
     fake_xbee.start_loop()
 
+
 test_packet_thread = Thread(target=start_test_packet)
 test_packet_thread.start()
 
@@ -69,18 +72,19 @@ test_packet_thread.start()
 #
 # subprocess.call("cd ../src && python packet_tester.py", shell=True)
 
-def print_data(data, timestamp):
-    print(timestamp)
-    print(data)
+def print_data(data):
+    print(json.dumps(data))
+
+
 
 decoder = Decoder()
-decoder.register_callback(decoder.print_dictionary)
+# decoder.register_callback(decoder.print_dictionary)
+decoder.register_callback(print_data)
 
 gateway = XBeeGateway()
 gateway.register_callback(decoder.decode_data)
 gateway.setup_xbee('./ttyV2', 9600)
 gateway.begin_loop()
-
 
 #
 # BLOCK UNTIL CONTROL-C

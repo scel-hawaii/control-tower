@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<pre id="log"></pre>
+<script>
+  // helper function: log message to screen
+  function log(msg) {
+    document.getElementById('log').textContent = msg + '\n' +  document.getElementById('log').textContent;
+  }
+
+  // setup websocket with callbacks
+  var ws = new WebSocket('ws://localhost:8001/');
+  ws.onopen = function() {
+    log('CONNECT');
+  };
+
+  ws.onclose = function() {
+    log('DISCONNECT');
+  };
+
+  ws.onmessage = function(event) {
+    var packet = JSON.parse(event.data)
+    // log('MESSAGE: ' + event.data);
+    log(packet.schema + "\t" + packet.batt_mv)
+    // log(JSON.stringify(packet));
+  };
+</script>

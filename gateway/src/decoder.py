@@ -7,6 +7,8 @@ import collections
 import csv
 import os.path
 import psycopg2
+import json
+import zmq
 
 """
 Conversion factors for apogee sensors
@@ -28,6 +30,10 @@ class Decoder:
  	  '5': 'HHIfff'
 	}
     self.callbacks = []
+
+    context = zmq.Context()
+    self.socket = context.socket(zmq.PUB)
+    self.socket.bind("ipc://decoder.socket")
 
   """
   Checks if the packet has a valid schema
@@ -63,6 +69,11 @@ class Decoder:
     if self.check_schema(data):
       dataDict = self.sort_packet(data, timestamp)
       # if the data is from the stub build in the lab do nothing
+
+      dataString = json.dumps(dataDict)
+      print("Sending dataString: %s" % dataString)
+      self.socket.send(dataString)
+
       if dataDict["node_addr"] != 65535:
       	for callback in self.callbacks:
         	callback(dataDict)
