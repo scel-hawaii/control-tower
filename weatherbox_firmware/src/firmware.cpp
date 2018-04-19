@@ -39,6 +39,9 @@
 #include <HIH613x.h>
 #include <XBee.h>
 #include <Adafruit_BME280.h>
+#include <Adafruit_GPS.h>
+#include <Adafruit_DS3231.h>
+
 
 #ifdef GA
 struct ga_board board;

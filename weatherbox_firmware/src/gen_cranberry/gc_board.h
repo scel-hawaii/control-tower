@@ -14,6 +14,7 @@
 #include "gc_dev_honeywell_HIH6131_temperature.h"
 #include "gc_dev_honeywell_HIH6131_humidity.h"
 #include "gc_dev_adafruit_MPL115A2_pressure.h"
+#include "gc_dev_adafruit_FGPMMOPA6H_GPS.h"
 #include "gc_dev_adafruit_DS3231_rtc.h"
 
 #ifndef GC_BOARD_H
@@ -23,20 +24,23 @@
 
 struct gc_packet{
     uint16_t schema;
-    uint16_t node_address;                             // Address of Arduino
+    uint16_t node_address;                              // Address of Arduino
     uint32_t uptime_milliseconds;                       // Time since start of program
     uint16_t battery_millivolts;                        // Battery Voltage (in milli volts)
     uint16_t panel_millivolts;                          // Panel Voltage (in milli volts)
-    uint16_t sp212_irradiance_watts_per_square_meter;  // Solar Irradiance (in watts per meter squared)
-    uint16_t hih6131_temperature_kelvin;               // Temperature Value (Celsius)
-    uint16_t hih6131_humidity_percent;                 // Humidity Value (percentage)
+    uint16_t sp212_irradiance_watts_per_square_meter;   // Solar Irradiance (in watts per meter squared)
+    uint16_t hih6131_temperature_kelvin;                // Temperature Value (Celsius)
+    uint16_t hih6131_humidity_percent;                  // Humidity Value (percentage)
     uint32_t mpl115a2t1_pressure_pascals;               // Pressure Value (Pascal)
-    uint16_t ds3231_rtc_year;
-    uint4_t ds3231_rtc_month;
-    uint8_t ds3231_rtc_day;
-    uint8_t ds3231_rtc_hour;
-    uint8_t ds3231_rtc_min;
-    uint8_t ds3231_rtc_sec;                             // Date and Time
+    uint8_t gps_longitude;                              // gps longitude (Degrees)
+    uint8_t gps_latitude;                               // gps latitude (Degrees)
+    uint8_t gps_altitude;                               // gps altitude (Meters)
+    uint16_t ds3231_rtc_year;                           // rtc year
+    uint8_t ds3231_rtc_month;                           // rtc month
+    uint8_t ds3231_rtc_day;                             // rtc day
+    uint8_t ds3231_rtc_hour;                            // rtc hour
+    uint8_t ds3231_rtc_min;                             // rtc min
+    uint8_t ds3231_rtc_sec;                             // rtc sec
 };
 
 struct gc_heartbeat_packet{

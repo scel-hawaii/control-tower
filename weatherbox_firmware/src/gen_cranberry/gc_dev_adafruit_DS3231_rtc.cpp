@@ -58,8 +58,8 @@ uint16_t gc_dev_adafruit_DS3231_rtc_year_read(void){
  *
  ******************************/
 
-uint16_t gc_dev_adafruit_DS3231_rtc_month_read(void){
-    uint4_t value = 0;
+uint8_t gc_dev_adafruit_DS3231_rtc_month_read(void){
+    uint8_t value = 0;
 
     #ifndef SEN_STUB
     value = now.month();
@@ -76,7 +76,7 @@ uint16_t gc_dev_adafruit_DS3231_rtc_month_read(void){
  *
  ******************************/
 
-uint16_t gc_dev_adafruit_DS3231_rtc_day_read(void){
+uint8_t gc_dev_adafruit_DS3231_rtc_day_read(void){
     uint8_t value = 0;
 
     #ifndef SEN_STUB
@@ -95,7 +95,7 @@ uint16_t gc_dev_adafruit_DS3231_rtc_day_read(void){
  *
  ******************************/
 
-uint16_t gc_dev_adafruit_DS3231_rtc_hour_read(void){
+uint8_t gc_dev_adafruit_DS3231_rtc_hour_read(void){
     uint8_t value = 0;
 
     #ifndef SEN_STUB
@@ -113,7 +113,7 @@ uint16_t gc_dev_adafruit_DS3231_rtc_hour_read(void){
  *
  ******************************/
 
-uint16_t gc_dev_adafruit_DS3231_rtc_min_read(void){
+uint8_t gc_dev_adafruit_DS3231_rtc_min_read(void){
     uint8_t value = 0;
 
     #ifndef SEN_STUB
@@ -131,7 +131,7 @@ uint16_t gc_dev_adafruit_DS3231_rtc_min_read(void){
  *
  ******************************/
 
-uint16_t gc_dev_adafruit_DS3231_rtc_sec_read(void){
+uint8_t gc_dev_adafruit_DS3231_rtc_sec_read(void){
     uint8_t value = 0;
 
     #ifndef SEN_STUB
