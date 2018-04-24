@@ -9,7 +9,7 @@
 #define GC_DEV_FGPMMOPA6H
 
 #include <Arduino.h>
-#include <Adafruit_GPS.h>
+#include "Adafruit_GPS.h"
 #include <SoftwareSerial.h>
 
 

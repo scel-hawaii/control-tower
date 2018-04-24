@@ -16,7 +16,7 @@
 #include "Adafruit_DS3231.h"
 
 static RTC_DS3231 rtc;
-DateTime now = rtc.now();
+DateTime now;
 
 /******************************
  *
@@ -29,6 +29,7 @@ DateTime now = rtc.now();
 
 void gc_dev_adafruit_DS3231_rtc_open(void){
     rtc.begin();
+    now = rtc.now();
 }
 
 /******************************

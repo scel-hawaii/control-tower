@@ -13,7 +13,7 @@
 #include "gc_dev_adafruit_FGPMMOPA6H_GPS.h"
 
 //Debug
-SoftwareSerial mySerial(3,2);
+SoftwareSerial mySerial(13,14);
 Adafruit_GPS gps(&mySerial);
 
 /******************************
@@ -53,7 +53,7 @@ uint8_t value;
     gps.parse(gps.lastNMEA());
   }
       if(gps.fix){
-        value = gps.longitudeDegrees, 4;
+        value = gps.longitudeDegrees;
       }
       else{
         Serial.print("Waiting for fix...");
