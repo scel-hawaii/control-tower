@@ -8,6 +8,7 @@
 
 #include <Arduino.h>
 #include <XBee.h>
+#include <SoftwareSerial.h>
 
 #define _GG_DEV_DIGI_XBEE_BUFSIZE_ 150
 
@@ -19,5 +20,8 @@ int gg_dev_digi_xbee_read(void);
 void gg_dev_digi_xbee_write(uint8_t* data, int data_len);
 
 static XBee xbee = XBee();
+const byte rx_pin = 12;
+const byte tx_pin = 13;
+static SoftwareSerial soft_serial(rx_pin, tx_pin);
 
 #endif
