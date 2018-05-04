@@ -26,7 +26,7 @@
  ******************************/
 
 void gg_dev_apogee_SP212_irradiance_open(void){
-    pinMode(_PIN_GG_APOGEE_SP212_IRRADIANCE_, INPUT);
+    
 }
 
 /******************************

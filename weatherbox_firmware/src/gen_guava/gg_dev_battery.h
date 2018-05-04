@@ -13,5 +13,5 @@
 #ifndef GG_DEV_BATTERY_H
 #define GG_DEV_BATTERY_H
 void gg_dev_battery_open(void);
-int gg_dev_battery_read(void);
+uint16_t gg_dev_battery_read(void);
 #endif
