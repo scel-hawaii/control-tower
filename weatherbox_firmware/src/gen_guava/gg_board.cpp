@@ -109,6 +109,10 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_eeprom_node_address_open();
     gg_dev_adafruit_BME280_sensor_open();
 
+    // Set LED 1 and 3 as output
+    pinMode(_PIN_LED1_,OUTPUT);
+    pinMode(_PIN_LED3_,OUTPUT);
+
     // load the address from the EEPROM into memory
     b->node_address = gg_dev_eeprom_node_address_read();
 
@@ -129,6 +133,8 @@ static void gg_board_setup(struct gg_board* b){
 
 static void gg_board_post(){
     Serial.println(F("POST Begin"));
+
+    digitalWrite(_PIN_LED3_, HIGH);
 
     // Display node addr
     Serial.print(F("[P] node addr: "));
@@ -193,6 +199,8 @@ static void gg_board_post(){
     if(spanel_val < 100){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
+
+    digitalWrite(_PIN_LED3_, LOW);
 
     Serial.println(F("POST End"));
 
@@ -395,6 +403,8 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
 
     Serial.println(F("TX Heartbeat Start"));
 
+    digitalWrite(_PIN_LED1_, HIGH);
+
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -404,6 +414,8 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
     gg_dev_digi_xbee_write(payload, schema_len);
 
     Serial.println(F("TX Heartbeat End"));
+
+    digitalWrite(_PIN_LED1_, LOW);
 }
 
 /******************************
@@ -421,6 +433,8 @@ static void gg_board_tx(struct gg_board* b){
 
     Serial.println(F("Sample TX Start"));
 
+    digitalWrite(_PIN_LED3_, HIGH);
+
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -434,6 +448,9 @@ static void gg_board_tx(struct gg_board* b){
     b->sample_count = 0;
 
     Serial.println(F("Sample TX End"));
+
+    digitalWrite(_PIN_LED3_, LOW);
+
 }
 
 static void gg_board_soft_rst(){
