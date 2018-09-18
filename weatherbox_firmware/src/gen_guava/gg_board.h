@@ -6,6 +6,10 @@
  *
  ******************************/
 
+#define _PIN_GG_ATMEGA_LED1_ 20
+// note led 2 doesnt work
+#define _PIN_GG_ATMEGA_LED3_ 22
+
 #include "gg_dev_digi_xbee.h"
 #include "gg_dev_apogee_SP212_irradiance.h"
 #include "gg_dev_battery.h"
