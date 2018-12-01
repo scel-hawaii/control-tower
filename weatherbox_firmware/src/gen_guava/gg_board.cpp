@@ -69,6 +69,7 @@ void gg_board_init(gg_board *b){
     b->data_packet.bme280_temperature_kelvin = 0;
     b->data_packet.bme280_humidity_percent = 0;
     b->data_packet.sp215_irradiance_watts_per_square_meter = 0;
+    b->data_packet.time = 0;
 }
 
 /******************************
@@ -108,6 +109,7 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_solar_panel_open();
     gg_dev_eeprom_node_address_open();
     gg_dev_adafruit_BME280_sensor_open();
+    gg_dev_adafruit_GPS_open();
 
     // Set LED 1 and 3 as output
     pinMode(_PIN_LED1_,OUTPUT);
@@ -200,9 +202,11 @@ static void gg_board_post(){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 
+    gg_dev_adafruit_GPS_read();
+
     digitalWrite(_PIN_LED3_, LOW);
 
-    Serial.println(F("POST End"));
+    Serial.println(F("\nPOST End"));
 
 }
 
@@ -231,6 +235,7 @@ static void gg_board_sample(struct gg_board* b){
     data_packet->bme280_temperature_kelvin               = gg_dev_adafruit_BME280_temperature_read();
     data_packet->bme280_humidity_percent                 = gg_dev_adafruit_BME280_humidity_read();
     data_packet->sp215_irradiance_watts_per_square_meter = gg_dev_apogee_SP212_irradiance_read();
+    data_packet->time                                    = gg_dev_adafruit_GPS_read();
     data_packet->node_address                            = b->node_address;
 
     Serial.println(F("Sample End"));

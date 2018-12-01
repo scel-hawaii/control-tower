@@ -112,6 +112,9 @@ static void gc_board_setup(struct gc_board* b){
     gc_dev_honeywell_HIH6131_temperature_open();
     gc_dev_adafruit_MPL115A2_pressure_open();
 
+    pinMode(_PIN_LED1_,OUTPUT);
+    pinMode(_PIN_LED2_,OUTPUT);
+
     // Load the address from the hardware
     b->node_address = gc_dev_eeprom_node_address_read();
 
@@ -132,7 +135,7 @@ static void gc_board_setup(struct gc_board* b){
 
 static void gc_board_post(){
     Serial.println(F("POST Begin"));
-
+    digitalWrite(_PIN_LED2_, HIGH);
     // Display node addr
     gc_dev_eeprom_node_address_test();
 
@@ -153,6 +156,7 @@ static void gc_board_post(){
 
     // check panel sensor value
     gc_dev_solar_panel_test();
+    digitalWrite(_PIN_LED2_, LOW);
 
     Serial.println(F("POST End"));
 }
@@ -398,7 +402,7 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
     int schema_len = sizeof(hb_packet);
 
     Serial.println(F("TX Heartbeat Start"));
-
+    digitalWrite(_PIN_LED1_, HIGH);
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -408,6 +412,7 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
     gc_dev_digi_xbee_write(payload, schema_len);
 
     Serial.println(F("TX Heartbeat End"));
+    digitalWrite(_PIN_LED1_, LOW);
 }
 
 /******************************
@@ -424,7 +429,7 @@ static void gc_board_tx(struct gc_board* b){
     int schema_len = sizeof(b->data_packet);
 
     Serial.println(F("Sample TX Start"));
-
+    digitalWrite(_PIN_LED2_, HIGH);
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -438,6 +443,7 @@ static void gc_board_tx(struct gc_board* b){
     b->sample_count = 0;
 
     Serial.println(F("Sample TX End"));
+    digitalWrite(_PIN_LED2_, HIGH);
 }
 
 static void gc_board_soft_rst(){

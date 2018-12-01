@@ -6,6 +6,9 @@
  *
  ******************************/
 
+ #define _PIN_LED1_ 10
+ #define _PIN_LED2_ 11
+
 #include "gc_dev_digi_xbee.h"
 #include "gc_dev_battery.h"
 #include "gc_dev_solar_panel.h"
@@ -18,7 +21,8 @@
 #ifndef GC_BOARD_H
 #define GC_BOARD_H
 
-#define _PIN_SEN_EN 4
+#define _PIN_SEN_EN 4 //WAT'S THIS
+#define SEN_STUB
 
 struct gc_packet{
     uint16_t schema;
