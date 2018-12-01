@@ -6,6 +6,10 @@
  *
  ******************************/
 
+//
+#define _PIN_LED1_  10   // LED indication for sensors
+#define _PIN_LED2_  11   // LED indication for transmit
+
 #include "gc_dev_digi_xbee.h"
 #include "gc_dev_battery.h"
 #include "gc_dev_solar_panel.h"
