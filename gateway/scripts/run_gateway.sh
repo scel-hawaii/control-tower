@@ -1,4 +1,3 @@
 #!/bin/bash
 
-socat -d -d pty,link=./ttyIN,raw,echo=0 pty,link=./ttyOUT,raw,echo=0
-./gateway
+./gateway --port $1 --passthrough-port $2

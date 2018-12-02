@@ -70,6 +70,8 @@ func (this *EncodedFrame) ToJson() ([]byte, error) {
 func (this *Listener) Cleanup() {
 	this.port.Close()
 	this.passthroughPort.Close()
+    fmt.Println()
+    fmt.Println("Cleaned up listener")
 }
 
 func (this *Listener) Listen() {
@@ -81,10 +83,10 @@ func (this *Listener) Listen() {
 			fmt.Println("Serial Error Reading From Port")
 			fmt.Println(err.Error())
 		} else {
+            this.passthroughPort.Write(b)
 			if b[0] == 0x7E {
 				this.Packets <- buffer
 				buffer = []byte{}
-				this.passthroughPort.Write(b)
 			}
 			buffer = append(buffer, b[0])
 		}
@@ -98,6 +100,9 @@ func main() {
 	flag.Parse()
 	fmt.Printf("%s\n", *portFlag)
 
+	hub := newHub()
+	go hub.run()
+
 	// Serve webpage
 	router := gin.Default()
 	router.LoadHTMLGlob("templates/*")
@@ -106,15 +111,11 @@ func main() {
 			"title": "Main website",
 		})
 	})
-	go router.Run(":8080")
-
-	hub := newHub()
-	go hub.run()
-
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		serveWs(hub, w, r)
+	router.GET("/ws", func(c *gin.Context) {
+        serveWs(hub, c.Writer, c.Request)
 	})
-	go http.ListenAndServe(":8081", nil)
+
+	go router.Run(":9090")
 
 	if *listFlag {
 		ListPorts()
@@ -126,10 +127,11 @@ func main() {
 		listener := Listener{Packets: packets}
 		listener.Init(*portFlag, *passthroughFlag)
 		go listener.Listen()
+        defer listener.Cleanup()
 
 		// Printer
 		for packet := range packets {
-			fmt.Printf("%s\n", hex.EncodeToString(packet))
+			fmt.Printf("%s\t%s\n", time.Now().Format(time.RFC3339), hex.EncodeToString(packet))
 			encodedFrame := EncodedFrame{
 				EncodedBuffer: hex.EncodeToString(packet),
 				Timestamp:     time.Now(),
