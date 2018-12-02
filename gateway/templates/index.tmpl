@@ -1,0 +1,13 @@
+<html>
+	<h1>
+		Gateway
+	</h1>
+    <script>
+        var exampleSocket = new WebSocket("ws://192.168.5.49:8081/");
+        exampleSocket.onmessage = function(message){
+            console.log(message.data);
+        }
+
+    </script>
+</html>
+
