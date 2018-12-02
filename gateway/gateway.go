@@ -74,7 +74,7 @@ func (this *Listener) Listen() {
 	for {
 		_, err := this.port.Read(b)
 		if err != nil {
-			fmt.Println("Serial Error")
+			fmt.Println("Serial Error Reading From Port")
 			fmt.Println(err.Error())
 		} else {
 			if b[0] == 0x7E {
