@@ -67,6 +67,10 @@ func (this *EncodedFrame) ToJson() ([]byte, error) {
 	}
 	return buf, nil
 }
+func (this *Listener) Cleanup() {
+	this.port.Close()
+	this.passthroughPort.Close()
+}
 
 func (this *Listener) Listen() {
 	b := make([]byte, 1)
@@ -80,6 +84,7 @@ func (this *Listener) Listen() {
 			if b[0] == 0x7E {
 				this.Packets <- buffer
 				buffer = []byte{}
+				this.passthroughPort.Write(b)
 			}
 			buffer = append(buffer, b[0])
 		}
