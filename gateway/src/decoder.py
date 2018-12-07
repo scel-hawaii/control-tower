@@ -63,7 +63,7 @@ class Decoder:
     if self.check_schema(data):
       dataDict = self.sort_packet(data, timestamp)
       # if the data is from the stub build in the lab do nothing
-      if dataDict["node_addr"] != 65535:
+      if True:
       	for callback in self.callbacks:
         	callback(dataDict)
       else:
@@ -87,17 +87,17 @@ class Decoder:
     fileExists = True
 
     if(self.schema_num == 0):
-	fileName = 'heartbeat_data.csv'
+        fileName = 'heartbeat-%s.csv' % dataDict['node_addr']
     elif(self.schema_num == 1):
-	fileName = 'apple_data.csv'
+        fileName = 'node-%s.csv' % dataDict['node_addr']
     elif(self.schema_num == 2):
-	fileName = 'cranberry_data.csv'
+        fileName = 'node-%s.csv' % dataDict['node_addr']
     elif(self.schema_num == 3):
-	fileName = 'dragonfruit_data.csv'
+        fileName = 'node-%s.csv' % dataDict['node_addr']
     elif(self.schema_num == 4):
-        fileName = 'snapdragon_data.csv'
+        fileName = 'node-%s.csv' % dataDict['node_addr']
     elif(self.schema_num == 5):
-	fileName = 'gps_data.csv'
+        fileName = 'gps-%s.csv' % dataDict['node_addr']
 
     if(os.path.isfile(fileName) == False):
 	fileExists = False
