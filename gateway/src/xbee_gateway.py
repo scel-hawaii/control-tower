@@ -53,9 +53,10 @@ class XBeeGateway:
     #   responding or not.
     def begin_test(self, i, t_flag, kill_flag):
 	print 'Starting main Gateway Loop\n'
-        while(not kill_flag.is_set()):
+        while(1):
             f = self.xbee.wait_read_frame()
 	    t_flag.set()
+            print(f)
             data = f['rf_data']
             timestamp = datetime.datetime.now()
             for callback in self.callbacks:

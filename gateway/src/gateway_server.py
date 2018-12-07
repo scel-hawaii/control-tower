@@ -29,6 +29,15 @@ if len(args) == 2:
     #
     port = sys.argv[1]
 
+# if we want to automatically get the port...
+elif args[1] == 'auto' or args[1] == 'a':
+	print 'Automatically setting port for USB FTDI Device'
+	# set port to usb FTDI Device
+	# port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
+	port = '/home/scel/apps/gateway-pty-bridge/ttyOUT'
+
+# we have no extra args
+# we have confusing arguments
 else:
     print 'Attempting to automatically setting port for USB FTDI Device'
     port = ""
@@ -70,13 +79,14 @@ while True:
 	xbg.register_callback(decoder.decode_data)
 
 	xbg.setup_xbee(port, baud_rate)
-	newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
-	newThread.daemon = True
-	newThread.start()
+	xbg.begin_test(1,t_flag,kill_flag)
+	#newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
+	#newThread.daemon = True
+	#newThread.start()
 
-	while t_flag.is_set():
-		t_flag.clear()
+	#while t_flag.is_set():
+		#t_flag.clear()
 		#sleep 30 seconds then check to see if we have received anything
-		t_flag.wait(60)
+		#t_flag.wait(60)
 
-	kill_flag.set()
+	#kill_flag.set()
