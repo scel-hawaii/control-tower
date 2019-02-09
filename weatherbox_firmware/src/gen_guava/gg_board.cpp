@@ -69,7 +69,12 @@ void gg_board_init(gg_board *b){
     b->data_packet.bme280_temperature_kelvin = 0;
     b->data_packet.bme280_humidity_percent = 0;
     b->data_packet.sp215_irradiance_watts_per_square_meter = 0;
+#ifdef GPSgg
     b->data_packet.time = 0;
+    b->data_packet.date = 0;
+    b->data_packet.lat = 0;
+    b->data_packet.lon = 0;
+#endif
 }
 
 /******************************
@@ -109,11 +114,15 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_solar_panel_open();
     gg_dev_eeprom_node_address_open();
     gg_dev_adafruit_BME280_sensor_open();
-    gg_dev_adafruit_GPS_open();
+#ifdef GPSgg
+    gg_dev_GPS_open();
+#endif
 
+#ifdef DEBUG
     // Set LED 1 and 3 as output
     pinMode(_PIN_LED1_,OUTPUT);
-    pinMode(_PIN_LED3_,OUTPUT);
+    pinMode(_PIN_LED2_,OUTPUT);
+#endif
 
     // load the address from the EEPROM into memory
     b->node_address = gg_dev_eeprom_node_address_read();
@@ -136,7 +145,9 @@ static void gg_board_setup(struct gg_board* b){
 static void gg_board_post(){
     Serial.println(F("POST Begin"));
 
-    digitalWrite(_PIN_LED3_, HIGH);
+#ifdef DEBUG
+    digitalWrite(_PIN_LED2_, HIGH);
+#endif
 
     // Display node addr
     Serial.print(F("[P] node addr: "));
@@ -201,10 +212,35 @@ static void gg_board_post(){
     if(spanel_val < 100){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
+#ifdef GPSgg
+    uint16_t fix_val = gg_dev_GPS_fix_read();
+    Serial.print(F("[P] fix:"));
+    Serial.println(fix_val);
 
-    gg_dev_adafruit_GPS_read();
+    // check time
+    uint16_t time_val = gg_dev_GPS_time_read();
+    Serial.print(F("[P] time reading:"));
+    Serial.println(time_val);
 
-    digitalWrite(_PIN_LED3_, LOW);
+    // check date
+    uint16_t date_val = gg_dev_GPS_date_read();
+    Serial.print(F("[P] date reading:"));
+    Serial.println(date_val);
+
+    // check lat
+    uint16_t lat_val = gg_dev_GPS_lat_read();
+    Serial.print(F("[P] Latitude reading:"));
+    Serial.println(lat_val);
+
+    // check lat
+    uint16_t lon_val = gg_dev_GPS_lon_read();
+    Serial.print(F("[P] Longitude reading:"));
+    Serial.println(lon_val);
+#endif
+
+#ifdef DEBUG
+    digitalWrite(_PIN_LED2_, LOW);
+#endif
 
     Serial.println(F("\nPOST End"));
 
@@ -235,7 +271,13 @@ static void gg_board_sample(struct gg_board* b){
     data_packet->bme280_temperature_kelvin               = gg_dev_adafruit_BME280_temperature_read();
     data_packet->bme280_humidity_percent                 = gg_dev_adafruit_BME280_humidity_read();
     data_packet->sp215_irradiance_watts_per_square_meter = gg_dev_apogee_SP212_irradiance_read();
-    data_packet->time                                    = gg_dev_adafruit_GPS_read();
+#ifdef GPSgg
+    data_packet->fix                                     = gg_dev_GPS_fix_read();
+    data_packet->time                                    = gg_dev_GPS_time_read();
+    data_packet->date                                    = gg_dev_GPS_date_read();
+    data_packet->lat                                     = gg_dev_GPS_lat_read();
+    data_packet->lon                                     = gg_dev_GPS_lon_read();
+#endif
     data_packet->node_address                            = b->node_address;
 
     Serial.println(F("Sample End"));
@@ -408,7 +450,9 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
 
     Serial.println(F("TX Heartbeat Start"));
 
+#ifdef DEBUG
     digitalWrite(_PIN_LED1_, HIGH);
+#endif
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
@@ -420,7 +464,9 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
 
     Serial.println(F("TX Heartbeat End"));
 
+#ifdef DEBUG
     digitalWrite(_PIN_LED1_, LOW);
+#endif
 }
 
 /******************************
@@ -438,7 +484,9 @@ static void gg_board_tx(struct gg_board* b){
 
     Serial.println(F("Sample TX Start"));
 
-    digitalWrite(_PIN_LED3_, HIGH);
+#ifdef DEBUG
+    digitalWrite(_PIN_LED2_, HIGH);
+#endif
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
@@ -454,7 +502,9 @@ static void gg_board_tx(struct gg_board* b){
 
     Serial.println(F("Sample TX End"));
 
-    digitalWrite(_PIN_LED3_, LOW);
+#ifdef DEBUG
+    digitalWrite(_PIN_LED2_, LOW);
+#endif
 
 }
 

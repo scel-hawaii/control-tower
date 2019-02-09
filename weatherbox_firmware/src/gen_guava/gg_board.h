@@ -7,8 +7,14 @@
  ******************************/
 
 #define _PIN_LED1_ 20
-// note led 2 doesnt work
-#define _PIN_LED3_ 22
+#define _PIN_LED2_ 21
+
+// to turn on LED Debug uncomment below
+// also uncomment in xbee.b
+#define DEBUG
+
+// to enable GPS uncomment below
+// #define GPSgg
 
 #include "gg_dev_digi_xbee.h"
 #include "gg_dev_apogee_SP212_irradiance.h"
@@ -16,7 +22,7 @@
 #include "gg_dev_solar_panel.h"
 #include "gg_dev_eeprom_node_address.h"
 #include "gg_dev_adafruit_BME280_sensor.h"
-#include "gg_dev_adafruit_GPS.h"
+#include "gg_dev_GPS.h"
 
 #ifndef gg_BOARD_H
 #define gg_BOARD_H
@@ -31,7 +37,13 @@ struct gg_packet{
     uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
     uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
     uint16_t sp215_irradiance_watts_per_square_meter;  // Solar Irradiance Value (in W/m^2)
-    uint32_t time;
+#ifdef GPSgg
+    uint16_t fix;
+    uint16_t time;                                      // time (HHMMSS)
+    uint16_t date;                                      //  date(MMDDYY)
+    uint16_t lat;                                       // latitude
+    uint16_t lon;                                       // longitude
+#endif
 };
 
 struct gg_heartbeat_packet{

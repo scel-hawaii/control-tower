@@ -112,6 +112,7 @@ static void gc_board_setup(struct gc_board* b){
     gc_dev_honeywell_HIH6131_temperature_open();
     gc_dev_adafruit_MPL115A2_pressure_open();
 
+    // Set LED as output
     pinMode(_PIN_LED1_,OUTPUT);
     pinMode(_PIN_LED2_,OUTPUT);
 
@@ -135,7 +136,10 @@ static void gc_board_setup(struct gc_board* b){
 
 static void gc_board_post(){
     Serial.println(F("POST Begin"));
-    digitalWrite(_PIN_LED2_, HIGH);
+
+    // Set LED 1 to high
+    digitalWrite(_PIN_LED1_, HIGH);
+
     // Display node addr
     gc_dev_eeprom_node_address_test();
 
@@ -157,6 +161,9 @@ static void gc_board_post(){
     // check panel sensor value
     gc_dev_solar_panel_test();
     digitalWrite(_PIN_LED2_, LOW);
+
+    //Set LED1 to low
+    digitalWrite(_PIN_LED1_, LOW);
 
     Serial.println(F("POST End"));
 }
@@ -316,25 +323,39 @@ static void gc_board_run_cmd(struct gc_board* b){
                                     }
                                     switch(input2){
                                         case '1':
+                                            digitalWrite(_PIN_LED1_, HIGH);
                                             gc_dev_eeprom_node_address_test();
+                                            digitalWrite(_PIN_LED1_, LOW);
                                             break;
                                         case '2':
+                                            digitalWrite(_PIN_LED1_, HIGH);
                                             gc_dev_honeywell_HIH6131_temperature_centik_test();
+                                            digitalWrite(_PIN_LED1_, LOW);
                                             break;
                                         case '3':
+                                            digitalWrite(_PIN_LED1_, HIGH);
                                             gc_dev_honeywell_HIH6131_humidity_pct_test();
+                                            digitalWrite(_PIN_LED1_, LOW);
                                             break;
                                         case '4':
+                                            digitalWrite(_PIN_LED1_, HIGH);
                                             gc_dev_adafruit_MPL115A2_pressure_pa_test();
+                                            digitalWrite(_PIN_LED1_, LOW);
                                             break;
                                         case '5':
+                                            digitalWrite(_PIN_LED1_, HIGH);
                                             gc_dev_apogee_SP212_irradiance_test();
+                                            digitalWrite(_PIN_LED1_, LOW);
                                             break;
                                         case '6':
+                                            digitalWrite(_PIN_LED1_, HIGH);
                                             gc_dev_battery_test();
+                                            digitalWrite(_PIN_LED1_, LOW);
                                             break;
                                         case '7':
+                                            digitalWrite(_PIN_LED1_, HIGH);
                                             gc_dev_solar_panel_test();
+                                            digitalWrite(_PIN_LED1_, LOW);
                                             break;
                                         default:
                                             break;
@@ -402,7 +423,10 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
     int schema_len = sizeof(hb_packet);
 
     Serial.println(F("TX Heartbeat Start"));
-    digitalWrite(_PIN_LED1_, HIGH);
+
+    // set LED2 to high
+    digitalWrite(_PIN_LED2_, HIGH);
+
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -410,6 +434,9 @@ static void gc_board_heartbeat_tx(struct gc_board* b){
     memset(payload, '\0', sizeof(payload));
     memcpy(payload, &(hb_packet), schema_len);
     gc_dev_digi_xbee_write(payload, schema_len);
+
+    //set LED2 to low
+    digitalWrite(_PIN_LED2_, LOW);
 
     Serial.println(F("TX Heartbeat End"));
     digitalWrite(_PIN_LED1_, LOW);
@@ -429,7 +456,10 @@ static void gc_board_tx(struct gc_board* b){
     int schema_len = sizeof(b->data_packet);
 
     Serial.println(F("Sample TX Start"));
+
+    //set LED2 to high
     digitalWrite(_PIN_LED2_, HIGH);
+
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -441,6 +471,9 @@ static void gc_board_tx(struct gc_board* b){
     // Reset the board sample count so that
     // goes through the sample loop again.
     b->sample_count = 0;
+
+    //set LED2 to low
+    digitalWrite(_PIN_LED2_, LOW);
 
     Serial.println(F("Sample TX End"));
     digitalWrite(_PIN_LED2_, HIGH);

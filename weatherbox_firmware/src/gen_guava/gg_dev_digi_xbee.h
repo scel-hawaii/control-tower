@@ -8,6 +8,13 @@
 
 #include <Arduino.h>
 #include <XBee.h>
+#include <SoftwareSerial.h>
+
+// enable for debug LED
+#define DEBUG
+
+#define statusLed 22
+#define errorLed 23
 
 #define _GG_DEV_DIGI_XBEE_BUFSIZE_ 150
 
@@ -16,8 +23,14 @@
 void gg_dev_digi_xbee_open(void);
 int gg_dev_digi_xbee_avail(void);
 int gg_dev_digi_xbee_read(void);
+void flashLed(int pin, int times, int wait);
 void gg_dev_digi_xbee_write(uint8_t* data, int data_len);
 
 static XBee xbee = XBee();
+
+const byte rx_pin = 13;
+const byte tx_pin = 12;
+
+static SoftwareSerial soft_serial(rx_pin,tx_pin);
 
 #endif
