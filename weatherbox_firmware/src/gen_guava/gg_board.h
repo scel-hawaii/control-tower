@@ -11,10 +11,10 @@
 
 // to turn on LED Debug uncomment below
 // also uncomment in xbee.b
-//#define DEBUG
+#define DEBUG
 
 // to enable GPS uncomment below
-//#define GPSgg
+// #define GPSgg
 
 #include "gg_dev_digi_xbee.h"
 #include "gg_dev_apogee_SP212_irradiance.h"

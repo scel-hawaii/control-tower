@@ -69,6 +69,12 @@ void ga_board_init(ga_board *b){
     b->data_packet.bmp085_temperature_kelvin = 0;
     b->data_packet.sht1x_humidity_percent = 0;
     b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
+#ifdef GPSga
+        b->data_packet.time = 0;
+        b->data_packet.date = 0;
+        b->data_packet.lat = 0;
+        b->data_packet.lon = 0;
+#endif
 }
 
 /******************************
@@ -110,6 +116,9 @@ static void ga_board_setup(struct ga_board* b){
     ga_dev_battery_open();
     ga_dev_solar_panel_open();
     ga_dev_eeprom_node_address_open();
+#ifdef GPSga
+    ga_dev_GPS_open();
+#endif
 
     // load the address from the EEPROM into memory
     b->node_address = ga_dev_eeprom_node_address_read();
@@ -199,6 +208,31 @@ static void ga_board_post(){
     if(spanel_val < 100){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
+#ifdef GPSga
+        uint16_t fix_val = ga_dev_GPS_fix_read();
+        Serial.print(F("[P] fix:"));
+        Serial.println(fix_val);
+
+        // check time
+        uint16_t time_val = ga_dev_GPS_time_read();
+        Serial.print(F("[P] time reading:"));
+        Serial.println(time_val);
+
+        // check date
+        uint16_t date_val = ga_dev_GPS_date_read();
+        Serial.print(F("[P] date reading:"));
+        Serial.println(date_val);
+
+        // check lat
+        uint16_t lat_val = ga_dev_GPS_lat_read();
+        Serial.print(F("[P] Latitude reading:"));
+        Serial.println(lat_val);
+
+        // check lat
+        uint16_t lon_val = ga_dev_GPS_lon_read();
+        Serial.print(F("[P] Longitude reading:"));
+        Serial.println(lon_val);
+#endif
 
     Serial.println(F("POST End"));
 
@@ -229,6 +263,13 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->bmp085_temperature_kelvin               = ga_dev_apogee_BMP180_temperature_read();
     data_packet->sht1x_humidity_percent                  = ga_dev_sensirion_SHT1X_humidity_read();
     data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
+#ifdef GPSga
+    data_packet->fix                                     = ga_dev_GPS_fix_read();
+    data_packet->time                                    = ga_dev_GPS_time_read();
+    data_packet->date                                    = ga_dev_GPS_date_read();
+    data_packet->lat                                     = ga_dev_GPS_lat_read();
+    data_packet->lon                                     = ga_dev_GPS_lon_read();
+#endif
     data_packet->node_address                            = b->node_address;
 
     Serial.println(F("Sample End"));

@@ -11,7 +11,7 @@
 #include <SoftwareSerial.h>
 
 // enable for debug LED
-//#define DEBUG
+#define DEBUG
 
 #define statusLed 22
 #define errorLed 23
