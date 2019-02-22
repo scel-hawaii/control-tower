@@ -1,10 +1,10 @@
 #include <SoftwareSerial.h>
 #include <Adafruit_GPS.h>
 
-//GPS pins
-#define _GPS_TX_ 16
+//GPS pins tx(16), rx(17) ????
+#define _GPS_TX_ 10
 
-#define _GPS_RX_  17
+#define _GPS_RX_ 11
 
 #ifndef GG_DEV_GPS
 #define GG_DEV_GPS
