@@ -18,6 +18,7 @@
 #include "gc_dev_honeywell_HIH6131_temperature.h"
 #include "gc_dev_honeywell_HIH6131_humidity.h"
 #include "gc_dev_adafruit_MPL115A2_pressure.h"
+#include "gc_dev_adafruit_DS3231_rtc.h"
 
 #ifndef GC_BOARD_H
 #define GC_BOARD_H
@@ -35,6 +36,12 @@ struct gc_packet{
     uint16_t hih6131_temperature_kelvin;               // Temperature Value (Celsius)
     uint16_t hih6131_humidity_percent;                 // Humidity Value (percentage)
     uint32_t mpl115a2t1_pressure_pascals;               // Pressure Value (Pascal)
+    uint16_t ds3231_rtc_year;                           // rtc year
+    uint8_t ds3231_rtc_month;                           // rtc month
+    uint8_t ds3231_rtc_day;                             // rtc day
+    uint8_t ds3231_rtc_hour;                            // rtc hour
+    uint8_t ds3231_rtc_min;                             // rtc min
+    uint8_t ds3231_rtc_sec;                             // rtc sec
 };
 
 struct gc_heartbeat_packet{
