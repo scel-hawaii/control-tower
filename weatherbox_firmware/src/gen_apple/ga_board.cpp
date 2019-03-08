@@ -69,6 +69,12 @@ void ga_board_init(ga_board *b){
     b->data_packet.bmp085_temperature_kelvin = 0;
     b->data_packet.sht1x_humidity_percent = 0;
     b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
+    b->data_packet.ds3231_rtc_year = 0;
+    b->data_packet.ds3231_rtc_month = 0;
+    b->data_packet.ds3231_rtc_day = 0;
+    b->data_packet.ds3231_rtc_hour = 0;
+    b->data_packet.ds3231_rtc_min = 0;
+    b->data_packet.ds3231_rtc_sec = 0;
 #ifdef GPSga
         b->data_packet.time = 0;
         b->data_packet.date = 0;
@@ -116,6 +122,7 @@ static void ga_board_setup(struct ga_board* b){
     ga_dev_battery_open();
     ga_dev_solar_panel_open();
     ga_dev_eeprom_node_address_open();
+    ga_dev_adafruit_DS3231_rtc_open();
 #ifdef GPSga
     ga_dev_GPS_open();
 #endif
@@ -208,6 +215,9 @@ static void ga_board_post(){
     if(spanel_val < 100){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
+
+    ga_dev_adafruit_DS3231_rtc_read();
+
 #ifdef GPSga
         uint16_t fix_val = ga_dev_GPS_fix_read();
         Serial.print(F("[P] fix:"));
@@ -263,6 +273,12 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->bmp085_temperature_kelvin               = ga_dev_apogee_BMP180_temperature_read();
     data_packet->sht1x_humidity_percent                  = ga_dev_sensirion_SHT1X_humidity_read();
     data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
+    data_packet->ds3231_rtc_year                         = ga_dev_adafruit_DS3231_rtc_year_read();
+    data_packet->ds3231_rtc_month                        = ga_dev_adafruit_DS3231_rtc_month_read();
+    data_packet->ds3231_rtc_day                          = ga_dev_adafruit_DS3231_rtc_day_read();
+    data_packet->ds3231_rtc_hour                         = ga_dev_adafruit_DS3231_rtc_hour_read();
+    data_packet->ds3231_rtc_min                          = ga_dev_adafruit_DS3231_rtc_min_read();
+    data_packet->ds3231_rtc_sec                          = ga_dev_adafruit_DS3231_rtc_sec_read();
 #ifdef GPSga
     data_packet->fix                                     = ga_dev_GPS_fix_read();
     data_packet->time                                    = ga_dev_GPS_time_read();
