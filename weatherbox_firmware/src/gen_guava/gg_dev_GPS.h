@@ -2,9 +2,11 @@
 #include <Adafruit_GPS.h>
 
 //GPS pins
-#define _GPS_TX_ 16
+#define _GPS_TX_ 10
+//16
 
-#define _GPS_RX_  17
+#define _GPS_RX_ 11 
+//17
 
 #ifndef GG_DEV_GPS
 #define GG_DEV_GPS

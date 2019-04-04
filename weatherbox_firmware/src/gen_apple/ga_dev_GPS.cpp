@@ -8,24 +8,26 @@ Adafruit_GPS GPS(&GPSpins);
 uint16_t last_lat_ga = 0;
 uint16_t last_lon_ga = 0;
 
+uint32_t timer = millis();
+
 // initialize GPS board
 void ga_dev_GPS_open(void){
   GPS.begin(9600); // baud rate of 9600
   pinMode(_GPS_TX_,OUTPUT);
   pinMode(_GPS_RX_,INPUT);
   GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); // turn on recommended minimum and fix data
-  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ); // set rate to 1Hz
-  delay(1000);
+  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_10HZ); // set rate to 1Hz
   GPS.read();
 }
 
 uint16_t ga_dev_GPS_fix_read(void){
   uint16_t fix = 0;
-Serial.println(GPS.fix);
-  if(GPS.fix){
-    fix = 1;
-  }
-  return fix;
+
+    if(GPS.fix){
+      fix = 1;
+    }
+
+    return fix;
 }
 
 /**********************************************
@@ -40,8 +42,8 @@ Serial.println(GPS.fix);
 uint16_t ga_dev_GPS_time_read(void){
   uint16_t time_ga;
   GPS.read();
+  Serial.println(GPS.newNMEAreceived());
     if(GPS.newNMEAreceived()){
-      Serial.println("in the loop");
       if (GPS.parse(GPS.lastNMEA())){
         time_ga = GPS.hour * 10000;
         time_ga = (GPS.minute * 100) + time_ga;

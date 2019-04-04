@@ -117,6 +117,8 @@ static void ga_board_setup(struct ga_board* b){
     ga_dev_solar_panel_open();
     ga_dev_eeprom_node_address_open();
 #ifdef GPSga
+    pinMode(_GPS_TX_,OUTPUT);
+    pinMode(_GPS_RX_,INPUT);
     ga_dev_GPS_open();
 #endif
 
