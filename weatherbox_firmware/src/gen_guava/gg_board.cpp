@@ -69,12 +69,8 @@ void gg_board_init(gg_board *b){
     b->data_packet.bme280_temperature_kelvin = 0;
     b->data_packet.bme280_humidity_percent = 0;
     b->data_packet.sp215_irradiance_watts_per_square_meter = 0;
-#ifdef GPSgg
-    b->data_packet.time = 0;
-    b->data_packet.date = 0;
-    b->data_packet.lat = 0;
-    b->data_packet.lon = 0;
-#endif
+    b->data_packet.ds3231_rtc_date = 0;
+    b->data_packet.ds3231_rtc_time = 0;
 }
 
 /******************************
@@ -114,9 +110,7 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_solar_panel_open();
     gg_dev_eeprom_node_address_open();
     gg_dev_adafruit_BME280_sensor_open();
-#ifdef GPSgg
-    gg_dev_GPS_open();
-#endif
+    gg_dev_adafruit_DS3231_rtc_open();
 
 #ifdef DEBUG
     // Set LED 1 and 3 as output
@@ -212,31 +206,10 @@ static void gg_board_post(){
     if(spanel_val < 100){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
-#ifdef GPSgg
-    uint16_t fix_val = gg_dev_GPS_fix_read();
-    Serial.print(F("[P] fix:"));
-    Serial.println(fix_val);
 
-    // check time
-    uint16_t time_val = gg_dev_GPS_time_read();
-    Serial.print(F("[P] time reading:"));
-    Serial.println(time_val);
-
-    // check date
-    uint16_t date_val = gg_dev_GPS_date_read();
-    Serial.print(F("[P] date reading:"));
-    Serial.println(date_val);
-
-    // check lat
-    uint16_t lat_val = gg_dev_GPS_lat_read();
-    Serial.print(F("[P] Latitude reading:"));
-    Serial.println(lat_val);
-
-    // check lat
-    uint16_t lon_val = gg_dev_GPS_lon_read();
-    Serial.print(F("[P] Longitude reading:"));
-    Serial.println(lon_val);
-#endif
+    // Check RTC
+    Serial.print("[P] RTC Reading: ");
+    gg_dev_adafruit_DS3231_rtc_test();
 
 #ifdef DEBUG
     digitalWrite(_PIN_LED2_, LOW);
@@ -271,13 +244,8 @@ static void gg_board_sample(struct gg_board* b){
     data_packet->bme280_temperature_kelvin               = gg_dev_adafruit_BME280_temperature_read();
     data_packet->bme280_humidity_percent                 = gg_dev_adafruit_BME280_humidity_read();
     data_packet->sp215_irradiance_watts_per_square_meter = gg_dev_apogee_SP212_irradiance_read();
-#ifdef GPSgg
-    data_packet->fix                                     = gg_dev_GPS_fix_read();
-    data_packet->time                                    = gg_dev_GPS_time_read();
-    data_packet->date                                    = gg_dev_GPS_date_read();
-    data_packet->lat                                     = gg_dev_GPS_lat_read();
-    data_packet->lon                                     = gg_dev_GPS_lon_read();
-#endif
+    data_packet->ds3231_rtc_date                         = gg_dev_adafruit_DS3231_rtc_date_read();
+    data_packet->ds3231_rtc_time                         = gg_dev_adafruit_DS3231_rtc_time_read();
     data_packet->node_address                            = b->node_address;
 
     Serial.println(F("Sample End"));
@@ -355,7 +323,7 @@ static int gg_board_ready_run_cmd(struct gg_board* b){
  *
  * Name:        gg_board_run_cmd
  * Returns:     Nothing
- * Parameter:   Function pointer to struct gc-board
+ * Parameter:   Function pointer to struct gg-board
  * Description: Poll sensors in CMD mode in serial monitor
  *
  ******************************/

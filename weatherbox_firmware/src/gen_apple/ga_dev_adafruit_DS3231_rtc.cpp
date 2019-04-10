@@ -34,136 +34,38 @@ void ga_dev_adafruit_DS3231_rtc_open(void){
 
 /******************************
  *
- * Name:        ga_dev_adafruit_DS3231_rtc_yr_read
- * Returns:     rtc value in Pa
+ * Name:        ga_dev_adafruit_DS3231_rtc_time_read
+ * Returns:     rtc value in MMDDYY
  * Parameter:   Nothing
  * Description: Reads rtc sensor
  *
  ******************************/
 
-uint16_t ga_dev_adafruit_DS3231_rtc_year_read(void){
-    uint16_t value = 0;
+uint16_t ga_dev_adafruit_DS3231_rtc_date_read(void){
+    uint16_t date = 0;
 
-    #ifndef SEN_STUB
-    value = now.year();
-    #endif
+    date = now.month() * 10000;
+    date = date + (now.day() * 1000);
+    date = date + now.year();
 
-    return value;
-}
-/******************************
- *
- * Name:        ga_dev_adafruit_DS3231_rtc_mon_read
- * Returns:     rtc value in Pa
- * Parameter:   Nothing
- * Description: Reads rtc sensor
- *
- ******************************/
-
-uint8_t ga_dev_adafruit_DS3231_rtc_month_read(void){
-    uint8_t value = 0;
-
-    #ifndef SEN_STUB
-    value = now.month();
-    #endif
-
-    return value;
-}
-/******************************
- *
- * Name:        ga_dev_adafruit_DS3231_rtc_mon_read
- * Returns:     rtc value in Pa
- * Parameter:   Nothing
- * Description: Reads rtc sensor
- *
- ******************************/
-
-uint8_t ga_dev_adafruit_DS3231_rtc_day_read(void){
-    uint8_t value = 0;
-
-    #ifndef SEN_STUB
-    value = now.day();
-    #endif
-
-    return value;
+    return date;
 }
 
 /******************************
  *
  * Name:        ga_dev_adafruit_DS3231_rtc_mon_read
- * Returns:     rtc value in Pa
+ * Returns:     rtc value in HHMMSS
  * Parameter:   Nothing
  * Description: Reads rtc sensor
  *
  ******************************/
 
-uint8_t ga_dev_adafruit_DS3231_rtc_hour_read(void){
-    uint8_t value = 0;
+uint16_t ga_dev_adafruit_DS3231_rtc_time_read(void){
+    uint16_t time = 0;
 
-    #ifndef SEN_STUB
-    value = now.hour();
-    #endif
+    time = now.hour() * 10000;
+    time = time + (now.minute() * 1000);
+    time = time + now.second();
 
-    return value;
-}
-/******************************
- *
- * Name:        ga_dev_adafruit_DS3231_rtc_mon_read
- * Returns:     rtc value in Pa
- * Parameter:   Nothing
- * Description: Reads rtc sensor
- *
- ******************************/
-
-uint8_t ga_dev_adafruit_DS3231_rtc_min_read(void){
-    uint8_t value = 0;
-
-    #ifndef SEN_STUB
-    value = now.minute();
-    #endif
-
-    return value;
-}
-/******************************
- *
- * Name:        ga_dev_adafruit_DS3231_rtc_mon_read
- * Returns:     rtc value in Pa
- * Parameter:   Nothing
- * Description: Reads rtc sensor
- *
- ******************************/
-
-uint8_t ga_dev_adafruit_DS3231_rtc_sec_read(void){
-    uint8_t value = 0;
-
-    #ifndef SEN_STUB
-    value = now.second();
-    #endif
-
-    return value;
-}
-/******************************
- *
- * Name:        ga_dev_adafruit_MPL115A2_rtc_pa_test
- * Returns:     Nothing
- * Parameter:   Nothing
- * Description: Used by the POST function to sample the
- *              sensor and displays the sample to Serial Monitor
- *
- ******************************/
-
-void ga_dev_adafruit_DS3231_rtc_read(void){
-
-    Serial.print(ga_dev_adafruit_DS3231_rtc_year_read(), DEC);
-    Serial.print('/');
-    Serial.print(ga_dev_adafruit_DS3231_rtc_month_read(), DEC);
-    Serial.print('/');
-    Serial.print(ga_dev_adafruit_DS3231_rtc_day_read(), DEC);
-    Serial.print(" (");
-    Serial.print(ga_dev_adafruit_DS3231_rtc_hour_read(), DEC);
-    Serial.print(':');
-    Serial.print(ga_dev_adafruit_DS3231_rtc_min_read(), DEC);
-    Serial.print(':');
-    Serial.print(ga_dev_adafruit_DS3231_rtc_sec_read(), DEC);
-    Serial.println();
-
+    return time;
 }

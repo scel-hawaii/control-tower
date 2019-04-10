@@ -17,7 +17,6 @@
 #include "ga_dev_battery.h"
 #include "ga_dev_solar_panel.h"
 #include "ga_dev_eeprom_node_address.h"
-#include "ga_dev_GPS.h"
 #include "ga_dev_adafruit_DS3231_rtc.h"
 
 
@@ -34,19 +33,8 @@ struct ga_packet{
     int16_t bmp085_temperature_kelvin;                 // Temperature Value (in celsius) (ideally we change this to Kelvin)
     uint16_t sht1x_humidity_percent;                    // Humidity Value (in percentage)
     uint16_t sp212_irradiance_watts_per_square_meter;   // Solar Irradiance Value (in w/m^2)
-    uint16_t ds3231_rtc_year;                           // rtc year
-    uint8_t ds3231_rtc_month;                           // rtc month
-    uint8_t ds3231_rtc_day;                             // rtc day
-    uint8_t ds3231_rtc_hour;                            // rtc hour
-    uint8_t ds3231_rtc_min;                             // rtc min
-    uint8_t ds3231_rtc_sec;                             // rtc sec
-#ifdef GPSga
-    uint16_t fix;
-    uint16_t time;                                      // time (HHMMSS)
-    uint16_t date;                                      //  date(MMDDYY)
-    uint16_t lat;                                       // latitude
-    uint16_t lon;                                       // longitude
-#endif
+    uint16_t ds3231_rtc_date;                           // rtc date
+    uint16_t ds3231_rtc_time;                           // rtc time
 };
 
 /* Legacy Heartbeat 1.0 Packet */

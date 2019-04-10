@@ -1,6 +1,6 @@
 /*******************************
  *
- * File: gc_dev_adafruit_DS3231_rtc.cpp
+ * File: gg_dev_adafruit_DS3231_rtc.cpp
  *
  * This module is a driver for the ds3231 rtc sensor
  * that measures rtc in Pa. Technically this is not an
@@ -12,7 +12,7 @@
  *
  ******************************/
 
-#include "gc_dev_adafruit_DS3231_rtc.h"
+#include "gg_dev_adafruit_DS3231_rtc.h"
 #include "Adafruit_DS3231.h"
 
 static RTC_DS3231 rtc;
@@ -20,28 +20,28 @@ DateTime now;
 
 /******************************
  *
- * Name:        gc_dev_adafruit_DS3231_rtc_open
+ * Name:        gg_dev_adafruit_DS3231_rtc_open
  * Returns:     Nothing
  * Parameter:   Nothing
  * Description: Initialize rtc sensor
  *
  ******************************/
 
-void gc_dev_adafruit_DS3231_rtc_open(void){
+void gg_dev_adafruit_DS3231_rtc_open(void){
     rtc.begin();
     now = rtc.now();
 }
 
 /******************************
  *
- * Name:        gc_dev_adafruit_DS3231_rtc_date_read
+ * Name:        gg_dev_adafruit_DS3231_rtc_date_read
  * Returns:     rtc value date in MMDDYY
  * Parameter:   Nothing
  * Description: Reads rtc sensor
  *
  ******************************/
 
-uint16_t gc_dev_adafruit_DS3231_rtc_date_read(void){
+uint16_t gg_dev_adafruit_DS3231_rtc_date_read(void){
   uint16_t date = 0;
 
   date = now.month() * 10000;
@@ -52,14 +52,14 @@ uint16_t gc_dev_adafruit_DS3231_rtc_date_read(void){
 }
 /******************************
  *
- * Name:        gc_dev_adafruit_DS3231_rtc_time_read
+ * Name:        gg_dev_adafruit_DS3231_rtc_time_read
  * Returns:     rtc value HHMMSS
  * Parameter:   Nothing
  * Description: Reads rtc sensor
  *
  ******************************/
 
-uint16_t gc_dev_adafruit_DS3231_rtc_time_read(void){
+uint16_t gg_dev_adafruit_DS3231_rtc_time_read(void){
   uint16_t time = 0;
 
   time = now.hour() * 10000;
@@ -71,17 +71,17 @@ uint16_t gc_dev_adafruit_DS3231_rtc_time_read(void){
 
 /******************************
  *
- * Name:        gc_dev_adafruit_DS3231_rtc_test
+ * Name:        gg_dev_adafruit_DS3231_rtc_test
  * Returns:     Nothing
  * Parameter:   Nothing
  * Description: Reads rtc sensor
  *
  ******************************/
-void gc_dev_adafruit_DS3231_rtc_test(void){
+void gg_dev_adafruit_DS3231_rtc_test(void){
 
-    Serial.print(gc_dev_adafruit_DS3231_rtc_date_read(), DEC);
+    Serial.print(gg_dev_adafruit_DS3231_rtc_date_read(), DEC);
     Serial.println();
-    Serial.print(gc_dev_adafruit_DS3231_rtc_time_read(), DEC);
+    Serial.print(gg_dev_adafruit_DS3231_rtc_time_read(), DEC);
     Serial.println();
 
 }
