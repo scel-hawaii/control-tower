@@ -71,6 +71,7 @@ void ga_board_init(ga_board *b){
     b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
     b->data_packet.ds3231_rtc_date = 0;
     b->data_packet.ds3231_rtc_time = 0;
+    b->data_packet.ds3231_rtc_unix = 0;
 }
 
 /******************************
@@ -112,7 +113,7 @@ static void ga_board_setup(struct ga_board* b){
     ga_dev_battery_open();
     ga_dev_solar_panel_open();
     ga_dev_eeprom_node_address_open();
-    ga_dev_adafruit_DS3231_rtc_open();
+    ga_dev_DS3231_rtc_open();
 
     // load the address from the EEPROM into memory
     b->node_address = ga_dev_eeprom_node_address_read();
@@ -203,6 +204,10 @@ static void ga_board_post(){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 
+    ga_dev_DS3231_rtc_date_read();
+    ga_dev_DS3231_rtc_time_read();
+    Serial.println(ga_dev_DS3231_rtc_unix_read());
+
     Serial.println(F("POST End"));
 
 }
@@ -232,8 +237,9 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->bmp085_temperature_kelvin               = ga_dev_apogee_BMP180_temperature_read();
     data_packet->sht1x_humidity_percent                  = ga_dev_sensirion_SHT1X_humidity_read();
     data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
-    data_packet->ds3231_rtc_date                         = ga_dev_adafruit_DS3231_rtc_date_read();
-    data_packet->ds3231_rtc_time                         = ga_dev_adafruit_DS3231_rtc_time_read();
+    data_packet->ds3231_rtc_date                         = ga_dev_DS3231_rtc_date_read();
+    data_packet->ds3231_rtc_time                         = ga_dev_DS3231_rtc_time_read();
+    data_packet->ds3231_rtc_unix                         = ga_dev_DS3231_rtc_unix_read();
 
     data_packet->node_address                            = b->node_address;
 
