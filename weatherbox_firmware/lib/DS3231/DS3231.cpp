@@ -1,16 +1,12 @@
 /*
   DS3231.cpp - Arduino/chipKit library support for the DS3231 I2C Real-Time Clock
-  Copyright (C)2014 Henning Karlsen. All right reserved
+  Copyright (C)2015 Rinky-Dink Electronics, Henning Karlsen. All right reserved
   
   This library has been made to easily interface and use the DS3231 RTC with
   an Arduino or chipKit.
 
   You can find the latest version of the library at 
-  http://electronics.henningkarlsen.com/
-
-  If you make any modifications or improvements to the code, I would appreciate
-  that you share the code with me so that I might include it in the next release.
-  I can be contacted through http://electronics.henningkarlsen.com/contact.php
+  http://www.RinkyDinkElectronics.com/
 
   This library is free software; you can redistribute it and/or
   modify it under the terms of the CC BY-NC-SA 3.0 license.

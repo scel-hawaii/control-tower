@@ -12,7 +12,7 @@
 #define GA_DEV_DS3231_H
 
 void ga_dev_DS3231_rtc_open(void);
-uint32_t ga_dev_DS3231_rtc_date_read(void);
+uint16_t ga_dev_DS3231_rtc_date_read(void);
 uint16_t ga_dev_DS3231_rtc_time_read(void);
 uint32_t ga_dev_DS3231_rtc_unix_read(void);
 #endif

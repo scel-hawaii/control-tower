@@ -65,12 +65,12 @@ void ga_board_init(ga_board *b){
     b->data_packet.uptime_milliseconds = 0;
     b->data_packet.battery_millivolts = 0;
     b->data_packet.panel_millivolts = 0;
-    b->data_packet.bmp085_pressure_pascals = 0;
-    b->data_packet.bmp085_temperature_kelvin = 0;
-    b->data_packet.sht1x_humidity_percent = 0;
     b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
-    b->data_packet.ds3231_rtc_date = 0;
-    b->data_packet.ds3231_rtc_time = 0;
+    b->data_packet.bme280_pressure_pascals = 0;
+    b->data_packet.bme280_temperature_kelvin = 0;
+    b->data_packet.bme280_humidity_percent = 0;
+    //b->data_packet.ds3231_rtc_date = 0;
+    //b->data_packet.ds3231_rtc_time = 0;
     b->data_packet.ds3231_rtc_unix = 0;
 }
 
@@ -106,9 +106,7 @@ static void ga_board_setup(struct ga_board* b){
 
     // Open Devices
     ga_dev_digi_xbee_open();
-    ga_dev_sensirion_SHT1X_humidity_open();
-    ga_dev_apogee_BMP180_pressure_open();
-    ga_dev_apogee_BMP180_temperature_open();
+    ga_dev_adafruit_BME280_sensor_open();
     ga_dev_apogee_SP212_irradiance_open();
     ga_dev_battery_open();
     ga_dev_solar_panel_open();
@@ -140,38 +138,38 @@ static void ga_board_post(){
     Serial.print(F("[P] node addr: "));
     Serial.println((int) ga_dev_eeprom_node_address_read());
 
-    // Check sht1x
-    int sht1x_val = ga_dev_sensirion_SHT1X_humidity_read();
-    Serial.print(F("[P] sht1x value: "));
-    Serial.print(sht1x_val);
+    // Check BME280 humidity
+    int bme280_humidity = ga_dev_adafruit_BME280_humidity_read();
+    Serial.print(F("[P] BME280 humidity value: "));
+    Serial.print(bme280_humidity);
     Serial.println("\%");
 
-    if(sht1x_val < 0){
+    if(bme280_humidity < 0){
         Serial.println(F("[P] \tError: Humidity out of range"));
     }
 
-    // Check BMP085
-    int32_t bmp085_val = ga_dev_apogee_BMP180_pressure_read();
-    Serial.print(F("[P] BMP180 value: "));
-    Serial.print(bmp085_val/100);
+    // Check BME280 pressure
+    int32_t bme280_pressure = ga_dev_adafruit_BME280_pressure_read();
+    Serial.print(F("[P] BME280 pressure value: "));
+    Serial.print(bme280_pressure/100);
     Serial.print(F("."));
-    Serial.print((bmp085_val-bmp085_val/10)/1000);
+    Serial.print((bme280_pressure-bme280_pressure/10)/1000);
     Serial.println(" mb");
 
-    if(bmp085_val < 80000){
-        Serial.println(F("[P] \tError: BMP180 pressure out of range"));
+    if(bme280_pressure < 80000){
+        Serial.println(F("[P] \tError: BME280 pressure out of range"));
     }
 
-    // Check BMP085 temperature
-    uint16_t bmp085_temp = ga_dev_apogee_BMP180_temperature_read();
-    Serial.print(F("[P] BMP180 temp: "));
-    Serial.print(bmp085_temp/10);
+    // Check BME280 temperature
+    uint16_t bme280_temp = ga_dev_adafruit_BME280_temperature_read();
+    Serial.print(F("[P] BME280 temp: "));
+    Serial.print(bme280_temp/10);
     Serial.print(".");
-    Serial.print((bmp085_temp-bmp085_temp/10)/10);
+    Serial.print((bme280_temp-bme280_temp/10)/10);
     Serial.println(F(" celsius"));
 
-    if(bmp085_temp < 0){
-        Serial.println(F("[P] \tError: BMP180 temperature out of range"));
+    if(bme280_temp < 0){
+        Serial.println(F("[P] \tError: BME280 temperature out of range"));
     }
 
     // Check apogee_sp212
@@ -204,8 +202,8 @@ static void ga_board_post(){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 
-    ga_dev_DS3231_rtc_date_read();
-    ga_dev_DS3231_rtc_time_read();
+    //ga_dev_DS3231_rtc_date_read();
+    //ga_dev_DS3231_rtc_time_read();
     Serial.println(ga_dev_DS3231_rtc_unix_read());
 
     Serial.println(F("POST End"));
@@ -233,12 +231,12 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->uptime_milliseconds                     = millis();
     data_packet->battery_millivolts                      = ga_dev_battery_read();
     data_packet->panel_millivolts                        = ga_dev_solar_panel_read();
-    data_packet->bmp085_pressure_pascals                 = ga_dev_apogee_BMP180_pressure_read();
-    data_packet->bmp085_temperature_kelvin               = ga_dev_apogee_BMP180_temperature_read();
-    data_packet->sht1x_humidity_percent                  = ga_dev_sensirion_SHT1X_humidity_read();
+    data_packet->bme280_pressure_pascals                 = ga_dev_adafruit_BME280_pressure_read();
+    data_packet->bme280_temperature_kelvin               = ga_dev_adafruit_BME280_temperature_read();
+    data_packet->bme280_humidity_percent                 = ga_dev_adafruit_BME280_humidity_read();
     data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
-    data_packet->ds3231_rtc_date                         = ga_dev_DS3231_rtc_date_read();
-    data_packet->ds3231_rtc_time                         = ga_dev_DS3231_rtc_time_read();
+    //data_packet->ds3231_rtc_date                         = ga_dev_DS3231_rtc_date_read();
+    //data_packet->ds3231_rtc_time                         = ga_dev_DS3231_rtc_time_read();
     data_packet->ds3231_rtc_unix                         = ga_dev_DS3231_rtc_unix_read();
 
     data_packet->node_address                            = b->node_address;

@@ -69,8 +69,6 @@ void gg_board_init(gg_board *b){
     b->data_packet.bme280_temperature_kelvin = 0;
     b->data_packet.bme280_humidity_percent = 0;
     b->data_packet.sp215_irradiance_watts_per_square_meter = 0;
-    b->data_packet.ds3231_rtc_date = 0;
-    b->data_packet.ds3231_rtc_time = 0;
 }
 
 /******************************
@@ -110,7 +108,6 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_solar_panel_open();
     gg_dev_eeprom_node_address_open();
     gg_dev_adafruit_BME280_sensor_open();
-    gg_dev_adafruit_DS3231_rtc_open();
 
 #ifdef DEBUG
     // Set LED 1 and 3 as output
@@ -207,10 +204,6 @@ static void gg_board_post(){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 
-    // Check RTC
-    Serial.print("[P] RTC Reading: ");
-    gg_dev_adafruit_DS3231_rtc_test();
-
 #ifdef DEBUG
     digitalWrite(_PIN_LED2_, LOW);
 #endif
@@ -244,8 +237,6 @@ static void gg_board_sample(struct gg_board* b){
     data_packet->bme280_temperature_kelvin               = gg_dev_adafruit_BME280_temperature_read();
     data_packet->bme280_humidity_percent                 = gg_dev_adafruit_BME280_humidity_read();
     data_packet->sp215_irradiance_watts_per_square_meter = gg_dev_apogee_SP212_irradiance_read();
-    data_packet->ds3231_rtc_date                         = gg_dev_adafruit_DS3231_rtc_date_read();
-    data_packet->ds3231_rtc_time                         = gg_dev_adafruit_DS3231_rtc_time_read();
     data_packet->node_address                            = b->node_address;
 
     Serial.println(F("Sample End"));

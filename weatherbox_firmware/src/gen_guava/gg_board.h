@@ -22,7 +22,6 @@
 #include "gg_dev_solar_panel.h"
 #include "gg_dev_eeprom_node_address.h"
 #include "gg_dev_adafruit_BME280_sensor.h"
-#include "gg_dev_adafruit_DS3231_rtc.h"
 
 #ifndef gg_BOARD_H
 #define gg_BOARD_H
@@ -37,8 +36,6 @@ struct gg_packet{
     uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
     uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
     uint16_t sp215_irradiance_watts_per_square_meter;  // Solar Irradiance Value (in W/m^2)
-    uint16_t ds3231_rtc_date;                          // Date MMDDYY
-    uint16_t ds3231_rtc_time;                          // Time HHMMSS
 };
 
 struct gg_heartbeat_packet{
