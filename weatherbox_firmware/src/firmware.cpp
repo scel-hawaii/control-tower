@@ -33,7 +33,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 #include <Adafruit_INA219.h>
-#include <Adafruit_BMP085.h>
+// #include <Adafruit_BMP085.h>
 #include <Adafruit_MPL115A2.h>
 #include <Adafruit_ADS1015.h>
 #include <HIH613x.h>

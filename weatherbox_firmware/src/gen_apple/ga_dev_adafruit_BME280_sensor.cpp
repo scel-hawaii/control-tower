@@ -15,11 +15,15 @@
 
 #include "ga_dev_adafruit_BME280_sensor.h"
 
+#define BME_CS 10
+#define BME_MOSI 11
+#define BME_MISO 12
+#define BME_SCK 13
 
 #define I2C //Define communication protocol as seen below
 
 #ifdef I2C
-Adafruit_BME280 bme280; // I2C
+Adafruit_BME280 bme280(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // I2C
 #endif
 
 #ifdef HardwareSPI
@@ -37,19 +41,18 @@ void ga_dev_adafruit_BME280_sensor_open(void) {
 uint16_t ga_dev_adafruit_BME280_humidity_read(void) {
   uint16_t value = 50;
 
- #ifndef SEN_STUB
+ // #ifndef SEN_STUB
  value = bme280.readHumidity();
- #endif
+ // #endif
 
   return value;
 }
 
 uint32_t ga_dev_adafruit_BME280_pressure_read(void) {
   uint32_t value = 10000;
-
-  #ifndef SEN_STUB
+  // #ifndef SEN_STUB
   value = bme280.readPressure();
-  #endif
+  // #endif
 
   return value;
 }
@@ -57,9 +60,9 @@ uint32_t ga_dev_adafruit_BME280_pressure_read(void) {
 uint16_t ga_dev_adafruit_BME280_temperature_read(void) {
   uint16_t value = 100;
 
-  #ifndef SEN_STUB
+  // #ifndef SEN_STUB
   value = bme280.readTemperature() + 273;
-  #endif
+  // #endif
 
   return value;
 }
