@@ -34,35 +34,67 @@ Adafruit_BME280 bme280(BME_CS); // Hardware SPI
 Adafruit_BME280 bme280(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // Software SPI
 #endif
 
+/******************************
+ *
+ * Name:        ga_dev_adafruit_BME280_sensor_open
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Initializes BME280 sensor
+ *
+ ******************************/
 void ga_dev_adafruit_BME280_sensor_open(void) {
  bme280.begin();
 }
 
+/******************************
+ *
+ * Name:        ga_dev_adafruit_BME280_humidity_read
+ * Returns:     humudity value in %
+ * Parameter:   Nothing
+ * Description: Reads BME280 sensor
+ *
+ ******************************/
 uint16_t ga_dev_adafruit_BME280_humidity_read(void) {
   uint16_t value = 50;
 
- // #ifndef SEN_STUB
+ #ifndef SEN_STUB
  value = bme280.readHumidity();
- // #endif
+ #endif
 
   return value;
 }
 
+/******************************
+ *
+ * Name:        ga_dev_adafruit_BME280_pressure_read
+ * Returns:     pressure value in hPa
+ * Parameter:   Nothing
+ * Description: Reads BME280 sensor
+ *
+ ******************************/
 uint32_t ga_dev_adafruit_BME280_pressure_read(void) {
   uint32_t value = 10000;
-  // #ifndef SEN_STUB
+  #ifndef SEN_STUB
   value = bme280.readPressure();
-  // #endif
+  #endif
 
   return value;
 }
 
+/******************************
+ *
+ * Name:        ga_dev_adafruit_BME280_temperature_read
+ * Returns:     temperature value in C
+ * Parameter:   Nothing
+ * Description: Reads BME280 sensor
+ *
+ ******************************/
 uint16_t ga_dev_adafruit_BME280_temperature_read(void) {
   uint16_t value = 100;
 
-  // #ifndef SEN_STUB
+  #ifndef SEN_STUB
   value = bme280.readTemperature() + 273;
-  // #endif
+  #endif
 
   return value;
 }

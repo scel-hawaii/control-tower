@@ -1,3 +1,10 @@
+/*******************************
+ *
+ * File: ga_dev_adafruit_BME280_sensor.h
+ *
+ * Contains prototypes for BME280 sensor functions
+ *
+ ******************************/
 #include <Wire.h>
 #include <SPI.h>
 #include <Adafruit_Sensor.h>

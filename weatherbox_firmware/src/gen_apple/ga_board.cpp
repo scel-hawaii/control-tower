@@ -69,9 +69,7 @@ void ga_board_init(ga_board *b){
     b->data_packet.bme280_pressure_pascals = 0;
     b->data_packet.bme280_temperature_kelvin = 0;
     b->data_packet.bme280_humidity_percent = 0;
-    //b->data_packet.ds3231_rtc_date = 0;
-    //b->data_packet.ds3231_rtc_time = 0;
-    b->data_packet.rtc_unix = 0;
+    b->data_packet.ds3231_rtc_unix = 0;
 }
 
 /******************************
@@ -111,7 +109,7 @@ static void ga_board_setup(struct ga_board* b){
     ga_dev_battery_open();
     ga_dev_solar_panel_open();
     ga_dev_eeprom_node_address_open();
-    ga_dev_rtc_open();
+    ga_dev_DS3231_rtc_open();
 
     // load the address from the EEPROM into memory
     b->node_address = ga_dev_eeprom_node_address_read();
@@ -139,7 +137,7 @@ static void ga_board_post(){
     Serial.println((int) ga_dev_eeprom_node_address_read());
 
     // Check BME280 humidity
-    int bme280_humidity = ga_dev_adafruit_BME280_humidity_read();
+    uint16_t bme280_humidity = ga_dev_adafruit_BME280_humidity_read();
     Serial.print(F("[P] BME280 humidity value: "));
     Serial.print(bme280_humidity);
     Serial.println("\%");
@@ -149,7 +147,7 @@ static void ga_board_post(){
     }
 
     // Check BME280 pressure
-    int32_t bme280_pressure = ga_dev_adafruit_BME280_pressure_read();
+    uint32_t bme280_pressure = ga_dev_adafruit_BME280_pressure_read();
     Serial.print(F("[P] BME280 pressure value: "));
     Serial.print(bme280_pressure/100);
     Serial.print(F("."));
@@ -202,7 +200,10 @@ static void ga_board_post(){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 
-    Serial.println(ga_dev_rtc_unix_read());
+    uint32_t unix_val = ga_dev_DS3231_rtc_unix_read();
+    Serial.print(F("[P] rtc value: "));
+    Serial.print(unix_val);
+    Serial.println();
 
     Serial.println(F("POST End"));
 
@@ -233,9 +234,7 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->bme280_temperature_kelvin               = ga_dev_adafruit_BME280_temperature_read();
     data_packet->bme280_humidity_percent                 = ga_dev_adafruit_BME280_humidity_read();
     data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
-    //data_packet->ds3231_rtc_date                         = ga_dev_DS3231_rtc_date_read();
-    //data_packet->ds3231_rtc_time                         = ga_dev_DS3231_rtc_time_read();
-    data_packet->rtc_unix                                = ga_dev_rtc_unix_read();
+    data_packet->ds3231_rtc_unix                         = ga_dev_DS3231_rtc_unix_read();
 
     data_packet->node_address                            = b->node_address;
 
