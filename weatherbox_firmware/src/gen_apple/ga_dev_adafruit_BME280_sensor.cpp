@@ -20,7 +20,7 @@
 #define BME_MISO 12
 #define BME_SCK 13
 
-#define I2C //Define communication protocol as seen below
+#define SoftwareSPI //Define communication protocol as seen below
 
 #ifdef I2C
 Adafruit_BME280 bme280(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // I2C

@@ -14,7 +14,7 @@
 #include "ga_dev_battery.h"
 #include "ga_dev_solar_panel.h"
 #include "ga_dev_eeprom_node_address.h"
-#include "ga_dev_DS3231_rtc.h"
+#include "ga_dev_rtc.h"
 #include "ga_dev_adafruit_BME280_sensor.h"
 
 
@@ -31,9 +31,7 @@ struct ga_packet{
     uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
     uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
     uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
-    //uint16_t ds3231_rtc_date;                           // rtc date
-    //uint16_t ds3231_rtc_time;                           // rtc time
-    uint32_t ds3231_rtc_unix;
+    uint32_t rtc_unix;
 };
 
 /* Legacy Heartbeat 1.0 Packet */
