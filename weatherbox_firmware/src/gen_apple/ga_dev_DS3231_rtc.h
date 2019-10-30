@@ -6,7 +6,7 @@
  *
  ******************************/
  #include <Arduino.h>
- #include <Wire.h>  // this #include still required because the RTClib depends on it
+ #include <Wire.h>
  #include "RTClib.h"
 
 #ifndef GA_DEV_DS3231_H

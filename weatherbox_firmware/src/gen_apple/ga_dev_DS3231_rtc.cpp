@@ -36,12 +36,6 @@ void ga_dev_DS3231_rtc_open(void){
 uint32_t ga_dev_DS3231_rtc_unix_read(void){
   DateTime now = rtc.now();
   uint32_t value;
-  // Serial.println(now.year());
-  // Serial.println(now.month());
-  // Serial.println(now.day());
-  // Serial.println(now.hour());
-  // Serial.println(now.minute());
-  // Serial.println(now.second());
   #ifndef SEN_STUB
   value = now.unixtime();
   #endif

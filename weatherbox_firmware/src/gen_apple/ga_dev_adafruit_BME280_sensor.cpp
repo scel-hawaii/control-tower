@@ -22,14 +22,6 @@
 
 #define SoftwareSPI //Define communication protocol as seen below
 
-#ifdef I2C
-Adafruit_BME280 bme280(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // I2C
-#endif
-
-#ifdef HardwareSPI
-Adafruit_BME280 bme280(BME_CS); // Hardware SPI
-#endif
-
 #ifdef SoftwareSPI
 Adafruit_BME280 bme280(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // Software SPI
 #endif
