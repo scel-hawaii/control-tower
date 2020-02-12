@@ -33,8 +33,7 @@ if len(args) == 2:
 elif args[1] == 'auto' or args[1] == 'a':
 	print 'Automatically setting port for USB FTDI Device'
 	# set port to usb FTDI Device
-	# port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
-	port = '/home/scel/apps/gateway-pty-bridge/ttyOUT'
+	port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
 
 # we have no extra args
 # we have confusing arguments
