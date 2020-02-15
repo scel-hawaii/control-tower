@@ -37,6 +37,8 @@ test:
 	bash tasks/test.sh
 
 run-container:
+	docker kill ct-testinstance || true
+	docker rm ct-testinstance || true
 	docker build -t control-tower-test api/
 	docker run -d --name ct-testinstance --net=host -t control-tower-test
 
