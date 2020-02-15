@@ -6,7 +6,8 @@ var _ = require('underscore')
 var config = {
     user: 'control_tower',
     database: 'control_tower',
-    host: 'db',
+    host: 'localhost',
+    password: 'password',
     port: 5432,
     max: 10,
     idleTimeoutMillis: 30000
