@@ -2,6 +2,18 @@
 
 cd
 
+COUNT=$(psql -t -c "SELECT row_to_json(t) FROM (SELECT COUNT(*) FROM apple) t" | jq '.count')
+if [ "${PIPESTATUS[0]}" ]; then
+    echo "Error: failed to check table; the database might not initialized properly"
+    exit 1
+fi
+
+if [ -z "$COUNT" ]; then
+    echo "Database already seeded; exiting"
+    exit 0
+fi
+
+
 # Import to machine db
 cat > seed_data.csv <<'ENDFILE'
 address,db_time,uptime_ms,bmp085_temp_decic,bmp085_press_pa,batt_mv,panel_mv,apogee_mv,apogee_w_m2,dallas_amb_c,dallas_roof_c,panel_ua,humidity_centi_pct,indicator,overflow_num
