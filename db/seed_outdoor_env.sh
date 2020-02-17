@@ -2,7 +2,7 @@
 
 cd
 
-COUNT=$(psql -t -c "SELECT row_to_json(t) FROM (SELECT COUNT(*) FROM apple) t" | jq '.count')
+COUNT=$(psql -t -c "SELECT row_to_json(t) FROM (SELECT COUNT(*) FROM outdoor_env) t" | jq '.count')
 echo COUNT: $COUNT
 if [ $? -ne 0 ]; then
     echo "Error: failed to check table; the database might not initialized properly"
