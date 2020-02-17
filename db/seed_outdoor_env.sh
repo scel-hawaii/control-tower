@@ -3,12 +3,13 @@
 cd
 
 COUNT=$(psql -t -c "SELECT row_to_json(t) FROM (SELECT COUNT(*) FROM apple) t" | jq '.count')
-if [ "${PIPESTATUS[0]}" ]; then
+echo COUNT: $COUNT
+if [ $? -ne 0 ]; then
     echo "Error: failed to check table; the database might not initialized properly"
     exit 1
 fi
 
-if [ -z "$COUNT" ]; then
+if [ $COUNT -ne 0 ]; then
     echo "Database already seeded; exiting"
     exit 0
 fi
