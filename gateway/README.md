@@ -6,7 +6,7 @@ Data gateway for a generic sensor network
 
 Run the following command in the top level directory:
 
-    ./run_production.sh
+    ./run_production.sh auto
 
 # Development
 
