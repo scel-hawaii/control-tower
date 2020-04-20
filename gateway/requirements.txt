@@ -1,4 +1,4 @@
-psycopg2==2.7.4
+psycopg2-binary==2.7.4
 pyserial==3.4
 pyzmq==17.0.0
 XBee==2.3.1

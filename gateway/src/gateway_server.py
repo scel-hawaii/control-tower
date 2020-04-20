@@ -9,13 +9,16 @@ import datetime
 import struct
 import collections
 import threading
+import time
 
 from decoder import Decoder
 from xbee_gateway import XBeeGateway
+from xbee_bridge import XBeeBridge
+from fake_network import FakeNetwork
 
 args = sys.argv
-
 port = ""
+write_to_db = True
 
 # if we want to automatically get the port...
 if args[1] == 'auto' or args[1] == 'a':
@@ -27,6 +30,26 @@ if args[1] == 'auto' or args[1] == 'a':
     print 'Automatically setting port for USB FTDI Device'
     # set port to usb FTDI Device
     port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
+
+elif args[1] == 'bridged':
+    input_port = args[2]
+    output_port = '/tmp/xbee_bridge'
+    bridge = XBeeBridge(input_port, output_port, False)
+    bridge.run_background()
+    port = output_port
+
+    write_to_db = False
+
+    time.sleep(0.5)
+
+elif args[1] == 'fake':
+    fake_network = FakeNetwork()
+    port = fake_network.run()
+
+    write_to_db = False
+
+    time.sleep(0.5)
+
 
 # if we have no special arguments
 # port can be accessed by /dev/serial/by-id/<device name> as opposed to /dev/tty/USB0. The latter will never change
@@ -74,7 +97,8 @@ while True:
 
 	decoder.register_callback(decoder.print_dictionary)
 	decoder.register_callback(decoder.write_to_file)
-	decoder.register_callback(decoder.write_to_db)
+        if write_to_db:
+	    decoder.register_callback(decoder.write_to_db)
 	xbg.register_callback(decoder.decode_data)
 
 	xbg.setup_xbee(port, baud_rate)
