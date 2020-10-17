@@ -58,7 +58,7 @@ class XBeeGateway:
 	    t_flag.set()
             print(f)
             data = f['rf_data']
-            timestamp = datetime.datetime.now()
+            timestamp = datetime.datetime.utcnow()
             for callback in self.callbacks:
                 callback(data, timestamp)
 
