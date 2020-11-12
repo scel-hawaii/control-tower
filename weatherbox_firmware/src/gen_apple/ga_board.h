@@ -7,13 +7,11 @@
  ******************************/
 
 #include "ga_dev_digi_xbee.h"
-#include "ga_dev_sensirion_SHT1X_humidity.h"
-#include "ga_dev_apogee_BMP180_temperature.h"
-#include "ga_dev_apogee_BMP180_pressure.h"
 #include "ga_dev_apogee_SP212_irradiance.h"
 #include "ga_dev_battery.h"
 #include "ga_dev_solar_panel.h"
 #include "ga_dev_eeprom_node_address.h"
+#include "ga_dev_adafruit_BME280_sensor.h"
 
 
 #ifndef GA_BOARD_H
@@ -25,9 +23,9 @@ struct ga_packet{
     uint32_t uptime_milliseconds;                        // Time since start of program
     uint16_t battery_millivolts;                         // Battery Voltage (in milli volts)
     uint16_t panel_millivolts;                           // Panel Voltage (in milli volts)
-    uint32_t bmp085_pressure_pascals;                    // Pressure Value (in pascals)
-    int16_t bmp085_temperature_kelvin;                 // Temperature Value (in celsius) (ideally we change this to Kelvin)
-    uint16_t sht1x_humidity_percent;                    // Humidity Value (in percentage)
+    uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
+    uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
+    uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
     uint16_t sp212_irradiance_watts_per_square_meter;   // Solar Irradiance Value (in w/m^2)
 };
 
@@ -64,12 +62,11 @@ typedef struct {
     uint8_t n;                      // number of data points in packet 0..30
     uint16_t batt_mv[6];            // Battery Voltage (in milli volts)
     uint16_t panel_mv[6];           // Panel Voltage (in milli volts)
-    uint32_t bmp085_press_pa;       // Pressure Value (in pascals)
-    int16_t bmp085_temp_decic;      // Temperature Value (in celsius)
-    uint16_t humidity_centi_pct;
+    uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
+    uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
+    uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
     uint16_t apogee_w_m2[20];
 } schema_3;
-
 
 struct ga_board{
     void (*setup)(struct ga_board* b);
