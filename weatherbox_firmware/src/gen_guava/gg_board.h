@@ -2,7 +2,7 @@
  *
  * File: gg_board.h
  *
- * Contains struct for Dragonfruit packet, heartbeat, and board
+ * Contains struct for Guava packet, heartbeat, and board
  *
  ******************************/
 
@@ -20,6 +20,47 @@
 #ifndef gg_BOARD_H
 #define gg_BOARD_H
 
+class gg_heartbeat_packet{
+    uint16_t schema;
+    uint16_t node_address;       // Address of Arduino
+    uint32_t uptime_milliseconds;       // Time since start of program
+    uint16_t battery_millivolts;         // Battery Voltage (in milli volts)
+};
+
+class gg_board{
+    unsigned long prev_sample_ms;
+    unsigned long prev_heartbeat_ms;
+    int sample_count;
+    uint16_t node_address;
+    class gg_packet{
+        uint16_t schema;
+        uint16_t node_address;                             // Address of Arduino
+        uint32_t uptime_milliseconds;                       // Time since start of program
+        uint16_t battery_millivolts;                        // Battery Voltage (in milli volts)
+        uint16_t panel_millivolts;                          // Panel Voltage (in milli volts)
+        uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
+        uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
+        uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
+        uint16_t sp215_irradiance_watts_per_square_meter;  // Solar Irradiance Value (in W/m^2)
+    };
+};
+
+void setup(gg_board& b);
+void post(void);
+void sample(gg_board& b);
+void run_cmd(gg_board& b);
+void print_build_opts(void);
+void tx(gg_board& b);
+int ready_tx(gg_board& b);
+int ready_sample(gg_board& b);
+int ready_run_cmd(gg_board& b);
+
+int ready_heartbeat_tx(gg_board& b);
+void heartbeat_tx(gg_board& b);
+
+void gg_board_init(struct gg_board*); // ??? input ???
+
+/* Old structure format
 struct gg_packet{
     uint16_t schema;
     uint16_t node_address;                             // Address of Arduino
@@ -60,7 +101,7 @@ struct gg_board{
     struct gg_packet data_packet;
 };
 
-
 void gg_board_init(struct gg_board*);
+*/
 
 #endif
