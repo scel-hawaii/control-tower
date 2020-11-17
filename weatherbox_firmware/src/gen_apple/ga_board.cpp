@@ -65,9 +65,9 @@ void ga_board_init(ga_board *b){
     b->data_packet.uptime_milliseconds = 0;
     b->data_packet.battery_millivolts = 0;
     b->data_packet.panel_millivolts = 0;
-    b->data_packet.bmp085_pressure_pascals = 0;
-    b->data_packet.bmp085_temperature_kelvin = 0;
-    b->data_packet.sht1x_humidity_percent = 0;
+    b->data_packet.bme280_pressure_pascals = 0;
+    b->data_packet.bme280_temperature_kelvin = 0;
+    b->data_packet.bme280_humidity_percent = 0;
     b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
 }
 
