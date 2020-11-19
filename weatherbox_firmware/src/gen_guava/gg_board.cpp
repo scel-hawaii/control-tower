@@ -28,13 +28,24 @@ static void gg_board_heartbeat_tx(struct gg_board* b);
 */
 
 /******************************
- * class constructors
+ * class constructor
 ******************************/
-gg_board::gg_board(unsigned long p_sample, unsigned long p_heartbeat, int s_count, uint16_t n_address){
-    prev_sample_ms = p_sample;
+gg_board::gg_board(){
+    prev_sample_ms = 0;
     prev_heartbeat_ms = p_heartbeat;
-    sample_count = s_count;
-    node_address = n_address;
+    sample_count = 0;
+    node_address = 0;
+
+    // dont know if have to use constuctor for gg_packet struct
+    data_packet.schema = 4;
+    data_packet.node_address = 0;
+    data_packet.uptime_milliseconds = 0;
+    data_packet.battery_millivolts = 0;
+    data_packet.panel_millivolts = 0;
+    data_packet.bme280_pressure_pascals = 0;
+    data_packet.bme280_temperature_kelvin = 0;
+    data_packet.bme280_humidity_percent = 0;
+    data_packet.sp215_irradiance_watts_per_square_meter = 0;
 }
 
 /******************************
@@ -227,7 +238,7 @@ void gg_board::gg_board_post(){
  *
  ******************************/
 
-void gg_board::gg_board_sample(struct gg_board* b){
+void gg_board::gg_board_sample(){
     Serial.print("[");
     Serial.print(millis());
     Serial.print("] ");
@@ -235,7 +246,8 @@ void gg_board::gg_board_sample(struct gg_board* b){
     // Disabled this for guava deployment on 2016-10-06 with T=30s
     // Serial.println(b->sample_count);
 
-    struct gg_packet* data_packet = &(b->data_packet);
+    // fix pointer error
+    struct gg_packet* data_packet = &data_packet;
     data_packet->uptime_milliseconds                     = millis();
     data_packet->battery_millivolts                      = gg_dev_battery_read();
     data_packet->panel_millivolts                        = gg_dev_solar_panel_read();
@@ -243,12 +255,12 @@ void gg_board::gg_board_sample(struct gg_board* b){
     data_packet->bme280_temperature_kelvin               = gg_dev_adafruit_BME280_temperature_read();
     data_packet->bme280_humidity_percent                 = gg_dev_adafruit_BME280_humidity_read();
     data_packet->sp215_irradiance_watts_per_square_meter = gg_dev_apogee_SP212_irradiance_read();
-    data_packet->node_address                            = b->node_address;
+    data_packet->node_address                            = node_address;
 
     Serial.println(F("Sample End"));
-    b->sample_count = 0;
+    sample_count = 0;
 
-    gg_board_tx(b);
+    gg_board_tx();
 
     // Disabled this for guava deployment on 2016-10-06 with T=30s
     // b->sample_count++;
@@ -264,7 +276,7 @@ void gg_board::gg_board_sample(struct gg_board* b){
  *
  ******************************/
 
-int gg_board::gg_board_ready_tx(struct gg_board* b){
+int gg_board::gg_board_ready_tx(){
     // Disabled this for guava deployment on 2016-10-06 with T=30s
     /*
     const int max_samples = 20;

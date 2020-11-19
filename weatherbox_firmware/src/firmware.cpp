@@ -22,6 +22,10 @@
 #include "gen_guava/gg_board.h"
 #endif
 
+// testing guava classes
+#include "gen_guava/gg_board.h"
+gg_board ggboard;
+
 /* Arudino Libraries */
 #include <Wire.h>
 #include <EEPROM.h>
@@ -53,7 +57,7 @@ struct gd_board board;
 #endif
 
 #ifdef GG
-struct gg_board board;
+gg_board ggboard;
 #endif
 /*********************************************
  *
@@ -82,9 +86,15 @@ void setup(){
     gg_board_init(&board);
     #endif
 
+    // Guava board
+    ggboard.gg_board_print_build_opts();
+    ggboard.gg_board_setup();
+    ggboard.gg_board_post();
+    /*
     board.print_build_opts();
     board.setup(&board);
     board.post();
+    */
 
     #ifdef _BCFG_ONLY_POST
     // Stop execution if the ONLY_POST build configuration
@@ -105,8 +115,15 @@ void setup(){
  *
  ********************************************/
 void loop(){
+    // Guava board
+    if(ggboard.gg_board_ready_sample()) ggboard.gg_board_sample();
+    if(ggboard.gg_board_ready_tx()) ggboard.gg_board_tx();
+    if(ggboard.gg_board_ready_run_cmd()) ggboard.gg_board_run_cmd();
+    if(ggboard.gg_board_ready_heartbeat_tx()) ggboard.gg_board_heartbeat_tx();
+    /*
     if(board.ready_sample(&board))  board.sample(&board);
     if(board.ready_tx(&board))      board.tx(&board);
     if(board.ready_run_cmd(&board))      board.run_cmd(&board);
     if(board.ready_heartbeat_tx(&board))      board.heartbeat_tx(&board);
+    */
 }
