@@ -9,6 +9,7 @@
 
 #include "gg_board.h"
 
+/* moved to .h
 static void gg_board_print_build_opts();
 static void gg_board_setup(struct gg_board* b);
 static void gg_board_post();
@@ -24,6 +25,17 @@ static int gg_board_ready_tx(struct gg_board* b);
 
 static int gg_board_ready_heartbeat_tx(struct gg_board* b);
 static void gg_board_heartbeat_tx(struct gg_board* b);
+*/
+
+/******************************
+ * class constructors
+******************************/
+gg_board::gg_board(unsigned long p_sample, unsigned long p_heartbeat, int s_count, uint16_t n_address){
+    prev_sample_ms = p_sample;
+    prev_heartbeat_ms = p_heartbeat;
+    sample_count = s_count;
+    node_address = n_address;
+}
 
 /******************************
  *
@@ -80,7 +92,7 @@ void gg_board_init(gg_board *b){
  *
  ******************************/
 
-static void gg_board_print_build_opts()
+void gg_board::gg_board_print_build_opts()
 {
     Serial.begin(9600);
     Serial.println(F("Board Opts"));
@@ -97,7 +109,7 @@ static void gg_board_print_build_opts()
  *
  ******************************/
 
-static void gg_board_setup(struct gg_board* b){
+void gg_board::gg_board_setup(){
     Serial.begin(9600);
     Serial.println(F("Board Setup Start"));
 
@@ -114,7 +126,7 @@ static void gg_board_setup(struct gg_board* b){
     pinMode(_PIN_LED3_,OUTPUT);
 
     // load the address from the EEPROM into memory
-    b->node_address = gg_dev_eeprom_node_address_read();
+    node_address = gg_dev_eeprom_node_address_read();
 
     delay(100);
     Serial.println(F("Board Setup Done"));
@@ -131,7 +143,7 @@ static void gg_board_setup(struct gg_board* b){
  *
  ******************************/
 
-static void gg_board_post(){
+void gg_board::gg_board_post(){
     Serial.println(F("POST Begin"));
 
     digitalWrite(_PIN_LED3_, HIGH);
@@ -215,7 +227,7 @@ static void gg_board_post(){
  *
  ******************************/
 
-static void gg_board_sample(struct gg_board* b){
+void gg_board::gg_board_sample(struct gg_board* b){
     Serial.print("[");
     Serial.print(millis());
     Serial.print("] ");
@@ -252,7 +264,7 @@ static void gg_board_sample(struct gg_board* b){
  *
  ******************************/
 
-static int gg_board_ready_tx(struct gg_board* b){
+int gg_board::gg_board_ready_tx(struct gg_board* b){
     // Disabled this for guava deployment on 2016-10-06 with T=30s
     /*
     const int max_samples = 20;
@@ -278,7 +290,7 @@ static int gg_board_ready_tx(struct gg_board* b){
  *
  ******************************/
 
-static int gg_board_ready_sample(struct gg_board* b){
+int gg_board::gg_board_ready_sample(struct gg_board* b){
     const unsigned long wait_ms = 1000*30;
     const unsigned long sample_delta = millis() - b->prev_sample_ms;
 
@@ -300,7 +312,7 @@ static int gg_board_ready_sample(struct gg_board* b){
  *
  ******************************/
 
-static int gg_board_ready_run_cmd(struct gg_board* b){
+int gg_board::gg_board_ready_run_cmd(struct gg_board* b){
     return Serial.available();
 }
 
@@ -313,7 +325,7 @@ static int gg_board_ready_run_cmd(struct gg_board* b){
  *
  ******************************/
 
-static void gg_board_run_cmd(struct gg_board* b){
+void gg_board::gg_board_run_cmd(struct gg_board* b){
     Serial.println(F("Enter CMD Mode"));
     while(Serial.read() != '\n');
     while(1){
@@ -355,7 +367,7 @@ static void gg_board_run_cmd(struct gg_board* b){
  *
  ******************************/
 
-static int gg_board_ready_heartbeat_tx(struct gg_board* b){
+int gg_board::gg_board_ready_heartbeat_tx(struct gg_board* b){
     const int wait_ms = 3000;
     int sample_delta = millis() - b->prev_heartbeat_ms;
 
@@ -390,7 +402,7 @@ static int gg_board_ready_heartbeat_tx(struct gg_board* b){
  *
  ******************************/
 
-static void gg_board_heartbeat_tx(struct gg_board* b){
+void gg_board::gg_board_heartbeat_tx(struct gg_board* b){
     uint8_t payload[_GG_DEV_DIGI_XBEE_BUFSIZE_];
     struct gg_heartbeat_packet hb_packet;
 
@@ -427,7 +439,7 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
  *
  ******************************/
 
-static void gg_board_tx(struct gg_board* b){
+void gg_board::gg_board_tx(struct gg_board* b){
     uint8_t payload[_GG_DEV_DIGI_XBEE_BUFSIZE_];
     int schema_len = sizeof(b->data_packet);
 

@@ -28,21 +28,45 @@ class gg_heartbeat_packet{
 };
 
 class gg_board{
-    unsigned long prev_sample_ms;
-    unsigned long prev_heartbeat_ms;
-    int sample_count;
-    uint16_t node_address;
-    class gg_packet{
-        uint16_t schema;
-        uint16_t node_address;                             // Address of Arduino
-        uint32_t uptime_milliseconds;                       // Time since start of program
-        uint16_t battery_millivolts;                        // Battery Voltage (in milli volts)
-        uint16_t panel_millivolts;                          // Panel Voltage (in milli volts)
-        uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
-        uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
-        uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
-        uint16_t sp215_irradiance_watts_per_square_meter;  // Solar Irradiance Value (in W/m^2)
-    };
+    private:
+        unsigned long prev_sample_ms;
+        unsigned long prev_heartbeat_ms;
+        int sample_count;
+        uint16_t node_address;
+        class gg_packet{
+            public:
+                // parameterized constructor
+                gg_packet();
+            private:
+                uint16_t schema;
+                uint16_t node_address;                             // Address of Arduino
+                uint32_t uptime_milliseconds;                       // Time since start of program
+                uint16_t battery_millivolts;                        // Battery Voltage (in milli volts)
+                uint16_t panel_millivolts;                          // Panel Voltage (in milli volts)
+                uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
+                uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
+                uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
+                uint16_t sp215_irradiance_watts_per_square_meter;  // Solar Irradiance Value (in W/m^2)
+        };
+    public:
+        // parameterized constructor
+        gg_board(unsigned long p_sample, unsigned long p_heartbeat, int s_count, uint16_t n_address);
+
+        void gg_board_print_build_opts();
+        void gg_board_setup();
+        void gg_board_post();
+
+        void gg_board_run_cmd(struct gg_board* b);
+        int gg_board_ready_run_cmd(struct gg_board* b);
+
+        void gg_board_sample(struct gg_board* b);
+        int gg_board_ready_sample(struct gg_board* b);
+
+        void gg_board_tx(struct gg_board* b);
+        int gg_board_ready_tx(struct gg_board* b);
+
+        int gg_board_ready_heartbeat_tx(struct gg_board* b);
+        void gg_board_heartbeat_tx(struct gg_board* b);
 };
 
 void setup(gg_board& b);
