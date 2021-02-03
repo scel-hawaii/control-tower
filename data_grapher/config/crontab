@@ -1,8 +1,0 @@
-# Example crontab that runs the data_plot script
-# every hour or so.
-#
-# Modify this script with the correct path, depending
-# on which user you're using.
-#
-*/15 * * * * cd /home/control_tower/data_grapher/ && python2 graph.py >> /dev/null
-*/15 * * * * cd /home/control_tower/data_grapher/ && bash plot_gnuplot.sh >> /dev/null
