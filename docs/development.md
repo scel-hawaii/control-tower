@@ -1,25 +1,21 @@
 # Development
 
 It's highly suggested that you use vagrant and virtualbox to
-do your development. This will allow you to make sure that the
-application is installed correctly from scratch.
+do your development.
 
 # Dependencies
 
 You'll have to install the following things:
 
-* Ruby
 * Vagrant
+    - https://www.vagrantup.com/docs/installation
 * Virtualbox
+    - https://www.virtualbox.org/
 
 # Environment
 
-The machine setup is mostly scripted - run the following command
-in the directory.
+In the control-tower repository, run:
 
 `vagrant up`
 
-This may take a while (10-20 min depending on your network connection.
-
-
-
+This will get you an environment that will let you do development.

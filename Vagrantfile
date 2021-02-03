@@ -12,8 +12,8 @@ Vagrant.configure(2) do |config|
 
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://atlas.hashicorp.com/search.
-  config.vm.box = "debian/jessie64"
-  config.vm.box_version = "8.3.0"
+  config.vm.box = "debian/buster64"
+  config.vm.box_version = "10.4.0"
 
   # Disable automatic box update checking. If you disable this, then
   # boxes will only be checked for updates when the user runs
@@ -71,30 +71,5 @@ Vagrant.configure(2) do |config|
   config.vm.provision "shell", inline: <<-SHELL
      sudo apt-get update
      sudo apt-get -y install git gzip zip
-     git clone https://github.com/scel-hawaii/control-tower.git
-     cd /vagrant/setup/ && bash setup_server_req.sh
-     cd /vagrant/setup/ && bash setup_python_reqs.sh
-     cd /vagrant/setup/ && bash setup_ruby_reqs.sh
-     cd /vagrant/db/ && bash setup_postgres_user.sh
-
-     sudo su control_tower -c \
-        'cd /home/control_tower/ && git clone \
-        https://github.com/scel-hawaii/control-tower.git'
-
-     sudo su control_tower -c \
-        'cd /home/control_tower/control-tower/db/ &&
-        bash seed.sh'
-
-     sudo su control_tower -c \
-        'cd /home/control_tower/control-tower/jobs/grapher/ &&
-        bundle install --path vendor/bundle'
-
-     sudo su -c \
-        'cd /home/control_tower/control-tower/setup/conf/ &&
-        cp graphs /etc/nginx/sites-avaiable'
-
-     sudo su -c \
-        'cd /etc/nginx/sites-enabled/ &&
-        ln -s /etc/nginx/sites-available/graphs'
   SHELL
 end
