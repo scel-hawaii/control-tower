@@ -1,5 +1,0 @@
-AUTOSSH_POLL=60
-AUTOSSH_FIRST_POLL=30
-AUTOSSH_GATETIME=0
-AUTOSSH_PORT=22000
-SSH_OPTIONS="-N -L {{LOCAL_BIND_PORT}}:localhost:5432 alpha.scel-hawaii.org -p 11144 -i /home/autossh/.ssh/id_rsa"
