@@ -65,9 +65,9 @@ void ga_board_init(ga_board *b){
     b->data_packet.uptime_milliseconds = 0;
     b->data_packet.battery_millivolts = 0;
     b->data_packet.panel_millivolts = 0;
-    b->data_packet.bmp085_pressure_pascals = 0;
-    b->data_packet.bmp085_temperature_kelvin = 0;
-    b->data_packet.sht1x_humidity_percent = 0;
+    b->data_packet.bme280_pressure_pascals = 0;
+    b->data_packet.bme280_temperature_kelvin = 0;
+    b->data_packet.bme280_humidity_percent = 0;
     b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
 }
 
@@ -103,13 +103,11 @@ static void ga_board_setup(struct ga_board* b){
 
     // Open Devices
     ga_dev_digi_xbee_open();
-    ga_dev_sensirion_SHT1X_humidity_open();
-    ga_dev_apogee_BMP180_pressure_open();
-    ga_dev_apogee_BMP180_temperature_open();
     ga_dev_apogee_SP212_irradiance_open();
     ga_dev_battery_open();
     ga_dev_solar_panel_open();
     ga_dev_eeprom_node_address_open();
+    ga_dev_adafruit_BME280_sensor_open();
 
     // load the address from the EEPROM into memory
     b->node_address = ga_dev_eeprom_node_address_read();
@@ -136,38 +134,34 @@ static void ga_board_post(){
     Serial.print(F("[P] node addr: "));
     Serial.println((int) ga_dev_eeprom_node_address_read());
 
-    // Check sht1x
-    int sht1x_val = ga_dev_sensirion_SHT1X_humidity_read();
-    Serial.print(F("[P] sht1x value: "));
-    Serial.print(sht1x_val);
+    // Check BME280 Humidity
+    uint16_t BME280_humidity_val = ga_dev_adafruit_BME280_humidity_read();
+    Serial.print(F("[P] BME280 Humidity value: "));
+    Serial.print(BME280_humidity_val);
     Serial.println("\%");
 
-    if(sht1x_val < 0){
+    if(BME280_humidity_val < 0){
         Serial.println(F("[P] \tError: Humidity out of range"));
     }
 
-    // Check BMP085
-    int32_t bmp085_val = ga_dev_apogee_BMP180_pressure_read();
-    Serial.print(F("[P] BMP180 value: "));
-    Serial.print(bmp085_val/100);
-    Serial.print(F("."));
-    Serial.print((bmp085_val-bmp085_val/10)/1000);
-    Serial.println(" mb");
+    // Check BME280 Pressure
+    int32_t BME280_pressure_val = ga_dev_adafruit_BME280_pressure_read();
+    Serial.print(F("[P] BME280 Pressure value: "));
+    Serial.print(BME280_pressure_val);
+    Serial.println(" Pa");
 
-    if(bmp085_val < 80000){
-        Serial.println(F("[P] \tError: BMP180 pressure out of range"));
+    if(BME280_pressure_val < 80000){
+        Serial.println(F("[P] \tError: Pressure out of range"));
     }
 
-    // Check BMP085 temperature
-    uint16_t bmp085_temp = ga_dev_apogee_BMP180_temperature_read();
-    Serial.print(F("[P] BMP180 temp: "));
-    Serial.print(bmp085_temp/10);
-    Serial.print(".");
-    Serial.print((bmp085_temp-bmp085_temp/10)/10);
-    Serial.println(F(" celsius"));
+    // Check BME280 Temperature
+    uint16_t BME280_temperature_val = ga_dev_adafruit_BME280_temperature_read();
+    Serial.print(F("[P] BME280 Temperature value: "));
+    Serial.print(BME280_temperature_val);
+    Serial.println(F(" K"));
 
-    if(bmp085_temp < 0){
-        Serial.println(F("[P] \tError: BMP180 temperature out of range"));
+    if(BME280_temperature_val < 0){
+        Serial.println(F("[P] \tError: Temperature out of range"));
     }
 
     // Check apogee_sp212
@@ -225,9 +219,9 @@ static void ga_board_sample(struct ga_board* b){
     data_packet->uptime_milliseconds                     = millis();
     data_packet->battery_millivolts                      = ga_dev_battery_read();
     data_packet->panel_millivolts                        = ga_dev_solar_panel_read();
-    data_packet->bmp085_pressure_pascals                 = ga_dev_apogee_BMP180_pressure_read();
-    data_packet->bmp085_temperature_kelvin               = ga_dev_apogee_BMP180_temperature_read();
-    data_packet->sht1x_humidity_percent                  = ga_dev_sensirion_SHT1X_humidity_read();
+    data_packet->bme280_pressure_pascals                 = ga_dev_adafruit_BME280_pressure_read();
+    data_packet->bme280_temperature_kelvin               = ga_dev_adafruit_BME280_temperature_read();
+    data_packet->bme280_humidity_percent                 = ga_dev_adafruit_BME280_humidity_read();
     data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
     data_packet->node_address                            = b->node_address;
 
