@@ -3,8 +3,10 @@
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
 
-#ifndef GG_DEV_ADAFRUIT_BME280_SENSOR_H
-#define GG_DEV_ADAFRUIT_BME280_SENSOR_H
+#define BME_CS 10
+
+#ifndef GA_DEV_ADAFRUIT_BME280_SENSOR_H
+#define GA_DEV_ADAFRUIT_BME280_SENSOR_H
 
 void ga_dev_adafruit_BME280_sensor_open(void);
 uint16_t ga_dev_adafruit_BME280_temperature_read(void);

@@ -16,7 +16,7 @@
 #include "ga_dev_adafruit_BME280_sensor.h"
 
 
-#define I2C //Define communication protocol as seen below
+#define HardwareSPI //Define communication protocol as seen below
 
 #ifdef I2C
 Adafruit_BME280 bme280; // I2C

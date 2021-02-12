@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"name": "weatherbox_firmware",
+			"path": "."
+		}
+	],
+	"settings": {}
+}
