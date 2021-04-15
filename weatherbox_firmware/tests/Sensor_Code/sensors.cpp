@@ -1,3 +1,5 @@
+#include <Adafruit_BMP085.h>
+
 /*******************************************
  *
  *    File: sensors.cpp 
