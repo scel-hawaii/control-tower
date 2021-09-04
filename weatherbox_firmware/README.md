@@ -5,6 +5,7 @@ This is a re-write of the [old weatherbox firmware](https://github.com/scel-hawa
 
 # Current Contributors
 
+* Tricia Marie Reyes
 * Kayla Hirano
 
 # Previous Contributors
