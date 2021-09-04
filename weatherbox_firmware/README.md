@@ -5,13 +5,14 @@ This is a re-write of the [old weatherbox firmware](https://github.com/scel-hawa
 
 # Current Contributors
 
+* Kayla Hirano
+
+# Previous Contributors
+
 * Kenny Luong
 * Dylan Tokita
 * Allie Kim
 * Nathan Lam
-
-# Previous Contributors
-
 * Ryan Walser (Fall 2015 - Spring 2016)
 * Scott Nakashima (Fall 2015 - Spring 2016)
 
