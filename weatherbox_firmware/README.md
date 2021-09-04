@@ -4,13 +4,15 @@ General firmware for the [SCEL weatherbox data collection platform](https://wiki
 This is a re-write of the [old weatherbox firmware](https://github.com/scel-hawaii/weatherbox-firmware-old).
 
 # Current Contributors
+* Tricia Marie Reyes
+
+# Previous Contributors
 
 * Kenny Luong
 * Dylan Tokita
 * Allie Kim
 * Nathan Lam
 
-# Previous Contributors
 
 * Ryan Walser (Fall 2015 - Spring 2016)
 * Scott Nakashima (Fall 2015 - Spring 2016)
