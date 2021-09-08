@@ -5,7 +5,7 @@ This is a re-write of the [old weatherbox firmware](https://github.com/scel-hawa
 
 # Current Contributors
 
-=======
+
 * Tricia Marie Reyes
 * Kayla Hirano
 * Giancarlo Portillo
@@ -13,7 +13,7 @@ This is a re-write of the [old weatherbox firmware](https://github.com/scel-hawa
 
 # Previous Contributors
 
-=======
+
 * Kenny Luong
 * Dylan Tokita
 * Allie Kim
