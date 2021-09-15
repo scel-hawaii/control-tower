@@ -7,7 +7,7 @@
  ******************************/
 
 #include <Arduino.h>
- 
+
 #define _PIN_GA_BATTERY_ A2
 
 #ifndef GA_DEV_BATTERY_H
