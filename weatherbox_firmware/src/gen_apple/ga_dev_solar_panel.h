@@ -8,7 +8,7 @@
 
 #include <Arduino.h>
 
-#define _PIN_GA_SOLAR_PANEL_ A1
+#define _PIN_GA_SOLAR_PANEL_ A0
 
 #ifndef GA_DEV_SOLAR_PANEL
 #define GA_DEV_SOLAR_PANEL
