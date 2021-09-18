@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/scel-hawaii/server",
   "dependencies": {
-    "restify": "^2.8.4",
+    "restify": "^8.4.0",
     "underscore": "",
     "gauss": "",
     "pg": "",
