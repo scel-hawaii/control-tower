@@ -12,7 +12,7 @@
 #include "ga_dev_solar_panel.h"
 #include "ga_dev_eeprom_node_address.h"
 #include "ga_dev_adafruit_BME280_sensor.h"
-
+#include "DS3231.h"
 
 #ifndef GA_BOARD_H
 #define GA_BOARD_H

@@ -12,12 +12,19 @@
 
 #define _GA_DEV_DIGI_XBEE_BUFSIZE_ 150
 
+//FOR SLEEP FUNCTION
+//#define XBEE_sleepPin 6
+//#define SLEEP_COUNTER 0
+//FOR SLEEP FUNCTION
+
 #ifndef GA_DEV_DIGI_XBEE
 #define GA_DEV_DIGI_XBEE
 void ga_dev_digi_xbee_open(void);
 int ga_dev_digi_xbee_avail(void);
 int ga_dev_digi_xbee_read(void);
 void ga_dev_digi_xbee_write(uint8_t* data, int data_len);
+void xbeesleep(void);
+void xbeewake();
 
 static XBee xbee = XBee();
 
