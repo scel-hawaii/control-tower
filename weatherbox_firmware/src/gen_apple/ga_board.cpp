@@ -9,6 +9,10 @@
 
 #include "ga_board.h"
 
+//FOR SLEEP FUNCTION
+int SLEEP_COUNTER = 0;
+//FOR SLEEP FUNCTION
+
 static void ga_board_print_build_opts();
 static void ga_board_setup(struct ga_board* b);
 static void ga_board_post();
@@ -394,6 +398,19 @@ static void ga_board_heartbeat_tx(struct ga_board* b){
     int schema_len = sizeof(hb_packet);
 
     Serial.println(F("TX Heartbeat Start"));
+
+    //FOR SLEEP FUNCTION
+    if (SLEEP_COUNTER==0){
+        xbeewake();
+    }
+    else if (SLEEP_COUNTER==5){
+        xbeesleep();
+    }
+    if(SLEEP_COUNTER<5){
+        Serial.println(SLEEP_COUNTER);
+    }
+    SLEEP_COUNTER=(SLEEP_COUNTER+1)%10;
+    //FOR SLEEP FUNCTION
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
