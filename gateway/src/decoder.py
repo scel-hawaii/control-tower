@@ -124,9 +124,9 @@ class Decoder:
   """
   def write_to_db(self, dataDict):
     #make connection to database, this can be added elsewhere so it will only be done once
-    con = psycopg2.connect("dbname='control_tower' user='control_tower' password='password' host='localhost'")
+    db_uri = os.environ["GATEWAY_DB_URI"]
+    con = psycopg2.connect(db_uri)
     cur = con.cursor()
-
 
     if self.schema_num == 0:
         tableName = 'heartbeat'
