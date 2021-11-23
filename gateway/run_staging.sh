@@ -9,8 +9,8 @@ if [ ! -d "env" ]; then
 fi
 
 source env/bin/activate
-# production database uri
-export GATEWAY_DB_URI="postgresql://control_tower@localhost/control_tower"
+# staging database uri
+export GATEWAY_DB_URI="postgresql://control_tower_staging@localhost/control_tower_staging"
 
 echo "Starting Server"
 cd src && python gateway_server.py $@
