@@ -20,6 +20,8 @@
 #include "gen_dragonfruit/gd_board.h"
 #elif defined(GG)
 #include "gen_guava/gg_board.h"
+#elif defined(GB)
+#include "gen_bumblebee/gb_board.h"
 #endif
 
 /* Arudino Libraries */
@@ -42,6 +44,10 @@
 
 #ifdef GA
 struct ga_board board;
+#endif
+
+#ifdef GB
+struct gb_board board;
 #endif
 
 #ifdef GC
@@ -68,6 +74,10 @@ struct gg_board board;
 void setup(){
     #ifdef GA
     ga_board_init(&board);
+    #endif
+
+    #ifdef GB
+    gb_board_init(&board);
     #endif
 
     #ifdef GC

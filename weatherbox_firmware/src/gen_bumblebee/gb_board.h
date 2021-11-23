@@ -1,0 +1,95 @@
+/*******************************
+ *
+ * File: gb_board.h
+ *
+ * Contains struct for Apple packet, heartbeat, and board
+ *
+ ******************************/
+
+#include "gb_dev_digi_xbee.h"
+#include "gb_dev_apogee_SP212_irradiance.h"
+#include "gb_dev_battery.h"
+#include "gb_dev_solar_panel.h"
+#include "gb_dev_eeprom_node_address.h"
+#include "gb_dev_adafruit_BME280_sensor.h"
+
+
+#ifndef GB_BOARD_H
+#define GB_BOARD_H
+
+struct gb_packet{
+    uint16_t schema;
+    uint16_t node_address;                              // Address of Arduino
+    uint32_t uptime_milliseconds;                        // Time since start of program
+    uint16_t battery_millivolts;                         // Battery Voltage (in milli volts)
+    uint16_t panel_millivolts;                           // Panel Voltage (in milli volts)
+    uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
+    uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
+    uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
+    uint16_t sp212_irradiance_watts_per_square_meter;   // Solar Irradiance Value (in w/m^2)
+};
+
+/* Legacy Heartbeat 1.0 Packet */
+struct gb_heartbeat_packet{
+    uint16_t schema;
+    uint16_t node_address;         // Address of Arduino
+    uint32_t uptime_milliseconds;   // Time since start of program
+    uint16_t battery_millivolts;    // Battery Voltage (in milli volts)
+};
+
+/* Heartbeat 2.0 Packet
+struct gb_heartbeat_packet {
+  uint16_t schema;
+  uint16_t node_addr;
+  uint32_t uptime_ms;
+  uint16_t batt_mv;
+  float latitude;
+  float longitude;
+  float altitude;
+  uint8_t generation;
+  uint8_t version;
+  uint8_t revision;
+  uint32_t deployment_date; //Epoch date
+};
+*/
+
+// Legacy apple schema.
+typedef struct {
+    uint16_t schema;
+    uint16_t address;               // Address of Arduino
+    uint8_t overflow_num;           // Number of times millis overflowed (happens ~every 49 days)
+    uint32_t uptime_ms;             // Time since start of program
+    uint8_t n;                      // number of data points in packet 0..30
+    uint16_t batt_mv[6];            // Battery Voltage (in milli volts)
+    uint16_t panel_mv[6];           // Panel Voltage (in milli volts)
+    uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
+    uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
+    uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
+    uint16_t apogee_w_m2[20];
+} schema_3;
+
+struct gb_board{
+    void (*setup)(struct gb_board* b);
+    void (*post)(void);
+    void (*sample)(struct gb_board* b);
+    void (*run_cmd)(struct gb_board* b);
+    void (*print_build_opts)(void);
+    void (*tx)(struct gb_board* b);
+    int (*ready_tx)(struct gb_board* b);
+    int (*ready_sample)(struct gb_board* b);
+    int (*ready_run_cmd)(struct gb_board* b);
+
+    int (*ready_heartbeat_tx)(struct gb_board* b);
+    void (*heartbeat_tx)(struct gb_board* b);
+
+    unsigned long prev_sample_ms;
+    unsigned long prev_heartbeat_ms;
+    int sample_count;
+    uint16_t node_address;
+    struct gb_packet data_packet;
+};
+
+
+void gb_board_init(struct gb_board*);
+
+#endif
