@@ -22,6 +22,12 @@ void ga_dev_digi_xbee_write(uint8_t* data, int data_len);
 static XBee xbee = XBee();
 
 const byte rx_pin = 2;
+
+#ifndef SEN_STUB
 const byte tx_pin = 9;
+#else
+const byte tx_pin = 3;
+#endif
+
 static SoftwareSerial soft_serial(rx_pin, tx_pin);
 #endif
