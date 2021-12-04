@@ -60,6 +60,7 @@ void gg_board_init(gg_board *b){
     b->prev_sample_ms = 0;
 
     // Initialize the packet
+    b->data_packet.weatherbox = 2;
     b->data_packet.schema = 4;
     b->data_packet.node_address = 0;
     b->data_packet.uptime_milliseconds = 0;

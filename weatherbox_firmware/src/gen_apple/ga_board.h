@@ -18,6 +18,7 @@
 #define GA_BOARD_H
 
 struct ga_packet{
+    char weatherbox;                                    //weatherbox name 
     uint16_t schema;
     uint16_t node_address;                              // Address of Arduino
     uint32_t uptime_milliseconds;                        // Time since start of program

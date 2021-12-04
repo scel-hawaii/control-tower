@@ -60,6 +60,7 @@ void ga_board_init(ga_board *b){
     b->prev_sample_ms = 0;
 
     // Initialize the packet
+    b->data_packet.weatherbox = 1;
     b->data_packet.schema = 1;
     b->data_packet.node_address = 0;
     b->data_packet.uptime_milliseconds = 0;
