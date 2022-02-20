@@ -35,7 +35,7 @@ class Decoder:
   """
     def check_schema(self, data):
         self.schema_num = struct.unpack('<' + 'H', data[0:2])[0]
-        print str(self.schema_num) + ':' + str(len(data))
+        print(str(self.schema_num) + ':' + str(len(data)))
         for key in self.schemaDict:
             if str(self.schema_num) == key:
                 # verify expected packet length
@@ -59,7 +59,7 @@ class Decoder:
   Main Function
   """
     def decode_data(self, data, timestamp):
-        print "Checking Schema"
+        print("Checking Schema")
         if self.check_schema(data):
             dataDict = self.sort_packet(data, timestamp)
             # if the data is from the stub build in the lab do nothing
@@ -67,18 +67,18 @@ class Decoder:
                 for callback in self.callbacks:
                     callback(dataDict)
             else:
-                print "NOTICE: Did not write this packet to Database (STUB detected)"
+                print("NOTICE: Did not write this packet to Database (STUB detected)")
                 len(self.callbacks) > 0 and self.callbacks[0](dataDict)
         else:
-            print "Not A Valid Packet\n"
+            print("Not A Valid Packet\n")
 
     """
   Displays given data dictonary
   """
     def print_dictionary(self, dataDict):
-        for key, value in dataDict.iteritems():
-            print key + ": " + str(value)
-        print "\n"
+        for key, value in dataDict.items():
+            print(key + ": " + str(value))
+        print("\n")
 
     """
   Write the decoded data to respective csv file
@@ -102,7 +102,7 @@ class Decoder:
         if(os.path.isfile(fileName) == False):
             fileExists = False
         dataString = ''
-        for key, value in dataDict.iteritems():
+        for key, value in dataDict.items():
             dataString += str(value)
             dataString += ','
 
@@ -112,7 +112,7 @@ class Decoder:
         with open(fileName, 'a') as csvfile:
             if(fileExists == False):
                 headerString = ""
-                for key, value in dataDict.iteritems():
+                for key, value in dataDict.items():
                     headerString += str(key) + ','
                 headerString = headerString[:-1]
                 headerString += '\n'
@@ -139,14 +139,14 @@ class Decoder:
         elif self.schema_num == 4:
             tableName = 'snapdragon'
         else:
-            print "Invalid packet schema"
+            print("Invalid packet schema")
             return
 
         #create a new empty row
         cur.execute("INSERT INTO %s (time_received) VALUES ('%s')" %(tableName, dataDict["time_received"]))
 
         #insert data into newly created row
-        for key, value in dataDict.iteritems():
+        for key, value in dataDict.items():
             if key != 'time_received':
                 sqlCommand = "UPDATE %s SET %s = %s WHERE time_received = '%s'" %(tableName, key, str(value), dataDict["time_received"])
                 cur.execute(sqlCommand)
