@@ -10,7 +10,7 @@ table_name = raw_input("Enter name of table you would like to download: ")
 filename = raw_input("Enter name of output file (include .csv extension): ")
 # check if file already exists
 while(os.path.isfile(filename) == True):
-	filename = raw_input("That file already exists, enter a new filename: ") 	
+    filename = raw_input("That file already exists, enter a new filename: ") 	
 
 #make connection to db
 con = psycopg2.connect("dbname='control_tower' user='control_tower' password='password'")
@@ -33,34 +33,34 @@ colnames.insert(0, "index")
 setup output csv file
 """
 with open(filename, 'a') as csvfile:
-	headerString = ""
-	for value in colnames:
-		headerString += str(value) + ','
-	headerString = headerString[:-1]
-	headerString += '\n'
-	csvfile.write(headerString)
+    headerString = ""
+    for value in colnames:
+        headerString += str(value) + ','
+    headerString = headerString[:-1]
+    headerString += '\n'
+    csvfile.write(headerString)
 
-	# index count
-	index = 0
-	# write data to csv file
-	for line in table:
-		# clean up data ine
-		data = str(line)
-		data = data.replace("(", "")
-		data = data.replace(")", "")
-		data = data.replace(" ", "")
-		data = data.replace("datetime.datetime", "")
-		data = data.split(",")
-		time = datetime.time(int(data[3]), int(data.pop(4)), int(data.pop(4)), int(data.pop(4)))
-		data[3] = str(time)
-		data.insert(0, index)
-		index += 1
+    # index count
+    index = 0
+    # write data to csv file
+    for line in table:
+        # clean up data ine
+        data = str(line)
+        data = data.replace("(", "")
+        data = data.replace(")", "")
+        data = data.replace(" ", "")
+        data = data.replace("datetime.datetime", "")
+        data = data.split(",")
+        time = datetime.time(int(data[3]), int(data.pop(4)), int(data.pop(4)), int(data.pop(4)))
+        data[3] = str(time)
+        data.insert(0, index)
+        index += 1
 
-		dataString = ''
-    		for value in data:
-        		dataString += str(value)
-        		dataString += ','
-    		dataString = dataString[:-1]
-		dataString += '\n'
-		csvfile.write(dataString)
+        dataString = ''
+        for value in data:
+            dataString += str(value)
+            dataString += ','
+        dataString = dataString[:-1]
+        dataString += '\n'
+        csvfile.write(dataString)
 

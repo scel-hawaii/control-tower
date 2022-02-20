@@ -58,34 +58,34 @@ baud_rate = 9600
 t_flag = threading.Event()
 kill_flag = threading.Event()
 while True:
-	currentTime = datetime.datetime.now()
-	# log start times to file
-        fileName = 'reset_log.txt'
-	with open(fileName, 'a') as logfile:
-        	logfile.write(str(currentTime))
-		logfile.write('\n')
+    currentTime = datetime.datetime.now()
+    # log start times to file
+    fileName = 'reset_log.txt'
+    with open(fileName, 'a') as logfile:
+        logfile.write(str(currentTime))
+        logfile.write('\n')
 
-	kill_flag.clear()
-	t_flag.set()
+    kill_flag.clear()
+    t_flag.set()
 
-	# setup decoder and xbee device
-	decoder = Decoder()
-	xbg = XBeeGateway()
+    # setup decoder and xbee device
+    decoder = Decoder()
+    xbg = XBeeGateway()
 
-	decoder.register_callback(decoder.print_dictionary)
-	decoder.register_callback(decoder.write_to_file)
-	decoder.register_callback(decoder.write_to_db)
-	xbg.register_callback(decoder.decode_data)
+    decoder.register_callback(decoder.print_dictionary)
+    decoder.register_callback(decoder.write_to_file)
+    decoder.register_callback(decoder.write_to_db)
+    xbg.register_callback(decoder.decode_data)
 
-	xbg.setup_xbee(port, baud_rate)
-	xbg.begin_test(1,t_flag,kill_flag)
-	#newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
-	#newThread.daemon = True
-	#newThread.start()
+    xbg.setup_xbee(port, baud_rate)
+    xbg.begin_test(1,t_flag,kill_flag)
+    #newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
+    #newThread.daemon = True
+    #newThread.start()
 
-	#while t_flag.is_set():
-		#t_flag.clear()
-		#sleep 30 seconds then check to see if we have received anything
-		#t_flag.wait(60)
+    #while t_flag.is_set():
+    #t_flag.clear()
+    #sleep 30 seconds then check to see if we have received anything
+    #t_flag.wait(60)
 
-	#kill_flag.set()
+    #kill_flag.set()

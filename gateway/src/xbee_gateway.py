@@ -52,10 +52,10 @@ class XBeeGateway:
     #   I know it has something to do with checking if a real xbee device has stopped
     #   responding or not.
     def begin_test(self, i, t_flag, kill_flag):
-	print 'Starting main Gateway Loop\n'
+        print 'Starting main Gateway Loop\n'
         while(1):
             f = self.xbee.wait_read_frame()
-	    t_flag.set()
+            t_flag.set()
             print(f)
             data = f['rf_data']
             timestamp = datetime.datetime.utcnow()
