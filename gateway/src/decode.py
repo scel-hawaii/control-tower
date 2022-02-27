@@ -1,4 +1,4 @@
-import decoder
+from . import decoder
 import datetime
 import os
 import sys
@@ -6,7 +6,7 @@ import json
 
 
 def print_packet(data):
-    print(json.dumps(data))
+    print((json.dumps(data)))
     sys.stdout.flush()
     # print(data['rf_data'])
 
