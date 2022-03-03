@@ -19,19 +19,19 @@ import zmq
 class XBeeGateway:
 
     def __init__(self):
-        print("Setup")
+        print "Setup"
         self.callbacks = []
 
     """
         Set up an XBee Device
     """
     def setup_xbee(self, serial_port, baud_rate):
-        print("Setup XBee Device")
+        print "Setup XBee Device"
         try:
             ser = serial.Serial(serial_port, baud_rate)
             self.xbee = ZigBee(ser, escaped=True)
         except serial.serialutil.SerialException as e:
-            print("Serial Error: ", e)
+            print "Serial Error: ", e
             logging.warning("Serial error")
             logging.warning(str(e))
             sys.exit(1)
@@ -52,7 +52,7 @@ class XBeeGateway:
     #   I know it has something to do with checking if a real xbee device has stopped
     #   responding or not.
     def begin_test(self, i, t_flag, kill_flag):
-	print('Starting main Gateway Loop\n')
+	print 'Starting main Gateway Loop\n'
         while(1):
             f = self.xbee.wait_read_frame()
 	    t_flag.set()

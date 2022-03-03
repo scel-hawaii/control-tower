@@ -22,7 +22,7 @@ class FakeXbee:
         try:
             self.ser = serial.Serial(self.serial_port, 9600)
         except serial.serialutil.SerialException as e:
-            print("Serial Error: ", e)
+            print "Serial Error: ", e
             sys.exit(1)
 
     # starts the loop where this device writes fake data

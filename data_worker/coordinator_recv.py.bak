@@ -28,7 +28,7 @@ import argparse
 import traceback
 
 # Local imports
-from .decode import PacketDecoder
+from decode import PacketDecoder
 
 DATABASE = 1 
 
@@ -55,14 +55,14 @@ class CoordinatorReceiver:
 		self.args = parser.parse_args()
 		# Warn the user that we're using a different mode.
 		if self.args.mode:
-			print("Warning: Default mode disabled!!!")
-			print("\t\t -- " + self.args.mode + " -- mode enabled.")
+			print "Warning: Default mode disabled!!!"
+			print "\t\t -- " + self.args.mode + " -- mode enabled."
 		if self.args.output:
-			print("Warning: Manual server select type enabled.")
-			print("Running with " + self.args.output)
+			print "Warning: Manual server select type enabled."
+			print "Running with " + self.args.output
 		if self.args.tty:
-			print("Warning: Manual ttyUSB selected.")
-			print("Running with " + self.args.tty)
+			print "Warning: Manual ttyUSB selected."
+			print "Running with " + self.args.tty
 	
 
 	# ---------------------------------------------------------------------
@@ -76,9 +76,9 @@ class CoordinatorReceiver:
 		try:
 			self.conn = psycopg2.connect(host="127.0.0.1")
 			self.cur = self.conn.cursor()
-		except Exception as err:
-			print("Something went wrong with the database.")
-			print(traceback.format_exc())
+		except Exception, err:
+			print "Something went wrong with the database."
+			print traceback.format_exc()
 
 	# ---------------------------------------------------------------------
 	#
@@ -133,15 +133,15 @@ class CoordinatorReceiver:
 	#	data was recieved, as well as the data itself (after parsing).
 	# ---------------------------------------------------------------------
 	def poll_to_screen(self):
-		print(time.strftime(self.time_fmt), end=' ')
-		print("starting...")
+		print time.strftime(self.time_fmt),
+		print "starting..."
 
 		while True:
 			try:
 				rf_data = self.xbee.wait_read_frame()['rf_data']
-				print()
-				print()
-				print(time.strftime(self.time_fmt))
+				print
+				print
+				print time.strftime(self.time_fmt)
 				# print " ".join("{0:x}".format(ord(c)) for c in rf_data)
 				try:
 					time_points = self.reis_decoder.decode(rf_data)
@@ -150,11 +150,11 @@ class CoordinatorReceiver:
 						#print 'time offset:', t['time_offset_s']
 						#print 'values:', t['values']
 				except Exception as e:
-					print('exception:', str(e))
+					print 'exception:', str(e)
 				sys.stdout.flush()
 			except:
-				print(time.strftime(self.time_fmt), end=' ')
-				print("self.ser.close()")
+				print time.strftime(self.time_fmt),
+				print "self.ser.close()"
 				self.ser.close()
 				raise
 
@@ -167,8 +167,8 @@ class CoordinatorReceiver:
 	# 	debugging.
 	# ---------------------------------------------------------------------
 	def poll_for_address(self, address):
-		print(time.strftime(self.time_fmt), end=' ')
-		print("starting...")
+		print time.strftime(self.time_fmt),
+		print "starting..."
 
 		while True:
 			try:
@@ -176,18 +176,18 @@ class CoordinatorReceiver:
 				try:
 					time_points = self.reis_decoder.decode(rf_data)
 					if( self.find_address(time_points) == address ):
-						print("We found it!")
-						print(time.strftime(self.time_fmt))
+						print "We found it!"
+						print time.strftime(self.time_fmt)
 					#for t in time_points:
 						#print
 						#print 'time offset:', t['time_offset_s']
 						#print 'values:', t['values']
 				except Exception as e:
-					print('exception:', str(e))
+					print 'exception:', str(e)
 				sys.stdout.flush()
 			except:
-				print(time.strftime(self.time_fmt), end=' ')
-				print("self.ser.close()")
+				print time.strftime(self.time_fmt),
+				print "self.ser.close()"
 				self.ser.close()
 				raise
 
@@ -205,10 +205,10 @@ class CoordinatorReceiver:
 	def poll_to_screen_blank(self):
 		while True:
 			rf_data = self.xbee.wait_read_frame()['rf_data']
-			print()
-			print()
-			print(time.strftime(self.time_fmt))
-			print(rf_data)
+			print
+			print
+			print time.strftime(self.time_fmt)
+			print rf_data
 
 
 	# ---------------------------------------------------------------------
@@ -219,8 +219,8 @@ class CoordinatorReceiver:
 	#	local database.
 	# ---------------------------------------------------------------------
 	def poll_to_db(self):
-		print(time.strftime(self.time_fmt), end=' ')
-		print("starting...")
+		print time.strftime(self.time_fmt),
+		print "starting..."
 
 		while True: 
 			try:
@@ -241,7 +241,7 @@ class CoordinatorReceiver:
 							# print t
 							self.cur.execute(self.reis_decoder.create_query_health(t), t['values'])
 						self.cur.execute('COMMIT;')
-					except Exception as e:
+					except Exception, e:
 						self.cur.execute('ROLLBACK;')
 						self.cur.execute('BEGIN;')
 						self.cur.execute(
@@ -256,7 +256,7 @@ class CoordinatorReceiver:
 						for t in self.reis_decoder.decode(rf_data):
 							self.cur.execute(self.reis_decoder.create_query(t), t['values'])
 						self.cur.execute('COMMIT;')
-					except Exception as e:
+					except Exception, e:
 						self.cur.execute('ROLLBACK;')
 						self.cur.execute('BEGIN;')
 						self.cur.execute(
@@ -266,8 +266,8 @@ class CoordinatorReceiver:
 						continue
 
 			except:
-				print(time.strftime(self.time_fmt), end=' ')
-				print("stopping!")
+				print time.strftime(self.time_fmt),
+				print "stopping!"
 				self.ser.close()
 				self.cur.close()
 				self.conn.close()

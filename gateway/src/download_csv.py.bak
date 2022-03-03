@@ -5,12 +5,12 @@ import csv
 import os.path
 
 #some table name, must get table name from user
-table_name = input("Enter name of table you would like to download: ")
+table_name = raw_input("Enter name of table you would like to download: ")
 
-filename = input("Enter name of output file (include .csv extension): ")
+filename = raw_input("Enter name of output file (include .csv extension): ")
 # check if file already exists
 while(os.path.isfile(filename) == True):
-	filename = input("That file already exists, enter a new filename: ") 	
+	filename = raw_input("That file already exists, enter a new filename: ") 	
 
 #make connection to db
 con = psycopg2.connect("dbname='control_tower' user='control_tower' password='password'")

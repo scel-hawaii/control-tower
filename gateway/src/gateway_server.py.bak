@@ -10,8 +10,8 @@ import struct
 import collections
 import threading
 
-from .decoder import Decoder
-from .xbee_gateway import XBeeGateway
+from decoder import Decoder
+from xbee_gateway import XBeeGateway
 
 args = sys.argv
 
@@ -24,7 +24,7 @@ if args[1] == 'auto' or args[1] == 'a':
     #   The best way I have to find out the device id currently is to go to the /dev/serial/by-id folder
     #   and then see if a new device shows up after I plug in a device.
     #
-    print('Automatically setting port for USB FTDI Device')
+    print 'Automatically setting port for USB FTDI Device'
     # set port to usb FTDI Device
     port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
 
@@ -38,7 +38,7 @@ elif len(args) == 2:
 # we have no extra args
 # we have confusing arguments
 else:
-    print('Attempting to automatically setting port for USB FTDI Device')
+    print 'Attempting to automatically setting port for USB FTDI Device'
     port = ""
     serial_ports = os.listdir('/dev/serial/by-id/')
     if len(serial_ports) == 0:
@@ -48,7 +48,7 @@ else:
         print("ERROR: there are too many connected serial ports, cannot determine the correct port.")
         print("You have to manually specify the port... here are your options:")
         for serial_port in serial_ports:
-            print((os.path.join("/dev/serial/by-id", serial_port)))
+            print(os.path.join("/dev/serial/by-id", serial_port))
         sys.exit(1)
     else:
         port = os.path.join("/dev/serial/by-id", serial_ports[0])

@@ -56,8 +56,8 @@ def unpack(self, rf_data):
         # Automatically generate a query for a given packet
 def query(self, rf_data):
 	try:
-    	d = self.decode(rf_data)
-       	q = self.create_query(d)
+    		d = self.decode(rf_data)
+        	q = self.create_query(d)
 	except KeyError:
 		raise ValueError('unrecognized schema: ' + str(schema))
 	return q
@@ -320,7 +320,7 @@ def query(self, rf_data):
 				time_series.append({'time_offset_s': time_offset_s,
 								'values': query_values})
 		except Exception as err:
-			print((traceback.format_exc()))
+			print(traceback.format_exc())
 
 		return time_series
 
@@ -399,7 +399,7 @@ def query(self, rf_data):
 				time_series.append({'time_offset_s': time_offset_s,
 								'values': query_values})
 		except Exception as err:
-			print((traceback.format_exc()))
+			print(traceback.format_exc())
 
 		return time_series
 

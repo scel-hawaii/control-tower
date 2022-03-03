@@ -28,10 +28,10 @@ def parse_data(body):
     timestamp = datetime.datetime.now()
     d = pickle.loads(body)
     rf_data = d['xbee_frame']['rf_data']
-    print((str(timestamp) + ": --------- Start new packet ----------"))
-    print((decoder.unpack(rf_data)))
+    print(str(timestamp) + ": --------- Start new packet ----------")
+    print(decoder.unpack(rf_data))
     print("Finished decoding data")
-    print((str(timestamp) + ": --------- End new packet ------------"))
+    print(str(timestamp) + ": --------- End new packet ------------")
 
     store_db(rf_data)
 
@@ -62,5 +62,5 @@ def consume(channel):
 
 
 timestamp = datetime.datetime.now()
-print((str(timestamp) + "Starting worker process."))
+print(str(timestamp) + "Starting worker process.")
 consume(channel)
