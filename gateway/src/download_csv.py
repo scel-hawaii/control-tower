@@ -55,12 +55,10 @@ with open(filename, 'a') as csvfile:
 		data[3] = str(time)
 		data.insert(0, index)
 		index += 1
-
 		dataString = ''
-    		for value in data:
-        		dataString += str(value)
-        		dataString += ','
-    		dataString = dataString[:-1]
-		dataString += '\n'
-		csvfile.write(dataString)
-
+for value in data:
+	dataString += str(value)
+	dataString += ','
+	dataString = dataString[:-1]
+	dataString += '\n'
+	csvfile.write(dataString)

@@ -40,19 +40,19 @@ class Decoder:
       if str(self.schema_num) == key:
 	# verify expected packet length
 	
-	if key == '0' and len(data) == 10:
+        if key == '0' and len(data) == 10:
           return True
-	elif key == '1' and len(data) == 22:
+      elif key == '1' and len(data) == 22:
           return True
-	elif key == '2' and len(data) == 22:
+      elif key == '2' and len(data) == 22:
+        return True
+      elif key == '3' and len(data) == 24:
           return True
-	elif key == '3' and len(data) == 24:
+      elif key == '4' and len(data) == 22:
           return True
-        elif key == '4' and len(data) == 22:
+      elif key == '5' and len(data) == 20:
           return True
-	elif key == '5' and len(data) == 20:
-          return True
-    return False
+      return False
 
 
   """
@@ -65,12 +65,12 @@ class Decoder:
       # if the data is from the stub build in the lab do nothing
       if True:
       	for callback in self.callbacks:
-        	callback(dataDict)
-      else:
-	print("NOTICE: Did not write this packet to Database (STUB detected)")
-	len(self.callbacks) > 0 and self.callbacks[0](dataDict)
-    else:
-      print("Not A Valid Packet\n")
+          callback(dataDict)
+        else:
+	        print("NOTICE: Did not write this packet to Database (STUB detected)")
+          len(self.callbacks) > 0 and self.callbacks[0](dataDict)
+        else:
+          print("Not A Valid Packet\n")
 
   """
   Displays given data dictonary
@@ -100,24 +100,23 @@ class Decoder:
         fileName = 'gps-%s.csv' % dataDict['node_addr']
 
     if(os.path.isfile(fileName) == False):
-	fileExists = False
-    dataString = ''
+	    fileExists = False
+      dataString = ''
     for key, value in dataDict.items():
-	dataString += str(value)
-	dataString += ','
-
-    dataString = dataString[:-1]
-    dataString += '\n'
+	    dataString += str(value)
+	    dataString += ','
+      dataString = dataString[:-1]
+      dataString += '\n'
 
     with open(fileName, 'a') as csvfile:
-	if(fileExists == False):
-		headerString = ""
-		for key, value in dataDict.items():
-			headerString += str(key) + ','
-		headerString = headerString[:-1]
-		headerString += '\n'
-		csvfile.write(headerString)
-	csvfile.write(dataString)
+	    if(fileExists == False):
+	      headerString = ""
+	    for key, value in dataDict.items():
+		    headerString += str(key) + ','
+		    headerString = headerString[:-1]
+		    headerString += '\n'
+	      csvfile.write(headerString)
+	      csvfile.write(dataString)
 
   """
   Write decoded data to respective table in database

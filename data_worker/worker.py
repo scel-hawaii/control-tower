@@ -15,7 +15,7 @@ conn = psycopg2.connect(host="127.0.0.1", user="kluong", password="hello")
 cur = conn.cursor()
 
 decoder = PacketDecoder()
-i = 0;
+i = 0
 
 logging.basicConfig(filename='worker.log',level=logging.DEBUG)
 
