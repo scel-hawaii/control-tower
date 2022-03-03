@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+#testing message
 import pika
 import pickle as pickle
 import logging
