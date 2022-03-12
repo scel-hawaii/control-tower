@@ -89,10 +89,10 @@ class XBeeGateway:
             uid = uuid.uuid4()
 
             f_alt = copy.copy(f)
-            f_alt['source_addr_long'] = f_alt['source_addr_long'].encode('hex')
-            f_alt['source_addr'] = f_alt['source_addr'].encode('hex')
-            f_alt['rf_data'] = f_alt['rf_data'].encode('hex')
-            f_alt['options'] = f_alt['options'].encode('hex')
+            f_alt['source_addr_long'] = f_alt['source_addr_long'].hex()
+            f_alt['source_addr'] = f_alt['source_addr'].hex()
+            f_alt['rf_data'] = f_alt['rf_data'].hex()
+            f_alt['options'] = f_alt['options'].hex()
             f_alt['packet_uuid'] = str(uid)
             f_alt['time_recieved'] = str(datetime.datetime.now())
 
@@ -106,10 +106,9 @@ class XBeeGateway:
             # sys.stdout.write(str(f['source_addr_long']).encode('hex'))
             # sys.stdout.write("\n")
             # sys.stdout.flush()
-
             data = f['rf_data']
             timestamp = datetime.datetime.now()
-            socket.send(json.dumps(f_alt))
+            socket.send_string(json.dumps(f_alt))
             for callback in self.callbacks:
                 callback(data, timestamp)
 

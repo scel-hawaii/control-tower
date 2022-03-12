@@ -76,6 +76,7 @@ class Decoder:
   Displays given data dictonary
   """
     def print_dictionary(self, dataDict):
+        print("Entered print_dictionary")
         for key, value in dataDict.items():
             print(key + ": " + str(value))
         print("\n")
