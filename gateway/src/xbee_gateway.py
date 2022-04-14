@@ -19,19 +19,19 @@ import zmq
 class XBeeGateway:
 
     def __init__(self):
-        print "Setup"
+        print("Setup")
         self.callbacks = []
 
     """
         Set up an XBee Device
     """
     def setup_xbee(self, serial_port, baud_rate):
-        print "Setup XBee Device"
+        print("Setup XBee Device")
         try:
             ser = serial.Serial(serial_port, baud_rate)
             self.xbee = ZigBee(ser, escaped=True)
         except serial.serialutil.SerialException as e:
-            print "Serial Error: ", e
+            print("Serial Error: ", e)
             logging.warning("Serial error")
             logging.warning(str(e))
             sys.exit(1)
@@ -52,10 +52,10 @@ class XBeeGateway:
     #   I know it has something to do with checking if a real xbee device has stopped
     #   responding or not.
     def begin_test(self, i, t_flag, kill_flag):
-	print 'Starting main Gateway Loop\n'
+        print('Starting main Gateway Loop\n')
         while(1):
             f = self.xbee.wait_read_frame()
-	    t_flag.set()
+            t_flag.set()
             print(f)
             data = f['rf_data']
             timestamp = datetime.datetime.utcnow()
@@ -89,10 +89,10 @@ class XBeeGateway:
             uid = uuid.uuid4()
 
             f_alt = copy.copy(f)
-            f_alt['source_addr_long'] = f_alt['source_addr_long'].encode('hex')
-            f_alt['source_addr'] = f_alt['source_addr'].encode('hex')
-            f_alt['rf_data'] = f_alt['rf_data'].encode('hex')
-            f_alt['options'] = f_alt['options'].encode('hex')
+            f_alt['source_addr_long'] = f_alt['source_addr_long'].hex()
+            f_alt['source_addr'] = f_alt['source_addr'].hex()
+            f_alt['rf_data'] = f_alt['rf_data'].hex()
+            f_alt['options'] = f_alt['options'].hex()
             f_alt['packet_uuid'] = str(uid)
             f_alt['time_recieved'] = str(datetime.datetime.now())
 
@@ -106,10 +106,9 @@ class XBeeGateway:
             # sys.stdout.write(str(f['source_addr_long']).encode('hex'))
             # sys.stdout.write("\n")
             # sys.stdout.flush()
-
             data = f['rf_data']
             timestamp = datetime.datetime.now()
-            socket.send(json.dumps(f_alt))
+            socket.send_string(json.dumps(f_alt))
             for callback in self.callbacks:
                 callback(data, timestamp)
 

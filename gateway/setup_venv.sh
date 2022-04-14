@@ -1,5 +1,5 @@
 #!/bin/bash
-pip install virtualenv --user
-python2 -m virtualenv env
+pip3 install virtualenv --user
+python3 -m virtualenv env
 source env/bin/activate
-pip install -r requirements.txt
+pip3 install -r requirements.txt

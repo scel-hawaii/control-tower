@@ -73,9 +73,9 @@ def print_data(data, timestamp):
     print(timestamp)
     print(data)
 
+
 decoder = Decoder()
 decoder.register_callback(decoder.print_dictionary)
-
 gateway = XBeeGateway()
 gateway.register_callback(decoder.decode_data)
 gateway.setup_xbee('./ttyV2', 9600)
