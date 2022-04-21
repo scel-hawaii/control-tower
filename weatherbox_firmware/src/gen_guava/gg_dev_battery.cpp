@@ -23,6 +23,21 @@ void gg_dev_battery_open(void){
 
 /******************************
  *
+ * Name:        gg_dev_batt_read_raw
+ * Returns:     Battery reading in mV
+ * Parameter:   Nothing
+ * Description: Reads battery voltage without conversion
+ *
+ ******************************/
+
+int gg_dev_battery_read_raw(void){
+    int value;
+    value = analogRead(_PIN_GG_BATTERY_);
+    return value;
+}
+
+/******************************
+ *
  * Name:        gg_dev_battery_read
  * Returns:     Battery reading in mV
  * Parameter:   Nothing
@@ -34,7 +49,7 @@ int gg_dev_battery_read(void){
     int val = 555;
 
     #ifndef SEN_STUB
-    float raw = (float)analogRead(_PIN_GG_BATTERY_) * (5.0/1023.0);
+    float raw = (float)analogRead(_PIN_GG_BATTERY_) * (3.3/1023.0) * 3;
     val = raw * 1000;
     #endif
 
