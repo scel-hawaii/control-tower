@@ -2,12 +2,13 @@
  *
  * File: gg_board.h
  *
- * Contains struct for Dragonfruit packet, heartbeat, and board
+ * Contains struct for Guava packet, heartbeat, and board
  *
  ******************************/
 
 #define _PIN_LED1_ 20
 // note led 2 doesnt work
+#define _PIN_LED2_ 21
 #define _PIN_LED3_ 22
 
 #include "gg_dev_digi_xbee.h"
@@ -21,7 +22,6 @@
 #define gg_BOARD_H
 
 struct gg_packet{
-    char weatherbox;                                    //weatherbox name 
     uint16_t schema;
     uint16_t node_address;                             // Address of Arduino
     uint32_t uptime_milliseconds;                       // Time since start of program

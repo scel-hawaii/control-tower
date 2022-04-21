@@ -23,7 +23,20 @@
 void gg_dev_solar_panel_open(void){
     pinMode(_PIN_GG_SOLAR_PANEL_, INPUT);
 }
+/******************************
+ *
+ * Name:        gg_dev_solar_panel_read_raw
+ * Returns:     Solar Panel reading in mV
+ * Parameter:   Nothing
+ * Description: Reads solar panel voltage without conversion
+ *
+ ******************************/
 
+int gg_dev_solar_panel_read_raw(void){
+    int value;
+    value = analogRead(_PIN_GG_SOLAR_PANEL_);
+    return value;
+}
 /******************************
  *
  * Name:        gg_dev_solar_panel_read
@@ -37,7 +50,7 @@ int gg_dev_solar_panel_read(void){
     int value = 555;
 
     #ifndef SEN_STUB
-    value = 2.0*(float)analogRead(_PIN_GG_SOLAR_PANEL_)*(5000.0/1023.0)+(70.0);
+    value = 3.0*(float)analogRead(_PIN_GG_SOLAR_PANEL_)*(3300.0/1023.0);
     #endif
 
     return value;

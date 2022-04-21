@@ -30,8 +30,8 @@ Adafruit_BME280 bme280(BME_CS); // Hardware SPI
 Adafruit_BME280 bme280(BME_CS, BME_MOSI, BME_MISO, BME_SCK); // Software SPI
 #endif
 
-void gg_dev_adafruit_BME280_sensor_open(void) {
-  bme280.begin();
+bool gg_dev_adafruit_BME280_sensor_open(void) {
+  return bme280.begin();
 }
 
 uint16_t gg_dev_adafruit_BME280_humidity_read(void) {
