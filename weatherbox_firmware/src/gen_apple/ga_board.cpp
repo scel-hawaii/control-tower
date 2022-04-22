@@ -9,6 +9,12 @@
 
 #include "ga_board.h"
 
+
+//FOR RTC//
+DS3231 clock;
+RTCDateTime rtc; 
+//FOR RTC
+
 static void ga_board_print_build_opts();
 static void ga_board_setup(struct ga_board* b);
 static void ga_board_post();
@@ -85,6 +91,12 @@ static void ga_board_print_build_opts()
     Serial.begin(9600);
     Serial.println(F("Board Opts"));
     Serial.println(F("Gen: apple23"));
+
+    //FOR RTC//
+    Serial.println("RTC initiated");
+    clock.begin();
+    clock.setDateTime(__DATE__,__TIME__);
+    //FOR RTC//
 }
 
 /******************************
@@ -194,7 +206,18 @@ static void ga_board_post(){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
 
-    Serial.println(F("POST End"));
+    //FOR RTC//
+    rtc = clock.getDateTime();
+    Serial.print(F("[P] RTC Data: "));
+    Serial.print(rtc.year);     Serial.print("-");
+    Serial.print(rtc.month);    Serial.print("-");
+    Serial.print(rtc.day);      Serial.print(" ");
+    Serial.print(rtc.hour);     Serial.print(":");
+    Serial.print(rtc.minute);   Serial.print(":");
+    Serial.print(rtc.second);   Serial.print("\n");
+    //FOR RTC//
+
+    Serial.print(F("POST End"));
 
 }
 
@@ -394,6 +417,30 @@ static void ga_board_heartbeat_tx(struct ga_board* b){
     int schema_len = sizeof(hb_packet);
 
     Serial.println(F("TX Heartbeat Start"));
+
+    //FOR SLEEP FUNCTION
+    //if (SLEEP_COUNTER==0){
+    //    xbeewake();
+    //}
+    //else if (SLEEP_COUNTER==5){
+    //    xbeesleep();
+    //}
+    //if(SLEEP_COUNTER<5){
+    //    Serial.println(SLEEP_COUNTER);
+    //}
+    //SLEEP_COUNTER=(SLEEP_COUNTER+1)%10;
+    //FOR SLEEP FUNCTION
+    
+    //FOR RTC//
+    rtc = clock.getDateTime();
+    Serial.print(F("[P] RTC Data: "));
+    Serial.print(rtc.year);     Serial.print("-");
+    Serial.print(rtc.month);    Serial.print("-");
+    Serial.print(rtc.day);      Serial.print(" ");
+    Serial.print(rtc.hour);     Serial.print(":");
+    Serial.print(rtc.minute);   Serial.print(":");
+    Serial.print(rtc.second);   Serial.print("\n");
+    //FOR RTC//
 
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.

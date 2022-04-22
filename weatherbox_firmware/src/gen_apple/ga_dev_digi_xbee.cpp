@@ -70,3 +70,39 @@ void ga_dev_digi_xbee_write(uint8_t *data, int data_len)
 
     xbee.send(zbtx);
 }
+
+
+//FOR SLEEP FUNCTION
+/******************************
+ *
+ * Name:        ga_dev_digi_xbee_sleep
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Puts XBee in sleep mode
+ *
+ ******************************/
+
+//void xbeesleep() {
+  //Serial.println("XBEE IS NOW ASLEEP");   
+ //delay (3000); 
+ // pinMode (XBEE_sleepPin,OUTPUT);    // put XBee to sleep0
+ // digitalWrite(XBEE_sleepPin,HIGH);  // Setting this pin to LOW turns off the pull up resistor, thus saving precious current
+//}
+
+/******************************
+ *
+ * Name:        ga_dev_digi_xbee_wake
+ * Returns:     Nothing
+ * Parameter:   Nothing
+ * Description: Wakes XBee up from sleep mode
+ *
+ ******************************/
+
+//void xbeewake() {
+ // Serial.println("XBEE IS NOW AWAKE");    
+//  pinMode(XBEE_sleepPin,OUTPUT);   // Set the "wake-up pin" to output
+//  digitalWrite(XBEE_sleepPin,LOW); // wake-up XBee
+//  delay(1000); //make sure that XBee is ready
+//}
+
+//FOR SLEEP FUNCTION
