@@ -29,6 +29,12 @@ void xbeewake();
 static XBee xbee = XBee();
 
 const byte rx_pin = 2;
+
+#ifndef SEN_STUB
 const byte tx_pin = 9;
+#else
+const byte tx_pin = 3;
+#endif
+
 static SoftwareSerial soft_serial(rx_pin, tx_pin);
 #endif
