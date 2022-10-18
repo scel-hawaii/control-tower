@@ -10,7 +10,7 @@ fi
 
 source env/bin/activate
 # production database uri
-export GATEWAY_DB_URI="postgresql://control_tower@localhost/control_tower"
+export GATEWAY_DB_URI="postgresql://gateway@localhost/weatherbox"
 
 echo "Starting Server"
 cd src && python gateway_server.py $@
