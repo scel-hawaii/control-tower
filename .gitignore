@@ -12,3 +12,6 @@ node_modules
 *.log
 
 *.vagrant
+
+*.patch
+./gateway/src/fakexbee
