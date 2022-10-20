@@ -10,8 +10,8 @@ import struct
 import collections
 import threading
 
-from .decoder import Decoder
-from .xbee_gateway import XBeeGateway
+from decoder import Decoder
+from xbee_gateway import XBeeGateway
 
 args = sys.argv
 
