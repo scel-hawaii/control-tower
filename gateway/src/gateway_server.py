@@ -78,7 +78,7 @@ while True:
     xbg.register_callback(decoder.decode_data)
 
     xbg.setup_xbee(port, baud_rate)
-    xbg.begin_test(1,t_flag,kill_flag)
+    xbg.begin_loop()
     #newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
     #newThread.daemon = True
     #newThread.start()

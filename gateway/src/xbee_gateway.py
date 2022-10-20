@@ -96,7 +96,7 @@ class XBeeGateway:
             f_alt['packet_uuid'] = str(uid)
             f_alt['time_recieved'] = str(datetime.datetime.now())
 
-            now = datetime.datetime.now()
+            now = datetime.datetime.now(datetime.timezone.utc)
             sys.stdout.write(str(now))
             sys.stdout.write("  ")
             sys.stdout.write(json.dumps(f_alt))

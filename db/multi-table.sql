@@ -7,7 +7,7 @@
 --
 
 CREATE TABLE heartbeat (
-    time_received TIMESTAMP NOT NULL,
+    time_received TIMESTAMP WITH TIME ZONE NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
     uptime_ms BIGINT,
@@ -20,7 +20,7 @@ CREATE TABLE heartbeat (
 --
 
 CREATE TABLE apple (
-    time_received TIMESTAMP NOT NULL,
+    time_received TIMESTAMP WITH TIME ZONE NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
     uptime_ms BIGINT,
@@ -38,7 +38,7 @@ CREATE TABLE apple (
 --
 
 CREATE TABLE cranberry (
-    time_received TIMESTAMP NOT NULL,
+    time_received TIMESTAMP WITH TIME ZONE NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
     uptime_ms BIGINT,
@@ -56,7 +56,7 @@ CREATE TABLE cranberry (
 --
 
 CREATE TABLE dragonfruit (
-    time_received TIMESTAMP NOT NULL,
+    time_received TIMESTAMP WITH TIME ZONE NOT NULL,
     schema INTEGER,
     node_addr INTEGER,
     uptime_ms BIGINT,
