@@ -24,7 +24,7 @@ def fake_loop(master_fd):
     packets = valid_packets()
     while True:
         for key in packets:
-            os.write(master_fd, bytes(packets[key]))
+            os.write(master_fd, bytes(packets[key]), encoding='utf8')
             time.sleep(1)
 
 def start_fake_serial(ptyPath):
