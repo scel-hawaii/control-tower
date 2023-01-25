@@ -60,7 +60,7 @@ void gg_board_init(gg_board *b){
     b->prev_sample_ms = 0;
 
     // Initialize the packet
-    b->data_packet.schema = 1;
+    b->data_packet.schema = 4;
     b->data_packet.node_address = 0;
     b->data_packet.uptime_milliseconds = 0;
     b->data_packet.battery_millivolts = 0;
@@ -107,18 +107,7 @@ static void gg_board_setup(struct gg_board* b){
     gg_dev_battery_open();
     gg_dev_solar_panel_open();
     gg_dev_eeprom_node_address_open();
-    // gg_dev_adafruit_BME280_sensor_open();
-
-    // Set LEDs as output
-    pinMode(_PIN_LED1_,OUTPUT);
-    pinMode(_PIN_LED2_,OUTPUT);
-    pinMode(_PIN_LED3_,OUTPUT);
-
-    // Check BME280 seen by Processor
-    if(!gg_dev_adafruit_BME280_sensor_open()){
-        digitalWrite(_PIN_LED3_, HIGH);
-    }
-
+    gg_dev_adafruit_BME280_sensor_open();
 
     // load the address from the EEPROM into memory
     b->node_address = gg_dev_eeprom_node_address_read();
@@ -140,8 +129,6 @@ static void gg_board_setup(struct gg_board* b){
 
 static void gg_board_post(){
     Serial.println(F("POST Begin"));
-
-    digitalWrite(_PIN_LED2_, HIGH);
 
     // Display node addr
     Serial.print(F("[P] node addr: "));
@@ -187,12 +174,6 @@ static void gg_board_post(){
         Serial.println(F("[P] \tError: apogee solar irradiance out of range"));
     }
 
-    // Check raw batt
-    uint16_t batt_val_raw = gg_dev_battery_read_raw();
-    Serial.print(F("[P] raw battery value: "));
-    Serial.print(batt_val_raw);
-    Serial.println(" mV");
-    
     // Check batt
     uint16_t batt_val = gg_dev_battery_read();
     Serial.print(F("[P] battery value: "));
@@ -203,23 +184,15 @@ static void gg_board_post(){
         Serial.println(F("[P] \tError: battery out of range"));
     }
 
-    // check panel raw sensor value
-    uint16_t spanel_val_raw = gg_dev_solar_panel_read_raw();
-    Serial.print(F("[P] raw solar panel value: "));
-    Serial.print(spanel_val_raw);
-    Serial.println(F(" mV"));
-
     // check panel sensor value
     uint16_t spanel_val = gg_dev_solar_panel_read();
     Serial.print(F("[P] solar panel value: "));
     Serial.print(spanel_val);
     Serial.println(F(" mV"));
 
-    if(spanel_val < 0){
+    if(spanel_val < 100){
         Serial.println(F("[P] \tERROR: solar panel value out of range"));
     }
-
-    digitalWrite(_PIN_LED2_, LOW);
 
     Serial.println(F("POST End"));
 
@@ -422,8 +395,6 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
 
     Serial.println(F("TX Heartbeat Start"));
 
-    digitalWrite(_PIN_LED1_, HIGH);
-
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -433,8 +404,6 @@ static void gg_board_heartbeat_tx(struct gg_board* b){
     gg_dev_digi_xbee_write(payload, schema_len);
 
     Serial.println(F("TX Heartbeat End"));
-
-    digitalWrite(_PIN_LED1_, LOW);
 }
 
 /******************************
@@ -452,8 +421,6 @@ static void gg_board_tx(struct gg_board* b){
 
     Serial.println(F("Sample TX Start"));
 
-    digitalWrite(_PIN_LED2_, HIGH);
-
     // We need to copy our struct data over to a byte array
     // to get a consistent size for sending over xbee.
     // Raw structs have alignment bytes that are in-between the
@@ -467,9 +434,6 @@ static void gg_board_tx(struct gg_board* b){
     b->sample_count = 0;
 
     Serial.println(F("Sample TX End"));
-
-    digitalWrite(_PIN_LED2_, LOW);
-
 }
 
 static void gg_board_soft_rst(){

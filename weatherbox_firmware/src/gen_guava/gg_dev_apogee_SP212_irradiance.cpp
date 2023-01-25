@@ -42,7 +42,7 @@ int gg_dev_apogee_SP212_irradiance_read(void){
     int value = 555;
 
     #ifndef SEN_STUB
-    value = (float)analogRead(_PIN_GG_APOGEE_SP212_IRRADIANCE_)*(3300.0/1023.0);
+    value = (float)analogRead(_PIN_GG_APOGEE_SP212_IRRADIANCE_)*(5000.0/1023.0);
     #endif
 
     return value;

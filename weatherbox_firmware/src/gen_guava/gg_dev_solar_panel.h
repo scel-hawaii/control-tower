@@ -8,11 +8,10 @@
 
 #include <Arduino.h>
 
-#define _PIN_GG_SOLAR_PANEL_ A0
+#define _PIN_GG_SOLAR_PANEL_ A1
 
 #ifndef GG_DEV_SOLAR_PANEL
 #define GG_DEV_SOLAR_PANEL
 void gg_dev_solar_panel_open(void);
-int gg_dev_solar_panel_read_raw(void);
 int gg_dev_solar_panel_read(void);
 #endif

@@ -6,7 +6,7 @@
 #ifndef GG_DEV_ADAFRUIT_BME280_SENSOR_H
 #define GG_DEV_ADAFRUIT_BME280_SENSOR_H
 
-bool gg_dev_adafruit_BME280_sensor_open(void);
+void gg_dev_adafruit_BME280_sensor_open(void);
 uint16_t gg_dev_adafruit_BME280_temperature_read(void);
 uint32_t gg_dev_adafruit_BME280_pressure_read(void);
 uint16_t gg_dev_adafruit_BME280_humidity_read(void);
