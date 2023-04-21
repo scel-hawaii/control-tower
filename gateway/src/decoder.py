@@ -25,7 +25,8 @@ class Decoder:
             '2': 'HHIHHHHHI', #Cranberry schema
             '3': 'HHIHHIHHI', #Dragonfruit Schema
             '4': 'HHIHHIHHH', #Snapdragon Schema
-            '5': 'HHIfff'
+            '5': 'HHIfff',
+            '6': 'HHIHHIhHH' #general weatherbox schema
         }
         self.callbacks = []
 
@@ -51,6 +52,8 @@ class Decoder:
                 elif key == '4' and len(data) == 22:
                     return True
                 elif key == '5' and len(data) == 20:
+                    return True
+                elif key == '6' and len(data) == 22:
                     return True
         return False
 
@@ -132,25 +135,25 @@ class Decoder:
         if self.schema_num == 0:
             tableName = 'heartbeat'
         elif self.schema_num == 1:
-            tableName = 'apple'
+            tableName = 'weather_node_data'
         elif self.schema_num == 2:
-            tableName = 'cranberry'
+            tableName = 'weather_node_data'
         elif self.schema_num == 3:
-            tableName = 'dragonfruit'
+            tableName = 'weather_node_data'
         elif self.schema_num == 4:
-            tableName = 'snapdragon'
+            tableName = 'weather_node_data'
         else:
             print("Invalid packet schema")
             return
 
         #create a new empty row
-        cur.execute("INSERT INTO %s (time_received) VALUES ('%s')" %(tableName, dataDict["time_received"]))
+        #cur.execute("INSERT INTO %s (time_received) VALUES ('%s')" %(tableName, dataDict["time_received"]))
 
         #insert data into newly created row
-        for key, value in dataDict.items():
-            if key != 'time_received':
-                sqlCommand = "UPDATE %s SET %s = %s WHERE time_received = '%s'" %(tableName, key, str(value), dataDict["time_received"])
-                cur.execute(sqlCommand)
+        #for key, value in dataDict.items():
+        #    if key != 'time_received':
+        #        sqlCommand = "UPDATE %s SET %s = %s WHERE time_received = '%s'" %(tableName, key, str(value), dataDict["time_received"])
+        #       cur.execute(sqlCommand)
 
         con.commit()
 
@@ -166,64 +169,20 @@ class Decoder:
         dataDict = {}
         unpacked_data = struct.unpack(fmt,data)
 
-        dataDict["time_received"] = str(timestamp)
-        if self.schema_num == 1: #apple schema
-            dataDict["schema"] = unpacked_data[0]
-            dataDict["node_addr"] = unpacked_data[1]
+        #dataDict["time_received"] = str(timestamp)
+        if ((self.schema_num == 1) or (self.schema_num == 2) or (self.schema_num == 3) or (self.schema_num == 4)): #apple schema
+            dataDict["node_addr"] = unpacked_data[0]
+            dataDict["overflow_num"] = unpacked_data[1]
             dataDict["uptime_ms"] = unpacked_data[2]
             dataDict["batt_mv"] = unpacked_data[3]
             dataDict["panel_mv"] = unpacked_data[4]
-            dataDict["press_pa"] = unpacked_data[5]
-            dataDict["temp_c"] = unpacked_data[6]
-            dataDict["humidity_centi_pct"] = unpacked_data[7]
+            dataDict["pressure_pascals"] = unpacked_data[5]
+            dataDict["temperature_kelvin"] = unpacked_data[6]
+            dataDict["humidity_percent"] = unpacked_data[7]
 
             # apple box uses apogee sp215
             # https://wiki.scel-hawaii.org/doku.php?id=weather:apple:datasheets
-            dataDict["apogee_w_m2"] = unpacked_data[8] * SP215_CONVERSION
-
-        elif self.schema_num == 2: #cranberry schema
-            dataDict["schema"] = unpacked_data[0]
-            dataDict["node_addr"] = unpacked_data[1]
-            dataDict["uptime_ms"] = unpacked_data[2]
-            dataDict["batt_mv"] = unpacked_data[3]
-            dataDict["panel_mv"] = unpacked_data[4]
-
-            # cranberry box uses apogee sp212
-            # https://wiki.scel-hawaii.org/doku.php?id=weatherbox:cranberry:start
-            dataDict["apogee_w_m2"] = unpacked_data[5] * SP212_CONVERSION
-
-            dataDict["temp_cK"] = unpacked_data[6]
-            dataDict["humidity_pct"] = unpacked_data[7]
-            dataDict["press_pa"] = unpacked_data[8]
-
-        elif self.schema_num == 3: #dragonfruit schema
-            dataDict["schema"] = unpacked_data[0]
-            dataDict["node_addr"] = unpacked_data[1]
-            dataDict["uptime_ms"] = unpacked_data[2]
-            dataDict["batt_mv"] = unpacked_data[3]
-            dataDict["panel_mv"] = unpacked_data[4]
-
-            # dragonfruit box uses apogee sp215
-            # https://wiki.scel-hawaii.org/doku.php?id=weatherbox:dragonfruit:parts
-            dataDict["apogee_w_m2"] = unpacked_data[5] * SP215_CONVERSION
-
-            dataDict["temp_cK"] = unpacked_data[6]
-            dataDict["humidity_pct"] = unpacked_data[7]
-            dataDict["press_pa"] = unpacked_data[8]
-
-        elif self.schema_num == 4: #snapdragon schema
-            dataDict["schema"] = unpacked_data[0]
-            dataDict["node_addr"] = unpacked_data[1]
-            dataDict["uptime_ms"] = unpacked_data[2]
-            dataDict["batt_mv"] = unpacked_data[3]
-            dataDict["panel_mv"] = unpacked_data[4]
-            dataDict["press_pa"] = unpacked_data[5]
-            dataDict["temp_cK"] = unpacked_data[6]
-            dataDict["humidity_pct"] = unpacked_data[7]
-
-            # snapdragon box uses apogee sp215
-            # https://wiki.scel-hawaii.org/doku.php?id=weatherbox:team_snapdragon:start
-            dataDict["apogee_w_m2"] = unpacked_data[8] * SP215_CONVERSION
+            dataDict["irradiance_watts_per_square_meter"] = unpacked_data[8] * SP215_CONVERSION
 
         elif self.schema_num == 0: #heartbeat schema
             dataDict["schema"] = unpacked_data[0]

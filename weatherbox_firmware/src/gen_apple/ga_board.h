@@ -18,15 +18,15 @@
 #define GA_BOARD_H
 
 struct ga_packet{
-    uint16_t schema;
     uint16_t node_address;                              // Address of Arduino
+    uint16_t overflow_num;
     uint32_t uptime_milliseconds;                        // Time since start of program
     uint16_t battery_millivolts;                         // Battery Voltage (in milli volts)
     uint16_t panel_millivolts;                           // Panel Voltage (in milli volts)
-    uint32_t bme280_pressure_pascals;                   // Pressure Value (in pascals)
-    uint16_t bme280_temperature_kelvin;                // Temperature Value (in Kelvin)
-    uint16_t bme280_humidity_percent;                  // Humidity Value (in percentage)
-    uint16_t sp212_irradiance_watts_per_square_meter;   // Solar Irradiance Value (in w/m^2)
+    uint32_t pressure_pascals;                    // Pressure Value (in pascals)
+    int16_t temperature_kelvin;                 // Temperature Value (in celsius) (ideally we change this to Kelvin)
+    uint16_humidity_percent;                    // Humidity Value (in percentage)
+    uint16_irradiance_watts_per_square_meter;   // Solar Irradiance Value (in w/m^2)
 };
 
 /* Legacy Heartbeat 1.0 Packet */

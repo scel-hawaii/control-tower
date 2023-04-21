@@ -5,6 +5,7 @@ import sys
 import os
 import datetime
 import threading
+import yoyo
 
 from decoder import Decoder
 from xbee_gateway import XBeeGateway
@@ -56,6 +57,11 @@ else:
         print(serial_ports)
 
 baud_rate = 9600
+
+backend = yoyo.get_backend('postgres://localhost/weatherbox')
+migrations = yoyo.read_migrations('./migrations')
+backend.apply_migrations(backend.to_apply(migrations))
+
 t_flag = threading.Event()
 kill_flag = threading.Event()
 while True:
@@ -75,8 +81,10 @@ while True:
 
     decoder.register_callback(decoder.print_dictionary)
     decoder.register_callback(decoder.write_to_file)
-    if port != '.ttyFake':
-        decoder.register_callback(decoder.write_to_db)
+    
+    # commented out for local testing
+    # if port != './ttyFake':
+    decoder.register_callback(decoder.write_to_db)
     xbg.register_callback(decoder.decode_data)
 
     xbg.setup_xbee(port, baud_rate)

@@ -66,15 +66,15 @@ void ga_board_init(ga_board *b){
     b->prev_sample_ms = 0;
 
     // Initialize the packet
-    b->data_packet.schema = 1;
     b->data_packet.node_address = 0;
+    b->data_packet.overflow_num = 0;
     b->data_packet.uptime_milliseconds = 0;
     b->data_packet.battery_millivolts = 0;
     b->data_packet.panel_millivolts = 0;
-    b->data_packet.bme280_pressure_pascals = 0;
-    b->data_packet.bme280_temperature_kelvin = 0;
-    b->data_packet.bme280_humidity_percent = 0;
-    b->data_packet.sp212_irradiance_watts_per_square_meter = 0;
+    b->data_packet.pressure_pascals = 0;
+    b->data_packet.temperature_kelvin = 0;
+    b->data_packet.humidity_percent = 0;
+    b->data_packet.irradiance_watts_per_square_meter = 0;
 }
 
 /******************************
@@ -238,15 +238,16 @@ static void ga_board_sample(struct ga_board* b){
     // Disabled this for apple deployment on 2016-10-06 with T=30s
     // Serial.println(b->sample_count);
 
-    struct ga_packet* data_packet = &(b->data_packet);
+    struct ga_packet* data_packet = &(b->data_packet);        
+    data_packet->node_address                           = b->node_address;
+    data_packet->overflow_num  = (not sure yet);
     data_packet->uptime_milliseconds                     = millis();
     data_packet->battery_millivolts                      = ga_dev_battery_read();
     data_packet->panel_millivolts                        = ga_dev_solar_panel_read();
-    data_packet->bme280_pressure_pascals                 = ga_dev_adafruit_BME280_pressure_read();
-    data_packet->bme280_temperature_kelvin               = ga_dev_adafruit_BME280_temperature_read();
-    data_packet->bme280_humidity_percent                 = ga_dev_adafruit_BME280_humidity_read();
-    data_packet->sp212_irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
-    data_packet->node_address                            = b->node_address;
+    data_packet->pressure_pascals                 = ga_dev_apogee_BMP180_pressure_read();
+    data_packet->temperature_kelvin               = ga_dev_apogee_BMP180_temperature_read();
+    data_packet->humidity_percent                  = ga_dev_sensirion_SHT1X_humidity_read();
+    data_packet->irradiance_watts_per_square_meter = ga_dev_apogee_SP212_irradiance_read();
 
     Serial.println(F("Sample End"));
     b->sample_count = 0;
