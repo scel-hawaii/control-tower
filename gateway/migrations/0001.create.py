@@ -4,7 +4,7 @@ steps = [
    step(
        """
        CREATE TABLE weather_node_data (
-            time_received INTEGER,
+            time_received TIMESTAMP NOT NULL,
             node_addr INTEGER,
             overflow_num INTEGER,
             uptime_ms BIGINT,

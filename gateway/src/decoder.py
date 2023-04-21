@@ -147,13 +147,13 @@ class Decoder:
             return
 
         #create a new empty row
-        #cur.execute("INSERT INTO %s (time_received) VALUES ('%s')" %(tableName, dataDict["time_received"]))
+        cur.execute("INSERT INTO %s (time_received) VALUES ('%s')" %(tableName, dataDict["time_received"]))
 
         #insert data into newly created row
-        #for key, value in dataDict.items():
-        #    if key != 'time_received':
-        #        sqlCommand = "UPDATE %s SET %s = %s WHERE time_received = '%s'" %(tableName, key, str(value), dataDict["time_received"])
-        #       cur.execute(sqlCommand)
+        for key, value in dataDict.items():
+            if key != 'time_received':
+                sqlCommand = "UPDATE %s SET %s = %s WHERE time_received = '%s'" %(tableName, key, str(value), dataDict["time_received"])
+                cur.execute(sqlCommand)
 
         con.commit()
 
@@ -169,7 +169,7 @@ class Decoder:
         dataDict = {}
         unpacked_data = struct.unpack(fmt,data)
 
-        #dataDict["time_received"] = str(timestamp)
+        dataDict["time_received"] = str(timestamp)
         if ((self.schema_num == 1) or (self.schema_num == 2) or (self.schema_num == 3) or (self.schema_num == 4)): #apple schema
             dataDict["node_addr"] = unpacked_data[0]
             dataDict["overflow_num"] = unpacked_data[1]
