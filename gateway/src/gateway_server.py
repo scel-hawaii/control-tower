@@ -58,7 +58,8 @@ else:
 
 baud_rate = 9600
 
-backend = yoyo.get_backend('postgres://localhost/weatherbox')
+db_uri = os.environ["GATEWAY_DB_URI"]
+backend = yoyo.get_backend(db_uri)
 migrations = yoyo.read_migrations('./migrations')
 backend.apply_migrations(backend.to_apply(migrations))
 
