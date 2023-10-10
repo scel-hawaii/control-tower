@@ -49,7 +49,7 @@ int gg_dev_battery_read(void){
     int val = 555;
 
     #ifndef SEN_STUB
-    float raw = (float)analogRead(_PIN_GG_BATTERY_) * (3.3/1023.0) * 3;
+    float raw = (float)analogRead(_PIN_GG_BATTERY_) * (3.3/1023.0);
     val = raw * 1000;
     #endif
 
