@@ -1,0 +1,37 @@
+diff a/gateway/src/gateway_server.py b/gateway/src/gateway_server.py	(rejected hunks)
+@@ -1,17 +1,14 @@
+ #!/usr/bin/env python
+ # This script is the main gateway server
+ 
+-from xbee import ZigBee
+ import sys
+ import os
+-import serial
+ import datetime
+-import struct
+-import collections
+ import threading
+ 
+-from .decoder import Decoder
+-from .xbee_gateway import XBeeGateway
++from decoder import Decoder
++from xbee_gateway import XBeeGateway
++from fake_rx import start_fake_serial
+ 
+ args = sys.argv
+ 
+@@ -74,11 +75,12 @@ while True:
+ 
+     decoder.register_callback(decoder.print_dictionary)
+     decoder.register_callback(decoder.write_to_file)
+-    decoder.register_callback(decoder.write_to_db)
++    if port != './ttyFake':
++        decoder.register_callback(decoder.write_to_db)
+     xbg.register_callback(decoder.decode_data)
+ 
+     xbg.setup_xbee(port, baud_rate)
+-    xbg.begin_test(1,t_flag,kill_flag)
++    xbg.begin_loop()
+     #newThread = threading.Thread(target=xbg.begin_test, args=(1,t_flag,kill_flag))
+     #newThread.daemon = True
+     #newThread.start()
