@@ -1,17 +1,15 @@
 #!/usr/bin/env python
 # This script is the main gateway server
 
-from xbee import ZigBee
 import sys
 import os
-import serial
 import datetime
-import struct
-import collections
 import threading
 
 from decoder import Decoder
 from xbee_gateway import XBeeGateway
+
+from fake_rx import start_fake_serial
 
 args = sys.argv
 
@@ -27,6 +25,10 @@ if args[1] == 'auto' or args[1] == 'a':
     print('Automatically setting port for USB FTDI Device')
     # set port to usb FTDI Device
     port = '/dev/serial/by-id/usb-FTDI_FT231X_USB_UART_DN01DBGI-if00-port0'
+
+elif args[1] == 'fake':
+    port = './ttyFake'
+    start_fake_serial(port)
 
 # if we have no special arguments
 # port can be accessed by /dev/serial/by-id/<device name> as opposed to /dev/tty/USB0. The latter will never change
@@ -74,7 +76,8 @@ while True:
 
     decoder.register_callback(decoder.print_dictionary)
     decoder.register_callback(decoder.write_to_file)
-    decoder.register_callback(decoder.write_to_db)
+    if port != '.ttyFake':
+        decoder.register_callback(decoder.write_to_db)
     xbg.register_callback(decoder.decode_data)
 
     xbg.setup_xbee(port, baud_rate)

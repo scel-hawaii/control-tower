@@ -23,8 +23,8 @@
 
 void gg_dev_digi_xbee_open(void)
 {
-    Serial.begin(9600);
-    xbee.begin(Serial);
+    Serial1.begin(9600);
+    xbee.begin(Serial1);
 }
 
 /******************************
@@ -38,7 +38,7 @@ void gg_dev_digi_xbee_open(void)
 
 int gg_dev_digi_xbee_avail(void)
 {
-    return Serial.available();
+    return Serial1.available();
 }
 
 /******************************
@@ -52,7 +52,7 @@ int gg_dev_digi_xbee_avail(void)
 
 int gg_dev_digi_xbee_read(void)
 {
-    return Serial.read();
+    return Serial1.read();
 }
 
 /******************************
