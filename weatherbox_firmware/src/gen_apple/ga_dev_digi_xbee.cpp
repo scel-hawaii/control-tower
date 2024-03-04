@@ -65,7 +65,7 @@ int ga_dev_digi_xbee_read(void)
 
 void ga_dev_digi_xbee_write(uint8_t *data, int data_len)
 {
-    XBeeAddress64 addr64 = XBeeAddress64(0, 0);
+    XBeeAddress64 addr64 = XBeeAddress64(0x0013A200, 0x41287FFB);
     ZBTxRequest zbtx = ZBTxRequest(addr64, data, data_len);
 
     xbee.send(zbtx);
