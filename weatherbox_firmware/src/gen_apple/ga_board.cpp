@@ -88,7 +88,7 @@ void ga_board_init(ga_board *b){
 
 static void ga_board_print_build_opts()
 {
-    Serial.begin(9600);
+    Serial.begin(115200);
     Serial.println(F("Board Opts"));
     Serial.println(F("Gen: apple23"));
 
@@ -110,7 +110,7 @@ static void ga_board_print_build_opts()
  ******************************/
 
 static void ga_board_setup(struct ga_board* b){
-    Serial.begin(9600);
+    Serial.begin(115200);
     Serial.println(F("Board Setup Start"));
 
     // Open Devices
