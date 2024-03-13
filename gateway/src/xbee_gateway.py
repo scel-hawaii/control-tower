@@ -30,6 +30,7 @@ class XBeeGateway:
         try:
             ser = serial.Serial(serial_port, baud_rate)
             self.xbee = ZigBee(ser, escaped=True)
+
         except serial.serialutil.SerialException as e:
             print("Serial Error: ", e)
             logging.warning("Serial error")
