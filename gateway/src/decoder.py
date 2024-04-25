@@ -174,7 +174,7 @@ class Decoder:
             dataDict["batt_mv"] = unpacked_data[3]
             dataDict["panel_mv"] = unpacked_data[4]
             dataDict["press_pa"] = unpacked_data[5]
-            dataDict["temp_K"] = unpacked_data[6]
+            dataDict["temp_c"] = unpacked_data[6]
             dataDict["humidity_centi_pct"] = unpacked_data[7]
 
             # apple box uses apogee sp215
