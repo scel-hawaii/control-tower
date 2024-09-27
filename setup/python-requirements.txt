@@ -1,5 +1,0 @@
-Xbee
-pyyaml
-pyserial
-psycopg2
-simplejson

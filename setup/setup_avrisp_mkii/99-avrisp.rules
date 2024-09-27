@@ -1,6 +1,0 @@
-# Atmel Corp. JTAG ICE mkII
-SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2103", MODE="660", GROUP="uucp"
-# Atmel Corp. AVRISP mkII
-SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2104", MODE="660", GROUP="uucp"
-# Atmel Corp. Dragon
-SUBSYSTEM=="usb", ACTION=="add", ATTR{idVendor}=="03eb", ATTR{idProduct}=="2107", MODE="660", GROUP="uucp"

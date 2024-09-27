@@ -4,3 +4,4 @@
 *.csv
 *.txt
 env/
+ttyFake
