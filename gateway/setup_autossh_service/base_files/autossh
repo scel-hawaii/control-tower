@@ -1,5 +1,0 @@
-UTOSSH_POLL=60
-AUTOSSH_FIRST_POLL=30
-AUTOSSH_GATETIME=0
-AUTOSSH_PORT=22000
-SSH_OPTIONS="-N -R 2222:localhost:22 alpha.scel-hawaii.org -p 11144 -i /home/autossh/.ssh/id_rsa"

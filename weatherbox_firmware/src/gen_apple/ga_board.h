@@ -37,22 +37,6 @@ struct ga_heartbeat_packet{
     uint16_t battery_millivolts;    // Battery Voltage (in milli volts)
 };
 
-/* Heartbeat 2.0 Packet
-struct ga_heartbeat_packet {
-  uint16_t schema;
-  uint16_t node_addr;
-  uint32_t uptime_ms;
-  uint16_t batt_mv;
-  float latitude;
-  float longitude;
-  float altitude;
-  uint8_t generation;
-  uint8_t version;
-  uint8_t revision;
-  uint32_t deployment_date; //Epoch date
-};
-*/
-
 // Legacy apple schema.
 typedef struct {
     uint16_t schema;
