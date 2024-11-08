@@ -4,6 +4,7 @@ import os
 import datetime
 from typing import Callable
 from enum import IntEnum
+from typing import Optional
 
 
 import psycopg2
@@ -97,7 +98,8 @@ class PacketDecoder:
 
 
 class PacketWriter:
-    def __init__(self, db_uri: str, filesystem_path: str | None = "./"):
+
+    def __init__(self, db_uri: str, filesystem_path: Optional[str] = "./"): 
         # A path on the filesystem to write CSV files to
         self.filesystem_path = filesystem_path
 
