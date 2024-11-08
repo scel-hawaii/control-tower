@@ -1,3 +1,4 @@
 psycopg2-binary
 pyserial
 XBee
+python3.14

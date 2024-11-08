@@ -2,7 +2,7 @@ import struct
 import collections
 import os
 import datetime
-from typing import Callable
+from typing import Union, Callable
 from enum import IntEnum
 from typing import Optional
 
@@ -99,7 +99,7 @@ class PacketDecoder:
 
 class PacketWriter:
 
-    def __init__(self, db_uri: str, filesystem_path: Optional[str] = "./"): 
+    def __init__(self, db_uri: str, filesystem_path: Union[str, None]  = "./"): 
         # A path on the filesystem to write CSV files to
         self.filesystem_path = filesystem_path
 

@@ -5,6 +5,7 @@ import sys
 from typing import Callable
 
 import serial
+#from digi.xbee.devices import ZigBeeDevice
 from xbee import ZigBee
 from lib.packet import PacketDecoder, PacketWriter
 
@@ -22,7 +23,7 @@ class WeatherboxGateway:
         self.callbacks = []
         try:
             ser = serial.Serial(serial_port, baud_rate)
-            self.xbee = ZigBee(ser, escaped=True)
+            self.xbee = ZigBee(ser, escaped = True)
         except serial.SerialException as e:
             logging.warning("Serial error")
             logging.warning(str(e))
@@ -53,7 +54,7 @@ class WeatherboxGateway:
 
             schema, packet = self.decoder.decode_packet(rf_data, timestamp)
             self.writer.write_to_filesystem(schema, packet)
-            self.writer.write_to_db(schema, packet)
+            #self.writer.write_to_db(schema, packet)
             self.writer.print_dictionary(schema, packet)
 
             for callback in self.callbacks:

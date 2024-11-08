@@ -9,6 +9,8 @@ from lib.mock_xbee import start_mock_xbee
 from lib.packet import PacketDecoder, PacketWriter
 
 
+gateway_db_uri = "postgresql://gateway@localhost/weatherbox"
+
 def main():
     parser = argparse.ArgumentParser(
         prog="server.py",
@@ -29,7 +31,7 @@ def main():
     serial_port = get_serial_port_from_args(args)
 
     exit_after_n = args.exit_after_n
-    gateway_db_uri = os.environ.get("GATEWAY_DB_URI", "")
+    #gateway_db_uri = os.environ.get("GATEWAY_DB_URI", "")
 
     if not gateway_db_uri:
         print("Warning: GATEWAY_DB_URI not set, db writes will be skipped.")

@@ -6,6 +6,7 @@ import os
 import time
 import serial
 from xbee import ZigBee
+#from digi.xbee.devices import ZigBeeDevice
 
 from lib.mock_serial import MockSerialPTY
 from lib.xbee_utils import serialize_frame
